@@ -1,0 +1,13 @@
+module Jekyll
+
+    class Ebooks < Generator
+
+      def generate(site)
+        
+        Dir.glob('eBooks/*/**') do |dir|
+            system "epzip", dir
+        end
+        
+      end
+    end
+end 
