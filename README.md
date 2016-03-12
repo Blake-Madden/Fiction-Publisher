@@ -108,3 +108,8 @@ What should happen is this:
 
 ### Universal Includes
 I'd like to be able to define some 'universal' _includes such as 'bio' etc that can be defined once and then called by any book.
+
+### MISC
+- epub validation step during creation
+- PDF creation
+- Navmap section of toc.ncx
