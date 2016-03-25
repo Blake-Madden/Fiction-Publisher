@@ -1,8 +1,5 @@
-_site
-.sass-cache
 .bundle
-bin
-/vendor
-_deploy.yml
-s3_website.yml
-Gemfile.lock
+.sasss-cache
+*.kate-swp
+
+vendor

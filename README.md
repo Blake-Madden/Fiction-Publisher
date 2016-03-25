@@ -1,115 +1,86 @@
-## WHAT
-Jekyll-Publisher is an attempt to use Jekyll to create ePub ebooks (and then uses kindlegen to create a mobi). 
+### WHAT
+- Write in `Books/_includes/book-title/chapters.md`
+- Modify content of `amazon_review.md, bio.md, and license.md` as needed.
+- Modify layouts in `Books/_layouts/book-title/` and add/remove stuff from `_includes` as needed
+- jekyll build
+- Your ouput.html is in _site
+- Change the output.html to output.md
+- Use that file as your input to Pandoc
 
-## REQUIREMENTS
-- Jekyll
-- Ruby
-- kindlegen
+Jekyll builds everything and puts it in _site
+Use contents of _site as input for Pandoc
 
-### Install
-- Git clone this repo
-- Install the required gems
-  - `bundle install --binstubs --path=vendor`
-- Install [kindlegen](https://www.amazon.com/gp/feature.html?docId=1000765211) for your OS
-- Move into the project directory
-  - `cd jekyll-publisher`
-- Generate a book
+### STRUCTURE
+```
+    Books/
+        Sample-Title.md
+        Sample-Title-Amazon.md
+        
+        _layouts/
+            Sample-Title/
+                amazon.md
+                default.md
+                
+        _includes/
+            Sample-Title1/
+                chapters.md
+                
+            Sample-Title2/
+                chapters.md
+                
+            amazon_review.md
+            bio.md
+            license.md
+```
 
-## HOW
-### Generate a new book
-Run `bundle exec rake new:book` and enter a title when prompted.
-- Creates a new directory named $TITLE that contains the required epub structure
-- Creates a custom UUID for the title and stores it at `_data/$TITLE/uuid.yml
-  - This UUID is used by `$TITLE/OEBPS/content.opf` and `$TITLE/OEBPS/toc.ncx`
-- Creates a new directory named $TITLE at `_includes`
-- Creates a new directory named $TITLE at `_posts` that points to the contents of `_includes/$TITLE/`
+##### Books
+`Books/Sample-Title.md`
+    - This file 'defines' a book and says which layout to use.
+    - You can specify different versions of a book as well, in this instance I also have an Amazon specific title.
 
-### Modify the book
-Go to `_includes/$TITLE/` add contents to any of the following default pages:
-- bio.md
-- license.md
-- title-page.md
-- chapter-01.md
+##### _layouts
+`Books/_layouts/Sample-Title/default.md`
+    - This file defines the structure of your final output and uses Jekyll _includes to populate the content.
+    - Again, I have a default one and an Amazon specific one.
 
-### Build the book
-Use the rake task `build` to create the book, bundle it as an epub, and use kindlegen to convert the epub to a mobi file.
-- $TITLE.epub and $TITLE.mobi can be found in the `_site` directory
+##### _includes
+`Books/_includes/`
+    - The files in this directory are considered 'common' and should be for files that are referenced by multiple books. This allows you create a single 'bio' page for example and reuse it for every book you write.
+    
+`Books/_includes/Sample-Title/chapters.md`
+    - This is where you put the contents/chapters of your story.
 
-### Adding a new chapter
-Use the rake task `new:chapter` to ensure that the chapter is created and added to the 'structure' of the epub.
-- Create the scaffolding for the new chapter by running `bundle exec rake new:chapter`
-- Open `_includes/$TITLE/` and add contents to the new chapter
+### FLOW
+- Jekyll will look for any books defined in the root of `Books`. Sample-Title.md and Sample-Title-Amazon.md in this example.
 
-### Adding a new 'non-chapter' page
-Use the rake task `new:page` to add new 'non-chapter' pages. This is useful for adding custom frontmatter/backmatter pages like Acknowledgements, Dedications, Thank You page, etc.
-- Create the scaffolding for the new page by running `bundle exec rake new:page`
-- `_includes/$TITLE/` and add contents to the new page
+- Those files define a layout.
 
-## STRUCTURE
-### `_data`
-- biblography.yml
-  - Edit this as needed. It gets added to `_includes/title-page.md`
-- book.yml
-  - Enter the information for your book(s) here. It gets looped through by `_includes/title-page.md`
+- The layout defines structure by 'including' files.
 
-### `_epub_scaffolding`
-This directory stores the required epub structure which gets called by the `new:book` rake task.
+- Jekyll finds the included files, writes their contents in the order specified in the layout, and writes the file to the  _source directory.
 
-### `_includes`
-This directory stores .md files for any 'shared' pages that you want to create once and include in multiple books.
-- These pages are populated with information via the contents of the `_data` directory.
-  - Examples include: Author Bio Page, Book License, and Title Page.
+- Use the contents of the source directory as input for Pandoc.
 
-### `_layouts`
-Includes the default book layout and the stylesheet.
-- `epub-stylesheet` is where you modify the CSS for your book.
-  - The `_epub_scaffolding/OEBPS/Styles/epub.css` file uses the `epub-stylesheet` to generate the `epub.css` file during the `new:book` rake task.
+### TODO
+Rake task to 'create book'
+    - create Books/book-title.md file
+    - create Books/_layouts/book-title/default.md | amazon.md | smashwords.md etc
+    - create Books/_includes/book-title/chapters.md
 
-### `_posts`
-These files reference the contents of `_includes` during the build process, make changes in `_includes` and leave these alone.
+Rake task to run Pandoc commands (replace makefile)
 
-### `_site`
-This is the directory where your completed epub/mobi file will be found after running `bundle exec rake build`.
-
-## COMMANDS
-**Create scaffolding for a new book**
-- `bundle exec rake new:book`
-
-**Create a new chapter**
-- `bundle exec rake new:chapter`
-
-**Add a new 'non-chapter' page**
-- `bundle exec rake new:page`
-
-**Delete the book**
-- `bundle exec rake delete:book`
-
-## TODO
-There's still quite a bit of missing functionality and a large todo list.
-
-### Cover Images
-Right now a placeholder image is found at `_epub_scaffolding/OEBPS/Images/cats-cover.jpg` and is used as the cover for all books. 
-
-What should happen is this:
-The user defines a cover image title/location in `_data/$TITLE/book.yml` and this is used to update:
-- `$TITLE/OEBPS/Images/$cover.jpg`
-- `$TITLE/OEBPS/content.opf`
-- `$TITLE/OEBPS/Text/Cover.html`
-
-### Updated ToC / Manifest
-Right now using the `new:chapter` and `new:page` rake tasks correctly creates the pages but they're not added to the `toc.ncx` or `content.opf` so they're not visible when the book is created.
-
-What should happen is this:
-- Use rake task to create new chapter/page
-- User defines a ToC in `_data/$TITLE/toc.yml` and this is used to create/modify:
-  - `$TITLE/OEBPS/content.opf`
-  - `$TITLE/OEBPS/toc.ncxc`
-  - `$TITLE/OEBPS/Text/TOC.xhtml`
-
-### Universal Includes
-I'd like to be able to define some 'universal' _includes such as 'bio' etc that can be defined once and then called by any book.
-
-### MISC
-- epub validation step during creation
-- PDF creation
-- Navmap section of toc.ncx
+Dockerize this?
+    - Base image
+        + Pandoc
+        + Jekyll
+    - Entrypoint: rakefile
+    
+    Structure:
+        - Dockerized repo
+            - Dockerfile
+            - empty 'source' directory
+                - mounted by dockerfile
+                - put all source.md here, Jekyll uses this as it's source
+            - empty 'books' directory
+                - mounted by dockerfile
+                - pandoc writes to here

@@ -1,0 +1,3 @@
+---
+layout: Sample-Title/default
+---

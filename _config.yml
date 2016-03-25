@@ -1,0 +1,5 @@
+source: Books
+exclude: [vendor, Gemfile, Gemfile.lock, Rakefile, .gitignore]
+
+# Build settings
+markdown: kramdown
