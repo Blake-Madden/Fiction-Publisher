@@ -15,20 +15,17 @@ Jekyll allows me to create custom templates, multiple 'includes', and then outpu
 This markdown file can then be passed along to Pandoc and converted to epub/mobi/pdf.
 
 ### WHAT
-- Write in `Books/_includes/book-title/chapters.md`
+- Write in `Source/_includes/book-title/chapters.md`
 - Modify content of `amazon_review.md, bio.md, and license.md` as needed.
-- Modify layouts in `Books/_layouts/book-title/` and add/remove stuff from `_includes` as needed
-- jekyll build
-- Your ouput.html is in _site
-- Change the output.html to output.md
-- Use that file as your input to Pandoc
+- Modify layouts in `Source/_layouts/book-title/` and add/remove stuff from `_includes` as needed
+- Run `. bind.sh` to create your books.
 
 Jekyll builds everything and puts it in _site
-Use contents of _site as input for Pandoc
+Pandoc uses those source files and creates your books inside the Books directory.
 
 ### STRUCTURE
 ```
-    Books/
+    Source/
         Sample-Title.md
         Sample-Title-Amazon.md
         
@@ -49,25 +46,28 @@ Use contents of _site as input for Pandoc
             license.md
 ```
 
-##### Books
-`Books/Sample-Title.md`
+##### Source
+`Source/Sample-Title.md`
     - This file 'defines' a book and says which layout to use.
     - You can specify different versions of a book as well, in this instance I also have an Amazon specific title.
 
 ##### _layouts
-`Books/_layouts/Sample-Title/default.md`
+`Source/_layouts/Sample-Title/default.md`
     - This file defines the structure of your final output and uses Jekyll _includes to populate the content.
     - Again, I have a default one and an Amazon specific one.
 
 ##### _includes
-`Books/_includes/`
+`Source/_includes/`
     - The files in this directory are considered 'common' and should be for files that are referenced by multiple books. This allows you create a single 'bio' page for example and reuse it for every book you write.
     
-`Books/_includes/Sample-Title/chapters.md`
+`Source/_includes/Sample-Title/chapters.md`
     - This is where you put the contents/chapters of your story.
+    
+##### Pandoc
+Contains custom css and template files used by Pandoc.
 
 ### FLOW
-- Jekyll will look for any books defined in the root of `Books`. Sample-Title.md and Sample-Title-Amazon.md in this example.
+- Jekyll will look for any books defined in the root of `Source`. Sample-Title.md and Sample-Title-Amazon.md in this example.
 
 - Those files define a layout.
 
@@ -79,9 +79,9 @@ Use contents of _site as input for Pandoc
 
 ### TODO
 Rake task to 'create book'
-    - create Books/book-title.md file
-    - create Books/_layouts/book-title/default.md | amazon.md | smashwords.md etc
-    - create Books/_includes/book-title/chapters.md
+    - create Source/book-title.md file
+    - create Source/_layouts/book-title/default.md | amazon.md | smashwords.md etc
+    - create Source/_includes/book-title/chapters.md
 
 Rake task to run Pandoc commands (replace makefile)
 

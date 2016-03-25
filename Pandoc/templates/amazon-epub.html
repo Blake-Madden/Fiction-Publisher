@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang$">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="generator" content="pandoc" />
+        <title>$pagetitle$</title>
+        <link rel="stylesheet" type="text/css" href="$css$" />
+    </head>
+    <body>
+    
+        $if(titlepage)$
+            $for(title)$
+                $if(title.text)$
+                    <h1 class="uppercase">$title.text$</h1>
+                $else$
+                    <h1 class="uppercase">$title$</h1>
+                $endif$
+            $endfor$
+            
+            $if(subtitle)$
+                <h3><em>$subtitle$</em></h3>
+            $endif$
+            
+            $for(date)$
+                <h4>© $date$</h4>
+            $endfor$
+            
+            $for(author)$
+                <h2 class="top-margin">$author$</h2>
+            $endfor$
+            
+            $for(creator)$
+                <h2>$creator.text$</h2>
+            $endfor$
+        
+            $if(publisher)$
+                <h4>$publisher$</h4>
+            $endif$
+            
+            $for(book1)$
+                $if(book1.title)$
+                    <h4 class="top-margin">Also Available</h4>
+                $endif$
+            $endfor$
+            
+            $for(book1)$$if(book1.link)$
+                <h5><a href="$book1.link$">$book1.title$</a></h5>
+                $else$
+                <h5>$book1.title$</h5>
+                $endif$
+            $endfor$
+            $for(book2)$$if(book2.link)$
+                <h5><a href="$book2.link$">$book2.title$</a></h5>
+                $else$
+                <h5>$book2.title$</h5>
+                $endif$
+            $endfor$
+            $for(book3)$$if(book3.link)$
+                <h5><a href="$book3.link$">$book3.title$</a></h5>
+                $else$
+                <h5>$book3.title$</h5>
+                $endif$
+            $endfor$
+            $for(book4)$$if(book4.link)$
+                <h5><a href="$book4.link$">$book4.title$</a></h5>
+                $else$
+                <h5>$book4.title$</h5>
+                $endif$
+            $endfor$
+            $for(book5)$$if(book5.link)$
+                <h5><a href="$book5.link$">$book5.title$</a></h5>
+                $else$
+                <h5>$book5.title$</h5>
+                $endif$
+            $endfor$
+            
+            $if(contributors)$
+            <div class="top-margin">
+            $for(contributors)$
+                $if(contributors.designer)$
+                    <h6>Book Design: $contributors.designer$</h6>
+                $endif$
+                $if(contributors.artist)$
+                    <h6>Cover Artist: $contributors.artist$</h6>
+                $endif$
+                $if(contributors.editor)$
+                    <h6>Editor: $contributors.editor$</h6>
+                $endif$
+            $endfor$
+            </div>
+            $endif$
+            
+        $endif$
+        
+        $body$
+    </body>
+</html>

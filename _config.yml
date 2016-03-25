@@ -1,4 +1,4 @@
-source: Books
+source: Source
 exclude: [vendor, Gemfile, Gemfile.lock, Rakefile, .gitignore]
 
 # Build settings
