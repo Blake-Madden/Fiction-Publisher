@@ -1,5 +1,6 @@
 .bundle
 .sass-cache
+.Gemfile.lock
 *.kate-swp
 
 vendor
