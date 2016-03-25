@@ -1,5 +1,5 @@
 .bundle
-.sasss-cache
+.sass-cache
 *.kate-swp
 
 vendor
