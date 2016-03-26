@@ -23,10 +23,6 @@
                 <h3><em>$subtitle$</em></h3>
             $endif$
             
-            $for(date)$
-                <h4>© $date$</h4>
-            $endfor$
-            
             $for(author)$
                 <h2 class="top-margin">$author$</h2>
             $endfor$
@@ -39,22 +35,39 @@
                 <h4>$publisher$</h4>
             $endif$
             
-            $for(series-titles)$
-                $if(series-titles.book1)$
-                    <h4 class="top-margin">Also Available</h4>
-                    <h5>$series-titles.book1$</h5>
+            $for(book1)$
+                $if(book1.title)$
+                    <h3 class="top-margin">Also Available</h3>
                 $endif$
-                $if(series-titles.book2)$
-                    <h5>$series-titles.book2$</h5>
+            $endfor$
+            
+            $for(book1)$
+                $if(book1.title)$
+                    <h5>$book1.title$</h5>
                 $endif$
-                $if(series-titles.book3)$
-                    <h5>$series-titles.book3$</h5>
+            $endfor$
+            
+            $for(book2)$
+                $if(book2.title)$
+                    <h5>$book2.title$</h5>
                 $endif$
-                $if(series-titles.book4)$
-                    <h5>$series-titles.book4$</h5>
+            $endfor$
+            
+            $for(book3)$
+                $if(book3.title)$
+                    <h5>$book3.title$</h5>
                 $endif$
-                $if(series-titles.book5)$
-                    <h5>$series-titles.book5$</h5>
+            $endfor$
+            
+            $for(book4)$
+                $if(book4.title)$
+                    <h5>$book4.title$</h5>
+                $endif$
+            $endfor$
+            
+            $for(book5)$
+                $if(book5.title)$
+                    <h5>$book5.title$</h5>
                 $endif$
             $endfor$
             

@@ -14,16 +14,17 @@ Jekyll allows me to create custom templates, multiple 'includes', and then outpu
 
 This markdown file can then be passed along to Pandoc and converted to epub/mobi/pdf.
 
-### WHAT
+### HOW
 - Write in `Source/_includes/book-title/chapters.md`
 - Modify content of `amazon_review.md, bio.md, and license.md` as needed.
 - Modify layouts in `Source/_layouts/book-title/` and add/remove stuff from `_includes` as needed
+- Add an optional cover to `Source/_images/`, name it Book-Title.jpg
 - Run `. bind.sh` to create your books.
 
 Jekyll builds everything and puts it in _site
 Pandoc uses those source files and creates your books inside the Books directory.
 
-### STRUCTURE
+### WHAT
 ```
     Source/
         Sample-Title.md
