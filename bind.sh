@@ -19,7 +19,7 @@ rename
 # "${i%%.*}" gets the filename but ignores the extension
 for i in $(ls _site | grep epub); do
     mkdir Books/"${i%%-epub.md}"
-    pandoc --toc-depth=1 --template=Pandoc/templates/custom-epub.html --epub-stylesheet=Pandoc/css/style.css --smart -o Books/"${i%%-epub.md}"/"${i%%.*}".epub _site/$i
+    pandoc --toc-depth=1 --template=Pandoc/templates/custom-epub.html --epub-stylesheet=Pandoc/css/style.css --smart -o Books/"${i%%-epub.md}"/"${i%%-epub.md}".epub _site/$i
 done
 }
 
@@ -52,7 +52,7 @@ rename
 # Create PDF for every book in _site
 # "${i%%.*}" gets the filename but ignores the extension
 for i in $(ls _site | grep pdf ); do
-    pandoc --toc --toc-depth=2 --template=Pandoc/templates/custom-pdf.latex --latex-engine=xelatex -V documentclass=book -o Books/"${i%%-pdf.md}"/"${i%%.*}".pdf _site/$i
+    pandoc --toc --toc-depth=2 --template=Pandoc/templates/custom-pdf.latex --latex-engine=xelatex -V documentclass=book -o Books/"${i%%-pdf.md}"/"${i%%-pdf.md}".pdf _site/$i
 done
 }
 
