@@ -8,22 +8,30 @@
 html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, pre, table, th, td, tr { margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; }
 
 /* Make sure all paragraphs are 'justified' */
-p {text-align: justify;}
+p { text-align: justify; }
 
 /* Don't indent the first paragraph of a chapter */
 p+p { text-indent: 1.5em; }
 
+/* Center but don't indent */
+p+p.center { text-indent: 0; text-align: center; }
+
+/* center */
+.center { text-indent: 0; text-align: center; }
+
 /* Center all of our headings */
-h1, h2, h3, h4, h5, h6 {text-align: center;}
+h1, h2, h3, h4, h6 { text-align: center; }
+
+h5 { text-align: center; font-weight: normal; font-size: medium; }
 
 /* Indent our lists */
-li {text-align: left; padding-left: 4em;}
-
-/* Use all caps for some things */
-.uppercase { text-transform: uppercase; }
+li { text-align: left; padding-left: 4em; }
 
 /* Add a top margin for good spacing */
-.top-margin { padding-top: 4em; }
+.top-margin { padding-top: 3em; }
 
 /* Remove the numbers from the Pandoc generated ToC */
 ol.toc { list-style-type:none; }
+
+/* Style our Horizontal Rules */
+hr { border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0)); }

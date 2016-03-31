@@ -1,5 +1,35 @@
-# Bio
+# About the Author
+Tristan J. Tarwater is a writer of fantasy, comics and RPG bits. Her titles include The Valley of Ten Crescents series, Hen &amp; Chick, Shamsee: A Fistful of Lunars, and Reality Makes the Best Fantasy. She has also worked for both Pelgrane Press and Onyx Path.
+\
+\
+Born and raised in NYC, she now considers Portland, OR her home. When she's not making stuff up, she is usually reading a comic book, cooking delicious meals for her Spouse and Small Boss or petting one of her two cats. Her next RPG character will most definitely be an elf.
+\
+\
+You can find her online at [www.backthatelfup.com](https://www.backthatelfup.com)
+\
+\
+\
 
-Hi, I'm me. This is a shared bio that all of the books can reference. This is handy if you manage a lot of books like I do and you want to be able to quickly update the bio page for all of them.
 
-Just update this file, rebuild, and all of your books that include the `bio.md` file will have an updated bio page.
+
+### Other Works by <br /> Tristan J. Tarwater
+- - - - - - - - -
+
+#### Fantasy Series
+##### The Valley of Ten Crescents Series
+##### Hen &amp; Chick
+\
+
+
+#### Short Stories
+##### Botanica Blues
+\
+
+
+#### Comic Books
+##### Shamsee: A Fistful of Lunars
+\
+
+
+#### Role Playing Games
+##### Reality Makes the Best Fantasy

@@ -23,8 +23,8 @@
                 <h3><em>$subtitle$</em></h3>
             $endif$
             
-            $for(date)$
-                <h4>© $date$</h4>
+            $for(year)$
+                <h4>© $year$</h4>
             $endfor$
             
             $for(author)$
@@ -46,33 +46,33 @@
             $endfor$
             
             $for(book1)$$if(book1.link)$
-                <h5><a href="$book1.link$">$book1.title$</a></h5>
+                <p class="center"><a href="$book1.link$">$book1.title$</a></p>
                 $else$
-                <h5>$book1.title$</h5>
+                <p class="center">$book1.title$</p>
                 $endif$
             $endfor$
             $for(book2)$$if(book2.link)$
-                <h5><a href="$book2.link$">$book2.title$</a></h5>
+                <p class="center"><a href="$book2.link$">$book2.title$</a></p>
                 $else$
-                <h5>$book2.title$</h5>
+                <p class="center">$book2.title$</p>
                 $endif$
             $endfor$
             $for(book3)$$if(book3.link)$
-                <h5><a href="$book3.link$">$book3.title$</a></h5>
+                <p class="center"><a href="$book3.link$">$book3.title$</a></p>
                 $else$
-                <h5>$book3.title$</h5>
+                <p class="center">$book3.title$</p>
                 $endif$
             $endfor$
             $for(book4)$$if(book4.link)$
-                <h5><a href="$book4.link$">$book4.title$</a></h5>
+                <p class="center"><a href="$book4.link$">$book4.title$</a></p>
                 $else$
-                <h5>$book4.title$</h5>
+                <p class="center">$book4.title$</p>
                 $endif$
             $endfor$
             $for(book5)$$if(book5.link)$
-                <h5><a href="$book5.link$">$book5.title$</a></h5>
+                <p class="center"><a href="$book5.link$">$book5.title$</a></p>
                 $else$
-                <h5>$book5.title$</h5>
+                <p class="center">$book5.title$</p>
                 $endif$
             $endfor$
             

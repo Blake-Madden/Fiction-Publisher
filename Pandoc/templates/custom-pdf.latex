@@ -1,0 +1,158 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Document Base Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Set document class
+\documentclass{book}
+
+%% Set page size
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{fancyhdr}
+
+%% Prevent overfull lines
+\setlength{\emergencystretch}{3em}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Grab Needed Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Needed for hyperlinks; used in Table of Contents
+%\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
+
+%% Needed for images; used for cover
+%\usepackage{graphicx}
+\usepackage[xetex]{graphicx}
+
+%%%%%%%%%%%
+%%%% Fonts
+%%%%%%%%%%%
+%% If using TrueType system fonts
+\usepackage{xunicode}
+\usepackage{fontspec}
+\usepackage{xltxtra}
+\usepackage{ccicons}
+\defaultfontfeatures{Mapping=tex-text}
+
+%\setmainfont
+%\setsansfont
+%\setmonofont
+
+%% Make fonts available to us
+%\usepackage[LinuxLibertineT-OsF]{mathdesign}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Metadata Settings
+%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+
+%% Set Title from Yaml Metadata
+\title{$title$}
+
+%% Set subtitle if it exists in Yaml Metadata
+$if(subtitle)$
+\newcommand{\subtitle}{$subtitle$}
+$endif$
+
+%% Set author from Yaml Metadata
+\author{$for(author)$$author$$endfor$}
+
+%% Set editor from Yaml Metadata
+\def\editor{$for(contributors)$$contributors.editor$$endfor$}
+
+%% Set cover artist from Yaml Metadata
+\def\artist{$for(contributors)$$contributors.artist$$endfor$}
+
+%% Set designer from Yaml Metadata
+\def\designer{$for(contributors)$$contributors.designer$$endfor$}
+
+%% Set publisher from Yaml Metadata
+\def\publisher{$for(publisher)$$publisher$$endfor$}
+
+%% Set website from Yaml Metadata
+\def\website{$for(website)$$website$$endfor$}
+
+%% Use the year instead of the full date
+\date{$year$}
+
+%%%%%%%%%%%%
+%%%% Macros
+%%%%%%%%%%%%
+%\newcommand*{\libertine}{\fontfamily{LinuxLibertineT-OsF}\selectfont}
+
+\newcommand*{\garamondL}{\fontspec[Scale=2.0]{Adobe Garamond Pro Bold}\selectfont}
+\newcommand*{\goth}{\fontspec{URW Gothic}\selectfont}
+\newcommand*{\minion}{\fontspec{Minion Pro}\selectfont}
+\newcommand{\chapname}{Chapter}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Make the document
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%% Create a titlepage
+\pagestyle{empty}
+  \makeatletter
+  \begin{center}
+    \Huge \garamondL \textbf{\textsc{\@title}} \par
+    \vspace{0.75cm}
+    \Large \garamondL \subtitle \par
+    \vspace{10cm}
+    \huge \goth \@author \par
+\clearpage
+
+%% Create Copyright page
+\pagestyle{empty}
+    \large \@title \par
+    Copyright \ccLogo \@date \ \@author \par
+    Some rights reserved. \par
+    \vspace{0.5cm}
+    Published in the United States by \par
+    \publisher \par
+    \website \par
+    \vspace{0.5cm}
+    This book is distributed under a Creative Commons attribution-NonCommercial-Sharealike 4.0 License. \par
+    \vspace{0.5cm}
+    \ccbyncsa
+  \end{center}
+    \vspace{0.5cm}
+    \large That means you are free: \par
+      \begin{itemize}
+          \item \textbf{To Share} -- copy and redistribute the material in any medium or format.
+          \item \textbf{To Adapt} -- remix, transform, and build upon the material.
+      \end{itemize}
+    The licensor cannot revoke these freedoms as long as you follow the license terms: \par
+      \begin{itemize}
+          \item \textbf{Attribution} -- You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use. \par
+          \item \textbf{NonCommercial} -- You may not use the material for commercial purposes. \par
+          \item \textbf{Share Alike} -- If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original. \par
+      \end{itemize}
+    \textbf No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+    \vspace{1.0cm}
+    \begin{center}
+      Cover Artist: \artist \par
+      Editor: \editor \par
+      Design: \designer \par
+      \vspace{0.5cm}
+      $if(isbn)$ISBN: {$isbn$} \par $endif$
+      $if(isbn-13)$ISBN-13: {$isbn-13$}\par $endif$
+      $if(epub-isbn)$ePub ISBN: {$epub-isbn$} \par $endif$
+    \end{center}
+\clearpage
+
+%% Display body of source file
+\pagestyle{fancy}
+\fancyhead[RO,LE]{}
+\fancyhead[LO]{\itshape \nouppercase \subtitle}
+\fancyhead[RE]{\itshape \nouppercase \@title}
+
+\minion $body$
+\clearpage
+
+\end{document} 

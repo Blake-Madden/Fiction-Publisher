@@ -1,3 +1,0 @@
----
-layout: Sample-Title/amazon
----

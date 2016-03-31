@@ -1,1 +1,6 @@
-This is a file that is used for the 'amazon' layout so we can include Amazon specific things like Amazon URLS that aren't allowed in books for other storefronts.
+\
+\
+
+
+
+##### If you enjoyed this book please consider leaving a [review](https://www.amazon.com/review/create-review?asin=B007UIYEAW) on Amazon.

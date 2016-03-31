@@ -23,8 +23,8 @@
                 <h3><em>$subtitle$</em></h3>
             $endif$
             
-            $for(date)$
-                <h4>© $date$</h4>
+            $for(year)$
+                <h4>© $year$</h4>
             $endfor$
             
             $for(author)$
@@ -39,22 +39,50 @@
                 <h4>$publisher$</h4>
             $endif$
             
-            $for(series)$
-                $if(series.book1)$
-                    <h4 class="top-margin">Also Available</h4>
-                    <h5>$series.book1$</h5>
+            <br><p class="center"><em>Smashwords Edition</em></p>
+            
+            $for(book1)$
+                $if(book1.title)$
+                    <p class="center top-margin"><i>Also Available</i></p>
+                    <br>
                 $endif$
-                $if(series.book2)$
-                    <h5>$series.book2$</h5>
+            $endfor$
+            
+            $for(book1)$
+                $if(book1.title)$
+                    <p class="center">$book1.title$</p>
                 $endif$
-                $if(series.book3)$
-                    <h5>$series.book3$</h5>
+            $endfor$
+            
+            $for(book2)$
+                $if(book2.title)$
+                    <p class="center">$book2.title$</p>
                 $endif$
-                $if(series.book4)$
-                    <h5>$series.book4$</h5>
+            $endfor$
+            
+            $for(book3)$
+                $if(book3.title)$
+                    <p class="center">$book3.title$</p>
                 $endif$
-                $if(series.book5)$
-                    <h5>$series.book5$</h5>
+            $endfor$
+            
+            $for(book4)$
+                $if(book4.title)$
+                    <p class="center">$book4.title$</p>
+                $endif$
+            $endfor$
+            
+            $for(book5)$
+                $if(book5.title)$
+                    <p class="center">$book5.title$</p>
+                $endif$
+            $endfor$
+            
+            $for(magnet)$
+                $if(magnet.link)$
+                    <p class="center top-margin"><a href="$magnet.link$"><img alt="Free Bonus" src="../Images/file0.jpg"></a></p>
+                $else$
+                    <p class="center top-margin"><img alt="Free Bonus" src="../Images/file0.jpg"></p>
                 $endif$
             $endfor$
             
@@ -73,7 +101,6 @@
             $endfor$
             </div>
             $endif$
-            
         $endif$
         
         $body$
