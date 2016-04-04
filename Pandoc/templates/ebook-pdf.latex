@@ -1,0 +1,314 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Base Document Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass%
+[oneside,12pt] % Set default font size
+{book} % Set document Class
+
+%% Set page size and margins
+\usepackage{geometry}
+  \geometry{
+  letterpaper,         %paper size
+  total={6in, 8in},    %trim size
+  top=2in,
+  bottom=1.5in,
+  inner=1.5in,
+  outer=1.5in,
+%  textwidth=
+%  textheight=
+  }
+  
+%% Set language and hyphenation rules
+\usepackage[english]{babel}
+
+%% Set encoding
+\usepackage[utf8]{inputenc}
+
+%% Enable widow/orphan control
+\usepackage[all,defaultlines=2]{nowidow}
+
+%% Prevent overfull lines
+%\setlength{\emergencystretch}{3em}
+%\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Title Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Needed for styling chapter title headings
+\usepackage{titlesec}
+
+% Turn off subsection numbering for titles
+\renewcommand{\thesection}{}
+
+% Style the chapter title that appears on the first page of each chapter
+\titleformat{\chapter}[display]{\garamondL}{\huge Chapter \thechapter \normalfont}{0.5ex}{}[]
+
+% Add spacing for the chapter title that appears on the first page of each chapter
+\titlespacing*{\chapter}
+{0pt}%left
+{200pt}%top
+{40pt}%bottom
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Headers & Footers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Needed for headers and footers
+\usepackage{fancyhdr}
+
+% Remove header/footer from the first page of every chapter
+\fancypagestyle{plain}{ 
+\fancyhf{} %remove/clear header/footer content
+\renewcommand{\headrulewidth}{0.0pt} %remove black line/"rule" from header
+}
+
+%% Set the header height in: in, mm, cm, pt
+%\headheight=in
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Images
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Needed for images; used for cover
+\usepackage{incgraph,tikz}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Fonts
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Use TrueType system fonts
+\usepackage{fontspec}
+
+%% Set Main Fonts
+\setmainfont[
+  Ligatures=TeX,
+  ItalicFont={Minion Pro Italic},
+]{Minion Pro}
+
+%\setmainfont[
+%  Ligatures=TeX,
+%  BoldFont={Aboriginal Serif Bold},
+%  ItalicFont={Aboriginal Serif Italic},
+%  BoldItalicFont={Aboriginal Serif Bold Italic},
+%  SmallCapsFont={TeX Gyre Termes},
+%  SmallCapsFeatures={Letters=SmallCaps},
+%]{Minion Pro}
+
+
+%% Make our quotes curly
+\defaultfontfeatures{Mapping=tex-text}
+
+%% Provides Creative Commons Icons
+\usepackage{ccicons}
+
+%% Set Adobe Garamond Pro Bold macro \garmondL
+\newcommand*{\garamondL}{\fontspec[Scale=2.0]{Adobe Garamond Pro Bold}\selectfont}
+
+%% Set URW Gothic macro \goth
+\newcommand*{\goth}{\fontspec{URW Gothic}\selectfont}
+
+%% Set Minion Pro macro \minion
+\newcommand*{\minion}{\fontspec{Minion Pro}\selectfont}
+\newcommand*{\minionHead}{\fontspec{MinionPro-BoldIt}\selectfont}
+
+
+%\setmainfont
+%\setsansfont
+%\setmonofont
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Metadata Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Set Title from Yaml Metadata
+\title{$title$}
+
+%% Set subtitle if it exists in Yaml Metadata
+$if(subtitle)$
+\newcommand{\subtitle}{$subtitle$}
+$endif$
+
+%% Set author from Yaml Metadata
+\author{$for(author)$$author$$endfor$}
+
+%% Set editor from Yaml Metadata
+\def\editor{$for(contributors)$$contributors.editor$$endfor$}
+
+%% Set cover artist from Yaml Metadata
+\def\artist{$for(contributors)$$contributors.artist$$endfor$}
+
+%% Set designer from Yaml Metadata
+\def\designer{$for(contributors)$$contributors.designer$$endfor$}
+
+%% Set publisher from Yaml Metadata
+\def\publisher{$for(publisher)$$publisher$$endfor$}
+
+%% Set website from Yaml Metadata
+\def\website{$for(website)$$website$$endfor$}
+
+%% Use the year instead of the full date
+\date{$year$}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Start the document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%% Start with the frontmatter
+% These pages don't count for document page numbering
+\frontmatter
+
+% TeX 'magic' required so we can use macros/variables with @
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Create a cover page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% No headers or footers
+\pagestyle{empty}
+
+% The image
+\incgraph[documentpaper]
+[height=\paperheight]{$cover-image$} % Fit to height
+
+%% Stretch image to fit page
+%  [width=\paperwidth,height=\paperheight]{$cover-image$}
+
+% End the page
+\clearpage
+%%%%%%%%%%%%%%%%%%%%%%
+%% Create a titlepage
+%%%%%%%%%%%%%%%%%%%%%%
+% No headers/footers
+\pagestyle{empty}
+
+% Center everything
+  \begin{center}
+  
+% Write the Book Title
+    \Huge \garamondL \textbf{\textsc{\@title}} \par
+    
+% Add a vertical space
+    \vspace{0.75cm}
+    
+% Write the subtitle
+    \Large \garamondL \subtitle \par
+    
+% Add a vertical space
+    \vspace{10cm}
+    
+% Write the author name
+    \huge \goth \@author \par
+
+% Stop centering everythign
+  \end{center}
+
+% End the page
+\clearpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create a copyright page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% No headers/footers
+\pagestyle{empty}
+
+% Center everything
+  \begin{center}
+
+% Write the Book Title
+    \large \@title \par
+    
+% Write the CC logo, year, and author
+    Copyright \ccLogo \@date \ \@author \par
+    Some rights reserved. \par
+    
+% Add a vertical space
+    \vspace{0.5cm}
+
+% Write what country it was published in
+    Published in the United States by \par
+    
+% Write the publisher name
+    \publisher \par
+    
+% Write the website
+    \website \par
+    
+% Add a vertical space
+    \vspace{0.5cm}
+
+% Write the specific license name
+    This book is distributed under a Creative Commons attribution-NonCommercial-Sharealike 4.0 License. \par
+
+% Add a vertical space
+    \vspace{0.5cm}
+
+% Write the Creative Commons Icons
+    \ccbyncsa\titleformat{\section}{\normalfont\Large\bfseries}{Section \thesection,}{1em}{}
+
+% Stop centering everythign
+  \end{center}
+
+% Add a vertical space
+    \vspace{0.5cm}
+    
+% Write license text
+    \normalfont That means you are free: \par
+      \begin{itemize}
+          \item \textbf{To Share} -- copy and redistribute the material in any medium or format.
+          \item \textbf{To Adapt} -- remix, transform, and build upon the material.
+      \end{itemize}
+    The licensor cannot revoke these freedoms as long as you follow the license terms: \par
+      \begin{itemize}
+          \item \textbf{Attribution} -- You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use. \par
+          \item \textbf{NonCommercial} -- You may not use the material for commercial purposes. \par
+          \item \textbf{Share Alike} -- If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original. \par
+      \end{itemize}
+    \textbf No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+    
+% Add a vertical space
+    \vspace{1.0cm}
+    
+% Start centering again
+    \begin{center}
+    
+% Attribute the cover artist
+      $for(contributors)$$if(contributors.artist)$ Cover Artist: \artist \par$endif$$endfor$
+      
+% Attribute the editor
+      $for(contributors)$$if(contributors.editor)$ Editor: \editor \par$endif$$endfor$
+      
+% Attribute the designer (hey, that's me)
+      $for(contributors)$$if(contributors.designer)$ Design: \designer \par$endif$$endfor$
+      
+% Add a vertical space
+      \vspace{0.5cm}
+      
+% If ISBNs are defined in Yaml front matter then write them here
+      $if(isbn)$ISBN: {$isbn$} \par $endif$
+      $if(isbn-13)$ISBN-13: {$isbn-13$}\par $endif$
+      $if(epub-isbn)$ePub ISBN: {$epub-isbn$} \par $endif$
+      
+% Stop centering
+    \end{center}
+    
+% End the page
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create the chapters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This styles the header/footer for normal 'chapter' pages
+\pagestyle{fancy}
+\fancyfoot[C]{} % remove numbered footers
+\fancyhead[RO,LE]{\thepage} % add page numbers to the header
+\fancyhead[LO]{\minionHead \nouppercase \subtitle} % add subtitle to header
+\fancyhead[RE]{\minionHead \nouppercase \@title}
+\renewcommand{\headrulewidth}{0.0pt} 
+
+% This says to start the page numbering
+\mainmatter
+
+% Write the body/chapters
+\minion $body$
+
+% End the document
+\end{document} 

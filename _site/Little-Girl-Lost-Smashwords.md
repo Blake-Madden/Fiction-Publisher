@@ -9,7 +9,7 @@ lang: en-US
 date: 2012-04-14
 year: 2012
 
-cover-image: Source/_images/Little-Girl-Lost-Cover.jpg
+cover-image: Source/images/Little-Girl-Lost-Cover.jpg
 toc-title: Table of Contents
 
 publisher: Back That Elf Up
@@ -18,6 +18,8 @@ rights: This work is licensed under a Creative Commons Attribution-NonCommercial
 isbn:
 isbn-13:
 epub-isbn:
+
+dedication: Dedicated to my readers.
 
 identifier:
     - scheme: UUID
@@ -45,8 +47,7 @@ magnet:
     - image: ../Images/file0.jpg
       link: https://www.backthatelfup.com/free-books/
 ---
-# Little Girl Lost
-## A Valley of Ten Crescents Tale
+# A Valley of Ten Crescents Tale
 
 Tavera gulped as the ancient crone limped towards her, her eyes two points of shining black in her wizened face. The old woman’s hunched back loomed over her head, the shape of her body suggesting some powerful creature had bent her in unnatural ways. The little girl felt her heart beating in her chest as the wrinkled creature approached, the odor of spices and old sweat wafting from her. Tavera’s dark eyes traveled over the old woman’s small frame as the crone licked over her dried, cracked lips with a pink tongue as if the girl was a morsel and not another child up on The Block.
 
@@ -176,23 +177,16 @@ Tavera sniffled under the sheets, drawing them closer around herself as she roll
 \
 
 
-[![ ](Source/_images/TaH-free.jpg)](https://www.backthatelfup.com/free-books/)
+[![ ](Source/images/TaH-free.jpg)](https://www.backthatelfup.com/free-books/)
 
 # About the Author
 Tristan J. Tarwater is a writer of fantasy, comics and RPG bits. Her titles include The Valley of Ten Crescents series, Hen &amp; Chick, Shamsee: A Fistful of Lunars, and Reality Makes the Best Fantasy. She has also worked for both Pelgrane Press and Onyx Path.
-\
-\
+
 Born and raised in NYC, she now considers Portland, OR her home. When she's not making stuff up, she is usually reading a comic book, cooking delicious meals for her Spouse and Small Boss or petting one of her two cats. Her next RPG character will most definitely be an elf.
-\
-\
+
 You can find her online at [www.backthatelfup.com](https://www.backthatelfup.com)
-\
-\
-\
 
-
-
-### Other Works by <br /> Tristan J. Tarwater
+# Other Works by <br /> Tristan J. Tarwater
 - - - - - - - - -
 
 #### Fantasy Series
@@ -213,6 +207,7 @@ You can find her online at [www.backthatelfup.com](https://www.backthatelfup.com
 
 #### Role Playing Games
 ##### Reality Makes the Best Fantasy
+ 
 
 # License
 \

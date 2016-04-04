@@ -15,37 +15,18 @@ Jekyll allows me to create custom templates, multiple 'includes', and then outpu
 This markdown file can then be passed along to Pandoc and converted to epub/mobi/pdf.
 
 ### HOW
-- Write in `Source/_includes/book-title/chapters.md`
+- Run `new.sh` and enter the title of your book
+- Paste your manuscript in `Source/_includes/$BOOK-TITLE/chapters.md`
 - Modify content of `amazon_review.md, bio.md, and license.md` as needed.
-- Modify layouts in `Source/_layouts/book-title/` and add/remove stuff from `_includes` as needed
-- Add an optional cover to `Source/_images/`, name it Book-Title.jpg
-- Run `. bind.sh` to create your books.
+- Run `. bind.sh all` to create the following versions of your book(s):
+  - Amazon ready .mobi file
+  - Nook/Kobo/iTunes/DriveThru ready .epub file
+  - Smashwords ready .epub file
+  - Generic PDF file
+  - Createspace print-ready 5x8 PDF file
 
 Jekyll builds everything and puts it in _site
 Pandoc uses those source files and creates your books inside the Books directory.
-
-### WHAT
-```
-    Source/
-        Sample-Title.md
-        Sample-Title-Amazon.md
-        
-        _layouts/
-            Sample-Title/
-                amazon.md
-                default.md
-                
-        _includes/
-            Sample-Title1/
-                chapters.md
-                
-            Sample-Title2/
-                chapters.md
-                
-            amazon_review.md
-            bio.md
-            license.md
-```
 
 ##### Source
 `Source/Sample-Title.md`
@@ -79,13 +60,6 @@ Contains custom css and template files used by Pandoc.
 - Use the contents of the source directory as input for Pandoc.
 
 ### TODO
-Rake task to 'create book'
-    - create Source/book-title.md file
-    - create Source/_layouts/book-title/default.md | amazon.md | smashwords.md etc
-    - create Source/_includes/book-title/chapters.md
-
-Rake task to run Pandoc commands (replace makefile)
-
 Dockerize this?
     - Base image
         + Pandoc
