@@ -40,12 +40,55 @@
 \setlength{\emergencystretch}{3em}
 \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
+%%%%%%%%% PDF-X stuff, IF USING xelatex %%%%%%%%%
+%(mm size * 72)/25.4 = bp size
+\usepackage{atbegshi}
+\AtBeginShipout{% %A hook that is executed for every page (after first one)
+    \special{pdf: put @thispage
+      <<
+        /TrimBox [0 0 576 360] %put here other numbers = size of page in bp
+      >>
+    }
+}
+\special{pdf: put @thispage
+  <<
+    /TrimBox [0 0 576 360] %put here other numbers = size of page in bp
+  >>
+}
+\special{pdf:docinfo
+  <<
+    /GTS_PDFXVersion (PDF/X-1:2001)
+    /GTS_PDFXConformance (PDF/X-1a:2001)
+  >>
+}
+
+\special{pdf:put @catalog
+<<
+  /PageMode /UseNone
+  /OutputIntents [
+    <<
+      /Info (none)
+      /Type /OutputIntent
+      /S /GTS_PDFX
+      /OutputConditionIdentifier (Custom)
+      /RegistryName (http://www.color.org/)
+    >>
+  ]
+>>
+}%
+
+\usepackage{datetime} % for \pdfdate command
+
 %% URL / Hyperlink style
 \usepackage{hyperref}
 \hypersetup{unicode=true,
 $if(title-meta)$
             pdftitle={$title-meta$}, %set pdftitle metadata from Yaml front matter
 $endif$
+            pdfinfo={% Setting some more PDF/X stuff for xelatex
+                ModDate={D:\pdfdate},% PDF/X document should have a modification date
+                Trapped={False},% PDF/X document should have Trapped tag set
+            },
 $if(author-meta)$
             pdfauthor={$author-meta$}, %set pdfauthor metadata from Yaml front matter
 $endif$
@@ -61,7 +104,12 @@ $else$
             pdfborder={0 0 0}, %turn off the url border that normally gets added to urls in pdfs
 $endif$
             breaklinks=true}
+            
 \urlstyle{same}  % don't use monospace font for urls
+
+%% Export PDF as PDF/X-1a for best Createspace results
+\usepackage[X-1a]{pdfx}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
