@@ -5,7 +5,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Set document class
 \documentclass%
-[11pt] % Set default font size
+[crop=true,varwidth,border=0.50001bp,11pt]
 {book} % Set document Class
 
 %% Set page size and margins
@@ -41,18 +41,21 @@
 \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 %%%%%%%%% PDF-X stuff, IF USING xelatex %%%%%%%%%
+% Thanks to LSinev for most of this PDF X-1a stuff;
+% https://gist.github.com/LSinev/74ea05423c9208d6677d
+
 %(mm size * 72)/25.4 = bp size
 \usepackage{atbegshi}
 \AtBeginShipout{% %A hook that is executed for every page (after first one)
     \special{pdf: put @thispage
       <<
-        /TrimBox [0 0 576 360] %put here other numbers = size of page in bp
+        /TrimBox [0 0 360 576] %put here other numbers = size of page in bp
       >>
     }
 }
 \special{pdf: put @thispage
   <<
-    /TrimBox [0 0 576 360] %put here other numbers = size of page in bp
+    /TrimBox [0 0 360 576] %put here other numbers = size of page in bp
   >>
 }
 \special{pdf:docinfo
@@ -80,7 +83,12 @@
 \usepackage{datetime} % for \pdfdate command
 
 %% URL / Hyperlink style
-\usepackage{hyperref}
+\usepackage[bookmarks=false]{hyperref}
+\NoHyper
+
+
+\hypersetup{pdfstartpage={}}
+
 \hypersetup{unicode=true,
 $if(title-meta)$
             pdftitle={$title-meta$}, %set pdftitle metadata from Yaml front matter
@@ -108,7 +116,7 @@ $endif$
 \urlstyle{same}  % don't use monospace font for urls
 
 %% Export PDF as PDF/X-1a for best Createspace results
-\usepackage[X-1a]{pdfx}
+%\usepackage[X-1a]{pdfx}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

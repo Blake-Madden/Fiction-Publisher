@@ -59,7 +59,7 @@ pandoc --latex-engine=xelatex -o Books/bio.tex Source/_includes/bio.md
 # "${i%%.*}" gets the filename but ignores the extension
 for i in $(ls _site | grep pdf ); do
     mkdir -p Books/"${i%%-pdf.md}"
-    pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex -o Books/"${i%%-pdf.md}"/"${i%%-pdf.md}"-print.pdf  -A Books/bio.tex _site/$i
+    pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" -o Books/"${i%%-pdf.md}"/"${i%%-pdf.md}"-print.pdf  -A Books/bio.tex _site/$i
 done
 }
 
