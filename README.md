@@ -14,6 +14,11 @@ Jekyll allows me to create custom templates, multiple 'includes', and then outpu
 
 This markdown file can then be passed along to Pandoc and converted to epub/mobi/pdf.
 
+### REQUIREMENTS
+- Jekyll
+- Pandoc
+- LaTeX/TexLive
+
 ### HOW
 - Run `new.sh` and enter the title of your book
 - Paste your manuscript in `Source/_includes/$BOOK-TITLE/chapters.md`
