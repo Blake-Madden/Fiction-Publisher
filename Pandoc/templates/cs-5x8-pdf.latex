@@ -452,7 +452,7 @@ $endif$
 \makeatletter
 \pagestyle{fancy}
 %\renewcommand{\chaptermark}[1]{\markboth{#1}{}} % This removes the 'Chapter x' from the header
-\renewcommand{\chaptermark}[1]{\markboth {\@chapapp\ \thechapter - {#1}}{}}
+\renewcommand{\chaptermark}[1]{\markboth {\@chapapp\ \thechapter \hspace{1mm}-\hspace{1mm}{#1}}{}}
 
 \fancyfoot[C]{} % remove numbered footers
 \fancyhead[RO,LE]{\minionHead \thepage} % add page numbers to the header
