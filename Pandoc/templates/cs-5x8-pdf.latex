@@ -26,7 +26,17 @@
 %% Set no additional space between paragraphs
 \setlength{\parskip}{0pt}
 
-  
+%% Use this package to enable tables  
+\usepackage{longtable,booktabs}
+
+%% Hide the toprule
+\renewcommand{\toprule}{}
+
+%% Hide the bottomrule
+\renewcommand{\bottomrule}{}
+
+\setlength{\LTpost}{0pt}
+
 %% Set language and hyphenation rules
 \usepackage[english]{babel}
 
