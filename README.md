@@ -18,6 +18,14 @@ This markdown file can then be passed along to Pandoc and converted to epub/mobi
 - Jekyll
 - Pandoc
 - LaTeX/TexLive
+- Fonts:
+  - Adobe Garamond Pro
+  - Adobe Garamond Pro Bold
+  - URW Gothic L Book
+  - URW Gothic L Demi
+  - Minion Pro
+  - Minion Pro Bold
+  - Minion Pro BoldItalic
 
 ### HOW
 - Run `new.sh` and enter the title of your book

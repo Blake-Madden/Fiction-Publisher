@@ -102,7 +102,7 @@ Paste your manuscript here.
 EOF
 
 cat > Source/_includes/$TITLE/amazon.md << EOF
-{% include Little-Girl-Lost/chapters.md %}
+{% include $TITLE/chapters.md %}
 {% include amazon_review.md %}
 EOF
 
