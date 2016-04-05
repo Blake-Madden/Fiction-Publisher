@@ -441,9 +441,12 @@ $endif$
 % This styles the header/footer for normal 'chapter' pages
 \makeatletter
 \pagestyle{fancy}
+%\renewcommand{\chaptermark}[1]{\markboth{#1}{}} % This removes the 'Chapter x' from the header
+\renewcommand{\chaptermark}[1]{\markboth {\@chapapp\ \thechapter - {#1}}{}}
+
 \fancyfoot[C]{} % remove numbered footers
 \fancyhead[RO,LE]{\minionHead \thepage} % add page numbers to the header
-\fancyhead[LO]{\minionHead \nouppercase $subtitle$} % add subtitle to header
+\fancyhead[LO]{\minionHead \nouppercase \leftmark} % add subtitle to header
 \fancyhead[RE]{\minionHead \nouppercase \@title}
 \renewcommand{\headrulewidth}{0.0pt} 
 \makeatother
