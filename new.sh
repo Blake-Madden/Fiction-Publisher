@@ -3,7 +3,7 @@ create(){
 echo "What is the title of your book?"
 read TITLE
 
-cat > Source/$TITLE-Amazon.md << EOF
+cat > Source/$TITLE/$TITLE-Amazon.md << EOF
 ---
 layout: $TITLE/amazon
 ---
@@ -15,13 +15,13 @@ layout: $TITLE/epub
 ---
 EOF
 
-cat > Source/$TITLE-pdf.md << EOF
+cat > Source/$TITLE/$TITLE-pdf.md << EOF
 ---
 layout: $TITLE/pdf
 ---
 EOF
 
-cat > Source/$TITLE-Smashwords.md << EOF
+cat > Source/$TITLE/$TITLE-Smashwords.md << EOF
 ---
 layout: $TITLE/epub
 ---
@@ -53,7 +53,7 @@ mkdir -p Source/_includes/$TITLE
 
 cat > Source/_includes/$TITLE/chapters.md << EOF
 ---
-title:
+title: $TITLE
 subtitle:
 author:
 website:
@@ -97,7 +97,7 @@ review:
     - amazon: https://www.amazon.com/review/create-review?asin=XXXXXXX
     
 ---
-# Book Title
+# Chapter Title
 Paste your manuscript here.
 EOF
 
@@ -115,7 +115,7 @@ destroy(){
 echo "What is the title of your book?"
 read TITLE
 
-rm Source/$TITLE*
+rm Source/$TITLE/$TITLE*
 rm -rf Source/_layouts/$TITLE
 rm -rf Source/_includes/$TITLE
 }
