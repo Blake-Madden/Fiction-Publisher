@@ -31,12 +31,26 @@ This markdown file can then be passed along to Pandoc and converted to epub/mobi
 - Run `new.sh` and enter the title of your book
 - Paste your manuscript in `Source/_includes/$BOOK-TITLE/chapters.md`
 - Modify content of `amazon_review.md, bio.md, and license.md` as needed.
-- Run `. bind.sh all` to create the following versions of your book(s):
+- Run `. bind.sh all all` to create the following versions of your book(s):
   - Amazon ready .mobi file
   - Nook/Kobo/iTunes/DriveThru ready .epub file
   - Smashwords ready .epub file
   - Generic PDF file
   - Createspace print-ready 5x8 PDF file
+
+##### bind.sh
+- `. bind.sh $format $title`
+    - Build ALL formats of ALL books: `. bind.sh all all`
+    - Build epub of book titled "Example": `. bind.sh epub Example`
+    - Build all formats of book titled "Example": `. bind.sh all Example`
+    
+- Possible formats:
+    - epub
+    - amazon
+    - smashwords
+    - pdf
+    - print
+    
 
 Jekyll builds everything and puts it in _site
 Pandoc uses those source files and creates your books inside the Books directory.
