@@ -9,7 +9,7 @@ lang: en-US
 date: 2012-04-14
 year: 2012
 
-cover-image: Source/images/Little-Girl-Lost-Cover.jpg
+cover-image: Source/images/Example.jpg
 toc-title: Table of Contents
 
 publisher: Back That Elf Up

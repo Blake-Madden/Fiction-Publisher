@@ -9,7 +9,7 @@ lang: en-US
 date: 2012-04-14
 year: 2012
 
-cover-image: Source/images/Little-Girl-Lost-Cover.jpg
+cover-image: Source/images/Example.jpg
 toc-title: Table of Contents
 
 publisher: Back That Elf Up
@@ -168,3 +168,95 @@ The woman named Prisca saw the little girl’s face and pity managed to force it
 “Don’t you worry ’bout that, love,” said Prisca. She laid a hand on the little girl’s face, staring into her eyes. The eye contact made Tavera feel slightly uncomfortable but the woman held her head, the other woman sighing faintly in the background. Prisca kissed her yet again on the forehead before releasing her, letting her fall back. “You’re with us now and us brass take care of each other. Just get some rest.” The woman put a hand on her forehead before she pulled herself away, the thin woman taking her hand before leading her out. Prisca shut the door behind her so Tavera was left in the room alone.
 
 Tavera sniffled under the sheets, drawing them closer around herself as she rolled over. Brass. It could have been worse. Tavera saw them walking the streets, wearing bells at their breasts as advertisement for something Tavera didn’t quite understand. All that she knew was men were interested in it and brass sold it. They frequented the temples in the morning, peddling their invisible wares on the surrounding blocks. She figured in time she would find out what it was they were selling. For now, Tavera knew she was warm and extremely tired. Without giving heed to the bumps and noises of the house around her, the little girl closed her eyes and fell asleep.
+
+\
+\
+
+
+
+##### If you enjoyed this book please consider leaving a [review](https://www.amazon.com/review/create-review?asin=B007UIYEAW) on Amazon.
+ 
+ 
+
+# Special Offer
+\
+
+
+##### Continue reading the adventures of Tavera in Thieves at Heart.
+\
+
+
+[![ ](Source/images/TaH-free.jpg)](https://www.backthatelfup.com/free-books/)
+
+# About the Author
+Tristan J. Tarwater is a writer of fantasy, comics and RPG bits. Her titles include The Valley of Ten Crescents series, Hen &amp; Chick, Shamsee: A Fistful of Lunars, and Reality Makes the Best Fantasy. She has also worked for both Pelgrane Press and Onyx Path.
+
+Born and raised in NYC, she now considers Portland, OR her home. When she's not making stuff up, she is usually reading a comic book, cooking delicious meals for her Spouse and Small Boss or petting one of her two cats. Her next RPG character will most definitely be an elf.
+
+You can find her online at [www.backthatelfup.com](https://www.backthatelfup.com)
+
+# Other Works by <br /> Tristan J. Tarwater
+- - - - - - - - -
+
+#### Fantasy Series
+##### The Valley of Ten Crescents Series
+##### Hen &amp; Chick
+\
+
+
+#### Short Stories
+##### Botanica Blues
+\
+
+
+#### Comic Books
+##### Shamsee: A Fistful of Lunars
+\
+
+
+#### Role Playing Games
+##### Reality Makes the Best Fantasy
+ 
+
+# License
+\
+
+
+##### Copyright Tristan J. Tarwater
+##### Some rights reserved.
+\
+
+
+##### Published in the United States by
+##### Back That Elf Up
+##### [www.backthatelfup.com](https://www.backthatelfup.com)
+\
+
+
+#### This book is distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 license.
+
+\
+
+
+That means you are free:
+
+- **To Share** – to copy, distribute, and share the work.
+- **To Remix** – to adapt the work
+
+
+\
+
+
+Under the following conditions:
+
+- **Attribution** — You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).
+- **Noncommercial** — You may not use this work for commercial purposes.
+- **Share Alike** — If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
+
+
+\
+
+
+For any reuse or distribution, you must make clear to others the license terms of this work. The best way to do this is with a link to [http://creativecommons.org/licenses/by-nc-sa/3.0/](http://creativecommons.org/licenses/by-nc-sa/3.0/)
+
+ 

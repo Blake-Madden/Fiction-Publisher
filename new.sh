@@ -3,13 +3,15 @@ create(){
 echo "What is the title of your book?"
 read TITLE
 
+mkdir -p Source/$TITLE/
+
 cat > Source/$TITLE/$TITLE-Amazon.md << EOF
 ---
 layout: $TITLE/amazon
 ---
 EOF
 
-cat > Source/$TITLE-epub.md << EOF
+cat > Source/$TITLE/$TITLE-epub.md << EOF
 ---
 layout: $TITLE/epub
 ---
@@ -115,7 +117,7 @@ destroy(){
 echo "What is the title of your book?"
 read TITLE
 
-rm Source/$TITLE/$TITLE*
+rm -rf Source/$TITLE
 rm -rf Source/_layouts/$TITLE
 rm -rf Source/_includes/$TITLE
 }

@@ -1,0 +1,3 @@
+---
+layout: Example/pdf
+---

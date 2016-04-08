@@ -201,7 +201,9 @@ $endif$
     \vspace{0.75cm}
     
 % Write the subtitle
+$if(subtitle)$
     \Large \garamondL \subtitle \par
+$endif$
     
 % Add a vertical space
     \vspace{10cm}
@@ -310,9 +312,11 @@ $endif$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This styles the header/footer for normal 'chapter' pages
 \pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth {\@chapapp\ \thechapter \hspace{1mm}-\hspace{1mm}{#1}}{}}
+
 \fancyfoot[C]{} % remove numbered footers
 \fancyhead[RO,LE]{\thepage} % add page numbers to the header
-\fancyhead[LO]{\minionHead \nouppercase \subtitle} % add subtitle to header
+\fancyhead[LO]{\minionHead \nouppercase \leftmark} % add subtitle to header
 \fancyhead[RE]{\minionHead \nouppercase \@title}
 \renewcommand{\headrulewidth}{0.0pt} 
 

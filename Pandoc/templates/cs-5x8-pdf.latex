@@ -305,7 +305,9 @@ $endif$
   \vspace{1cm}
     
 % Write the subtitle
-  \Large \garamond $subtitle$ \par 
+$if(subtitle)$
+  \Large \garamond $subtitle$ \par
+$endif$
     
 % Add a vertical space
   \vspace{4cm}
