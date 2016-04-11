@@ -3,35 +3,35 @@ create(){
 echo "What is the title of your book?"
 read TITLE
 
-mkdir -p Source/$TITLE/
+mkdir -p "Source/$TITLE/"
 
-cat > Source/$TITLE/$TITLE-Amazon.md << EOF
+cat > "Source/$TITLE/$TITLE-Amazon.md" << EOF
 ---
 layout: $TITLE/amazon
 ---
 EOF
 
-cat > Source/$TITLE/$TITLE-epub.md << EOF
+cat > "Source/$TITLE/$TITLE-epub.md" << EOF
 ---
 layout: $TITLE/epub
 ---
 EOF
 
-cat > Source/$TITLE/$TITLE-pdf.md << EOF
+cat > "Source/$TITLE/$TITLE-pdf.md" << EOF
 ---
 layout: $TITLE/pdf
 ---
 EOF
 
-cat > Source/$TITLE/$TITLE-Smashwords.md << EOF
+cat > "Source/$TITLE/$TITLE-Smashwords.md" << EOF
 ---
 layout: $TITLE/epub
 ---
 EOF
 
-mkdir -p Source/_layouts/$TITLE
+mkdir -p "Source/_layouts/$TITLE"
 
-cat > Source/_layouts/$TITLE/amazon.md << EOF
+cat > "Source/_layouts/$TITLE/amazon.md" << EOF
 {% include $TITLE/amazon.md %}
 {% include magnet_tah.md %}
 {% include bio.md %}
@@ -39,7 +39,7 @@ cat > Source/_layouts/$TITLE/amazon.md << EOF
 {% include license.md %}
 EOF
 
-cat > Source/_layouts/$TITLE/epub.md << EOF
+cat > "Source/_layouts/$TITLE/epub.md" << EOF
 {% include $TITLE/chapters.md %}
 {% include magnet_tah.md %}
 {% include bio.md %}
@@ -47,13 +47,13 @@ cat > Source/_layouts/$TITLE/epub.md << EOF
 {% include license.md %}
 EOF
 
-cat > Source/_layouts/$TITLE/pdf.md << EOF
+cat > "Source/_layouts/$TITLE/pdf.md" << EOF
 {% include $TITLE/chapters.md %}
 EOF
 
-mkdir -p Source/_includes/$TITLE
+mkdir -p "Source/_includes/$TITLE"
 
-cat > Source/_includes/$TITLE/chapters.md << EOF
+cat > "Source/_includes/$TITLE/chapters.md" << EOF
 ---
 title: $TITLE
 subtitle:
@@ -103,7 +103,7 @@ review:
 Paste your manuscript here.
 EOF
 
-cat > Source/_includes/$TITLE/amazon.md << EOF
+cat > "Source/_includes/$TITLE/amazon.md" << EOF
 {% include $TITLE/chapters.md %}
 {% include amazon_review.md %}
 EOF
@@ -117,9 +117,9 @@ destroy(){
 echo "What is the title of your book?"
 read TITLE
 
-rm -rf Source/$TITLE
-rm -rf Source/_layouts/$TITLE
-rm -rf Source/_includes/$TITLE
+rm -rf "Source/$TITLE"
+rm -rf "Source/_layouts/$TITLE"
+rm -rf "Source/_includes/$TITLE"
 }
 
 usage(){
