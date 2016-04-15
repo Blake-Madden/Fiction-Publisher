@@ -147,7 +147,7 @@ $endif$
 {25pt}%bottom margin
 
 % This tells it to style the titleformat for chapters
-\titleformat{\chapter}[display]{\garamondL}{\Large Chapter \thechapter \normalfont}{0.5mm}{\small}
+\titleformat{\chapter}[display]{\bfseries\titlefont}{\Large Chapter \thechapter \normalfont}{0.5mm}{\small}
 
 %%%%%%%%%%%%%%%%%%
 %% This part says to style the titles for "chapters"
@@ -205,8 +205,8 @@ $endif$
 %% Set Main Fonts
 \setmainfont[
   Ligatures=TeX,
-  ItalicFont={Minion Pro Italic},
-]{Minion Pro}
+  ItalicFont={Linux Libertine O:style=Italic},
+]{Linux Libertine O}
 
 %\setmainfont[
 %  Ligatures=TeX,
@@ -224,16 +224,34 @@ $endif$
 \usepackage{ccicons}
 
 %% Set Adobe Garamond Pro Bold macro \garmondL
-\newcommand*{\garamondL}{\fontspec[Scale=2.0]{Adobe Garamond Pro Bold}\selectfont}
-\newcommand*{\garamond}{\fontspec{Adobe Garamond Pro}\selectfont}
-
+%\newcommand*{\garamondL}{\fontspec[Scale=2.0]{Adobe Garamond Pro Bold}\selectfont}
+%\newcommand*{\garamond}{\fontspec{Adobe Garamond Pro}\selectfont}
 
 %% Set URW Gothic macro \goth
-\newcommand*{\goth}{\fontspec{URW Gothic L}\selectfont}
+% This command uses locally installed OTF/TTF Fonts
+%\newcommand*{\goth}{\fontspec{URW Gothic L}\selectfont}
+
+% These commands use free TeX fonts from CTAN that are nearly identical
+\usepackage{tgadventor}
+\usepackage[T1]{fontenc}
+\newfontfamily\sansfont{TeX Gyre Adventor}
+
 
 %% Set Minion Pro macro \minion
-\newcommand*{\minion}{\fontspec{Minion Pro}\selectfont}
-\newcommand*{\minionHead}{\fontspec{MinionPro-BoldIt}\selectfont}
+% This command uses locally installed OTF/TTF Fonts
+%\newcommand*{\minion}{\fontspec{Minion Pro}\selectfont}
+%\newcommand*{\minionHead}{\fontspec{MinionPro-BoldIt}\selectfont}
+
+% These commands use free TeX fonts from CTAN that are nearly identical
+%\usepackage{gentium}
+%\usepackage[T1]{fontenc}
+%\newfontfamily\minion{Gentium Book Basic}
+
+\usepackage{libertine}
+\usepackage[T1]{fontenc}
+\newfontfamily\primaryfont[Ligatures=TeX, Numbers=OldStyle]{Linux Libertine O}
+\newfontfamily\titlefont[Scale=1.75, Ligatures=TeX]{Linux Libertine O}
+
 
 %\setmainfont
 %\renewcommand{\sfdefault}{URW Gothic}
@@ -299,21 +317,21 @@ $endif$
   \vspace*{3cm}
   
 % Write the Book Title
-  \makeatletter \Huge \garamondL \textbf{\textsc{\@title}} \par \makeatother    
+  \makeatletter \Huge \bfseries \titlefont \textbf{\textsc{\@title}} \par \makeatother    
 
 % Add a vertical space
   \vspace{1cm}
     
 % Write the subtitle
 $if(subtitle)$
-  \Large \garamond $subtitle$ \par
+  \Large \primaryfont $subtitle$ \par
 $endif$
     
 % Add a vertical space
   \vspace{4cm}
     
 % Write the author name
-  \Large \goth  \makeatletter \MakeUppercase\@author \makeatother \par
+  \Large \normalfont \sansfont  \makeatletter \MakeUppercase\@author \makeatother \par
 
 % Stop centering everythign
   \end{center}
@@ -332,8 +350,8 @@ $endif$
 % Center everything
   \begin{center} 
 
-% Use URW Gothic font
-  \goth
+% Use Sans font
+  \sansfont
   
 % Write the Book Titlecopyright page
   \makeatletter  \small \@title \par \makeatother
@@ -371,7 +389,7 @@ $endif$
        
 % Write license text
    \scriptsize
-   \noindent \goth
+   \noindent \sansfont
     That means you are free:
       \begin{itemize}
         \setlength{\itemsep}{0pt}
@@ -457,9 +475,9 @@ $endif$
 \renewcommand{\chaptermark}[1]{\markboth {\@chapapp\ \thechapter \hspace{1mm}-\hspace{1mm}{#1}}{}}
 
 \fancyfoot[C]{} % remove numbered footers
-\fancyhead[RO,LE]{\minionHead \thepage} % add page numbers to the header
-\fancyhead[LO]{\minionHead \nouppercase \leftmark} % add subtitle to header
-\fancyhead[RE]{\minionHead \nouppercase \@title}
+\fancyhead[RO,LE]{\bfseries\itshape\primaryfont \thepage} % add page numbers to the header
+\fancyhead[LO]{\bfseries\itshape\primaryfont \nouppercase \leftmark} % add subtitle to header
+\fancyhead[RE]{\bfseries\itshape\primaryfont \nouppercase \@title}
 \renewcommand{\headrulewidth}{0.0pt} 
 \makeatother
 
@@ -467,7 +485,7 @@ $endif$
 \mainmatter
 
 % Write the body/chapters
-\minion \normalsize $body$
+\primaryfont \normalsize $body$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -495,7 +513,7 @@ $endif$
 {25pt}%bottom
 
 % This designs the page title
-\titleformat{\section}[display]{\garamondL}{}{0.5mm}{\centering \Large} % Don't say 'chapter X'
+\titleformat{\section}[display]{\bfseries\titlefont}{}{0.5mm}{\centering \Large} % Don't say 'chapter X'
 
 % Don't indent new paragraphs
 \setlength{\parindent}{0mm}

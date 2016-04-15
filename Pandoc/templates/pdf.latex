@@ -2,20 +2,19 @@
 %%%%%% Base Document Settings
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass%
-[oneside,12pt] % Set default font size
+[12pt] % Set default font size
 {book} % Set document Class
 
 %% Set page size and margins
 \usepackage{geometry}
   \geometry{
-  letterpaper,         %paper size
-  total={6in, 8in},    %trim size
-  top=2in,
-  bottom=1.5in,
-  inner=1.5in,
-  outer=1.5in,
-%  textwidth=
-%  textheight=
+  paperheight=203.2mm, %actual height measurement of the page
+  paperwidth=127mm, %actual width measurement of the page
+  total={90.54mm, 127mm}, % widht/height of the "text box"/text area on the page
+  top=22.352mm, % top margin
+  bottom=19.177mm, %bottom margin
+  inner=19.177mm, %inner/gutter margin
+  outer=19.177mm, %outer margin
   }
   
 %% Use this package to enable tables  
@@ -40,8 +39,8 @@
 \usepackage[all,defaultlines=2]{nowidow}
 
 %% Prevent overfull lines
-%\setlength{\emergencystretch}{3em}
-%\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setlength{\emergencystretch}{3em}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%% Title Settings
@@ -52,14 +51,14 @@
 % Turn off subsection numbering for titles
 \renewcommand{\thesection}{}
 
-% Style the chapter title that appears on the first page of each chapter
-\titleformat{\chapter}[display]{\garamondL}{\huge Chapter \thechapter \normalfont}{0.5ex}{}[]
-
-% Add spacing for the chapter title that appears on the first page of each chapter
+%% Style the chapter title that appears on the first page of each chapter
 \titlespacing*{\chapter}
-{0pt}%left
-{200pt}%top
-{40pt}%bottom
+{0pt}%left margin
+{150pt}%top margin
+{25pt}%bottom margin
+
+% This tells it to style the titleformat for chapters
+\titleformat{\chapter}[display]{\bfseries\titlefont}{\Large Chapter \thechapter \normalfont}{0.5mm}{\small}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Headers & Footers
@@ -67,11 +66,20 @@
 %% Needed for headers and footers
 \usepackage{fancyhdr}
 
-% Remove header/footer from the first page of every chapter
+%% Prevent headers from appearing on empty pages
+\usepackage{emptypage}
+
+%% Remove header/footer from the first page of every chapter
 \fancypagestyle{plain}{ 
 \fancyhf{} %remove/clear header/footer content
 \renewcommand{\headrulewidth}{0.0pt} %remove black line/"rule" from header
 }
+
+%% Set the header height in: in, mm, cm, pt
+\setlength{\headheight}{.35in}
+
+%% Set the space between header and text
+\setlength{\headsep}{.25in}
 
 %% Set the header height in: in, mm, cm, pt
 %\headheight=in
@@ -91,8 +99,8 @@
 %% Set Main Fonts
 \setmainfont[
   Ligatures=TeX,
-  ItalicFont={Minion Pro Italic},
-]{Minion Pro}
+  ItalicFont={Linux Libertine O:style=Italic},
+]{Linux Libertine O}
 
 %\setmainfont[
 %  Ligatures=TeX,
@@ -109,17 +117,25 @@
 
 %% Provides Creative Commons Icons
 \usepackage{ccicons}
+\usepackage{tgadventor}
+\usepackage[T1]{fontenc}
+\newfontfamily\sansfont{TeX Gyre Adventor}
 
-%% Set Adobe Garamond Pro Bold macro \garmondL
-\newcommand*{\garamondL}{\fontspec[Scale=2.0]{Adobe Garamond Pro Bold}\selectfont}
 
-%% Set URW Gothic macro \goth
-\newcommand*{\goth}{\fontspec{URW Gothic}\selectfont}
+%% Set Minion Pro macro \primaryfont
+% This command uses locally installed OTF/TTF Fonts
+%\newcommand*{\primaryfont}{\fontspec{Minion Pro}\selectfont}
+%\newcommand*{\primaryfontHead}{\fontspec{MinionPro-BoldIt}\selectfont}
 
-%% Set Minion Pro macro \minion
-\newcommand*{\minion}{\fontspec{Minion Pro}\selectfont}
-\newcommand*{\minionHead}{\fontspec{MinionPro-BoldIt}\selectfont}
+% These commands use free TeX fonts from CTAN that are nearly identical
+%\usepackage{gentium}
+%\usepackage[T1]{fontenc}
+%\newfontfamily\primaryfont{Gentium Book Basic}
 
+\usepackage{libertine}
+\usepackage[T1]{fontenc}
+\newfontfamily\primaryfont[Ligatures=TeX, Numbers=OldStyle]{Linux Libertine O}
+\newfontfamily\titlefont[Scale=1.75, Ligatures=TeX]{Linux Libertine O}
 
 %\setmainfont
 %\setsansfont
@@ -190,26 +206,28 @@ $endif$
 %%%%%%%%%%%%%%%%%%%%%%
 % No headers/footers
 \pagestyle{empty}
-
 % Center everything
   \begin{center}
+
+% Add a vertical space
+  \vspace*{3cm}
   
 % Write the Book Title
-    \Huge \garamondL \textbf{\textsc{\@title}} \par
-    
+  \makeatletter \Huge \bfseries \titlefont \textbf{\textsc{\@title}} \par \makeatother    
+
 % Add a vertical space
-    \vspace{0.75cm}
+  \vspace{1cm}
     
 % Write the subtitle
 $if(subtitle)$
-    \Large \garamondL \subtitle \par
+  \Large \primaryfont $subtitle$ \par
 $endif$
     
 % Add a vertical space
-    \vspace{10cm}
+  \vspace{4cm}
     
 % Write the author name
-    \huge \goth \@author \par
+  \Large \normalfont \sansfont  \makeatletter \MakeUppercase\@author \makeatother \par
 
 % Stop centering everythign
   \end{center}
@@ -225,17 +243,20 @@ $endif$
 \pagestyle{empty}
 
 % Center everything
-  \begin{center}
+  \begin{center} 
 
-% Write the Book Title
-    \large \@title \par
+% Use Sans font
+  \sansfont
+  
+% Write the Book Titlecopyright page
+  \makeatletter  \small \@title \par \makeatother
     
 % Write the CC logo, year, and author
-    Copyright \ccLogo \@date \ \@author \par
+    Copyright \ccLogo\ \makeatletter \@date \ \@author \makeatother \par
     Some rights reserved. \par
     
 % Add a vertical space
-    \vspace{0.5cm}
+    \vspace{0.4cm}
 
 % Write what country it was published in
     Published in the United States by \par
@@ -247,31 +268,36 @@ $endif$
     \website \par
     
 % Add a vertical space
-    \vspace{0.5cm}
+    \vspace{0.4cm}
 
 % Write the specific license name
     This book is distributed under a Creative Commons attribution-NonCommercial-Sharealike 4.0 License. \par
 
 % Add a vertical space
-    \vspace{0.5cm}
+    \vspace{0.4cm}
 
 % Write the Creative Commons Icons
-    \ccbyncsa\titleformat{\section}{\normalfont\Large\bfseries}{Section \thesection,}{1em}{}
-
+    \ccbyncsa
+    
 % Stop centering everythign
   \end{center}
-
-% Add a vertical space
-    \vspace{0.5cm}
-    
+       
 % Write license text
-    \normalfont That means you are free: \par
+   \scriptsize
+   \noindent \sansfont
+    That means you are free:
       \begin{itemize}
+        \setlength{\itemsep}{0pt}
+        \setlength{\parskip}{0pt}
+        \setlength{\parsep}{0pt} 
           \item \textbf{To Share} -- copy and redistribute the material in any medium or format.
-          \item \textbf{To Adapt} -- remix, transform, and build upon the material.
+         \item \textbf{To Adapt} -- remix, transform, and build upon the material.
       \end{itemize}
     The licensor cannot revoke these freedoms as long as you follow the license terms: \par
       \begin{itemize}
+        \setlength{\itemsep}{0pt}
+        \setlength{\parskip}{0pt}
+        \setlength{\parsep}{0pt}
           \item \textbf{Attribution} -- You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use. \par
           \item \textbf{NonCommercial} -- You may not use the material for commercial purposes. \par
           \item \textbf{Share Alike} -- If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original. \par
@@ -279,11 +305,11 @@ $endif$
     \textbf No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
     
 % Add a vertical space
-    \vspace{1.0cm}
+    \vspace{.6cm}
     
 % Start centering again
     \begin{center}
-    
+
 % Attribute the cover artist
       $for(contributors)$$if(contributors.artist)$ Cover Artist: \artist \par$endif$$endfor$
       
@@ -292,7 +318,7 @@ $endif$
       
 % Attribute the designer (hey, that's me)
       $for(contributors)$$if(contributors.designer)$ Design: \designer \par$endif$$endfor$
-      
+   
 % Add a vertical space
       \vspace{0.5cm}
       
@@ -305,7 +331,7 @@ $endif$
     \end{center}
     
 % End the page
-\clearpage
+\clearpage \normalsize
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Create the chapters
@@ -315,16 +341,16 @@ $endif$
 \renewcommand{\chaptermark}[1]{\markboth {\@chapapp\ \thechapter \hspace{1mm}-\hspace{1mm}{#1}}{}}
 
 \fancyfoot[C]{} % remove numbered footers
-\fancyhead[RO,LE]{\thepage} % add page numbers to the header
-\fancyhead[LO]{\minionHead \nouppercase \leftmark} % add subtitle to header
-\fancyhead[RE]{\minionHead \nouppercase \@title}
+\fancyhead[RO,LE]{\bfseries\itshape \thepage} % add page numbers to the header
+\fancyhead[LO]{\bfseries\itshape \primaryfont \nouppercase \leftmark} % add subtitle to header
+\fancyhead[RE]{\bfseries\itshape \primaryfont \nouppercase \@title}
 \renewcommand{\headrulewidth}{0.0pt} 
 
 % This says to start the page numbering
 \mainmatter
 
 % Write the body/chapters
-\minion $body$
+\primaryfont $body$
 
 % End the document
 \end{document} 
