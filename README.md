@@ -1,6 +1,15 @@
-## Open-Publisher
-Open publisher is really just a couple of bash scripts that wrap around Jekyll, Pandoc, KindleGen, and LaTeX, along with some custom Pandoc templates.
+## DOCKER INSTRUCTIONS
+### Create docker container
+Git clone open-publisher repo
 
-Write your manuscript in markdown, run a script, and receive some beautifully formatted ePub, Mobi, and print-ready PDF books.
+`docker build -t open-publisher .`
 
-Full documentation website at [http://chrisanthropic.github.io/Open-Publisher-Documentation/](http://chrisanthropic.github.io/Open-Publisher-Documentation/)
+### Test run with example book
+#### Create example book
+This will move the contents of 'skel' to 'Source'
+`docker run -v $PWD/input:/Open-Publisher/Source -it open-publisher rake skel`
+
+### Bind example book
+This will create two new directories (input & output) which are mounted inside the Docker container. input maps to Source and output maps to Books. Running this command will create all versions of the example book which you can see in output.
+
+`docker run -v $PWD/input:/Open-Publisher/Source -v $PWD/output:/Open-Publisher/Books -it open-publisher rake all[all]`
