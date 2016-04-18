@@ -2,6 +2,14 @@ require 'fileutils'
 require 'rake'
 
 ################
+#     SKEL     #
+################
+task :skel do
+desc "Populate Source with Example"
+  FileUtils.cp_r "./Skel/.", "./Source"
+end
+
+################
 #    Create    #
 ################ 
 task :create do
