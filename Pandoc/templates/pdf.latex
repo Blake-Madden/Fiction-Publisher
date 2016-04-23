@@ -352,5 +352,41 @@ $endif$
 % Write the body/chapters
 \primaryfont $body$
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create the bio page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% add blank even page before backmatter starts
+\newcommand*\cleartoleftpage{%
+  \clearpage
+  \ifodd\value{page}\hbox{}\thispagestyle{empty}\newpage\fi
+}
+
+\cleartoleftpage
+
+% Label as backmatter
+\backmatter
+
+% No headers/footers
+\pagestyle{empty}
+
+% Add space before/after the page title
+\titlespacing*{\section}
+{0pt}%left
+{150pt}%top
+{25pt}%bottom
+
+% This designs the page title
+\titleformat{\section}[display]{\bfseries\titlefont}{}{0.5mm}{\centering \Large} % Don't say 'chapter X'
+
+% Don't indent new paragraphs
+\setlength{\parindent}{0mm}
+
+% Add space between paragraphs
+\parskip = \baselineskip
+
+% Include the file(s) we specified via the pandoc command, in this case our bio.md
+$include-after$
 % End the document
 \end{document} 
