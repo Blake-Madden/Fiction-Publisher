@@ -261,11 +261,11 @@ system "pandoc --latex-engine=xelatex -o Books/bio.tex Source/_includes/bio.md"
     files = fullfiles.gsub!(/\b-pdf\b/, "")
     files.each do |file|
       FileUtils.mkdir_p "Books/#{file}"
-      system "pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver='xdvipdfmx -V 3 -z 0' -f markdown+backtick_code_blocks -o Books/#{file}/#{file}-print.pdf _site/*/#{file}-pdf.md"
+      system "pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver='xdvipdfmx -V 3 -z 0' -f markdown+backtick_code_blocks -o Books/#{file}/#{file}-print.pdf -A Books/bio.tex _site/*/#{file}-pdf.md"
     end            
   else 
       FileUtils.mkdir_p "Books/#{args.book}"
-      system "pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver='xdvipdfmx -V 3 -z 0' -f markdown+backtick_code_blocks -o Books/#{args.book}/#{args.book}-print.pdf _site/*/#{args.book}-pdf.md"
+      system "pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver='xdvipdfmx -V 3 -z 0' -f markdown+backtick_code_blocks -o Books/#{args.book}/#{args.book}-print.pdf -A Books/bio.tex _site/*/#{args.book}-pdf.md"
   end
 end
 
@@ -284,11 +284,11 @@ system "pandoc --latex-engine=xelatex -o Books/bio.tex Source/_includes/bio.md"
     files = fullfiles.gsub!(/\b-pdf\b/, "")
     files.each do |file|
       FileUtils.mkdir_p "Books/#{file}"
-      system "pandoc --template=Pandoc/templates/pdf.latex --latex-engine=xelatex -f markdown+backtick_code_blocks -o Books/#{file}/#{file}-ebook.pdf _site/*/#{file}-pdf.md"
+      system "pandoc --template=Pandoc/templates/pdf.latex --latex-engine=xelatex -f markdown+backtick_code_blocks -o Books/#{file}/#{file}-ebook.pdf -A Books/bio.tex _site/*/#{file}-pdf.md"
     end            
   else 
       FileUtils.mkdir_p "Books/#{args.book}"
-      system "pandoc --template=Pandoc/templates/pdf.latex --latex-engine=xelatex -f markdown+backtick_code_blocks -o Books/#{args.book}/#{args.book}-ebook.pdf _site/*/#{args.book}-pdf.md"
+      system "pandoc --template=Pandoc/templates/pdf.latex --latex-engine=xelatex -f markdown+backtick_code_blocks -o Books/#{args.book}/#{args.book}-ebook.pdf -A Books/bio.tex _site/*/#{args.book}-pdf.md"
   end
 end
 
