@@ -206,6 +206,8 @@ $endif$
 \setmainfont[
   Ligatures=TeX,
   ItalicFont={Linux Libertine O:style=Italic},
+  BoldFont={Linux Libertine O:style=Bold},
+  BoldItalicFont={Linux Libertine O:style=Bold Italic},
 ]{Linux Libertine O}
 
 %\setmainfont[
@@ -251,7 +253,6 @@ $endif$
 \usepackage[T1]{fontenc}
 \newfontfamily\primaryfont[Ligatures=TeX, Numbers=OldStyle]{Linux Libertine O}
 \newfontfamily\titlefont[Scale=1.75, Ligatures=TeX]{Linux Libertine O}
-
 
 %\setmainfont
 %\renewcommand{\sfdefault}{URW Gothic}
@@ -475,9 +476,9 @@ $endif$
 \renewcommand{\chaptermark}[1]{\markboth {\@chapapp\ \thechapter \hspace{1mm}-\hspace{1mm}{#1}}{}}
 
 \fancyfoot[C]{} % remove numbered footers
-\fancyhead[RO,LE]{\bfseries\itshape\primaryfont \thepage} % add page numbers to the header
-\fancyhead[LO]{\bfseries\itshape\primaryfont \nouppercase \leftmark} % add subtitle to header
-\fancyhead[RE]{\bfseries\itshape\primaryfont \nouppercase \@title}
+\fancyhead[RO,LE]{\primaryfont\bfseries \thepage} % add page numbers to the header
+\fancyhead[LO]{\primaryfont\bfseries\itshape \nouppercase \leftmark} % add subtitle to header
+\fancyhead[RE]{\primaryfont\bfseries\itshape \nouppercase \@title}
 \renewcommand{\headrulewidth}{0.0pt} 
 \makeatother
 
