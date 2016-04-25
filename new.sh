@@ -1,4 +1,8 @@
 #!/bin/bash
+skel(){
+cp -R Skel Source/
+}
+
 create(){
 echo "What is the title of your book?"
 read TITLE
