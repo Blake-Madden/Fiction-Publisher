@@ -112,6 +112,15 @@ cat > "Source/_includes/$TITLE/amazon.md" << EOF
 {% include amazon_review.md %}
 EOF
 
+cat > "Source/_includes/$TITLE/amazon_review.md" << EOF
+\\
+\\
+
+
+
+##### If you enjoyed this book please consider leaving a [review](https://www.amazon.com/review/create-review?asin=XXXXXXXXXX) on Amazon.
+EOF
+
 echo ""
 echo "Paste your manuscript into Source/_includes/$TITLE/chapters.md and then run bind.sh all"
 echo ""

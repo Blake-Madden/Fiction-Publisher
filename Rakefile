@@ -130,10 +130,17 @@ desc "Building our scaffolding; putting expected files in their place."
       create.puts "Paste your manuscript here."
     end
     
-  FileUtils.mkdir_p "Source/_includes/#{title}/amazon.md"
+  filename = "Source/_includes/#{title}/amazon.md"
     open(filename, 'w') do |create|
       create.puts "{% include #{title}/chapters.md %}"
-      create.puts "{% include amazon_review.md %}"
+      create.puts "{% include #{title}/amazon_review.md %}"
+    end
+    
+  filename = "Source/_includes/#{title}/amazon_review.md"
+    open(filename, 'w') do |create|
+      create.puts "\\"
+      create.puts "\\"
+      create.puts "##### If you enjoyed this book please consider leaving a [review](https://www.amazon.com/review/create-review?asin=XXXXXXXXXX) on Amazon."
     end
   
   puts ""  
