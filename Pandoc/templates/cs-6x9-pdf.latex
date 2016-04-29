@@ -1,0 +1,530 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% BASE DOCUMENT SETTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Set document class
+\documentclass%
+[crop=true,varwidth,border=0.50001bp,11pt]
+{book} % Set document Class
+
+%% Set page size and margins
+\usepackage{geometry}
+  \geometry{
+  paperheight=228.6mm, %actual height measurement of the page
+  paperwidth=152.4mm, %actual width measurement of the page
+  total={108.65mm, 142.53mm}, % widht/height of the "text box"/text area on the page
+  top=30.0mm, % top margin
+  bottom=27.0mm, %bottom margin
+  inner=22.0mm, %inner/gutter margin
+  outer=19.0mm, %outer margin
+  }
+
+%% Set lineheight / distance between lines
+\setlength{\baselineskip}{16pt}
+
+%% Set no additional space between paragraphs
+\setlength{\parskip}{0pt}
+
+%% Use this package to enable tables  
+\usepackage{longtable,booktabs}
+
+%% Hide the toprule
+\renewcommand{\toprule}{}
+
+%% Hide the bottomrule
+\renewcommand{\bottomrule}{}
+
+\setlength{\LTpost}{0pt}
+
+%% Set language and hyphenation rules
+\usepackage[english]{babel}
+
+%% Set encoding
+%\usepackage[utf8]{inputenc}
+
+%% Enable widow/orphan control
+\usepackage[all,defaultlines=3]{nowidow}
+
+%% Prevent lines from spilling over
+\setlength{\emergencystretch}{3em}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+%%%%%%%%% PDF-X stuff, IF USING xelatex %%%%%%%%%
+% Thanks to LSinev for most of this PDF X-1a stuff;
+% https://gist.github.com/LSinev/74ea05423c9208d6677d
+
+%(mm size * 72)/25.4 = bp size
+\usepackage{atbegshi}
+\AtBeginShipout{% %A hook that is executed for every page (after first one)
+    \special{pdf: put @thispage
+      <<
+        /TrimBox [0 0 360 576] %put here other numbers = size of page in bp
+      >>
+    }
+}
+\special{pdf: put @thispage
+  <<
+    /TrimBox [0 0 360 576] %put here other numbers = size of page in bp
+  >>
+}
+\special{pdf:docinfo
+  <<
+    /GTS_PDFXVersion (PDF/X-1:2001)
+    /GTS_PDFXConformance (PDF/X-1a:2001)
+  >>
+}
+
+\special{pdf:put @catalog
+<<
+  /PageMode /UseNone
+  /OutputIntents [
+    <<
+      /Info (none)
+      /Type /OutputIntent
+      /S /GTS_PDFX
+      /OutputConditionIdentifier (Custom)
+      /RegistryName (http://www.color.org/)
+    >>
+  ]
+>>
+}%
+
+\usepackage{datetime} % for \pdfdate command
+
+%% URL / Hyperlink style
+\usepackage[bookmarks=false]{hyperref}
+\NoHyper
+
+
+\hypersetup{pdfstartpage={}}
+
+\hypersetup{unicode=true,
+$if(title-meta)$
+            pdftitle={$title-meta$}, %set pdftitle metadata from Yaml front matter
+$endif$
+            pdfinfo={% Setting some more PDF/X stuff for xelatex
+                ModDate={D:\pdfdate},% PDF/X document should have a modification date
+                Trapped={False},% PDF/X document should have Trapped tag set
+            },
+$if(author-meta)$
+            pdfauthor={$author-meta$}, %set pdfauthor metadata from Yaml front matter
+$endif$
+$if(keywords)$
+            pdfkeywords={$for(keywords)$$keywords$$sep$; $endfor$}, %set pdfkeywords metadata from Yaml front matter
+$endif$
+$if(colorlinks)$
+            colorlinks=true,
+            linkcolor=$if(linkcolor)$$linkcolor$$else$Maroon$endif$,
+            citecolor=$if(citecolor)$$citecolor$$else$Blue$endif$,
+            urlcolor=$if(urlcolor)$$urlcolor$$else$Blue$endif$,
+$else$
+            pdfborder={0 0 0}, %turn off the url border that normally gets added to urls in pdfs
+$endif$
+            breaklinks=true}
+            
+\urlstyle{same}  % don't use monospace font for urls
+
+%% Export PDF as PDF/X-1a for best Createspace results
+%\usepackage[X-1a]{pdfx}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% TITLE SETTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Needed for styling chapter title headings
+\usepackage{titlesec}
+
+% Turn off subsection numbering for titles
+\renewcommand{\thesection}{}
+
+%% Style the chapter title that appears on the first page of each chapter
+\titlespacing*{\chapter}
+{0pt}%left margin
+{150pt}%top margin
+{25pt}%bottom margin
+
+% This tells it to style the titleformat for chapters
+\titleformat{\chapter}[display]{\bfseries\titlefont}{\Large Chapter \thechapter \normalfont}{0.5mm}{\small}
+
+%%%%%%%%%%%%%%%%%%
+%% This part says to style the titles for "chapters"
+% \titleformat{\chapter}[display]
+
+%% Use this font
+%{\garamondL}
+
+%% This styles the "Chapter 1" part
+%{\Large Chapter \thechapter \normalfont}
+
+%% This is the spacing between the "Chapter 1" and the actual chapter title
+%{0.5ex}
+
+%% This is the size of the chapter title
+%{\small}%
+
+% Add spacing for the chapter title that appears on the first page of each chapter
+%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% HEADERS AND FOOTERS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Needed for headers and footers
+\usepackage{fancyhdr}
+
+%% Prevent headers from appearing on empty pages
+\usepackage{emptypage}
+
+%% Remove header/footer from the first page of every chapter
+\fancypagestyle{plain}{ 
+\fancyhf{} %remove/clear header/footer content
+\renewcommand{\headrulewidth}{0.0pt} %remove black line/"rule" from header
+}
+
+%% Set the header height in: in, mm, cm, pt
+\setlength{\headheight}{.35in}
+
+%% Set the space between header and text
+\setlength{\headsep}{.25in}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% FONTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Use TrueType system fonts
+\usepackage{fontspec}
+
+%% Used to set some things to all caps
+\usepackage{textcase}
+
+%% Set Main Fonts
+\setmainfont[
+  Ligatures=TeX,
+  ItalicFont={Linux Libertine O:style=Italic},
+  BoldFont={Linux Libertine O:style=Bold},
+  BoldItalicFont={Linux Libertine O:style=Bold Italic},
+]{Linux Libertine O}
+
+%\setmainfont[
+%  Ligatures=TeX,
+%  BoldFont={Aboriginal Serif Bold},
+%  ItalicFont={Aboriginal Serif Italic},
+%  BoldItalicFont={Aboriginal Serif Bold Italic},
+%  SmallCapsFont={TeX Gyre Termes},
+%  SmallCapsFeatures={Letters=SmallCaps},
+%]{Minion Pro}
+
+%% Make our quotes curly
+\defaultfontfeatures{Mapping=tex-text}
+
+%% Provides Creative Commons Icons
+\usepackage{ccicons}
+
+%% Set Adobe Garamond Pro Bold macro \garmondL
+%\newcommand*{\garamondL}{\fontspec[Scale=2.0]{Adobe Garamond Pro Bold}\selectfont}
+%\newcommand*{\garamond}{\fontspec{Adobe Garamond Pro}\selectfont}
+
+%% Set URW Gothic macro \goth
+% This command uses locally installed OTF/TTF Fonts
+%\newcommand*{\goth}{\fontspec{URW Gothic L}\selectfont}
+
+% These commands use free TeX fonts from CTAN that are nearly identical
+\usepackage{tgadventor}
+\usepackage[T1]{fontenc}
+\newfontfamily\sansfont{TeX Gyre Adventor}
+
+
+%% Set Minion Pro macro \minion
+% This command uses locally installed OTF/TTF Fonts
+%\newcommand*{\minion}{\fontspec{Minion Pro}\selectfont}
+%\newcommand*{\minionHead}{\fontspec{MinionPro-BoldIt}\selectfont}
+
+% These commands use free TeX fonts from CTAN that are nearly identical
+%\usepackage{gentium}
+%\usepackage[T1]{fontenc}
+%\newfontfamily\minion{Gentium Book Basic}
+
+\usepackage{libertine}
+\usepackage[T1]{fontenc}
+\newfontfamily\primaryfont[Ligatures=TeX, Numbers=OldStyle]{Linux Libertine O}
+\newfontfamily\titlefont[Scale=1.75, Ligatures=TeX]{Linux Libertine O}
+
+%\setmainfont
+%\renewcommand{\sfdefault}{URW Gothic}
+%\setmonofont
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% METADATA and MACROS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Set Title from Yaml Metadata
+\title{$title$}
+
+%% Set subtitle if it exists in Yaml Metadata
+$if(subtitle)$
+\newcommand{\subtitle}{$subtitle$}
+$endif$
+
+%% Set author from Yaml Metadata
+\author{$for(author)$$author$$endfor$}
+
+%% Set editor from Yaml Metadata
+\def\editor{$for(contributors)$$contributors.editor$$endfor$}
+
+%% Set cover artist from Yaml Metadata
+\def\artist{$for(contributors)$$contributors.artist$$endfor$}
+
+%% Set designer from Yaml Metadata
+\def\designer{$for(contributors)$$contributors.designer$$endfor$}
+
+%% Set publisher from Yaml Metadata
+\def\publisher{$for(publisher)$$publisher$$endfor$}
+
+%% Set website from Yaml Metadata
+\def\website{$for(website)$$website$$endfor$}
+
+%% Use the year instead of the full date
+\date{$year$}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% START THE DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%% Start with the frontmatter
+% These pages don't count for document page numbering
+\frontmatter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create a titlepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% No headers/footers
+\pagestyle{empty}
+% Center everything
+  \begin{center}
+
+% Add a vertical space
+  \vspace*{3cm}
+  
+% Write the Book Title
+  \makeatletter \Huge \bfseries \titlefont \textbf{\textsc{\@title}} \par \makeatother    
+
+% Add a vertical space
+  \vspace{1cm}
+    
+% Write the subtitle
+$if(subtitle)$
+  \Large \primaryfont $subtitle$ \par
+$endif$
+    
+% Add a vertical space
+  \vspace{4cm}
+    
+% Write the author name
+  \Large \normalfont \sansfont  \makeatletter \MakeUppercase\@author \makeatother \par
+
+% Stop centering everythign
+  \end{center}
+
+% End the page
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create a copyright page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% No headers/footers
+\pagestyle{empty}
+
+% Center everything
+  \begin{center} 
+
+% Use Sans font
+  \sansfont
+  
+% Write the Book Titlecopyright page
+  \makeatletter  \small \@title \par \makeatother
+    
+% Write the CC logo, year, and author
+    Copyright \ccLogo\ \makeatletter \@date \ \@author \makeatother \par
+    Some rights reserved. \par
+    
+% Add a vertical space
+    \vspace{0.4cm}
+
+% Write what country it was published in
+    Published in the United States by \par
+    
+% Write the publisher name
+    \publisher \par
+    
+% Write the website
+    \website \par
+    
+% Add a vertical space
+    \vspace{0.4cm}
+
+% Write the specific license name
+    This book is distributed under a Creative Commons attribution-NonCommercial-Sharealike 4.0 License. \par
+
+% Add a vertical space
+    \vspace{0.4cm}
+
+% Write the Creative Commons Icons
+    \ccbyncsa
+    
+% Stop centering everythign
+  \end{center}
+       
+% Write license text
+   \scriptsize
+   \noindent \sansfont
+    That means you are free:
+      \begin{itemize}
+        \setlength{\itemsep}{0pt}
+        \setlength{\parskip}{0pt}
+        \setlength{\parsep}{0pt} 
+          \item \textbf{To Share} -- copy and redistribute the material in any medium or format.
+         \item \textbf{To Adapt} -- remix, transform, and build upon the material.
+      \end{itemize}
+    The licensor cannot revoke these freedoms as long as you follow the license terms: \par
+      \begin{itemize}
+        \setlength{\itemsep}{0pt}
+        \setlength{\parskip}{0pt}
+        \setlength{\parsep}{0pt}
+          \item \textbf{Attribution} -- You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use. \par
+          \item \textbf{NonCommercial} -- You may not use the material for commercial purposes. \par
+          \item \textbf{Share Alike} -- If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original. \par
+      \end{itemize}
+    \textbf No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+    
+% Add a vertical space
+    \vspace{.6cm}
+    
+% Start centering again
+    \begin{center}
+
+% Attribute the cover artist
+      $for(contributors)$$if(contributors.artist)$ Cover Artist: \artist \par$endif$$endfor$
+      
+% Attribute the editor
+      $for(contributors)$$if(contributors.editor)$ Editor: \editor \par$endif$$endfor$
+      
+% Attribute the designer (hey, that's me)
+      $for(contributors)$$if(contributors.designer)$ Design: \designer \par$endif$$endfor$
+   
+% Add a vertical space
+      \vspace{0.5cm}
+      
+% If ISBNs are defined in Yaml front matter then write them here
+      $if(isbn)$ISBN: {$isbn$} \par $endif$
+      $if(isbn-13)$ISBN-13: {$isbn-13$}\par $endif$
+      $if(epub-isbn)$ePub ISBN: {$epub-isbn$} \par $endif$
+      
+% Stop centering
+    \end{center}
+    
+% End the page
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create a dedication page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% No headers/footers
+\pagestyle{empty}
+
+% Center everything
+  \begin{center}
+
+% Vertically center
+\topskip0pt
+\vspace*{\fill}
+  
+% Write the Book Title
+  \normalfont\normalsize $dedication$ \par
+
+% Stop centering
+\vspace*{\fill}
+    \end{center}
+    
+% End the page
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create the chapters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This styles the header/footer for normal 'chapter' pages
+\makeatletter
+\pagestyle{fancy}
+%\renewcommand{\chaptermark}[1]{\markboth{#1}{}} % This removes the 'Chapter x' from the header
+\renewcommand{\chaptermark}[1]{\markboth {\@chapapp\ \thechapter \hspace{1mm}-\hspace{1mm}{#1}}{}}
+
+\fancyfoot[C]{} % remove numbered footers
+\fancyhead[RO,LE]{\primaryfont\bfseries \thepage} % add page numbers to the header
+\fancyhead[LO]{\primaryfont\bfseries\itshape \nouppercase \leftmark} % add subtitle to header
+\fancyhead[RE]{\primaryfont\bfseries\itshape \nouppercase \@title}
+\renewcommand{\headrulewidth}{0.0pt} 
+\makeatother
+
+% This says to start the page numbering
+\mainmatter
+
+% Write the body/chapters
+\primaryfont \normalsize $body$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create the bio page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% add blank even page before backmatter starts
+\newcommand*\cleartoleftpage{%
+  \clearpage
+  \ifodd\value{page}\hbox{}\thispagestyle{empty}\newpage\fi
+}
+
+\cleartoleftpage
+
+% Label as backmatter
+\backmatter
+
+% No headers/footers
+\pagestyle{empty}
+
+% Add space before/after the page title
+\titlespacing*{\section}
+{0pt}%left
+{150pt}%top
+{25pt}%bottom
+
+% This designs the page title
+\titleformat{\section}[display]{\bfseries\titlefont}{}{0.5mm}{\centering \Large} % Don't say 'chapter X'
+
+% Don't indent new paragraphs
+\setlength{\parindent}{0mm}
+
+% Add space between paragraphs
+\parskip = \baselineskip
+
+% Include the file(s) we specified via the pandoc command, in this case our bio.md
+$include-after$
+
+% End the document
+\end{document} 
+ 

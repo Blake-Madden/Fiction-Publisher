@@ -253,7 +253,7 @@ desc "Create Amazon mobi versions of our book(s)."
   end
 end
 
-#### PRINT
+#### PRINT 5x8
 task :print, [:book] do |task, args|
 desc "Create Smashwords epub versions of our book(s)."
 
@@ -268,11 +268,34 @@ system "pandoc --latex-engine=xelatex -o Books/bio.tex Source/_includes/bio.md"
     files = fullfiles.gsub!(/\b-pdf\b/, "")
     files.each do |file|
       FileUtils.mkdir_p "Books/#{file}"
-      system "pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver='xdvipdfmx -V 3 -z 0' -f markdown+backtick_code_blocks -o Books/#{file}/#{file}-print.pdf -A Books/bio.tex _site/*/#{file}-pdf.md"
+      system "pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver='xdvipdfmx -V 3 -z 0' -f markdown+backtick_code_blocks -o Books/#{file}/#{file}-5x8-print.pdf -A Books/bio.tex _site/*/#{file}-pdf.md"
     end            
   else 
       FileUtils.mkdir_p "Books/#{args.book}"
-      system "pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver='xdvipdfmx -V 3 -z 0' -f markdown+backtick_code_blocks -o Books/#{args.book}/#{args.book}-print.pdf -A Books/bio.tex _site/*/#{args.book}-pdf.md"
+      system "pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver='xdvipdfmx -V 3 -z 0' -f markdown+backtick_code_blocks -o Books/#{args.book}/#{args.book}-5x8-print.pdf -A Books/bio.tex _site/*/#{args.book}-pdf.md"
+  end
+end
+
+#### PRINT 6x9
+task :print, [:book] do |task, args|
+desc "Create Smashwords epub versions of our book(s)."
+
+Rake::Task[:jekyll].invoke
+Rake::Task[:rename].invoke
+
+system "pandoc --latex-engine=xelatex -o Books/bio.tex Source/_includes/bio.md"
+
+  if "#{args.book}" == "all"
+    filelist = Rake::FileList["_site/*/*-pdf*"]
+    fullfiles = filelist.pathmap("%n")
+    files = fullfiles.gsub!(/\b-pdf\b/, "")
+    files.each do |file|
+      FileUtils.mkdir_p "Books/#{file}"
+      system "pandoc --template=Pandoc/templates/cs-6x9-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver='xdvipdfmx -V 3 -z 0' -f markdown+backtick_code_blocks -o Books/#{file}/#{file}-6x9-print.pdf -A Books/bio.tex _site/*/#{file}-pdf.md"
+    end            
+  else 
+      FileUtils.mkdir_p "Books/#{args.book}"
+      system "pandoc --template=Pandoc/templates/cs-6x9-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver='xdvipdfmx -V 3 -z 0' -f markdown+backtick_code_blocks -o Books/#{args.book}/#{args.book}-6x9-print.pdf -A Books/bio.tex _site/*/#{args.book}-pdf.md"
   end
 end
 

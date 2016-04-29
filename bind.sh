@@ -79,11 +79,19 @@ pandoc --latex-engine=xelatex -o Books/bio.tex Source/_includes/bio.md
 if [ "$book" == "all" ]; then
     for i in $(ls _site/*/ | grep pdf ); do
         mkdir -p Books/"${i%%-pdf.md}"
-        pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" -f markdown+backtick_code_blocks -o Books/"${i%%-pdf.md}"/"${i%%-pdf.md}"-print.pdf  -A Books/bio.tex _site/*/$i
+        pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" -f markdown+backtick_code_blocks -o Books/"${i%%-pdf.md}"/"${i%%-pdf.md}"-5x8-print.pdf  -A Books/bio.tex _site/*/$i
     done
+    for i in $(ls _site/*/ | grep pdf ); do
+        mkdir -p Books/"${i%%-pdf.md}"
+        pandoc --template=Pandoc/templates/cs-6x9-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" -f markdown+backtick_code_blocks -o Books/"${i%%-pdf.md}"/"${i%%-pdf.md}"-6x9-print.pdf  -A Books/bio.tex _site/*/$i
+    done
+    
 else
     mkdir -p Books/"$book"
-    pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" -f markdown+backtick_code_blocks -o Books/"$book"/"$book"-print.pdf  -A Books/bio.tex _site/*/"$book"-pdf.md
+    pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" -f markdown+backtick_code_blocks -o Books/"$book"/"$book"-5x8-print.pdf  -A Books/bio.tex _site/*/"$book"-pdf.md
+    
+    mkdir -p Books/"$book"
+    pandoc --template=Pandoc/templates/cs-6x9-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" -f markdown+backtick_code_blocks -o Books/"$book"/"$book"-6x9-print.pdf  -A Books/bio.tex _site/*/"$book"-pdf.md
 fi
 }
 
