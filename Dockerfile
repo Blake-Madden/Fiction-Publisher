@@ -13,7 +13,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get clean && \
     apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y --fix-missing abcm2ps curl fontconfig git graphviz imagemagick libmagickcore-dev libmagickwand-dev inotify-tools latex-xcolor make python3 python-pygraphviz texlive-latex-base texlive-xetex texlive-fonts-extra wget
+    apt-get install -y --fix-missing abcm2ps curl fontconfig git graphviz imagemagick libmagickcore-dev libmagickwand-dev inotify-tools latex-xcolor make python3 python-pygraphviz texlive-latex-base texlive-latex-extra texlive-xetex texlive-fonts-extra wget
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get install -y autoconf build-essential

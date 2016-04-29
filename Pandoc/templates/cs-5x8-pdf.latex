@@ -44,7 +44,7 @@
 %\usepackage[utf8]{inputenc}
 
 %% Enable widow/orphan control
-\usepackage[all,defaultlines=2]{nowidow}
+\usepackage[all,defaultlines=3]{nowidow}
 
 %% Prevent lines from spilling over
 \setlength{\emergencystretch}{3em}
