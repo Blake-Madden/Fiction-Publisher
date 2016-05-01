@@ -46,7 +46,7 @@ desc "Building our scaffolding; putting expected files in their place."
   filename = "Source/#{title}/#{title}-Smashwords.md"
     open(filename, 'w') do |create|
       create.puts "---"
-      create.puts "layout: #{title}/smashwords"
+      create.puts "layout: #{title}/epub"
       create.puts "---"
     end
 
