@@ -186,7 +186,7 @@ $endif$
 }
 
 %% Set the header height in: in, mm, cm, pt
-\setlength{\headheight}{.35in}
+\setlength{\headheight}{0.10in}
 
 %% Set the space between header and text
 \setlength{\headsep}{.25in}
