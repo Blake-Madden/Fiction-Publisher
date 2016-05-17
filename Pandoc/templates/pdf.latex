@@ -16,7 +16,13 @@
   inner=19.177mm, %inner/gutter margin
   outer=19.177mm, %outer margin
   }
-  
+ 
+%% Set line spacing
+% 1.0 = single space
+% 1.3 = 1.5 space
+% 1.6 = double space
+\linespread{1.3}
+ 
 %% Use this package to enable tables  
 \usepackage{longtable,booktabs}
 
@@ -343,9 +349,9 @@ $endif$
 \renewcommand{\chaptermark}[1]{\markboth {\@chapapp\ \thechapter \hspace{1mm}-\hspace{1mm}{#1}}{}}
 
 \fancyfoot[C]{} % remove numbered footers
-\fancyhead[RO,LE]{\bfseries\itshape \thepage} % add page numbers to the header
-\fancyhead[LO]{\bfseries\itshape \primaryfont \nouppercase \leftmark} % add subtitle to header
-\fancyhead[RE]{\bfseries\itshape \primaryfont \nouppercase \@title}
+\fancyhead[RO,LE]{\primaryfont\bfseries \thepage} % add page numbers to the header
+\fancyhead[LO]{\primaryfont\bfseries \textsc \leftmark} % add subtitle to header
+\fancyhead[RE]{\primaryfont\bfseries \textsc \@title}
 \renewcommand{\headrulewidth}{0.0pt} 
 
 % This says to start the page numbering
