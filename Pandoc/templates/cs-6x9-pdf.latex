@@ -20,8 +20,14 @@
   outer=19.0mm, %outer margin
   }
 
+%% Set line spacing
+% 1.0 = single space
+% 1.3 = 1.5 space
+% 1.6 = double space
+\linespread{1.3}
+  
 %% Set lineheight / distance between lines
-\setlength{\baselineskip}{16pt}
+%\setlength{\baselineskip}{16pt}
 
 %% Set no additional space between paragraphs
 \setlength{\parskip}{0pt}
@@ -44,7 +50,9 @@
 %\usepackage[utf8]{inputenc}
 
 %% Enable widow/orphan control
-\usepackage[all,defaultlines=3]{nowidow}
+%\usepackage[all,defaultlines=3]{nowidow}
+\widowpenalty=10000
+\clubpenalty=10000
 
 %% Prevent lines from spilling over
 \setlength{\emergencystretch}{3em}
@@ -486,7 +494,7 @@ $endif$
 \mainmatter
 
 % Write the body/chapters
-\primaryfont \normalsize $body$
+\primaryfont \normalsize \flushbottom $body$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%

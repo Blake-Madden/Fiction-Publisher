@@ -36,7 +36,9 @@
 \usepackage[utf8]{inputenc}
 
 %% Enable widow/orphan control
-\usepackage[all,defaultlines=2]{nowidow}
+%\usepackage[all,defaultlines=2]{nowidow}
+\widowpenalty=10000
+\clubpenalty=10000
 
 %% Prevent overfull lines
 \setlength{\emergencystretch}{3em}

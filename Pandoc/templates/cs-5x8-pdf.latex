@@ -44,7 +44,10 @@
 %\usepackage[utf8]{inputenc}
 
 %% Enable widow/orphan control
-\usepackage[all,defaultlines=3]{nowidow}
+%\usepackage[all,defaultlines=3]{nowidow}
+\widowpenalty=10000
+\clubpenalty=10000
+
 
 %% Prevent lines from spilling over
 \setlength{\emergencystretch}{3em}
@@ -486,7 +489,7 @@ $endif$
 \mainmatter
 
 % Write the body/chapters
-\primaryfont \normalsize $body$
+\primaryfont \normalsize \flushbottom $body$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
