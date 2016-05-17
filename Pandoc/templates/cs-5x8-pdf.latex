@@ -477,8 +477,8 @@ $endif$
 
 \fancyfoot[C]{} % remove numbered footers
 \fancyhead[RO,LE]{\primaryfont\bfseries \thepage} % add page numbers to the header
-\fancyhead[LO]{\primaryfont\bfseries\itshape \nouppercase \leftmark} % add subtitle to header
-\fancyhead[RE]{\primaryfont\bfseries\itshape \nouppercase \@title}
+\fancyhead[LO]{\primaryfont\bfseries \textsc \leftmark} % add subtitle to header
+\fancyhead[RE]{\primaryfont\bfseries \textsc \@title}
 \renewcommand{\headrulewidth}{0.0pt} 
 \makeatother
 
