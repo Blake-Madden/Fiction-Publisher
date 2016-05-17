@@ -46,7 +46,7 @@
 %% Enable widow/orphan control
 %\usepackage[all,defaultlines=3]{nowidow}
 \widowpenalty=10000
-\clubpenalty=10000
+%\clubpenalty=10000
 
 
 %% Prevent lines from spilling over

@@ -23,6 +23,9 @@
 % 1.6 = double space
 \linespread{1.3}
  
+%% Set no additional space between paragraphs
+\setlength{\parskip}{0pt}
+ 
 %% Use this package to enable tables  
 \usepackage{longtable,booktabs}
 
@@ -232,7 +235,7 @@ $if(subtitle)$
 $endif$
     
 % Add a vertical space
-  \vspace{4cm}
+  \vspace{3cm}
     
 % Write the author name
   \Large \normalfont \sansfont  \makeatletter \MakeUppercase\@author \makeatother \par
@@ -257,32 +260,32 @@ $endif$
   \sansfont
   
 % Write the Book Titlecopyright page
-  \makeatletter  \small \@title \par \makeatother
+  \makeatletter  \scriptsize \@title \par \makeatother
     
 % Write the CC logo, year, and author
-    Copyright \ccLogo\ \makeatletter \@date \ \@author \makeatother \par
-    Some rights reserved. \par
+    \scriptsize Copyright \ccLogo\ \makeatletter \@date \ \@author \makeatother \par
+    \scriptsize Some rights reserved. \par
     
 % Add a vertical space
-    \vspace{0.4cm}
+    \vspace{0.3cm}
 
 % Write what country it was published in
-    Published in the United States by \par
+    \scriptsize Published in the United States by \par
     
 % Write the publisher name
-    \publisher \par
+    \scriptsize \publisher \par
     
 % Write the website
-    \website \par
+    \scriptsize \website \par
     
 % Add a vertical space
-    \vspace{0.4cm}
+    \vspace{0.3cm}
 
 % Write the specific license name
-    This book is distributed under a Creative Commons attribution-NonCommercial-Sharealike 4.0 License. \par
+    \scriptsize This book is distributed under a Creative Commons attribution-NonCommercial-Sharealike 4.0 License. \par
 
 % Add a vertical space
-    \vspace{0.4cm}
+    \vspace{0.3cm}
 
 % Write the Creative Commons Icons
     \ccbyncsa
@@ -292,7 +295,7 @@ $endif$
        
 % Write license text
    \scriptsize
-   \noindent \sansfont
+   \noindent \sansfont \linespread{1.0}
     That means you are free:
       \begin{itemize}
         \setlength{\itemsep}{0pt}
@@ -313,7 +316,7 @@ $endif$
     \textbf No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
     
 % Add a vertical space
-    \vspace{.6cm}
+    \vspace{.3cm}
     
 % Start centering again
     \begin{center}
@@ -328,7 +331,7 @@ $endif$
       $for(contributors)$$if(contributors.designer)$ Design: \designer \par$endif$$endfor$
    
 % Add a vertical space
-      \vspace{0.5cm}
+      \vspace{0.3cm}
       
 % If ISBNs are defined in Yaml front matter then write them here
       $if(isbn)$ISBN: {$isbn$} \par $endif$
