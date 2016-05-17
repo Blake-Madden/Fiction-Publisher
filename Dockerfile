@@ -1,4 +1,4 @@
-FROM ctarwater/open-publisher-base
+FROM ctarwater/docker-open-publisher-base
 MAINTAINER chrisanthropic <ctarwater@gmail.com>
 
 # Build command: docker build -t open-publisher .
