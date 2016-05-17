@@ -1,22 +1,14 @@
-FROM debian:jessie
+FROM ctarwater/docker-texlive
 MAINTAINER chrisanthropic <ctarwater@gmail.com>
 
 ###########################################################################################
 ###                            BEGIN CUSTOM Open-Publisher Stuff                        ###
 ###########################################################################################
-
-RUN echo "deb http://ftp.us.debian.org/debian jessie contrib" > /etc/apt/sources.list.d/contrib.list ;\
-    echo "deb http://ftp.us.debian.org/debian jessie-updates contrib" >> /etc/apt/sources.list.d/contrib.list ;
-    
-# Install TeXlive & Haskell & Dependencies
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get clean && \
     apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y --fix-missing abcm2ps curl fontconfig git graphviz imagemagick libmagickcore-dev libmagickwand-dev inotify-tools latex-xcolor make python3 python-pygraphviz texlive-latex-base texlive-latex-extra texlive-xetex texlive-fonts-extra wget
-
-RUN export DEBIAN_FRONTEND=noninteractive && \
-    apt-get install -y autoconf build-essential
+    apt-get install -y --fix-missing autoconf build-essential curl git fonts-linuxlibertine tex-gyre abcm2ps fontconfig graphviz imagemagick libmagickcore-dev libmagickwand-dev inotify-tools make python3 python-pygraphviz
     
 # Install Ruby (code stolen from official Ruby docker)
 # skip installing gem documentation
@@ -57,6 +49,9 @@ RUN set -ex \
 	&& gem update --system $RUBYGEMS_VERSION \
 	&& rm -r /usr/src/ruby
 
+# Git clone the Open-Publisher repo
+#RUN git clone https://github.com/chrisanthropic/Open-Publisher.git
+	
 ENV BUNDLER_VERSION 1.11.2
 
 RUN gem install bundler --version "$BUNDLER_VERSION"
@@ -71,7 +66,11 @@ ENV BUNDLE_PATH="$GEM_HOME" \
 ENV PATH $BUNDLE_BIN:$PATH
 RUN mkdir -p "$GEM_HOME" "$BUNDLE_BIN" \
 	&& chmod 777 "$GEM_HOME" "$BUNDLE_BIN"
-    
+
+# Install jekyll
+RUN cd Open-Publisher \
+    && bundle install --binstubs --path=vendor
+	
 # Install Pandoc
 ENV PKGREL 1
 ENV VERSION 1.17.0.2
@@ -85,21 +84,16 @@ RUN wget http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v2_9.tar.gz 
 RUN tar -xzf /tmp/kindlegen_linux_2.6_i386_v2_9.tar.gz -C /tmp
 RUN mv /tmp/kindlegen /usr/bin
 RUN rm -r /tmp/*
-    
+   
 # Basic cleanup
 RUN export DEBIAN_FRONTEND=noninteractive && \
+    apt-get remove -y autoconf build-essential make && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
-    
-# Git clone the Open-Publisher repo
-#RUN git clone https://github.com/chrisanthropic/Open-Publisher.git
 
 ADD . Open-Publisher/
 
 WORKDIR /Open-Publisher
-
-# Install jekyll
-RUN bundle install --binstubs --path=vendor
 
 #ENTRYPOINT ["bundle exec rake"]
 CMD [""]

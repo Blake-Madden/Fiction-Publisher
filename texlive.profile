@@ -1,0 +1,11 @@
+TEXDIR /texlive
+TEXMFSYSVAR /texlive/texmf-var
+TEXMFSYSCONFIG /texlive/texmf-config
+TEXMFLOCAL /texlive/texmf-local
+TEXMFHOME $TEXMFLOCAL
+TEXMFVAR $TEXMFSYSVAR
+TEXMFCONFIG $TEXMFSYSCONFIG
+option_autobackup 0
+option_doc 0
+option_src 0
+portable 1 
