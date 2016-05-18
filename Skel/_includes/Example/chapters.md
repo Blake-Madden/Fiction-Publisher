@@ -15,8 +15,8 @@ toc-title: Table of Contents
 publisher: Back That Elf Up
 rights: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 
-isbn:
-isbn-13:
+paperback-isbn:
+hardcover-isbn:
 epub-isbn:
 
 dedication: Dedicated to my readers.

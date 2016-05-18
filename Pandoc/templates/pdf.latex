@@ -334,8 +334,8 @@ $endif$
       \vspace{0.3cm}
       
 % If ISBNs are defined in Yaml front matter then write them here
-      $if(isbn)$ISBN: {$isbn$} \par $endif$
-      $if(isbn-13)$ISBN-13: {$isbn-13$}\par $endif$
+      $if(paperback-isbn)$Paperback ISBN: {$paperback-isbn$} \par $endif$
+      $if(hardcover-isbn)$HardcoverISBN: {$hardcover-isbn$}\par $endif$
       $if(epub-isbn)$ePub ISBN: {$epub-isbn$} \par $endif$
       
 % Stop centering

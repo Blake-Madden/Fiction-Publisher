@@ -74,8 +74,8 @@ cover-image: Source/images/XXXXX.jpg
 publisher: 
 rights: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Unported License.
 
-isbn:
-isbn-13:
+paperback-isbn:
+hardcover-isbn:
 epub-isbn:
 
 dedication: Dedicated to my readers.

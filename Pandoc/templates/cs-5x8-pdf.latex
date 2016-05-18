@@ -365,7 +365,7 @@ $endif$
     Some rights reserved. \par
     
 % Add a vertical space
-    \vspace{0.4cm}
+    \vspace{0.3cm}
 
 % Write what country it was published in
     Published in the United States by \par
@@ -377,13 +377,13 @@ $endif$
     \website \par
     
 % Add a vertical space
-    \vspace{0.4cm}
+    \vspace{0.3cm}
 
 % Write the specific license name
     This book is distributed under a Creative Commons attribution-NonCommercial-Sharealike 4.0 License. \par
 
 % Add a vertical space
-    \vspace{0.4cm}
+    \vspace{0.3cm}
 
 % Write the Creative Commons Icons
     \ccbyncsa
@@ -414,7 +414,7 @@ $endif$
     \textbf No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
     
 % Add a vertical space
-    \vspace{.6cm}
+    \vspace{.3cm}
     
 % Start centering again
     \begin{center}
@@ -429,11 +429,11 @@ $endif$
       $for(contributors)$$if(contributors.designer)$ Design: \designer \par$endif$$endfor$
    
 % Add a vertical space
-      \vspace{0.5cm}
+      \vspace{0.3cm}
       
 % If ISBNs are defined in Yaml front matter then write them here
-      $if(isbn)$ISBN: {$isbn$} \par $endif$
-      $if(isbn-13)$ISBN-13: {$isbn-13$}\par $endif$
+      $if(paperback-isbn)$Paperback ISBN: {$paperback-isbn$} \par $endif$
+      $if(hardcover-isbn)$HardcoverISBN: {$hardcover-isbn$}\par $endif$
       $if(epub-isbn)$ePub ISBN: {$epub-isbn$} \par $endif$
       
 % Stop centering
