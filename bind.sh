@@ -72,26 +72,26 @@ jekyll
 rename
 
 # Create a bio page so we can append it to the end of the main document
-pandoc --latex-engine=xelatex -o Books/bio.tex Source/_includes/bio.md
+pandoc --pdf-engine=xelatex -o Books/bio.tex Source/_includes/bio.md
 
 # Create PDF for every book in _site
 # "${i%%.*}" gets the filename but ignores the extension
 if [ "$book" == "all" ]; then
     for i in $(ls _site/*/ | grep pdf ); do
         mkdir -p Books/"${i%%-pdf.md}"
-        pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" -f markdown+backtick_code_blocks -o Books/"${i%%-pdf.md}"/"${i%%-pdf.md}"-5x8-print.pdf  -A Books/bio.tex _site/*/$i
+        pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" -f markdown+backtick_code_blocks -o Books/"${i%%-pdf.md}"/"${i%%-pdf.md}"-5x8-print.pdf  -A Books/bio.tex _site/*/$i
     done
     for i in $(ls _site/*/ | grep pdf ); do
         mkdir -p Books/"${i%%-pdf.md}"
-        pandoc --template=Pandoc/templates/cs-6x9-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" -f markdown+backtick_code_blocks -o Books/"${i%%-pdf.md}"/"${i%%-pdf.md}"-6x9-print.pdf  -A Books/bio.tex _site/*/$i
+        pandoc --template=Pandoc/templates/cs-6x9-pdf.latex --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" -f markdown+backtick_code_blocks -o Books/"${i%%-pdf.md}"/"${i%%-pdf.md}"-6x9-print.pdf  -A Books/bio.tex _site/*/$i
     done
     
 else
     mkdir -p Books/"$book"
-    pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" -f markdown+backtick_code_blocks -o Books/"$book"/"$book"-5x8-print.pdf  -A Books/bio.tex _site/*/"$book"-pdf.md
+    pandoc --template=Pandoc/templates/cs-5x8-pdf.latex --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" -f markdown+backtick_code_blocks -o Books/"$book"/"$book"-5x8-print.pdf  -A Books/bio.tex _site/*/"$book"-pdf.md
     
     mkdir -p Books/"$book"
-    pandoc --template=Pandoc/templates/cs-6x9-pdf.latex --latex-engine=xelatex --latex-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" -f markdown+backtick_code_blocks -o Books/"$book"/"$book"-6x9-print.pdf  -A Books/bio.tex _site/*/"$book"-pdf.md
+    pandoc --template=Pandoc/templates/cs-6x9-pdf.latex --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" -f markdown+backtick_code_blocks -o Books/"$book"/"$book"-6x9-print.pdf  -A Books/bio.tex _site/*/"$book"-pdf.md
 fi
 }
 
@@ -103,11 +103,11 @@ rename
 if [ "$book" == "all" ]; then
     for i in $(ls _site/*/ | grep pdf ); do
         mkdir -p Books/"${i%%-pdf.md}"
-        pandoc --template=Pandoc/templates/pdf.latex --latex-engine=xelatex -f markdown+backtick_code_blocks -o Books/"${i%%-pdf.md}"/"${i%%-pdf.md}"-ebook.pdf _site/*/$i
+        pandoc --template=Pandoc/templates/pdf.latex --pdf-engine=xelatex -f markdown+backtick_code_blocks -o Books/"${i%%-pdf.md}"/"${i%%-pdf.md}"-ebook.pdf _site/*/$i
     done
 else
     mkdir -p Books/"$book"
-    pandoc --template=Pandoc/templates/pdf.latex --latex-engine=xelatex -f markdown+backtick_code_blocks -o Books/"$book"/"$book"-ebook.pdf _site/*/"$book"-pdf.md
+    pandoc --template=Pandoc/templates/pdf.latex --pdf-engine=xelatex -f markdown+backtick_code_blocks -o Books/"$book"/"$book"-ebook.pdf _site/*/"$book"-pdf.md
 fi
 }
 
