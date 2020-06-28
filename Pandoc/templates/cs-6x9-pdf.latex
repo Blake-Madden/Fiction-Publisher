@@ -13,7 +13,7 @@
   \geometry{
   paperheight=228.6mm, %actual height measurement of the page
   paperwidth=152.4mm, %actual width measurement of the page
-  total={108.65mm, 142.53mm}, % widht/height of the "text box"/text area on the page
+  total={108.65mm, 142.53mm}, % width/height of the "text box"/text area on the page
   top=30.0mm, % top margin
   bottom=27.0mm, %bottom margin
   inner=22.0mm, %inner/gutter margin
