@@ -357,7 +357,7 @@ $endif$
 % Use Sans font
   \sansfont
   
-% Write the Book Titlecopyright page
+% Write the Book copyright page
   \makeatletter  \small \@title \par \makeatother
     
 % Write the CC logo, year, and author
@@ -457,7 +457,7 @@ $endif$
 \topskip0pt
 \vspace*{\fill}
   
-% Write the Book Title
+% Write the Dedication
   \normalfont\normalsize $dedication$ \par
 
 % Stop centering
