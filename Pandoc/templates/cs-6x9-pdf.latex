@@ -452,25 +452,27 @@ $endif$
 %% Create a dedication page
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-% No headers/footers
-\pagestyle{empty}
+$if(dedication)$
+    % No headers/footers
+    \pagestyle{empty}
 
-% Center everything
-  \begin{center}
+    % Center everything
+      \begin{center}
 
-% Vertically center
-\topskip0pt
-\vspace*{\fill}
+    % Vertically center
+    \topskip0pt
+    \vspace*{\fill}
   
-% Write the Dedication
-  \normalfont\normalsize $dedication$ \par
+    % Write the Dedication
+      \normalfont\normalsize $dedication$ \par
 
-% Stop centering
-\vspace*{\fill}
-    \end{center}
+    % Stop centering
+    \vspace*{\fill}
+        \end{center}
     
-% End the page
-\clearpage
+    % End the page
+    \clearpage
+$endif$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
