@@ -10,7 +10,7 @@
   \geometry{
   paperheight=203.2mm, %actual height measurement of the page
   paperwidth=127mm, %actual width measurement of the page
-  total={90.54mm, 127mm}, % widht/height of the "text box"/text area on the page
+  total={90.54mm, 127mm}, % width/height of the "text box"/text area on the page
   top=22.352mm, % top margin
   bottom=19.177mm, %bottom margin
   inner=19.177mm, %inner/gutter margin
@@ -259,7 +259,7 @@ $endif$
 % Use Sans font
   \sansfont
   
-% Write the Book Titlecopyright page
+% Write the Book copyright page
   \makeatletter  \scriptsize \@title \par \makeatother
     
 % Write the CC logo, year, and author
@@ -290,7 +290,7 @@ $endif$
 % Write the Creative Commons Icons
     \ccbyncsa
     
-% Stop centering everythign
+% Stop centering everything
   \end{center}
        
 % Write license text
