@@ -13,11 +13,11 @@
   \geometry{
   paperheight=203.2mm, %actual height measurement of the page
   paperwidth=127mm, %actual width measurement of the page
-  total={90.54mm, 127mm}, % widht/height of the "text box"/text area on the page
-  top=19.177mm, % top margin
-  bottom=19.177mm, %bottom margin
-  inner=22.352mm, %inner/gutter margin
-  outer=17.907mm, %outer margin
+  includehead, %include header inside of text area calculation (footer and margin notes aren't used in this template)
+  top=$if(top-margin)$$top-margin$$else$19.177mm$endif$, % top margin
+  bottom=$if(bottom-margin)$$bottom-margin$$else$19.177mm$endif$, %bottom margin
+  inner=$if(inner-margin)$$inner-margin$$else$22.352mm$endif$, %inner/gutter margin
+  outer=$if(outer-margin)$$outer-margin$$else$17.907mm$endif$, %outer margin
   }
 
 %% Set lineheight / distance between lines

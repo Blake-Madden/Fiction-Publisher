@@ -1,6 +1,9 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%% Base Document Settings
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% BASE DOCUMENT SETTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Set document class
 \documentclass%
 [12pt] % Set default font size
 {book} % Set document Class
@@ -10,11 +13,11 @@
   \geometry{
   paperheight=203.2mm, %actual height measurement of the page
   paperwidth=127mm, %actual width measurement of the page
-  total={90.54mm, 127mm}, % width/height of the "text box"/text area on the page
-  top=22.352mm, % top margin
-  bottom=19.177mm, %bottom margin
-  inner=19.177mm, %inner/gutter margin
-  outer=19.177mm, %outer margin
+  includehead, %include header inside of text area calculation (footer and margin notes aren't used in this template)
+  top=$if(top-margin)$$top-margin$$else$22.352mm$endif$, % top margin
+  bottom=$if(bottom-margin)$$bottom-margin$$else$19.177mm$endif$, %bottom margin
+  inner=$if(inner-margin)$$inner-margin$$else$19.177mm$endif$, %inner/gutter margin
+  outer=$if(outer-margin)$$outer-margin$$else$19.177mm$endif$, %outer margin
   }
  
 %% Set line spacing
@@ -37,7 +40,6 @@
 
 \setlength{\LTpost}{0pt}
 
-  
 %% Set language and hyphenation rules
 \usepackage[english]{babel}
 
