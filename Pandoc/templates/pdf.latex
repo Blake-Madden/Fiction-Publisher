@@ -18,6 +18,9 @@
   bottom=$if(bottom-margin)$$bottom-margin$$else$19.177mm$endif$, %bottom margin
   inner=$if(inner-margin)$$inner-margin$$else$19.177mm$endif$, %inner/gutter margin
   outer=$if(outer-margin)$$outer-margin$$else$19.177mm$endif$, %outer margin
+  $if(debug)$
+    showframe %show lines drawn around text, footer, header, and margin note areas
+  $endif$
   }
  
 %% Set line spacing
