@@ -337,7 +337,7 @@ $endif$
 % Write the author name
   \Large \normalfont \sansfont  \makeatletter \MakeUppercase\@author \makeatother \par
 
-% Stop centering everythign
+% Stop centering everything
   \end{center}
 
 % End the page
