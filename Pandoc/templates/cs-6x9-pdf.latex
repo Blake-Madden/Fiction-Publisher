@@ -233,6 +233,9 @@ $endif$
 %% Make our quotes curly
 \defaultfontfeatures{Mapping=tex-text}
 
+%% Provides calligraphy font
+\usepackage{calligra}
+
 %% Provides Creative Commons Icons
 \usepackage{ccicons}
 
