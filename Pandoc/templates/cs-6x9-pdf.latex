@@ -157,8 +157,12 @@ $endif$
 {150pt}%top margin
 {25pt}%bottom margin
 
-% This tells it to style the titleformat for chapters
-\titleformat{\chapter}[display]{\bfseries\titlefont}{\Large Chapter \thechapter \normalfont}{0.5mm}{\small}
+% This tells it to style the title format for chapters (or use a style from fncychap, if requested)
+$if(fancy-chapter)$
+  \usepackage[$fancy-chapter$]{fncychap}
+$else$
+  \titleformat{\chapter}[display]{\bfseries\titlefont}{\Large Chapter \thechapter \normalfont}{0.5mm}{\small}
+$endif$
 
 %%%%%%%%%%%%%%%%%%
 %% This part says to style the titles for "chapters"
