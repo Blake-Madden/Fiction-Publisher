@@ -235,6 +235,9 @@ $endif$
 %% Provides calligraphy font
 \usepackage{calligra}
 
+%% Provides symbols for flourishes (scene dividers)
+\usepackage{adforn}
+
 %% Provides Creative Commons Icons
 \usepackage{ccicons}
 
@@ -270,6 +273,10 @@ $endif$
 %\setmainfont
 %\renewcommand{\sfdefault}{URW Gothic}
 %\setmonofont
+
+%% Provides support for having first letter of paragraph being multiline
+\usepackage{lettrine}
+\renewcommand{\LettrineFontHook}{\calligra}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

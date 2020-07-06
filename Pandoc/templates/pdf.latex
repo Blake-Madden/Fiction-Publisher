@@ -138,6 +138,9 @@ $endif$
 %% Provides calligraphy font
 \usepackage{calligra}
 
+%% Provides symbols for flourishes (scene dividers)
+\usepackage{adforn}
+
 %% Provides Creative Commons Icons
 \usepackage{ccicons}
 \usepackage{tgadventor}
@@ -163,6 +166,10 @@ $endif$
 %\setmainfont
 %\setsansfont
 %\setmonofont
+
+%% Provides support for having first letter of paragraph being multiline
+\usepackage{lettrine}
+\renewcommand{\LettrineFontHook}{\calligra}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Metadata Settings
