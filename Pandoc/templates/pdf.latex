@@ -167,9 +167,12 @@ $endif$
 %\setsansfont
 %\setmonofont
 
-%% Provides support for having first letter of paragraph being multiline
+%% Provides support for drop caps
 \usepackage{lettrine}
-\renewcommand{\LettrineFontHook}{\calligra}
+%% If you want the first letter to be a calligraphy font
+%\renewcommand{\LettrineFontHook}{\calligra}
+%% Or a block letter
+%\renewcommand{\LettrineFontHook}{\Eileenfamily}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Metadata Settings
@@ -259,7 +262,7 @@ $endif$
 % Write the author name
   \Large \normalfont \sansfont  \makeatletter \MakeUppercase\@author \makeatother \par
 
-% Stop centering everythign
+% Stop centering everything
   \end{center}
 
 % End the page

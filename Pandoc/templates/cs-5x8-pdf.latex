@@ -274,9 +274,12 @@ $endif$
 %\renewcommand{\sfdefault}{URW Gothic}
 %\setmonofont
 
-%% Provides support for having first letter of paragraph being multiline
+%% Provides support for drop caps
 \usepackage{lettrine}
-\renewcommand{\LettrineFontHook}{\calligra}
+%% If you want the first letter to be a calligraphy font
+%\renewcommand{\LettrineFontHook}{\calligra}
+%% Or a block letter
+%\renewcommand{\LettrineFontHook}{\Eileenfamily}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -405,7 +408,7 @@ $endif$
 % Write the Creative Commons Icons
     \ccbyncsa
     
-% Stop centering everythign
+% Stop centering everything
   \end{center}
        
 % Write license text
