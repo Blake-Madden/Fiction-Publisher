@@ -116,11 +116,10 @@ $endif$
 %% Use TrueType system fonts
 \usepackage{fontspec}
 
+\usepackage{libertinus}
+
 %% Set Main Fonts
-\setmainfont[
-  Ligatures=TeX,
-  ItalicFont={Linux Libertine O:style=Italic},
-]{Linux Libertine O}
+\setmainfont{Libertinus Serif}
 
 %\setmainfont[
 %  Ligatures=TeX,
@@ -143,9 +142,8 @@ $endif$
 
 %% Provides Creative Commons Icons
 \usepackage{ccicons}
-\usepackage{tgadventor}
 \usepackage[T1]{fontenc}
-\newfontfamily\sansfont{TeX Gyre Adventor}
+\newfontfamily\sansfont{Libertinus Sans}
 
 
 %% Set Minion Pro macro \primaryfont
@@ -158,10 +156,8 @@ $endif$
 %\usepackage[T1]{fontenc}
 %\newfontfamily\primaryfont{Gentium Book Basic}
 
-\usepackage{libertine}
-\usepackage[T1]{fontenc}
-\newfontfamily\primaryfont[Ligatures=TeX, Numbers=OldStyle]{Linux Libertine O}
-\newfontfamily\titlefont[Scale=1.75, Ligatures=TeX]{Linux Libertine O}
+\newfontfamily\primaryfont{Libertinus Serif}
+\newfontfamily\titlefont{Libertinus Serif}
 
 %\setmainfont
 %\setsansfont

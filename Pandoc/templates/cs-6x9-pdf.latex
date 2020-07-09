@@ -217,13 +217,10 @@ $endif$
 %% Used to set some things to all caps
 \usepackage{textcase}
 
+\usepackage{libertinus}
+
 %% Set Main Fonts
-\setmainfont[
-  Ligatures=TeX,
-  ItalicFont={Linux Libertine O:style=Italic},
-  BoldFont={Linux Libertine O:style=Bold},
-  BoldItalicFont={Linux Libertine O:style=Bold Italic},
-]{Linux Libertine O}
+\setmainfont{Libertinus Serif}
 
 %\setmainfont[
 %  Ligatures=TeX,
@@ -255,9 +252,8 @@ $endif$
 %\newcommand*{\goth}{\fontspec{URW Gothic L}\selectfont}
 
 % These commands use free TeX fonts from CTAN that are nearly identical
-\usepackage{tgadventor}
 \usepackage[T1]{fontenc}
-\newfontfamily\sansfont{TeX Gyre Adventor}
+\newfontfamily\sansfont{Libertinus Sans}
 
 
 %% Set Minion Pro macro \minion
@@ -270,10 +266,8 @@ $endif$
 %\usepackage[T1]{fontenc}
 %\newfontfamily\minion{Gentium Book Basic}
 
-\usepackage{libertine}
-\usepackage[T1]{fontenc}
-\newfontfamily\primaryfont[Ligatures=TeX, Numbers=OldStyle]{Linux Libertine O}
-\newfontfamily\titlefont[Scale=1.75, Ligatures=TeX]{Linux Libertine O}
+\newfontfamily\primaryfont{Libertinus Serif}
+\newfontfamily\titlefont{Libertinus Serif}
 
 %\setmainfont
 %\renewcommand{\sfdefault}{URW Gothic}
