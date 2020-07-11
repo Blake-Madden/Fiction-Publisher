@@ -23,11 +23,11 @@ rename
 if [ "$book" == "all" ]; then
     for i in $(ls _site/*/ | grep epub); do
         mkdir -p Books/"${i%%-epub.md}"
-        pandoc --top-level-division=chapter --toc-depth=1 --template=Pandoc/templates/custom-epub.html --css=Pandoc/css/style.css -t markdown-smart -o Books/"${i%%-epub.md}"/"${i%%-epub.md}".epub _site/*/$i
+        pandoc --top-level-division=chapter --toc-depth=1 --template=Pandoc/templates/custom-epub.html --css=Pandoc/css/style.css -f markdown+smart -o Books/"${i%%-epub.md}"/"${i%%-epub.md}".epub _site/*/$i
     done
 else
     mkdir -p Books/"$book"
-    pandoc --top-level-division=chapter --toc-depth=1 --template=Pandoc/templates/custom-epub.html --css=Pandoc/css/style.css -t markdown-smart -o Books/"$book"/"$book".epub _site/*/"$book"-epub.md
+    pandoc --top-level-division=chapter --toc-depth=1 --template=Pandoc/templates/custom-epub.html --css=Pandoc/css/style.css -f markdown+smart -o Books/"$book"/"$book".epub _site/*/"$book"-epub.md
 fi
 }
 
@@ -38,11 +38,11 @@ rename
 if [ "$book" == "all" ]; then
     for i in $(ls _site/*/ | grep Smashwords); do
         mkdir -p Books/"${i%-Smashwords.md}"
-        pandoc --top-level-division=chapter --toc-depth=1 --template=Pandoc/templates/smashwords-epub.html --css=Pandoc/css/style.css -t markdown-smart -o Books/"${i%-Smashwords.md}"/"${i%%.*}".epub _site/*/$i
+        pandoc --top-level-division=chapter --toc-depth=1 --template=Pandoc/templates/smashwords-epub.html --css=Pandoc/css/style.css -f markdown+smart -o Books/"${i%-Smashwords.md}"/"${i%%.*}".epub _site/*/$i
     done
 else
     mkdir -p Books/"$book"
-    pandoc --top-level-division=chapter --toc-depth=1 --template=Pandoc/templates/smashwords-epub.html --css=Pandoc/css/style.css -t markdown-smart -o Books/"$book"/"$book"-Smashwords.epub _site/*/"$book"-Smashwords.md
+    pandoc --top-level-division=chapter --toc-depth=1 --template=Pandoc/templates/smashwords-epub.html --css=Pandoc/css/style.css -f markdown+smart -o Books/"$book"/"$book"-Smashwords.epub _site/*/"$book"-Smashwords.md
 fi
 }
 
@@ -53,14 +53,14 @@ rename
 if [ "$book" == "all" ]; then
     for i in $(ls _site/*/ | grep Amazon); do
         mkdir -p Books/"${i%-Amazon.md}"
-        pandoc --top-level-division=chapter --toc-depth=1 --template=Pandoc/templates/amazon-epub.html --css=Pandoc/css/style.css -t markdown-smart -o Books/"${i%-Amazon.md}"/"${i%%.*}".epub _site/*/$i
+        pandoc --top-level-division=chapter --toc-depth=1 --template=Pandoc/templates/amazon-epub.html --css=Pandoc/css/style.css -f markdown+smart -o Books/"${i%-Amazon.md}"/"${i%%.*}".epub _site/*/$i
     
         kindlegen -c2 Books/"${i%-Amazon.md}"/"${i%%.*}".epub
         rm Books/"${i%-Amazon.md}"/"${i%%.*}".epub
     done
 else
     mkdir -p Books/"$book"
-    pandoc --top-level-division=chapter --toc-depth=1 --template=Pandoc/templates/amazon-epub.html --css=Pandoc/css/style.css -t markdown-smart -o Books/"$book"/"$book"-Amazon.epub _site/*/"$book"-Amazon.md
+    pandoc --top-level-division=chapter --toc-depth=1 --template=Pandoc/templates/amazon-epub.html --css=Pandoc/css/style.css -f markdown+smart -o Books/"$book"/"$book"-Amazon.epub _site/*/"$book"-Amazon.md
     
     kindlegen -c2 Books/"$book"/"$book"-Amazon.epub
     rm Books/"$book"/"$book"-Amazon.epub
