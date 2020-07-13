@@ -1,13 +1,11 @@
-## What is Open-Publisher
-Open publisher is really just a couple of bash scripts that wrap around Jekyll, Pandoc, KindleGen, and LaTeX, along with some custom Pandoc templates created with a focus on fiction.
+## What is Open Publisher 2
+Open publisher 2 is a continuation of [Open Publisher](https://github.com/chrisanthropic/Open-Publisher), redesigned to work with [Manuskript](https://github.com/olivierkes/manuskript) projects. It is a PowerShell script that wraps around Pandoc, KindleGen, and LaTeX, along with some custom Pandoc templates, created with a focus on fiction.
 
 Write your manuscript in markdown, run a script, and receive some beautifully formatted ePub, Mobi, and print-ready PDF books.
 
 Full documentation on the [wiki](https://github.com/Blake-Eryx/Open-Publisher2/wiki)
 
 ## Why is Open-Publisher
-My wife is [an author](https://www.backthatelfup.com) and I handle all of the digital/print book creation. After 4+ years of using various tools I decided to streamline my process.
-
 It can be a pain to manually update a Bio page with new information or new books for example. Doing a simple thing like that for 3 formats of a dozen books can take time and introduces the possibility of new typos with every change.
 
 Pandoc is a great tool to convert markdown files to html/epub/pdf/etc., but its epub templating is still very minimalistic. It requires multiple stages to create a template that allows me to reuse common pages such as biography, licensing, etc.
