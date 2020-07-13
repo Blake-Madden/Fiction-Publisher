@@ -23,8 +23,8 @@ This markdown file can then be passed along to Pandoc and converted to epub/mobi
 ## Version 2.0 Roadmap
 
 - [ ] Remove Jekyll dependency
-- [ ] Create Powershell script to build skeleton files
-- [ ] Create Powershell build script
+- [ ] Create PowerShell script to build skeleton files
+- [ ] Create PowerShell build script
   - [X] PDF (print)
   - [X] epub
   - [ ] mobi
@@ -39,7 +39,7 @@ This markdown file can then be passed along to Pandoc and converted to epub/mobi
 - [X] Add formatting to print output
   - [X] Format start of chapter with drop cap and smart caps
   - [X] Add swash font style to drop cap
-  - [X] Add flourishes between screne breaks
+  - [X] Add flourishes between scene breaks
   - [X] Unindent starting paragraph of new scenes
 - [ ] Add formatting to epub/mobi output
   - [X] Format start of chapter with drop cap and smart caps
