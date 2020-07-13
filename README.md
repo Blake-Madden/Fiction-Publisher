@@ -19,3 +19,10 @@ By using Jekyll's templating I'm able to create files that slightly differ based
 Jekyll allows me to create custom templates, multiple 'includes', and then output them into a perfectly formatted Markdown file.
 
 This markdown file can then be passed along to Pandoc and converted to epub/mobi/pdf.
+
+## Version 2.0 Roadmap
+
+- [ ] Remove Jekyll dependency
+- [ ] Create Powershell script to build skeleton files
+- [ ] Create Powershell script to build books
+- [ ] Add ability to build from multiple markdown files (instead of monolith Chapters.md)
