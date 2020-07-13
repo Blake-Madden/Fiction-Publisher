@@ -32,6 +32,7 @@ This markdown file can then be passed along to Pandoc and converted to epub/mobi
 - [ ] Add formatting to print output
   - [ ] Format start of chapter with drop cap and smart caps
   - [ ] Add flourishes between screne breaks
+  - [ ] Unindent starting paragraph of new scenes
 - [ ] Add formatting to epub/mobi output
   - [ ] Format start of chapter with drop cap and smart caps
   - [ ] Add flourishes between screne breaks
