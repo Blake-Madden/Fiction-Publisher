@@ -29,6 +29,8 @@ This markdown file can then be passed along to Pandoc and converted to epub/mobi
   - [ ] Check for paragraphs not separated by blank lines
   - [ ] Check for straight quotes
   - [ ] Check for extra spaces
+- [ ] Remove YAML headers from markdowns files
+- [ ] Add header to start of chapters if missing (based on parent folder name)
 - [ ] Add formatting to print output
   - [ ] Format start of chapter with drop cap and smart caps
   - [ ] Add flourishes between screne breaks
