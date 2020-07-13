@@ -24,7 +24,11 @@ This markdown file can then be passed along to Pandoc and converted to epub/mobi
 
 - [ ] Remove Jekyll dependency
 - [ ] Create Powershell script to build skeleton files
-- [ ] Create Powershell script to build books
+- [ ] Create Powershell build script
+  - [ ] PDF (print)
+  - [ ] epub
+  - [ ] mobi
+  - [ ] Smashwords epub
 - [ ] Add markdown validations
   - [ ] Check for paragraphs not separated by blank lines
   - [ ] Check for straight quotes
