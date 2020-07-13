@@ -25,4 +25,8 @@ This markdown file can then be passed along to Pandoc and converted to epub/mobi
 - [ ] Remove Jekyll dependency
 - [ ] Create Powershell script to build skeleton files
 - [ ] Create Powershell script to build books
+- [ ] Add markdown validations
+  - [ ] Check for paragraphs not separated by blank lines
+  - [ ] Check for straight quotes
+  - [ ] Check for extra spaces
 - [ ] Add ability to build from multiple markdown files (instead of monolith Chapters.md)
