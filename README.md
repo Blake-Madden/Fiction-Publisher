@@ -30,3 +30,4 @@ This markdown file can then be passed along to Pandoc and converted to epub/mobi
   - [ ] Check for straight quotes
   - [ ] Check for extra spaces
 - [ ] Add ability to build from multiple markdown files (instead of monolith Chapters.md)
+  - [ ] Support [Manuskript](https://github.com/olivierkes/manuskript) folder structure
