@@ -1,5 +1,0 @@
-source: Source
-exclude: [vendor, Gemfile, Gemfile.lock, Rakefile, .gitignore, README.md]
-
-# Build settings
-markdown: kramdown
