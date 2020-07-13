@@ -29,5 +29,11 @@ This markdown file can then be passed along to Pandoc and converted to epub/mobi
   - [ ] Check for paragraphs not separated by blank lines
   - [ ] Check for straight quotes
   - [ ] Check for extra spaces
+- [ ] Add formatting to print output
+  - [ ] Format start of chapter with drop cap and smart caps
+  - [ ] Add flourishes between screne breaks
+- [ ] Add formatting to epub/mobi output
+  - [ ] Format start of chapter with drop cap and smart caps
+  - [ ] Add flourishes between screne breaks
 - [ ] Add ability to build from multiple markdown files (instead of monolith Chapters.md)
   - [ ] Support [Manuskript](https://github.com/olivierkes/manuskript) folder structure
