@@ -3,7 +3,7 @@ Open publisher is really just a couple of bash scripts that wrap around Jekyll, 
 
 Write your manuscript in markdown, run a script, and receive some beautifully formatted ePub, Mobi, and print-ready PDF books.
 
-Full documentation on the [wiki](https://github.com/chrisanthropic/Open-Publisher/wiki)
+Full documentation on the [wiki](https://github.com/Blake-Eryx/Open-Publisher2/wiki)
 
 ## Why is Open-Publisher
 My wife is [an author](https://www.backthatelfup.com) and I handle all of the digital/print book creation. After 4+ years of using various tools I decided to streamline my process.
