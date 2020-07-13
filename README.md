@@ -34,10 +34,12 @@ This markdown file can then be passed along to Pandoc and converted to epub/mobi
 - [ ] Add header to start of chapters if missing (based on parent folder name)
 - [ ] Add formatting to print output
   - [ ] Format start of chapter with drop cap and smart caps
+  - [ ] Add swash font style to drop cap
   - [ ] Add flourishes between screne breaks
   - [ ] Unindent starting paragraph of new scenes
 - [ ] Add formatting to epub/mobi output
   - [ ] Format start of chapter with drop cap and smart caps
+  - [ ] Add swash font style to drop cap
   - [ ] Add flourishes between screne breaks
 - [ ] Add ability to build from multiple markdown files (instead of monolith Chapters.md)
   - [ ] Support [Manuskript](https://github.com/olivierkes/manuskript) folder structure
