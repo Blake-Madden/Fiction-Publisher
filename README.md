@@ -30,6 +30,6 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Open-Publisher2/w
   - [X] Format start of chapter with drop cap and smart caps
   - [ ] Add swash font style to drop cap
   - [ ] Add flourishes between scene breaks
-- [X] Add Draft (Word) output
+- [X] Add draft (Word) output
 - [X] Add ability to build from multiple markdown files (instead of monolith Chapters.md)
   - [X] Support [Manuskript](https://github.com/olivierkes/manuskript) folder structure
