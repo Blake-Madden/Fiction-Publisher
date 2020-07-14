@@ -90,7 +90,7 @@ foreach ($bookName in $Books)
 
     # Build a draft copy before doing any output-specific formatting
     Write-Output "Building draft copy..."
-    pandoc --toc "./Books/$bookName/settings.yml" --reference-doc ./DraftTemplate.docx $mdFiles -o "./Books/Output/$bookName DRAFT.docx"
+    pandoc --toc "./Books/$bookName/settings.yml" --reference-doc "./Pandoc/templates/draft.docx" $mdFiles -o "./Books/Output/$bookName DRAFT.docx"
 
     # Create a bio page so we can append it to the end of the main document
     pandoc --pdf-engine=xelatex -o "./Books/Output/bio.tex" "./Books/bio.md"
@@ -153,8 +153,8 @@ foreach ($bookName in $Books)
 
     # Print publication output
     Write-Output "Building for print..."
-    pandoc --top-level-division=chapter --template=./Pandoc/templates/cs-5x8-pdf.latex --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" "./Books/$bookName/settings.yml" $mdFiles -o "./Books/Output/$bookName-5x8-print.pdf" -A "./Books/Output/bio.tex"
-    pandoc --top-level-division=chapter --template=./Pandoc/templates/cs-6x9-pdf.latex --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" "./Books/$bookName/settings.yml" $mdFiles -o "./Books/Output/$bookName-6x9-print.pdf" -A "./Books/Output/bio.tex"
+    pandoc --top-level-division=chapter --template="./Pandoc/templates/cs-5x8-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" "./Books/$bookName/settings.yml" $mdFiles -o "./Books/Output/$bookName-5x8-print.pdf" -A "./Books/Output/bio.tex"
+    pandoc --top-level-division=chapter --template="./Pandoc/templates/cs-6x9-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" "./Books/$bookName/settings.yml" $mdFiles -o "./Books/Output/$bookName-6x9-print.pdf" -A "./Books/Output/bio.tex"
     
     # clean up
     ###############################################################
