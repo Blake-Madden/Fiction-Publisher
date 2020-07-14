@@ -139,6 +139,9 @@ $endif$
 %% Export PDF as PDF/X-1a for best Createspace results
 %\usepackage[X-1a]{pdfx}
 
+$for(header-includes)$
+$header-includes$
+$endfor$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -233,9 +236,6 @@ $endif$
 
 %% Make our quotes curly
 \defaultfontfeatures{Mapping=tex-text}
-
-%% Provides calligraphy font
-\usepackage{calligra}
 
 %% Provides symbols for flourishes (scene dividers)
 \usepackage{adforn}
