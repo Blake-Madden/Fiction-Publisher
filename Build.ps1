@@ -1,4 +1,4 @@
-# clean up any output from previous run
+﻿# clean up any output from previous run
 if ([System.IO.Directory]::Exists("./Books/Output"))
     {
     $oldOutputs = [System.IO.Directory]::EnumerateFiles("./Books/Output", "*.*", [IO.SearchOption]::TopDirectoryOnly)
