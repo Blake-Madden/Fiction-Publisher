@@ -90,10 +90,10 @@ foreach ($bookName in $Books)
 
     # Build a draft copy before doing any output-specific formatting
     Write-Output "Building draft copy..."
-    pandoc --toc "./Books/$bookName/settings.yml" --reference-doc "./Pandoc/templates/draft.docx" $mdFiles -o "./Books/Output/$bookName DRAFT.docx"
+    pandoc --toc "./Books/$bookName/config.yml" --reference-doc "./Pandoc/templates/draft.docx" $mdFiles -o "./Books/Output/$bookName DRAFT.docx"
 
     # Create a bio page so we can append it to the end of the main document
-    pandoc --pdf-engine=xelatex -o "./Books/Output/bio.tex" "./Books/bio.md"
+    pandoc --pdf-engine=xelatex -o "./Books/$bookName/build/bio.tex" "./Books/$bookName/bio.md"
 
     # format for print (i.e., latex) conversion
     Write-Output "Formatting for print..."
@@ -108,7 +108,7 @@ foreach ($bookName in $Books)
                                      '$1\vspace{5mm}\centerline{\adforn{60}\quad\adforn{11}\quad\adforn{32}}\vspace{5mm}'
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
-        $content = $content -replace '(^[\s]*#[^\r\n]+[\r\n]+)([ë'"ì´]?[A-Z¿-÷ÿ-›])([\w'í]*[\s,])',
+        $content = $content -replace '(^[\s]*#[^\r\n]+[\r\n]+)([‚Äò'"‚Äú¬´]?[A-Z√Ä-√ñ√ò-√ù])([\w'‚Äô]*[\s,])',
                                      '$1\lettrine{$2}{$3}'
         
         # files that don't start with zero should be new scenes in a chapter, so unindent their first paragraph
@@ -130,7 +130,7 @@ foreach ($bookName in $Books)
 
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
-        $content = $content -replace '(^[\s]*#[^\r\n]+[\r\n]+)([ë'"ì´]?[A-Z¿-÷ÿ-›])([\w'í]*[\s,])',
+        $content = $content -replace '(^[\s]*#[^\r\n]+[\r\n]+)([‚Äò'"‚Äú¬´]?[A-Z√Ä-√ñ√ò-√ù])([\w'‚Äô]*[\s,])',
                                      '$1<span class="drop-caps">$2</span><span class="small-caps">$3</span>'
 
         [void] [System.IO.File]::WriteAllText($file, $content)
@@ -149,18 +149,16 @@ foreach ($bookName in $Books)
 
     # epub
     Write-Output "Building for e-pub..."
-    pandoc --top-level-division=chapter "./Books/$bookName/settings.yml" --toc --toc-depth=1 --template="./Pandoc/templates/custom-epub.html" --css="./Pandoc/css/style.css" -f markdown+smart -t epub3 -o "./Books/Output/$bookName.epub" $epubMdFiles
+    pandoc --top-level-division=chapter "./Books/$bookName/config.yml" --toc --toc-depth=1 --template="./Pandoc/templates/custom-epub.html" --css="./Pandoc/css/style.css" -f markdown+smart -t epub3 -o "./Books/Output/$bookName.epub" $epubMdFiles
 
     # Print publication output
     Write-Output "Building for print..."
-    pandoc --top-level-division=chapter --template="./Pandoc/templates/cs-5x8-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" "./Books/$bookName/settings.yml" $mdFiles -o "./Books/Output/$bookName-5x8-print.pdf" -A "./Books/Output/bio.tex"
-    pandoc --top-level-division=chapter --template="./Pandoc/templates/cs-6x9-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" "./Books/$bookName/settings.yml" $mdFiles -o "./Books/Output/$bookName-6x9-print.pdf" -A "./Books/Output/bio.tex"
+    pandoc --top-level-division=chapter --template="./Pandoc/templates/cs-5x8-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" "./Books/$bookName/config.yml" $mdFiles -o "./Books/Output/$bookName-5x8-print.pdf" -A "./Books/$bookName/build/bio.tex"
+    pandoc --top-level-division=chapter --template="./Pandoc/templates/cs-6x9-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" "./Books/$bookName/config.yml" $mdFiles -o "./Books/Output/$bookName-6x9-print.pdf" -A "./Books/$bookName/build/bio.tex"
     
     # clean up
     ###############################################################
 
     Get-ChildItem -Path "./Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
     Remove-Item -Path "./Books/$bookName/build"
-
-    Remove-Item -Path "./Books/Output/bio.tex"
     }
