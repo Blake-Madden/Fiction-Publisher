@@ -8,6 +8,8 @@ $Books = Get-ChildItem "./Books" -Directory
 
 foreach ($bookName in $Books)
   {
+  if ("$bookName" -eq "Output")
+    { continue }
   # create a skeleton bio
   if (-not (Test-Path "./Books/$bookName/bio.md" -PathType Leaf))
     {
