@@ -8,6 +8,7 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Open-Publisher2/w
 ## Version 2.0 Roadmap
 
 - [ ] Remove Jekyll dependency
+- [x] Create PowerShell new project script
 - [ ] Create PowerShell build script
   - [X] PDF (print)
   - [X] epub
