@@ -1,4 +1,4 @@
-﻿# Fills Book projects (in "Books" folder) with configuration, bio, bibliography, and review templates
+﻿# Fills Book projects (in "Books" folder) with configuration, bio, and review templates
 
 # create empty Books folder in not not available
 New-Item -ItemType Directory -Path "./Books" -Force | Out-Null
@@ -16,16 +16,6 @@ foreach ($bookName in $Books)
     try
       {
       Set-Content -Encoding UTF8 -Path "./Books/$bookName/bio.md" -Value "" -ErrorAction Stop
-      }
-    catch
-      { Write-Error "Unable to create file. The error was $($_.Exception.Message)" }
-    }
-  # create a skeleton bibliography
-  if (-not (Test-Path "./Books/$bookName/bibliography.md" -PathType Leaf))
-    {
-    try
-      {
-      Set-Content -Encoding UTF8 -Path "./Books/$bookName/bibliography.md" -Value "" -ErrorAction Stop
       }
     catch
       { Write-Error "Unable to create file. The error was $($_.Exception.Message)" }
