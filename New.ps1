@@ -46,7 +46,7 @@ foreach ($bookName in $Books)
     try
       {
       Set-Content -Encoding UTF8 -Path "./Books/$bookName/amazon_review.md" `
-        -Value ("\\" + [environment]::NewLine + "\\" + [environment]::NewLine + "##### If you enjoyed this book please consider leaving a [review](https://www.amazon.com/review/create-review?asin=XXXXXXXXXX) on Amazon.") `
+        -Value ("\\" + [environment]::NewLine + "\\" + [environment]::NewLine + [environment]::NewLine + "##### If you enjoyed this book please consider leaving a [review](https://www.amazon.com/review/create-review?asin=XXXXXXXXXX) on Amazon.") `
         -ErrorAction Stop
       }
     catch
