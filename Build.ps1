@@ -18,7 +18,7 @@ New-Item -ItemType Directory -Path "./Books/Output" -Force | Out-Null
 
 foreach ($bookName in $Books)
     {
-    Write-Output "Processing '$bookName'..."
+    Write-Host -ForegroundColor DarkGreen -BackgroundColor White "Processing '$bookName'..."
 
     # Copy chapter markdown files into temp folders to be processed
     ###############################################################
@@ -150,7 +150,7 @@ foreach ($bookName in $Books)
     # Write out any formatting warnings
     if ($WarningList.Count)
         {
-        Write-Output "Formatting issues found in source files. Please review 'Output/$bookName Format Warnings.log'"
+        Write-Host -ForegroundColor Red  "Formatting issues found in source files. Please review 'Output/$bookName Format Warnings.log'"
         $WarningList.Sort()
         $WarningList -replace '(.*found in ")(.*[/\\]build[/\\]outline[/\\])','$1' | Out-File "./Books/Output/$bookName Format Warnings.log"
         }
