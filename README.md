@@ -21,10 +21,12 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Open-Publisher2/w
   - [X] Check for tabs
 - [ ] Remove YAML headers from markdowns files
 - [ ] Add configurable copyright page templates
+  - [X] Add creative commons LaTeX template
+  - [ ] Add creative commons HTML template
 - [X] Add header to start of chapters if missing (based on parent folder name)
 - [X] Add formatting to print output
   - [X] Format start of chapter with drop cap and smart caps
-  - [X] Add swash font style to drop cap
+  - [ ] Add swash font style to drop cap
   - [X] Add flourishes between scene breaks
   - [X] Unindent starting paragraph of new scenes
 - [ ] Add formatting to epub/mobi output
