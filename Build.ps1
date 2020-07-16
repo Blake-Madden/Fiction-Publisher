@@ -1,4 +1,7 @@
-﻿# clean up any output from previous run
+﻿# Should already be the case, but ensure current directory is the path of the build script
+Set-Location $PSScriptRoot
+
+# clean up any output from previous run
 if ([System.IO.Directory]::Exists("./Books/Output"))
     {
     $oldOutputs = [System.IO.Directory]::EnumerateFiles("./Books/Output", "*.*", [IO.SearchOption]::TopDirectoryOnly)
@@ -92,8 +95,17 @@ foreach ($bookName in $Books)
     Write-Output "Building draft copy..."
     pandoc --toc "./Books/$bookName/config.yml" --reference-doc "./Pandoc/templates/draft.docx" $mdFiles -o "./Books/Output/$bookName DRAFT.docx"
 
-    # Create a bio page so we can append it to the end of the main document
+    # Create a bio page so we can append it to the end of the main print documents
     pandoc --pdf-engine=xelatex -o "./Books/$bookName/build/bio.tex" "./Books/$bookName/bio.md"
+
+    # Create the latex copyright file to insert into the print documents.
+    # Note that the processed file will temporarily be in the script folder because the
+    # print latex files will \input{} from the CWD.
+    # Also, note that we are simply using the copyright template and expanding the variables from our config.yml
+    # into it. The "dummy.txt" is just a blank input file required by pandoc.
+    "" | Out-File -Encoding utf8 "./Books/$bookName/build/dummy.txt"
+    pandoc --pdf-engine=xelatex --metadata-file "./Books/$bookName/config.yml" -o "./copyright.latex" -t latex `
+           --template="./Pandoc/templates/copyright/creative-commons.latex" "./Books/$bookName/build/dummy.txt"
 
     # format for print (i.e., latex) conversion
     Write-Output "Formatting for print..."
@@ -128,7 +140,6 @@ foreach ($bookName in $Books)
 
         $content = [System.IO.File]::ReadAllText($file)
 
-
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
         $content = $content -replace '(^[\s]*#[^\r\n]+[\r\n]+)([‘'"“«]?[A-ZÀ-ÖØ-Ý])([\w'’]*[\s,])',
                                      '$1<span class="drop-caps">$2</span><span class="small-caps">$3</span>'
@@ -141,7 +152,7 @@ foreach ($bookName in $Books)
         {
         Write-Output "Formatting issues found in source files. Please review 'Output/$bookName Format Warnings.log'"
         $WarningList.Sort()
-        $WarningList -replace '(.*found in ")(.*[/\\]build[/\\]outline[/\\])','$1' | Out-File -FilePath "./Books/Output/$bookName Format Warnings.log"
+        $WarningList -replace '(.*found in ")(.*[/\\]build[/\\]outline[/\\])','$1' | Out-File "./Books/Output/$bookName Format Warnings.log"
         }
 
     # Build the books
@@ -149,16 +160,20 @@ foreach ($bookName in $Books)
 
     # epub
     Write-Output "Building for e-pub..."
-    pandoc --top-level-division=chapter "./Books/$bookName/config.yml" --toc --toc-depth=1 --template="./Pandoc/templates/custom-epub.html" --css="./Pandoc/css/style.css" -f markdown+smart -t epub3 -o "./Books/Output/$bookName.epub" $epubMdFiles
+    pandoc --top-level-division=chapter --metadata-file "./Books/$bookName/config.yml" --toc --toc-depth=1 --template="./Pandoc/templates/custom-epub.html" --css="./Pandoc/css/style.css" -f markdown+smart -t epub3 -o "./Books/Output/$bookName.epub" $epubMdFiles
 
     # Print publication output
     Write-Output "Building for print..."
-    pandoc --top-level-division=chapter --template="./Pandoc/templates/cs-5x8-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" "./Books/$bookName/config.yml" $mdFiles -o "./Books/Output/$bookName-5x8-print.pdf" -A "./Books/$bookName/build/bio.tex"
-    pandoc --top-level-division=chapter --template="./Pandoc/templates/cs-6x9-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" "./Books/$bookName/config.yml" $mdFiles -o "./Books/Output/$bookName-6x9-print.pdf" -A "./Books/$bookName/build/bio.tex"
+    pandoc --top-level-division=chapter --template="./Pandoc/templates/cs-5x8-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
+           --metadata-file "./Books/$bookName/config.yml" $mdFiles -o "./Books/Output/$bookName-5x8-print.pdf" -A "./Books/$bookName/build/bio.tex"
+    pandoc --top-level-division=chapter --template="./Pandoc/templates/cs-6x9-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
+           --metadata-file "./Books/$bookName/config.yml" $mdFiles -o "./Books/Output/$bookName-6x9-print.pdf" -A "./Books/$bookName/build/bio.tex"
     
     # clean up
     ###############################################################
 
     Get-ChildItem -Path "./Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
     Remove-Item -Path "./Books/$bookName/build"
+
+    Remove-Item -Path "./copyright.latex"
     }
