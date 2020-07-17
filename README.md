@@ -20,7 +20,7 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Open-Publisher2/w
   - [X] Check for extra spaces
   - [X] Check for tabs
 - [ ] Remove YAML headers from markdowns files
-- [ ] Add configurable copyright page templates
+- [X] Add configurable copyright page templates
   - [X] Add creative commons LaTeX template
   - [X] Add creative commons HTML template
 - [X] Add header to start of chapters if missing (based on parent folder name)
