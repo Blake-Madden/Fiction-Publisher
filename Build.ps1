@@ -105,7 +105,13 @@ foreach ($bookName in $Books)
     # into it. The "dummy.txt" is just a blank input file required by pandoc.
     "" | Out-File -Encoding utf8 "./Books/$bookName/build/dummy.txt"
     pandoc --pdf-engine=xelatex --metadata-file "./Books/$bookName/config.yml" -o "./copyright.latex" -t latex `
-           --template="./Pandoc/templates/copyright/creative-commons.latex" "./Books/$bookName/build/dummy.txt"
+           --template="./Pandoc/templates/copyright/creative-commons.latex" -i "./Books/$bookName/build/dummy.txt"
+
+    # Create the copyright file to insert into the epub documents.
+    # Also, note that we are simply using the copyright template and expanding the variables from our config.yml into it.
+    pandoc --metadata-file "./Books/$bookName/config.yml" -o "./Books/$bookName/build/copyright.md" `
+           --template="./Pandoc/templates/copyright/creative-commons.md" `
+           -i "./Books/$bookName/build/dummy.txt"
 
     # format for print (i.e., latex) conversion
     Write-Output "Formatting for print..."
@@ -160,7 +166,8 @@ foreach ($bookName in $Books)
 
     # epub
     Write-Output "Building for e-pub..."
-    pandoc --top-level-division=chapter --metadata-file "./Books/$bookName/config.yml" --toc --toc-depth=1 --template="./Pandoc/templates/custom-epub.html" --css="./Pandoc/css/style.css" -f markdown+smart -t epub3 -o "./Books/Output/$bookName.epub" $epubMdFiles
+    pandoc --top-level-division=chapter --metadata-file "./Books/$bookName/config.yml" --toc --toc-depth=1 --template="./Pandoc/templates/custom-epub.html" `
+           --css="./Pandoc/css/style.css" -f markdown+smart -t epub3 -o "./Books/Output/$bookName.epub" -i "./Books/$bookName/build/copyright.md" $epubMdFiles
 
     # Print publication output
     Write-Output "Building for print..."
