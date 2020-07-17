@@ -161,12 +161,6 @@ foreach ($bookName in $Books)
     # Build the books
     ###############################################################
 
-    # epub
-    Write-Output "Building for e-pub..."
-    Set-Location "$PSScriptRoot/Books/$bookName/" # to properly reference paths in YAML config file and images
-    pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" --toc --toc-depth=1 --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
-           --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles
-
     # Print publication output
     Write-Output "Building for print..."
     Set-Location "$PSScriptRoot/Books/$bookName/build/" # for input{} in latex template in build folder to work
@@ -175,6 +169,12 @@ foreach ($bookName in $Books)
     pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/cs-6x9-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
            --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-6x9-print.pdf" -A "$PSScriptRoot/Books/$bookName/build/bio.tex"
     
+    # epub
+    Write-Output "Building for e-pub..."
+    Set-Location "$PSScriptRoot/Books/$bookName/" # to properly reference paths in YAML config file and images
+    pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" --toc --toc-depth=1 --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
+           --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles
+
     # clean up
     ###############################################################
 
