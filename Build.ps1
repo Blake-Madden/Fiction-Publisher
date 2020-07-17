@@ -1,20 +1,17 @@
-﻿# Should already be the case, but ensure current directory is the path of the build script
-Set-Location $PSScriptRoot
-
-# clean up any output from previous run
-if ([System.IO.Directory]::Exists("./Books/Output"))
+﻿# clean up any output from previous run
+if ([System.IO.Directory]::Exists("$PSScriptRoot/Books/Output"))
     {
-    $oldOutputs = [System.IO.Directory]::EnumerateFiles("./Books/Output", "*.*", [IO.SearchOption]::TopDirectoryOnly)
+    $oldOutputs = [System.IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/Output", "*.*", [IO.SearchOption]::TopDirectoryOnly)
     foreach ($oldOutput in $oldOutputs)
         { Remove-Item -Path "$oldOutput" }
-    Remove-Item -Path "./Books/Output"
+    Remove-Item -Path "$PSScriptRoot/Books/Output"
     }
 
 # get a list of all book projects in the Books folder
-$Books = Get-ChildItem ./Books -Directory
+$Books = Get-ChildItem "$PSScriptRoot/Books" -Directory
 
 # create fresh output folder after getting names of book projects
-New-Item -ItemType Directory -Path "./Books/Output" -Force | Out-Null
+New-Item -ItemType Directory -Path "$PSScriptRoot/Books/Output" -Force | Out-Null
 
 foreach ($bookName in $Books)
     {
@@ -25,12 +22,12 @@ foreach ($bookName in $Books)
 
     # copy source files into build folder
     Write-Output "Copying files..."
-    New-Item -ItemType Directory -Path "./Books/$bookName/build" -Force | Out-Null
-    Get-ChildItem -Path "./Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
-    Copy-Item -Path "./Books/$bookName/outline" -Destination "./Books/$bookName/build/" -Recurse -Force
+    New-Item -ItemType Directory -Path "$PSScriptRoot/Books/$bookName/build" -Force | Out-Null
+    Get-ChildItem -Path "$PSScriptRoot/Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
+    Copy-Item -Path "$PSScriptRoot/Books/$bookName/outline" -Destination "$PSScriptRoot/Books/$bookName/build/" -Recurse -Force
 
     # get all the chapters and scenes (these should all be prefixed with numbers to control their ordering)
-    $mdFiles = [System.IO.Directory]::EnumerateFiles("./Books/$bookName/build/outline", "*.md", [IO.SearchOption]::AllDirectories)
+    $mdFiles = [System.IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/$bookName/build/outline", "*.md", [IO.SearchOption]::AllDirectories)
 
     # check for possible formatting issues from the markdown files that author may want to fix
     ###############################################################
@@ -88,30 +85,30 @@ foreach ($bookName in $Books)
         }
 
     # source markdown files are cleaned up, now copy to different folders to pre-process for the different output formats
-    Copy-Item -Path "./Books/$bookName/build/outline/" -Destination "./Books/$bookName/build/epub/" -Recurse -Force
-    $epubMdFiles = [System.IO.Directory]::EnumerateFiles("./Books/$bookName/build/epub", "*.md", [IO.SearchOption]::AllDirectories)
+    Copy-Item -Path "$PSScriptRoot/Books/$bookName/build/outline/" -Destination "$PSScriptRoot/Books/$bookName/build/epub/" -Recurse -Force
+    $epubMdFiles = [System.IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/$bookName/build/epub", "*.md", [IO.SearchOption]::AllDirectories)
 
     # Build a draft copy before doing any output-specific formatting
     Write-Output "Building draft copy..."
-    pandoc --toc "./Books/$bookName/config.yml" --reference-doc "./Pandoc/templates/draft.docx" $mdFiles -o "./Books/Output/$bookName DRAFT.docx"
+    pandoc --toc "$PSScriptRoot/Books/$bookName/config.yml" --reference-doc "$PSScriptRoot/Pandoc/templates/draft.docx" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName DRAFT.docx"
 
     # Create a bio page so we can append it to the end of the main print documents
-    pandoc --pdf-engine=xelatex -o "./Books/$bookName/build/bio.tex" "./Books/$bookName/bio.md"
+    pandoc --pdf-engine=xelatex -o "$PSScriptRoot/Books/$bookName/build/bio.tex" "$PSScriptRoot/Books/$bookName/bio.md"
 
     # Create the latex copyright file to insert into the print documents.
     # Note that the processed file will temporarily be in the script folder because the
     # print latex files will \input{} from the CWD.
     # Also, note that we are simply using the copyright template and expanding the variables from our config.yml
     # into it. The "dummy.txt" is just a blank input file required by pandoc.
-    "" | Out-File -Encoding utf8 "./Books/$bookName/build/dummy.txt"
-    pandoc --pdf-engine=xelatex --metadata-file "./Books/$bookName/config.yml" -o "./copyright.latex" -t latex `
-           --template="./Pandoc/templates/copyright/creative-commons.latex" -i "./Books/$bookName/build/dummy.txt"
+    "" | Out-File -Encoding utf8 "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/copyright.latex" -t latex `
+           --template="$PSScriptRoot/Pandoc/templates/copyright/creative-commons.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the copyright file to insert into the epub documents.
     # Also, note that we are simply using the copyright template and expanding the variables from our config.yml into it.
-    pandoc --metadata-file "./Books/$bookName/config.yml" -o "./Books/$bookName/build/copyright.md" `
-           --template="./Pandoc/templates/copyright/creative-commons.md" `
-           -i "./Books/$bookName/build/dummy.txt"
+    pandoc --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/copyright.md" `
+           --template="$PSScriptRoot/Pandoc/templates/copyright/creative-commons.md" `
+           -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # format for print (i.e., latex) conversion
     Write-Output "Formatting for print..."
@@ -158,7 +155,7 @@ foreach ($bookName in $Books)
         {
         Write-Host -ForegroundColor Red  "Formatting issues found in source files. Please review 'Output/$bookName Format Warnings.log'"
         $WarningList.Sort()
-        $WarningList -replace '(.*found in ")(.*[/\\]build[/\\]outline[/\\])','$1' | Out-File "./Books/Output/$bookName Format Warnings.log"
+        $WarningList -replace '(.*found in ")(.*[/\\]build[/\\]outline[/\\])','$1' | Out-File "$PSScriptRoot/Books/Output/$bookName Format Warnings.log"
         }
 
     # Build the books
@@ -166,21 +163,21 @@ foreach ($bookName in $Books)
 
     # epub
     Write-Output "Building for e-pub..."
-    pandoc --top-level-division=chapter --metadata-file "./Books/$bookName/config.yml" --toc --toc-depth=1 --template="./Pandoc/templates/custom-epub.html" `
-           --css="./Pandoc/css/style.css" -f markdown+smart -t epub3 -o "./Books/Output/$bookName.epub" -i "./Books/$bookName/build/copyright.md" $epubMdFiles
+    pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" --toc --toc-depth=1 --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
+           --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles
 
     # Print publication output
     Write-Output "Building for print..."
-    pandoc --top-level-division=chapter --template="./Pandoc/templates/cs-5x8-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
-           --metadata-file "./Books/$bookName/config.yml" $mdFiles -o "./Books/Output/$bookName-5x8-print.pdf" -A "./Books/$bookName/build/bio.tex"
-    pandoc --top-level-division=chapter --template="./Pandoc/templates/cs-6x9-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
-           --metadata-file "./Books/$bookName/config.yml" $mdFiles -o "./Books/Output/$bookName-6x9-print.pdf" -A "./Books/$bookName/build/bio.tex"
+    pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/cs-5x8-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
+           --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-5x8-print.pdf" -A "$PSScriptRoot/Books/$bookName/build/bio.tex"
+    pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/cs-6x9-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
+           --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-6x9-print.pdf" -A "$PSScriptRoot/Books/$bookName/build/bio.tex"
     
     # clean up
     ###############################################################
 
-    Get-ChildItem -Path "./Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
-    Remove-Item -Path "./Books/$bookName/build"
+    Get-ChildItem -Path "$PSScriptRoot/Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
+    Remove-Item -Path "$PSScriptRoot/Books/$bookName/build"
 
-    Remove-Item -Path "./copyright.latex"
+    Remove-Item -Path "$PSScriptRoot/copyright.latex"
     }
