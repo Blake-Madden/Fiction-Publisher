@@ -20,9 +20,10 @@ foreach ($bookName in $Books)
     # Copy chapter markdown files into temp folders to be processed
     ###############################################################
 
-    # copy source files into build folder
+    # copy source files into build folder and set that to the current working directory
     Write-Output "Copying files..."
     New-Item -ItemType Directory -Path "$PSScriptRoot/Books/$bookName/build" -Force | Out-Null
+    Set-Location "$PSScriptRoot/Books/$bookName/build/"
     Get-ChildItem -Path "$PSScriptRoot/Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
     Copy-Item -Path "$PSScriptRoot/Books/$bookName/outline" -Destination "$PSScriptRoot/Books/$bookName/build/" -Recurse -Force
 
@@ -101,7 +102,7 @@ foreach ($bookName in $Books)
     # Also, note that we are simply using the copyright template and expanding the variables from our config.yml
     # into it. The "dummy.txt" is just a blank input file required by pandoc.
     "" | Out-File -Encoding utf8 "$PSScriptRoot/Books/$bookName/build/dummy.txt"
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/copyright.latex" -t latex `
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/copyright.latex" -t latex `
            --template="$PSScriptRoot/Pandoc/templates/copyright/creative-commons.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the copyright file to insert into the epub documents.
@@ -178,6 +179,4 @@ foreach ($bookName in $Books)
 
     Get-ChildItem -Path "$PSScriptRoot/Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
     Remove-Item -Path "$PSScriptRoot/Books/$bookName/build"
-
-    Remove-Item -Path "$PSScriptRoot/copyright.latex"
     }
