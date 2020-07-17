@@ -23,7 +23,6 @@ foreach ($bookName in $Books)
     # copy source files into build folder and set that to the current working directory
     Write-Output "Copying files..."
     New-Item -ItemType Directory -Path "$PSScriptRoot/Books/$bookName/build" -Force | Out-Null
-    Set-Location "$PSScriptRoot/Books/$bookName/build/"
     Get-ChildItem -Path "$PSScriptRoot/Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
     Copy-Item -Path "$PSScriptRoot/Books/$bookName/outline" -Destination "$PSScriptRoot/Books/$bookName/build/" -Recurse -Force
 
@@ -164,11 +163,13 @@ foreach ($bookName in $Books)
 
     # epub
     Write-Output "Building for e-pub..."
+    Set-Location "$PSScriptRoot/Books/$bookName/" # to properly reference paths in YAML config file and images
     pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" --toc --toc-depth=1 --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles
 
     # Print publication output
     Write-Output "Building for print..."
+    Set-Location "$PSScriptRoot/Books/$bookName/build/" # for input{} in latex template in build folder to work
     pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/cs-5x8-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
            --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-5x8-print.pdf" -A "$PSScriptRoot/Books/$bookName/build/bio.tex"
     pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/cs-6x9-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
