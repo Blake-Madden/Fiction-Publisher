@@ -22,7 +22,7 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Open-Publisher2/w
 - [ ] Remove YAML headers from markdowns files
 - [ ] Add configurable copyright page templates
   - [X] Add creative commons LaTeX template
-  - [ ] Add creative commons HTML template
+  - [X] Add creative commons HTML template
 - [X] Add header to start of chapters if missing (based on parent folder name)
 - [X] Add formatting to print output
   - [X] Format start of chapter with drop cap and smart caps
