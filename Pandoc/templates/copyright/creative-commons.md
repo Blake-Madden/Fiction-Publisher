@@ -13,6 +13,8 @@
 
 <p style="text-indent: 0;">This book is distributed under a Creative Commons attribution-Non-Commercial-Sharealike 4.0 License.</p><br />
 
+<img src="ccbynasa.png" class="center-image" height=46><br />
+
 <p style="text-indent: 0;">That means you are free:</p><br />
 
 <p style="text-indent: 0;"><strong>To Share</strong> -- copy and redistribute the material in any medium or format.</p>

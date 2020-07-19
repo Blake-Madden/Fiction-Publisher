@@ -15,7 +15,7 @@ New-Item -ItemType Directory -Path "$PSScriptRoot/Books/Output" -Force | Out-Nul
 
 foreach ($bookName in $Books)
     {
-    Write-Host -ForegroundColor DarkGreen -BackgroundColor White "Processing '$bookName'..."
+    Write-Host -ForegroundColor White -BackgroundColor Black "Processing '$bookName'..."
 
     # Copy chapter markdown files into temp folders to be processed
     ###############################################################
@@ -95,6 +95,20 @@ foreach ($bookName in $Books)
     # Create a bio page so we can append it to the end of the main print documents
     pandoc --pdf-engine=xelatex -o "$PSScriptRoot/Books/$bookName/build/bio.tex" "$PSScriptRoot/Books/$bookName/bio.md"
 
+    # copy epub cover image to build
+    $coverImage = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^cover-image:[ ]*([\w-/\\.]*)' | % {($_.matches.groups[1].Value) }
+    If ($coverImage.Length -gt 0)
+        {
+        
+        $fileInfo = New-Object System.IO.FileInfo("$PSScriptRoot/Books/$bookName/$coverImage")
+        Copy-Item -Path "$PSScriptRoot/Books/$bookName/$coverImage" -Destination "$PSScriptRoot/Books/$bookName/build/$($fileInfo.Name)"
+        $coverImage = "$PSScriptRoot/Books/$bookName/build/$($fileInfo.Name)"
+        }
+
+    # Select the copyright page template (can be customized by "copyright-page" line in metadata file)
+    $copyrightPage = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^copyright-page:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
+    $copyrightPage = If ($copyrightPage.Length -gt 0) { $copyrightPage } Else { "creative-commons" }
+
     # Create the latex copyright file to insert into the print documents.
     # Note that the processed file will temporarily be in the script folder because the
     # print latex files will \input{} from the CWD.
@@ -102,13 +116,16 @@ foreach ($bookName in $Books)
     # into it. The "dummy.txt" is just a blank input file required by pandoc.
     "" | Out-File -Encoding utf8 "$PSScriptRoot/Books/$bookName/build/dummy.txt"
     pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/copyright.latex" -t latex `
-           --template="$PSScriptRoot/Pandoc/templates/copyright/creative-commons.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+           --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the copyright file to insert into the epub documents.
     # Also, note that we are simply using the copyright template and expanding the variables from our config.yml into it.
+    
     pandoc --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/copyright.md" `
-           --template="$PSScriptRoot/Pandoc/templates/copyright/creative-commons.md" `
+           --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.md" `
            -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+
+    Copy-Item -Path "$PSScriptRoot/Pandoc/templates/copyright/ccbynasa.png" -Destination "$PSScriptRoot/Books/$bookName/build/ccbynasa.png"
 
     # format for print (i.e., latex) conversion
     Write-Output "Formatting for print..."
@@ -160,23 +177,24 @@ foreach ($bookName in $Books)
 
     # Build the books
     ###############################################################
+    Set-Location "$PSScriptRoot/Books/$bookName/build/"
+
+    # epub
+    Write-Output "Building for e-pub..."
+    pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" --toc --toc-depth=1 --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
+           --epub-cover-image="$coverImage" `
+           --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles
 
     # Print publication output
     Write-Output "Building for print..."
-    Set-Location "$PSScriptRoot/Books/$bookName/build/" # for input{} in latex template in build folder to work
     pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/cs-5x8-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
            --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-5x8-print.pdf" -A "$PSScriptRoot/Books/$bookName/build/bio.tex"
     pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/cs-6x9-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
            --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-6x9-print.pdf" -A "$PSScriptRoot/Books/$bookName/build/bio.tex"
-    
-    # epub
-    Write-Output "Building for e-pub..."
-    Set-Location "$PSScriptRoot/Books/$bookName/" # to properly reference paths in YAML config file and images
-    pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" --toc --toc-depth=1 --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
-           --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles
 
     # clean up
     ###############################################################
+    Set-Location "$PSScriptRoot"
 
     Get-ChildItem -Path "$PSScriptRoot/Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
     Remove-Item -Path "$PSScriptRoot/Books/$bookName/build"
