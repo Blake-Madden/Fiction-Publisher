@@ -187,10 +187,8 @@ foreach ($bookName in $Books)
 
     # Print publication output
     Write-Output "Building for print..."
-    pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/cs-5x8-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
-           --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-5x8-print.pdf" -A "$PSScriptRoot/Books/$bookName/build/bio.tex"
-    pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/cs-6x9-pdf.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
-           --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-6x9-print.pdf" -A "$PSScriptRoot/Books/$bookName/build/bio.tex"
+    pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
+           --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-print.pdf" -A "$PSScriptRoot/Books/$bookName/build/bio.tex"
 
     # clean up
     ###############################################################

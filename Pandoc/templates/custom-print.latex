@@ -11,8 +11,8 @@
 %% Set page size and margins
 \usepackage{geometry}
   \geometry{
-  paperheight=228.6mm, %actual height measurement of the page
-  paperwidth=152.4mm, %actual width measurement of the page
+  paperheight=$if(paper-height)$$paper-height$$else$228.6mm$endif$,  %actual height measurement of the page (default is 6x9 inches)
+  paperwidth=$if(paper-width)$$paper-width$$else$152.4mm$endif$,    %actual width measurement of the page
   includehead, %include header inside of text area calculation (footer and margin notes aren't used in this template)
   top=$if(top-margin)$$top-margin$$else$30.0mm$endif$, % top margin
   bottom=$if(bottom-margin)$$bottom-margin$$else$27.0mm$endif$, %bottom margin
