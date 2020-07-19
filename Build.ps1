@@ -29,33 +29,6 @@ foreach ($bookName in $Books)
     # get all the chapters and scenes (these should all be prefixed with numbers to control their ordering)
     $mdFiles = [System.IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/$bookName/build/outline", "*.md", [IO.SearchOption]::AllDirectories)
 
-    # check for possible formatting issues from the markdown files that author may want to fix
-    ###############################################################
-
-    Write-Output "Reviewing formatting in source files..."
-    $WarningList = New-Object Collections.Generic.List[string]
-    foreach ($file in $mdFiles)
-        {
-        $content = [System.IO.File]::ReadAllText($file)
-        if ($content -match "[`"`']+")
-            {
-            $WarningList.Add('Warning: straight single/double quote(s) found in "' + $file + '". Considering converting these into smart quotes.')
-            }
-        if ($content -match '[ ]{2,}[^\r\n]')
-            {
-            $WarningList.Add('Warning: multiple spaces between words/sentences found in "' + $file + '". Considering changing these into single spaces.')
-            }
-        # print and e-books handle their own indenting
-        if ($content -match '[\t]+')
-            {
-            $WarningList.Add('Warning: tab found in "' + $file + '". Considering removing these.')
-            }
-        if ($content -match '[\r\n]+[ ]\w+')
-            {
-            $WarningList.Add('Warning: space indenting found in "' + $file + '". Considering removing these.')
-            }
-        }
-
     # Pre-process files
     ###############################################################
 
@@ -64,8 +37,8 @@ foreach ($bookName in $Books)
         {
         $fileInfo = New-Object System.IO.FileInfo($file)
 
-        # remove YAML sections
-        $content = [System.IO.File]::ReadAllText($file) -replace '^([\w]*:[ \t]*[\w{}: ]*[\r\n]*)*', ''
+        # remove YAML header
+        $content = [System.IO.File]::ReadAllText($file) -replace '^([\w]+:.*[\r\n]*)*', [Environment]::NewLine
 
         # if missing top-level header and file is the first scene in the chapter (i.e., filename starts with zero),
         # then add a chapter heading based on the chapter folder name
@@ -76,7 +49,7 @@ foreach ($bookName in $Books)
             $content = "# $ChapterName" + [Environment]::NewLine + [Environment]::NewLine + $content
             }
 
-        # replace single new line (between rows of text) with a blank line
+        # replace single new line (between lines of text) with a blank line--this is how paragraphs are supposed to be separated
         $blankLine = [Environment]::NewLine + [Environment]::NewLine
         $content = $content -replace '([^\s])(\r\n|\n|\r)([^\s])',
                                      "`$1$blankLine`$3"
@@ -84,7 +57,35 @@ foreach ($bookName in $Books)
         [void] [System.IO.File]::WriteAllText($file, $content)
         }
 
-    # source markdown files are cleaned up, now copy to different folders to pre-process for the different output formats
+    # check for possible formatting issues from the markdown files that author may want to fix
+    ###############################################################
+
+    Write-Output "Reviewing formatting in source files..."
+    $WarningList = New-Object Collections.Generic.List[string]
+    foreach ($file in $mdFiles)
+        {
+        $content = [System.IO.File]::ReadAllText($file)
+        if ($content -match "[`"`']+")
+            {
+            $WarningList.Add("Warning: straight single/double quote(s) found in '$($file)'. Considering converting these into smart quotes.")
+            }
+        if ($content -match '[ ]{2,}[^\r\n]')
+            {
+            $WarningList.Add("Warning: multiple spaces between words/sentences found in '$($file)'. Considering changing these into single spaces.")
+            }
+        # print and e-books handle their own indenting
+        if ($content -match '[\t]+')
+            {
+            $WarningList.Add("Warning: tab found in '$($file)'. Considering removing these.")
+            }
+        $matchResult = $content | Select-String -Pattern '[\r\n]+[ ]+(\w+)'
+        if ($matchResult.Matches.Count -gt 0)
+            {
+            $WarningList.Add("Warning: space indenting found in '$($file)', (' $($matchResult.Matches.Groups[0].Captures[0].Value)'). Considering removing these.")
+            }
+        }
+
+    # source markdown files are cleaned up and reviewed, now copy to different folders to pre-process for the different output formats
     Copy-Item -Path "$PSScriptRoot/Books/$bookName/build/outline/" -Destination "$PSScriptRoot/Books/$bookName/build/epub/" -Recurse -Force
     $epubMdFiles = [System.IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/$bookName/build/epub", "*.md", [IO.SearchOption]::AllDirectories)
 
@@ -136,7 +137,7 @@ foreach ($bookName in $Books)
         $content = [System.IO.File]::ReadAllText($file)
 
         # replace *** with scene separator (i.e., flourishes)
-        $content = $content -replace '([\r\n]+)([[:space:]]*[*]{3,}[[:space:]]*)',
+        $content = $content -replace '([\r\n]+)([ ]*[*]{3,}[ ]*)',
                                      '$1\vspace{5mm}\centerline{\adforn{60}\quad\adforn{11}\quad\adforn{32}}\vspace{5mm}'
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
