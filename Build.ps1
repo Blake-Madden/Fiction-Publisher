@@ -106,6 +106,10 @@ foreach ($bookName in $Books)
         $coverImage = "$PSScriptRoot/Books/$bookName/build/$($fileInfo.Name)"
         }
 
+    # whether the TOC should be included (this isn't read from metadata for epub, so we handle it here)
+    $includeToc = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^toc:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
+    $includeToc = If ($includeToc -eq "true") { "--toc" } Else { "" }
+
     # Select the copyright page template (can be customized by "copyright-page" line in metadata file)
     $copyrightPage = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^copyright-page:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
     $copyrightPage = If ($copyrightPage.Length -gt 0) { $copyrightPage } Else { "creative-commons" }
@@ -182,7 +186,9 @@ foreach ($bookName in $Books)
 
     # epub
     Write-Output "Building for e-pub..."
-    pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" --toc --toc-depth=1 --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
+    pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
+           $includeToc --toc-depth=1 `
+           --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            --epub-cover-image="$coverImage" `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles
 
