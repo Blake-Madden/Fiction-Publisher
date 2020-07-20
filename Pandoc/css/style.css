@@ -5,7 +5,7 @@
  */
 
 /* Set our 'sane' defaults */
-html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, pre, table, th, td, tr { margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; }
+html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, dt, dd, p, pre, table, th, td, tr { margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; }
 
 /* Make sure all paragraphs are 'justified' */
 p { text-align: justify; }
@@ -23,9 +23,6 @@ p+p.center { text-indent: 0; text-align: center; }
 h1, h2, h3, h4, h6 { text-align: center; }
 
 h5 { text-align: center; font-weight: normal; font-size: medium; }
-
-/* Indent our lists */
-li { text-align: left; padding-left: 4em; }
 
 /* Add a top margin for good spacing */
 .top-margin { padding-top: 3em; }
