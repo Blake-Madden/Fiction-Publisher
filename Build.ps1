@@ -73,6 +73,10 @@ foreach ($bookName in $Books)
             {
             $WarningList.Add("Warning: multiple spaces between words/sentences found in '$($file)'. Considering changing these into single spaces.")
             }
+        if ($content -match '([^\s])(\r\n\r\n\r\n|\n\n\r|\r\r\r)([^\s])')
+            {
+            $WarningList.Add("Warning: extra blank lines found in '$($file)'. If there are intended to be scene separators, considering splitting the following text into another markdown file.")
+            }
         # print and e-books handle their own indenting
         if ($content -match '[\t]+')
             {
@@ -100,13 +104,12 @@ foreach ($bookName in $Books)
     $coverImage = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^cover-image:[ ]*([\w-/\\.]*)' | % {($_.matches.groups[1].Value) }
     If ($coverImage.Length -gt 0)
         {
-        
         $fileInfo = New-Object System.IO.FileInfo("$PSScriptRoot/Books/$bookName/$coverImage")
         Copy-Item -Path "$PSScriptRoot/Books/$bookName/$coverImage" -Destination "$PSScriptRoot/Books/$bookName/build/$($fileInfo.Name)"
         $coverImage = "$PSScriptRoot/Books/$bookName/build/$($fileInfo.Name)"
         }
 
-    # whether the TOC should be included (this isn't read from metadata for epub, so we handle it here)
+    # whether the TOC should be included (this isn't read from metadata for epub, so we handle that here and pass it to the command line later)
     $includeToc = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^toc:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
     $includeToc = If ($includeToc -eq "true") { "--toc" } Else { "" }
 
