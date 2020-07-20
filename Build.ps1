@@ -128,12 +128,20 @@ foreach ($bookName in $Books)
 
     # Create the copyright file to insert into the epub documents.
     # Also, note that we are simply using the copyright template and expanding the variables from our config.yml into it.
-    
     pandoc --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/copyright.md" `
            --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.md" `
            -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     Copy-Item -Path "$PSScriptRoot/Pandoc/templates/copyright/ccbynasa.png" -Destination "$PSScriptRoot/Books/$bookName/build/ccbynasa.png"
+
+    # Create the author biography file to insert into the print
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/bio.latex" -t latex `
+           --template="$PSScriptRoot/Pandoc/templates/biography/bio.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+
+    # Create the author biography file to insert into the epub documents
+    pandoc --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/bio.md" `
+           --template="$PSScriptRoot/Pandoc/templates/biography/bio.md" `
+           -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # format for print (i.e., latex) conversion
     Write-Output "Formatting for print..."
@@ -193,12 +201,13 @@ foreach ($bookName in $Books)
            $includeToc --toc-depth=1 `
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            --epub-cover-image="$coverImage" `
-           --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles
+           --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
+           -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles "$PSScriptRoot/Books/$bookName/build/bio.md"
 
     # Print publication output
     Write-Output "Building for print..."
     pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
-           --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-print.pdf" -A "$PSScriptRoot/Books/$bookName/build/bio.tex"
+           --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-print.pdf"
 
     # clean up
     ###############################################################

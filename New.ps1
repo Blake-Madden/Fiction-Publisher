@@ -10,16 +10,6 @@ foreach ($bookName in $Books)
   {
   if ("$bookName" -eq "Output")
     { continue }
-  # create a skeleton bio
-  if (-not (Test-Path "./Books/$bookName/bio.md" -PathType Leaf))
-    {
-    try
-      {
-      Set-Content -Encoding UTF8 -Path "./Books/$bookName/bio.md" -Value "" -ErrorAction Stop
-      }
-    catch
-      { Write-Error "Unable to create file. The error was $($_.Exception.Message)" }
-    }
   # create a skeleton magnet_tah
   if (-not (Test-Path "./Books/$bookName/magnet_tah.md" -PathType Leaf))
     {
