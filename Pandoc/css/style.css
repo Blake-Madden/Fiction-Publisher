@@ -48,10 +48,7 @@ table {margin-left: auto; margin-right: auto; margin-top: 10px;}
   }
 
 /* Class for small capping text in a paragraph, such as a lead line */
-.small-caps
-  {
-  font-variant: small-caps;
-  }
+.small-caps{ font-variant: small-caps; }
 
 .center-image
   {
@@ -59,3 +56,25 @@ table {margin-left: auto; margin-right: auto; margin-top: 10px;}
   margin-left: auto;
   margin-right: auto;
   }
+
+.title
+  {
+  font-variant: small-caps;
+  text-align: center;
+  }
+
+.subtitle
+  {
+  font-size: small;
+  text-align: center;
+  }
+
+/* Code from default Pandoc epub.css */
+div.column{ display: inline-block; vertical-align: top; width: 50%; }
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+@media screen { /* Workaround for iBooks issue; see #6242 */
+  .sourceCode {
+    overflow: visible !important;
+    white-space: pre-wrap !important;
+  }
+}

@@ -1,4 +1,4 @@
-﻿# Fills Book projects (in "Books" folder) with configuration, bio, and review templates
+﻿# Fills Book projects (in "Books" folder) with configuration templates
 
 # create empty Books folder in not not available
 New-Item -ItemType Directory -Path "./Books" -Force | Out-Null
@@ -10,28 +10,6 @@ foreach ($bookName in $Books)
   {
   if ("$bookName" -eq "Output")
     { continue }
-  # create a skeleton magnet_tah
-  if (-not (Test-Path "./Books/$bookName/magnet_tah.md" -PathType Leaf))
-    {
-    try
-      {
-      Set-Content -Encoding UTF8 -Path "./Books/$bookName/magnet_tah.md" -Value "" -ErrorAction Stop
-      }
-    catch
-      { Write-Error "Unable to create file. The error was $($_.Exception.Message)" }
-    }
-  # create a skeleton amazon_review
-  if (-not (Test-Path "./Books/$bookName/amazon_review.md" -PathType Leaf))
-    {
-    try
-      {
-      Set-Content -Encoding UTF8 -Path "./Books/$bookName/amazon_review.md" `
-        -Value ("\\" + [environment]::NewLine + "\\" + [environment]::NewLine + [environment]::NewLine + "##### If you enjoyed this book please consider leaving a [review](https://www.amazon.com/review/create-review?asin=XXXXXXXXXX) on Amazon.") `
-        -ErrorAction Stop
-      }
-    catch
-      { Write-Error "Unable to create file. The error was $($_.Exception.Message)" }
-    }
   # create a skeleton configuruation (YAML) file
   if (-not (Test-Path "./Books/$bookName/config.yml" -PathType Leaf))
     {
@@ -47,7 +25,7 @@ foreach ($bookName in $Books)
                "lang: en-US" + [environment]::NewLine + `
                "date: YYYY-MM-DD" + [environment]::NewLine + `
                "year: YYYY" + [environment]::NewLine + `
-               "cover-image: Source/images/XXXXX.jpg" + [environment]::NewLine + `
+               "cover-image: images/XXXXX.jpg" + [environment]::NewLine + `
                "publisher:" + [environment]::NewLine + `
                "rights: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Unported License." + [environment]::NewLine + `
                "paperback-isbn:" + [environment]::NewLine + `
@@ -75,8 +53,6 @@ foreach ($bookName in $Books)
                "book3:" + [environment]::NewLine + `
                "    - title: You can add up to 5 books" + [environment]::NewLine + `
                "      link:" + [environment]::NewLine + `
-               "review:" + [environment]::NewLine + `
-               "    - amazon: https://www.amazon.com/review/create-review?asin=XXXXXXX" + [environment]::NewLine + `
                "---") `
         -ErrorAction Stop
       }
