@@ -457,9 +457,10 @@ $endif$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Create the bio page
+%% Create the backmatter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % add blank even page before backmatter starts
 \newcommand*\cleartoleftpage{%
   \clearpage
@@ -489,7 +490,32 @@ $endif$
 % Add space between paragraphs
 \parskip = \baselineskip
 
-% Include the file(s) we specified via the pandoc command, in this case our bio.md
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create the bibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+$for(book1)$
+$if(book1.title)$
+
+\input{biblio.latex}
+
+\clearpage
+\hbox{}\thispagestyle{empty}\newpage
+
+$endif$
+$endfor$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create the bio page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{bio.latex}
+
+% Include any additional content from the metadata
 $include-after$
 
 % End the document

@@ -123,14 +123,15 @@ foreach ($bookName in $Books)
     $includeBiblioAmazonEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^book[1-5]:'
     $includeBiblioAmazonEpub = If ($includeBiblioAmazonEpub.Matches.Count -gt 0) { "$PSScriptRoot/Books/$bookName/build/amazon-biblio.md" } Else { "" }
 
-    # build epub bibliographies (although it may not be include)
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/biblio.md" -t latex `
+    # build epub and print bibliographies (although they may not be included)
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/biblio.md" `
            --template="$PSScriptRoot/Pandoc/templates/bibliography/biblio.md" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/amazon-biblio.md" -t latex `
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/amazon-biblio.md" `
            --template="$PSScriptRoot/Pandoc/templates/bibliography/amazon-biblio.md" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
-    # TODO need biblio for print edition
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/biblio.latex" -t latex `
+           --template="$PSScriptRoot/Pandoc/templates/bibliography/biblio.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Select the copyright page template (can be customized by "copyright-page" line in metadata file)
     $copyrightPage = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^copyright-page:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
