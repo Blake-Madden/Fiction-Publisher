@@ -7,13 +7,12 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Open-Publisher2/w
 
 ## Version 2.0 Roadmap
 
-- [ ] Remove Jekyll dependency
-- [x] Create PowerShell new project script
-- [ ] Create PowerShell build script
+- [X] Remove Jekyll dependency
+- [X] Create PowerShell new project script
+- [X] Create PowerShell build script
   - [X] PDF (print)
   - [X] epub
-  - [ ] mobi
-  - [ ] Smashwords epub
+  - [X] mobi
 - [X] Add markdown validations
   - [X] Check for paragraphs not separated by blank lines
   - [X] Check for straight quotes
@@ -23,6 +22,12 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Open-Publisher2/w
 - [X] Add configurable copyright page templates
   - [X] Add creative commons LaTeX template
   - [X] Add creative commons HTML template
+- [X] Add configurable bibliography page templates
+  - [X] Add default LaTeX template
+  - [X] Add default HTML template
+- [X] Add configurable author biography page templates
+  - [X] Add default LaTeX template
+  - [X] Add default HTML template
 - [X] Add header to start of chapters if missing (based on parent folder name)
 - [X] Add formatting to print output
   - [X] Format start of chapter with drop cap and smart caps

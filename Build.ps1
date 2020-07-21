@@ -229,7 +229,7 @@ foreach ($bookName in $Books)
            --epub-cover-image="$coverImage" `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
            -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles "$includeBiblioAmazonEpub" "$PSScriptRoot/Books/$bookName/build/bio.md"
-    # TODO: run kindlegen
+    kindlegen -c2 "$PSScriptRoot/Books/Output/$bookName.epub"
 
     # Print publication output
     Write-Output "Building for print..."
@@ -242,4 +242,5 @@ foreach ($bookName in $Books)
 
     Get-ChildItem -Path "$PSScriptRoot/Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
     Remove-Item -Path "$PSScriptRoot/Books/$bookName/build"
+    Remove-Item -Path "$PSScriptRoot/Books/Output/$bookName.epub"
     }
