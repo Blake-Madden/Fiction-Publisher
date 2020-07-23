@@ -77,6 +77,10 @@ foreach ($bookName in $Books)
             {
             $WarningList.Add("Warning: extra blank lines found in '$($file)'. If there are intended to be scene separators, considering splitting the following text into another markdown file.")
             }
+        if ($content -match '[-]{2,}')
+            {
+            $WarningList.Add("Warning: multiple dashes found in '$($file)'. Considering changing these into en-dashes or em-dashes.")
+            }
         # print and e-books handle their own indenting
         if ($content -match '[\t]+')
             {

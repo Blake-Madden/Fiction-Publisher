@@ -4,6 +4,6 @@
 
 <p class="center top-margin">About the Author</p>
 
-<p style="text-indent: 0;">$author-bio$</p>
+<div style="text-indent: 0;">$author-bio$</div>
 
 </div>
