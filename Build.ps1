@@ -29,9 +29,19 @@ foreach ($bookName in $Books)
     # get all the chapters and scenes (these should all be prefixed with numbers to control their ordering)
     $mdFiles = [System.IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/$bookName/build/outline", "*.md", [IO.SearchOption]::AllDirectories)
 
+    # don't include files with "compile: 0" in the build
+    foreach ($file in $mdFiles)
+        {
+        $content = [System.IO.File]::ReadAllText($file)
+        if ($content -match '\bcompile:[ ]*0[\s]+')
+            {
+            Write-Output "Ignoring '$($file)'"
+            Remove-Item -Path $file
+            }
+        }
+
     # Pre-process files
     ###############################################################
-
     Write-Output "Preprocessing source files..."
     foreach ($file in $mdFiles)
         {
@@ -100,9 +110,6 @@ foreach ($bookName in $Books)
     # Build a draft copy before doing any output-specific formatting
     Write-Output "Building draft copy..."
     pandoc --toc "$PSScriptRoot/Books/$bookName/config.yml" --reference-doc "$PSScriptRoot/Pandoc/templates/draft.docx" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName DRAFT.docx"
-
-    # Create a bio page so we can append it to the end of the main print documents
-    pandoc --pdf-engine=xelatex -o "$PSScriptRoot/Books/$bookName/build/bio.tex" "$PSScriptRoot/Books/$bookName/build/bio.md"
 
     # copy epub cover image to build
     $coverImage = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^cover-image:[ ]*([\w-/\\.]*)' | % {($_.matches.groups[1].Value) }
