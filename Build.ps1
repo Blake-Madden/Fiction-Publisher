@@ -102,7 +102,7 @@ foreach ($bookName in $Books)
     pandoc --toc "$PSScriptRoot/Books/$bookName/config.yml" --reference-doc "$PSScriptRoot/Pandoc/templates/draft.docx" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName DRAFT.docx"
 
     # Create a bio page so we can append it to the end of the main print documents
-    pandoc --pdf-engine=xelatex -o "$PSScriptRoot/Books/$bookName/build/bio.tex" "$PSScriptRoot/Books/$bookName/bio.md"
+    pandoc --pdf-engine=xelatex -o "$PSScriptRoot/Books/$bookName/build/bio.tex" "$PSScriptRoot/Books/$bookName/build/bio.md"
 
     # copy epub cover image to build
     $coverImage = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^cover-image:[ ]*([\w-/\\.]*)' | % {($_.matches.groups[1].Value) }
