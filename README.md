@@ -1,5 +1,5 @@
 ## What is Fiction Publisher
-Fiction Publisher is a fork of [Open Publisher](https://github.com/chrisanthropic/Open-Publisher), redesigned to work with [Manuskript](https://github.com/olivierkes/manuskript) projects. It is a PowerShell script that wraps Pandoc, KindleGen, and LaTeX and uses a set of custom Pandoc templates (created with a focus on fiction).
+**Fiction Publisher** is a fork of [Open Publisher](https://github.com/chrisanthropic/Open-Publisher), redesigned to work with [Manuskript](https://github.com/olivierkes/manuskript) projects. It is a PowerShell script that wraps Pandoc, KindleGen, and LaTeX and uses a set of custom Pandoc templates (created with a focus on fiction).
 
 Write your manuscript in markdown, run a script, and receive some beautifully formatted ePub, Mobi, and print-ready PDF books.
 
