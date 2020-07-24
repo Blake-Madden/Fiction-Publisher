@@ -5,7 +5,7 @@ Write your manuscript in markdown, run a script, and receive some beautifully fo
 
 Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher/wiki).
 
-## Fiction Publisher Roadmap
+## Fiction Publisher v2 Roadmap
 
 - [X] Remove Jekyll dependency
 - [X] Create PowerShell new project script
