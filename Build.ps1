@@ -200,8 +200,6 @@ foreach ($bookName in $Books)
     Write-Output "Formatting for epub..."
     foreach ($file in $epubMdFiles)
         {
-        $fileInfo = New-Object System.IO.FileInfo($file)
-
         $content = [System.IO.File]::ReadAllText($file)
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
@@ -214,7 +212,7 @@ foreach ($bookName in $Books)
     # Write out any formatting warnings
     if ($WarningList.Count)
         {
-        Write-Host -ForegroundColor Red  "Formatting issues found in source files. Please review 'Output/$bookName Format Warnings.log'"
+        Write-Host -ForegroundColor Red "Formatting issues found in source files. Please review 'Output/$bookName Format Warnings.log'"
         $WarningList.Sort()
         $WarningList -replace '(.*found in ")(.*[/\\]build[/\\]outline[/\\])','$1' | Out-File "$PSScriptRoot/Books/Output/$bookName Format Warnings.log"
         }

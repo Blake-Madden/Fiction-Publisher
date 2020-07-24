@@ -16,6 +16,7 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Open-Publisher2/w
 - [X] Add markdown validations
   - [X] Check for paragraphs not separated by blank lines
   - [X] Check for straight quotes
+  - [X] Check for '--'
   - [X] Check for extra spaces
   - [X] Check for tabs
 - [ ] Remove YAML headers from markdowns files
