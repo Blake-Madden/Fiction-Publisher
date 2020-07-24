@@ -3,7 +3,7 @@ Fiction Publisher is a fork of [Open Publisher](https://github.com/chrisanthropi
 
 Write your manuscript in markdown, run a script, and receive some beautifully formatted ePub, Mobi, and print-ready PDF books.
 
-Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction Publisher/wiki).
+Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher/wiki).
 
 ## Fiction Publisher Roadmap
 
