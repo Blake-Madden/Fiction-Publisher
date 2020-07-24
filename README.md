@@ -21,8 +21,8 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher
   - [X] Check for tabs
 - [ ] Remove YAML headers from markdowns files
 - [X] Add configurable copyright page templates
-  - [X] Add creative commons LaTeX template
-  - [X] Add creative commons HTML template
+  - [X] Add creative commons templates
+  - [ ] Add commercial templates
 - [X] Add configurable bibliography page templates
   - [X] Add default LaTeX template
   - [X] Add default HTML template
