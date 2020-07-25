@@ -17,8 +17,11 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher
   - [X] Check for paragraphs not separated by blank lines
   - [X] Check for straight quotes
   - [X] Check for '--'
+  - [X] Check for Unicode ellipsis (should be spaced periods)
+  - [X] Check for en dash at the end of a quote (should be an em dash)
   - [X] Check for extra spaces
   - [X] Check for tabs
+  - [X] Check for items that should be italicized (items are user-defined in metadata)
 - [ ] Remove YAML headers from markdowns files
 - [X] Add configurable copyright page templates
   - [X] Add creative commons templates
