@@ -72,6 +72,13 @@ foreach ($bookName in $Books)
 
     Write-Output "Reviewing formatting in source files..."
     $WarningList = New-Object Collections.Generic.List[string]
+
+    # semicolon separated list of items that should be italicized (specified in meatadata)
+    $itemsToEmphacize = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^emphasis-check:(.*)' | % {($_.matches.groups[1].Value) }
+    if ($itemsToEmphacize.Length -gt 0)
+        {
+        $itemsToEmphacize = $itemsToEmphacize.Split(';') | % { $_.Trim() }
+        }
     foreach ($file in $mdFiles)
         {
         $content = [System.IO.File]::ReadAllText($file)
@@ -91,6 +98,14 @@ foreach ($bookName in $Books)
             {
             $WarningList.Add("Warning: multiple dashes found in '$($file)'. Considering changing these into en-dashes or em-dashes.")
             }
+        if ($content -match '[…]{3,}')
+            {
+            $WarningList.Add("Warning: Unicode ellipses found in '$($file)'. Considering changing these into spaced periods.")
+            }
+        if ($content -match '[–]["”]')
+            {
+            $WarningList.Add("Warning: en dash ending a quote '$($file)'. Considering changing this to an em dash.")
+            }
         # print and e-books handle their own indenting
         if ($content -match '[\t]+')
             {
@@ -100,6 +115,14 @@ foreach ($bookName in $Books)
         if ($matchResult.Matches.Count -gt 0)
             {
             $WarningList.Add("Warning: space indenting found in '$($file)', (' $($matchResult.Matches.Groups[0].Captures[0].Value)'). Considering removing these.")
+            }
+        # check for items that should be italicized
+        foreach ($item in $itemsToEmphacize)
+            {
+            if ($content -match "[^*]$item[^*]")
+                {
+                $WarningList.Add("Warning: '$($item)' in '$($file)' should be enclosed in astericks to format as italic.")
+                }
             }
         }
 
