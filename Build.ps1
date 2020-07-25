@@ -150,22 +150,22 @@ foreach ($bookName in $Books)
     $includeToc = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^toc:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
     $includeToc = If ($includeToc -eq "true") { "--toc" } Else { "" }
 
-    # whether the bibliography should be included (based on whether a "book" value is mentioned in the metadata)
-    $includeBiblioEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^book[1-5]:'
-    $includeBiblioEpub = If ($includeBiblioEpub.Matches.Count -gt 0) { "$PSScriptRoot/Books/$bookName/build/biblio.md" } Else { "" }
+    # whether the series page should be included (based on whether a "book" value is mentioned in the metadata)
+    $includeSeriesPageEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^book[1-5]:'
+    $includeSeriesPageEpub = If ($includeSeriesPageEpub.Matches.Count -gt 0) { "$PSScriptRoot/Books/$bookName/build/seriespage.md" } Else { "" }
 
-    $includeBiblioAmazonEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^book[1-5]:'
-    $includeBiblioAmazonEpub = If ($includeBiblioAmazonEpub.Matches.Count -gt 0) { "$PSScriptRoot/Books/$bookName/build/amazon-biblio.md" } Else { "" }
+    $includeSeriesPageAmazonEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^book[1-5]:'
+    $includeSeriesPageAmazonEpub = If ($includeSeriesPageAmazonEpub.Matches.Count -gt 0) { "$PSScriptRoot/Books/$bookName/build/amazon-seriespage.md" } Else { "" }
 
     # build epub and print bibliographies (although they may not be included)
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/biblio.md" `
-           --template="$PSScriptRoot/Pandoc/templates/bibliography/biblio.md" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/seriespage.md" `
+           --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.md" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/amazon-biblio.md" `
-           --template="$PSScriptRoot/Pandoc/templates/bibliography/amazon-biblio.md" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/amazon-seriespage.md" `
+           --template="$PSScriptRoot/Pandoc/templates/seriespage/amazon-seriespage.md" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/biblio.latex" -t latex `
-           --template="$PSScriptRoot/Pandoc/templates/bibliography/biblio.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/seriespage.latex" -t latex `
+           --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Select the copyright page template (can be customized by "copyright-page" line in metadata file)
     $copyrightPage = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^copyright-page:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
@@ -251,7 +251,7 @@ foreach ($bookName in $Books)
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            --epub-cover-image="$coverImage" `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
-           -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles "$includeBiblioEpub" "$PSScriptRoot/Books/$bookName/build/bio.md"
+           -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles "$includeSeriesPageEpub" "$PSScriptRoot/Books/$bookName/build/bio.md"
 
     # Amazon mobi
     Write-Output "Building for Amazon mobi..."
@@ -260,7 +260,7 @@ foreach ($bookName in $Books)
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            --epub-cover-image="$coverImage" `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
-           -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles "$includeBiblioAmazonEpub" "$PSScriptRoot/Books/$bookName/build/bio.md"
+           -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles "$includeSeriesPageAmazonEpub" "$PSScriptRoot/Books/$bookName/build/bio.md"
     kindlegen -c2 "$PSScriptRoot/Books/Output/$bookName.epub"
 
     # Print publication output

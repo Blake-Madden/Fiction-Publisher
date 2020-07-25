@@ -492,14 +492,15 @@ $endif$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Create the bibliography
+%% Create the series page
+%% TODO: move this after half title when that is added
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 $for(book1)$
 $if(book1.title)$
 
-\input{biblio.latex}
+\input{seriespage.latex}
 
 \clearpage
 \hbox{}\thispagestyle{empty}\newpage
