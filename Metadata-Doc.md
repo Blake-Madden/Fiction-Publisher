@@ -26,7 +26,7 @@
 - **isbn-13** (optional): Optional 13 digit ISBN of your print book
 - **epub-isbn** (optional): Optional ISBN of your epub
 
-- **dedication**: Optional dedication.
+- **dedication**: Optional dedication
 
 - **toc**: Whether to include a table of contents in the print output (true or false)
 - **toc-title**: The header text for the Table of Contents
