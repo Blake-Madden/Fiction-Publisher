@@ -98,9 +98,13 @@ foreach ($bookName in $Books)
             {
             $WarningList.Add("Warning: multiple dashes found in '$($file)'. Considering changing these into en-dashes or em-dashes.")
             }
-        if ($content -match '[…]{3,}')
+        if ($content -match '[…]+')
             {
             $WarningList.Add("Warning: Unicode ellipses found in '$($file)'. Considering changing these into spaced periods.")
+            }
+        if ($content -match '[ ]{3,}')
+            {
+            $WarningList.Add("Warning: period ellipses found in '$($file)' without spaces. Considering changing these into spaced periods.")
             }
         if ($content -match '[–]["”]')
             {
@@ -119,7 +123,7 @@ foreach ($bookName in $Books)
         # check for items that should be italicized
         foreach ($item in $itemsToEmphacize)
             {
-            if ($content -match "[^*]$item[^*]")
+            if ($content -match "(^|[^*])\b$item\b($|[^*])")
                 {
                 $WarningList.Add("Warning: '$($item)' in '$($file)' should be enclosed in astericks to format as italic.")
                 }
@@ -181,8 +185,13 @@ foreach ($bookName in $Books)
     pandoc --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/copyright.md" `
            --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.md" `
            -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
-
     Copy-Item -Path "$PSScriptRoot/Pandoc/templates/copyright/ccbynasa.png" -Destination "$PSScriptRoot/Books/$bookName/build/ccbynasa.png"
+
+    # Create the latex half titlepage
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/half-titlepage.latex" -t latex `
+           --template="$PSScriptRoot/Pandoc/templates/half-titlepage/half-titlepage.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+
+    # half titlepage doesn't really make sense because e-readers force the main title page to the front
 
     # Create the author biography file to insert into the print
     # TODO: need to be able to exclude this from hardcover editions via metadata
@@ -251,7 +260,9 @@ foreach ($bookName in $Books)
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            --epub-cover-image="$coverImage" `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
-           -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles "$includeSeriesPageEpub" "$PSScriptRoot/Books/$bookName/build/bio.md"
+           -i "$PSScriptRoot/Books/$bookName/build/copyright.md" "$includeSeriesPageEpub" `
+           $epubMdFiles `
+           "$PSScriptRoot/Books/$bookName/build/bio.md"           
 
     # Amazon mobi
     Write-Output "Building for Amazon mobi..."
@@ -260,7 +271,9 @@ foreach ($bookName in $Books)
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            --epub-cover-image="$coverImage" `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
-           -i "$PSScriptRoot/Books/$bookName/build/copyright.md" $epubMdFiles "$includeSeriesPageAmazonEpub" "$PSScriptRoot/Books/$bookName/build/bio.md"
+           -i "$PSScriptRoot/Books/$bookName/build/copyright.md" "$includeSeriesPageAmazonEpub" `
+           $epubMdFiles `
+           "$PSScriptRoot/Books/$bookName/build/bio.md"           
     kindlegen -c2 "$PSScriptRoot/Books/Output/$bookName.epub"
 
     # Print publication output

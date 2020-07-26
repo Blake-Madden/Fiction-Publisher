@@ -1,7 +1,10 @@
-\section*{\textit{Also Available}}
-\label{also-available}
+\pagestyle{empty}
 
 \begin{center}
+
+\textit{$if(series-header)$$series-header$$else$Also Available$endif$}
+
+  \vspace{1cm}
 
 $for(book1)$
 $if(book1.title)$

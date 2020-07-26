@@ -2,7 +2,7 @@
 
 <div style="font-size: small; font-family: sans-serif;">
 
-<p class="center top-margin" style="margin-bottom: 1em; font-style: italic;">Also Available</p>
+<p class="center top-margin" style="margin-bottom: 1em; font-style: italic;">$if(series-header)$$series-header$$else$Also Available$endif$</p>
 
 $for(book1)$$if(book1.link)$
 <p class="center"><a href="$book1.link$">$book1.title$</a></p>

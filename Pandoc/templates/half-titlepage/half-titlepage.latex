@@ -1,0 +1,17 @@
+% No headers/footers
+\pagestyle{empty}
+% Center everything
+  \begin{center}
+
+% Add a vertical space
+  \vspace*{3cm}
+  
+% Write the Book Title
+$if(title-latex)$
+  \makeatletter \Huge \bfseries \titlefont \textbf{\textsc{$title-latex$}} \par \makeatother    
+$else$
+  \makeatletter \Huge \bfseries \titlefont \textbf{\textsc{\@title}} \par \makeatother    
+$endif$
+
+% Stop centering everything
+  \end{center}
