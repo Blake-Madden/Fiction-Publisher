@@ -462,12 +462,7 @@ $endif$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % add blank even page before backmatter starts
-\newcommand*\cleartoleftpage{%
-  \clearpage
-  \ifodd\value{page}\hbox{}\thispagestyle{empty}\newpage\fi
-}
-
-\cleartoleftpage
+\clearpage{\thispagestyle{empty}\cleardoublepage}
 
 % Label as backmatter
 \backmatter
@@ -502,8 +497,7 @@ $if(book1.title)$
 
 \input{seriespage.latex}
 
-\clearpage
-\hbox{}\thispagestyle{empty}\newpage
+\clearpage{\thispagestyle{empty}\cleardoublepage}
 
 $endif$
 $endfor$
