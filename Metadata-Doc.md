@@ -15,7 +15,7 @@
 - **date**: YYYY-MM-DD
 - **year**: YYYY
 
-- **copyright-page** (optional): Which copyright page template to use. Templates to select from are available in **Pandoc\templates\copyright** (e.g., **creative-commons**)
+- **copyright-page** (optional): Which copyright page template to use. Templates to select from are available in the **Pandoc\templates\copyright** folder (e.g., **creative-commons**)
 
 - **cover-image**: The path (relative to **Build.ps1**) to the EPUB cover image
 
