@@ -42,23 +42,23 @@
 
 - **identifier**:
     - **scheme**: UUID
-      **text**: A unique UUID for your ebook
+    - **text**: A unique UUID for your ebook
       
 - **contributors** (optional):
     - **designer**: Who designed your book/cover
-      **artist**: Who created the art of your book cover
-      **editor**: Who edited your book
+    - **artist**: Who created the art of your book cover
+    - **editor**: Who edited your book
 
 - **header-includes** (optional): Raw content to embed in the template file's header (e.g., Latex commands)
 
 - **book1** (optional): 
     - **title**: Optional books to include on the title page
-      **link**: If you include Amazon links here, they'll get linked in the Amazon version
+    - **link**: If you include Amazon links here, they'll get linked in the Amazon version
 - **book2** (optional):
     - **title**: Add a second book
-      **link**: http://www.amazon.com/dp/XXXXXXXXX
+    - **link**: http://www.amazon.com/dp/XXXXXXXXX
 - **book3** (optional):
     - **title**: This handles up to 5 books
-      **link**: http://www.amazon.com/dp/XXXXXXXXX
+    - **link**: http://www.amazon.com/dp/XXXXXXXXX
       
 - **emphasis-check** (optional): semicolon-separated list of phrases that should be italicized. If they are not, a warning will be logged
