@@ -17,7 +17,7 @@
 
 - **copyright-page** (optional): Which copyright page template to use. Templates to select from are available in **Pandoc\templates\copyright** (e.g., **creative-commons**)
 
-- **cover-image**: Source/images/YOUR-IMAGE.jpg
+- **cover-image**: The path (relative to **Build.ps1**) to the EPUB cover image
 
 - **publisher**: Publisher of your book
 - **rights**: A single sentence regarding the licensing of your book
