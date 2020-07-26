@@ -3,9 +3,9 @@
 #### The following can be specified in a book project's **config.yml** file (which should be in the root of the book project's folder)
 
 - **title**: Title of your book
-- **title-latex** (optional): Latex formatted title (will override "title" value on the title page of PDF and print output)
+- **title-latex** (optional): Latex formatted title (will override "title" value on the title and half-title pages of PDF output)
 - **subtitle** (optional): Optional subtitle
-- **subtitle-latex** (optional): Latex formatted subtitle (will override "subtitle" value on the title page of PDF and print output)
+- **subtitle-latex** (optional): Latex formatted subtitle (will override "subtitle" value on the title page of PDF output)
 - **series-header** (optional): Header that should appear on the series title page (default is "Also Available")
 - **author**: Author Name
 - **website**: Author Website
