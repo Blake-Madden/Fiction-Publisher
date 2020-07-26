@@ -7,8 +7,8 @@
 - **subtitle** (optional): Optional subtitle
 - **subtitle-latex** (optional): Latex formatted subtitle (will override "subtitle" value on the title page of PDF output)
 - **series-header** (optional): Header that should appear on the series title page (default is "Also Available")
-- **author**: Author Name
-- **website**: Author Website
+- **author**: Author name
+- **website**: Author website
 
 - **type**: Genre of your book
 - **lang**: A string value in BCP 47 format: http://tools.ietf.org/html/bcp47 (example: en-US)
