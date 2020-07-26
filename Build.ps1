@@ -69,7 +69,6 @@ foreach ($bookName in $Books)
 
     # check for possible formatting issues from the markdown files that author may want to fix
     ###############################################################
-
     Write-Output "Reviewing formatting in source files..."
     $WarningList = New-Object Collections.Generic.List[string]
 
@@ -100,7 +99,7 @@ foreach ($bookName in $Books)
             }
         if ($content -match '[…]+')
             {
-            $WarningList.Add("Warning: Unicode ellipses found in '$($file)'. Considering changing these into spaced periods.")
+            $WarningList.Add("Warning: Unicode ellipses (…) found in '$($file)'. Considering changing these into spaced periods.")
             }
         if ($content -match '[ ]{3,}')
             {
@@ -279,7 +278,8 @@ foreach ($bookName in $Books)
     # Print publication output
     Write-Output "Building for print..."
     pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
-           --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-print.pdf"
+           --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
+           -f markdown+smart $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-print.pdf"
 
     # clean up
     ###############################################################
