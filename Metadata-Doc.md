@@ -15,6 +15,8 @@
 - **date**: YYYY-MM-DD
 - **year**: YYYY
 
+- **copyright-page** (optional): Which copyright page template to use. Templates to select from are available in **Pandoc\templates\copyright** (e.g., **creative-commons**)
+
 - **cover-image**: Source/images/YOUR-IMAGE.jpg
 
 - **publisher**: Publisher of your book
