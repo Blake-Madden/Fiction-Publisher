@@ -1,5 +1,7 @@
 ## Metadata Options
 
+### The following can be specified in a book project's **config.yml** file (which should be in the root of the book project's folder)
+
 - **title**: Title of your book
 - **title-latex** (optional): Latex formatted title (will override "title" value on the title page of PDF and print output).
 - **subtitle** (optional): Optional subtitle
