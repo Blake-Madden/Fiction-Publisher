@@ -6,6 +6,7 @@
 - **title-latex** (optional): Latex formatted title (will override "title" value on the title page of PDF and print output).
 - **subtitle** (optional): Optional subtitle
 - **subtitle-latex** (optional): Latex formatted subtitle (will override "subtitle" value on the title page of PDF and print output).
+- **series-header** (optional): Header that should appear on the series title page (default is "Also Available").
 - **author**: Author Name
 - **website**: Author Website
 
@@ -57,3 +58,5 @@
 - **book3** (optional):
     - **title**: This handles up to 5 books
       **link**: http://www.amazon.com/dp/XXXXXXXXX
+      
+- **emphasis-check** (optional): semicolon-separated list of phrases that should be italicized. If they are not, a warning will be logged.
