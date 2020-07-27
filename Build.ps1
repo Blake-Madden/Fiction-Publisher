@@ -122,7 +122,7 @@ foreach ($bookName in $Books)
         # check for items that should be italicized
         foreach ($item in $itemsToEmphacize)
             {
-            if ($content -match "(^|[^*])\b$item\b($|[^*])")
+            if ($content -cmatch "(^|[^*])\b$item\b($|[^*])")
                 {
                 $WarningList.Add("Warning: '$($item)' in '$($file)' should be enclosed in astericks to format as italic.")
                 }
