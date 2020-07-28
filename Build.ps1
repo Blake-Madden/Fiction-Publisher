@@ -64,6 +64,10 @@ foreach ($bookName in $Books)
         $content = $content -replace '([^\s])(\r\n|\n|\r)([^\s])',
                                      "`$1$blankLine`$3"
 
+        # all caps word followed by hyphen and a number should use a non-breaking hypen
+        $content = $content -replace '([A-Z]{2,})-([0-9]+)',
+                                     '$1&#X2011;$2'
+        
         [void] [System.IO.File]::WriteAllText($file, $content)
         }
 
