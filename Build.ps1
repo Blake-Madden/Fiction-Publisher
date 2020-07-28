@@ -219,6 +219,7 @@ foreach ($bookName in $Books)
                                      '$1\vspace{5mm}\centerline{\adforn{60}\quad\adforn{11}\quad\adforn{32}}\vspace{5mm}'
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
+        # Note that a leading quotation mark at start of paragraph will be removed, per Chicago Manual of Style
         $content = $content -replace '(^[\s]*#[^\r\n]+[\r\n]+)[‘'"“«]?([A-ZÀ-ÖØ-Ý])([\w'’]*[\s,])',
                                      '$1\lettrine{$2}{$3}'
         
