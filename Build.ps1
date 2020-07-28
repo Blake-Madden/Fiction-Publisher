@@ -7,7 +7,7 @@ if ([System.IO.Directory]::Exists("$PSScriptRoot/Books/Output"))
     Remove-Item -Path "$PSScriptRoot/Books/Output"
     }
 
-# get a list of all book projects in the Books folder
+# get a list of all projects in the 'Books' folder
 $Books = (Get-ChildItem "$PSScriptRoot/Books" -Directory).Name
 
 # create fresh output folder after getting names of book projects
@@ -15,7 +15,7 @@ New-Item -ItemType Directory -Path "$PSScriptRoot/Books/Output" -Force | Out-Nul
 
 foreach ($bookName in $Books)
     {
-    Write-Host -ForegroundColor White -BackgroundColor Black "Processing '$bookName'..."
+    Write-Host -BackgroundColor White -ForegroundColor Black "Processing '$bookName' . . ."
 
     # Copy chapter markdown files into temp folders to be processed
     ###############################################################
@@ -111,7 +111,11 @@ foreach ($bookName in $Books)
             }
         if ($content -match '[–]["”]')
             {
-            $WarningList.Add("Warning: en dash ending a quote '$($file)'. Considering changing this to an em dash.")
+            $WarningList.Add("Warning: en dash ending a quote in '$($file)'. Considering changing this to an em dash.")
+            }
+        if ($content -match '[[:alpha:]]{2,}[–][[:alpha:]]{2,}')
+            {
+            $WarningList.Add("Warning: en dash between words in '$($file)'. Did you intend to use a hyphen or an em dash?")
             }
         # print and e-books handle their own indenting
         if ($content -match '[\t]+')
@@ -133,9 +137,17 @@ foreach ($bookName in $Books)
             }
         }
 
+    # Write out any formatting warnings
+    if ($WarningList.Count)
+        {
+        Write-Host -ForegroundColor Red "Formatting issues found in source files. Please review 'Output/$bookName Format Warnings.log'"
+        $WarningList.Sort()
+        $WarningList -replace '(.*found in ")(.*[/\\]build[/\\]outline[/\\])','$1' | Out-File "$PSScriptRoot/Books/Output/$bookName Format Warnings.log"
+        }
+
     # source markdown files are cleaned up and reviewed, now copy to different folders to pre-process for the different output formats
     Copy-Item -Path "$PSScriptRoot/Books/$bookName/build/outline/" -Destination "$PSScriptRoot/Books/$bookName/build/epub/" -Recurse -Force
-    $epubMdFiles = [System.IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/$bookName/build/epub", "*.md", [IO.SearchOption]::AllDirectories)
+    $epubMdFiles = [IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/$bookName/build/epub", "*.md", [IO.SearchOption]::AllDirectories)
 
     # Build a draft copy before doing any output-specific formatting
     Write-Output "Building draft copy..."
@@ -164,7 +176,7 @@ foreach ($bookName in $Books)
     $includeSeriesPageAmazonEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^book[1-5]:'
     $includeSeriesPageAmazonEpub = If ($includeSeriesPageAmazonEpub.Matches.Count -gt 0) { "$PSScriptRoot/Books/$bookName/build/amazon-seriespage.md" } Else { "" }
 
-    # build epub and print bibliographies (although they may not be included)
+    # build epub and print series pages (although they may not be included)
     pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/seriespage.md" `
            --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.md" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
@@ -243,14 +255,6 @@ foreach ($bookName in $Books)
                                      '$1<span class="drop-caps">$2</span><span class="small-caps">$3</span>'
 
         [void] [System.IO.File]::WriteAllText($file, $content)
-        }
-
-    # Write out any formatting warnings
-    if ($WarningList.Count)
-        {
-        Write-Host -ForegroundColor Red "Formatting issues found in source files. Please review 'Output/$bookName Format Warnings.log'"
-        $WarningList.Sort()
-        $WarningList -replace '(.*found in ")(.*[/\\]build[/\\]outline[/\\])','$1' | Out-File "$PSScriptRoot/Books/Output/$bookName Format Warnings.log"
         }
 
     # Build the books
