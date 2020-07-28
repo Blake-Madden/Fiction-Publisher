@@ -8,7 +8,7 @@ if ([System.IO.Directory]::Exists("$PSScriptRoot/Books/Output"))
     }
 
 # get a list of all book projects in the Books folder
-$Books = Get-ChildItem "$PSScriptRoot/Books" -Directory
+$Books = (Get-ChildItem "$PSScriptRoot/Books" -Directory).Name
 
 # create fresh output folder after getting names of book projects
 New-Item -ItemType Directory -Path "$PSScriptRoot/Books/Output" -Force | Out-Null
@@ -219,7 +219,7 @@ foreach ($bookName in $Books)
                                      '$1\vspace{5mm}\centerline{\adforn{60}\quad\adforn{11}\quad\adforn{32}}\vspace{5mm}'
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
-        $content = $content -replace '(^[\s]*#[^\r\n]+[\r\n]+)([‘'"“«]?[A-ZÀ-ÖØ-Ý])([\w'’]*[\s,])',
+        $content = $content -replace '(^[\s]*#[^\r\n]+[\r\n]+)[‘'"“«]?([A-ZÀ-ÖØ-Ý])([\w'’]*[\s,])',
                                      '$1\lettrine{$2}{$3}'
         
         # files that don't start with zero should be new scenes in a chapter, so unindent their first paragraph
