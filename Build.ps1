@@ -84,55 +84,67 @@ foreach ($bookName in $Books)
         }
     foreach ($file in $mdFiles)
         {
+        $fileInfo = New-Object System.IO.FileInfo($file)
+        $simpleFilePath = $fileInfo.Directory.Name + [IO.Path]::DirectorySeparatorChar + $fileInfo.Name
+
+
         $content = [System.IO.File]::ReadAllText($file)
         if ($content -match "[`"`']+")
             {
-            $WarningList.Add("Warning: straight single/double quote(s) found in '$($file)'. Considering converting these into smart quotes.")
+            $WarningList.Add("Warning: straight single/double quote(s) found in '$($simpleFilePath)'. Considering converting these into smart quotes to make your intention explicit.")
             }
         if ($content -match '[ ]{2,}[^\r\n]')
             {
-            $WarningList.Add("Warning: multiple spaces between words/sentences found in '$($file)'. Considering changing these into single spaces.")
+            $WarningList.Add("Warning: multiple spaces between words/sentences found in '$($simpleFilePath)'. Considering changing these into single spaces.")
             }
         if ($content -match '([^\s])(\r\n\r\n\r\n|\n\n\r|\r\r\r)([^\s])')
             {
-            $WarningList.Add("Warning: extra blank lines found in '$($file)'. If these are intended to be scene separators, considering splitting the following text into another markdown file.")
+            $WarningList.Add("Warning: extra blank lines found in '$($simpleFilePath)'. If these are intended to be scene separators, considering moving this text into another markdown file.")
             }
-        if ($content -match '[-]{2,}')
-            {
-            $WarningList.Add("Warning: multiple dashes found in '$($file)'. Considering changing these into en-dashes or em-dashes.")
-            }
+        # ellipses checks
         if ($content -match '[…]+')
             {
-            $WarningList.Add("Warning: Unicode ellipses (…) found in '$($file)'. Considering changing these into spaced periods.")
+            $WarningList.Add("Warning: Unicode ellipses (…) found in '$($simpleFilePath)'. Considering changing these into spaced periods.")
             }
         if ($content -match '[ ]{3,}')
             {
-            $WarningList.Add("Warning: period ellipses found in '$($file)' without spaces. Considering changing these into spaced periods.")
+            $WarningList.Add("Warning: period ellipses found in '$($simpleFilePath)' without spaces. Considering changing these into spaced periods.")
+            }
+        # hyphen/en dash/em dash checks
+        if ($content -match '[-]{2,}')
+            {
+            $WarningList.Add("Warning: multiple dashes found in '$($simpleFilePath)'. Considering changing these into en-dashes or em-dashes to make your intention explicit.")
             }
         if ($content -match '[–]["”]')
             {
-            $WarningList.Add("Warning: en dash ending a quote in '$($file)'. Considering changing this to an em dash.")
+            $WarningList.Add("Warning: en dash ending a quote in '$($simpleFilePath)'. Considering changing this to an em dash.")
             }
-        if ($content -match '[[:alpha:]]{2,}[–][[:alpha:]]{2,}')
+        $matchResult = $content | Select-String -Pattern '([\w]+[–][\w]+)'
+        if ($matchResult.Matches.Count -gt 0)
             {
-            $WarningList.Add("Warning: en dash between words in '$($file)'. Did you intend to use a hyphen or an em dash?")
+            $WarningList.Add("Warning: en dash between words in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). Did you intend to use a hyphen or an em dash?")
+            }
+         $matchResult = $content | Select-String -Pattern '([0-9]+[-][0-9]+)'
+         if ($matchResult.Matches.Count -gt 0)
+            {
+            $WarningList.Add("Warning: hyphen between numeric range in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). Did you intend to use an en dash?")
             }
         # print and e-books handle their own indenting
         if ($content -match '[\t]+')
             {
-            $WarningList.Add("Warning: tab found in '$($file)'. Considering removing these.")
+            $WarningList.Add("Warning: tab found in '$($simpleFilePath)'. Considering removing these.")
             }
         $matchResult = $content | Select-String -Pattern '[\r\n]+[ ]+(\w+)'
         if ($matchResult.Matches.Count -gt 0)
             {
-            $WarningList.Add("Warning: space indenting found in '$($file)', (' $($matchResult.Matches.Groups[0].Captures[0].Value)'). Considering removing these.")
+            $WarningList.Add("Warning: space indenting found in '$($simpleFilePath)', (' $($matchResult.Matches.Groups[0].Captures[0].Value)'). Considering removing these.")
             }
         # check for items that should be italicized
         foreach ($item in $itemsToEmphacize)
             {
             if ($content -cmatch "(^|[^*])\b$item\b($|[^*])")
                 {
-                $WarningList.Add("Warning: '$($item)' in '$($file)' should be enclosed in astericks to format as italic.")
+                $WarningList.Add("Warning: '$($item)' in '$($simpleFilePath)' should be enclosed in astericks to format as italic.")
                 }
             }
         }
