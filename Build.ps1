@@ -64,7 +64,7 @@ foreach ($bookName in $Books)
         $content = $content -replace '([^\s])(\r\n|\n|\r)([^\s])',
                                      "`$1$blankLine`$3"
 
-        # all caps word followed by hyphen and a number should use a non-breaking hypen
+        # ALL-CAPS word followed by hyphen and a number should use a non-breaking hypen
         $content = $content -replace '([A-Z]{2,})-([0-9]+)',
                                      '$1&#X2011;$2'
         
@@ -100,6 +100,12 @@ foreach ($bookName in $Books)
         if ($content -match '([^\s])(\r\n\r\n\r\n|\n\n\r|\r\r\r)([^\s])')
             {
             $WarningList.Add("Warning: extra blank lines found in '$($simpleFilePath)'. If these are intended to be scene separators, considering moving this text into another markdown file.")
+            }
+        # quotation issues
+        $matchResult = $content | Select-String -Pattern '(\w+[^,.]["”][,.])'
+        if ($matchResult.Matches.Count -gt 0)
+            {
+            $WarningList.Add("Warning: comma or period inside of quote in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). Should be on the outside.")
             }
         # ellipses checks
         if ($content -match '[…]+')
