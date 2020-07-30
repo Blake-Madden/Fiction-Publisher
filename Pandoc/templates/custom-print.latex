@@ -216,62 +216,28 @@ $endif$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Use TrueType system fonts
 \usepackage{fontspec}
+\usepackage[T1]{fontenc}
 
 %% Used to set some things to all caps
 \usepackage{textcase}
 
+% These commands use free TeX fonts from CTAN that are nearly identical to Palatino
 \usepackage{libertinus}
 
 %% Set Main Fonts
 \setmainfont{Libertinus Serif}
-
-%\setmainfont[
-%  Ligatures=TeX,
-%  BoldFont={Aboriginal Serif Bold},
-%  ItalicFont={Aboriginal Serif Italic},
-%  BoldItalicFont={Aboriginal Serif Bold Italic},
-%  SmallCapsFont={TeX Gyre Termes},
-%  SmallCapsFeatures={Letters=SmallCaps},
-%]{Minion Pro}
+\newfontfamily\sansfont{Libertinus Sans}
+\newfontfamily\primaryfont{Libertinus Serif}
+\newfontfamily\titlefont{Libertinus Serif}
 
 %% Make our quotes curly
 \defaultfontfeatures{Mapping=tex-text}
 
-%% Provides symbols for flourishes (scene dividers)
+%% Provides symbols for flourishes (scene dividers, chapter title decorations)
 \usepackage{adforn}
 
 %% Provides Creative Commons Icons
 \usepackage{ccicons}
-
-%% Set Adobe Garamond Pro Bold macro \garmondL
-%\newcommand*{\garamondL}{\fontspec[Scale=2.0]{Adobe Garamond Pro Bold}\selectfont}
-%\newcommand*{\garamond}{\fontspec{Adobe Garamond Pro}\selectfont}
-
-%% Set URW Gothic macro \goth
-% This command uses locally installed OTF/TTF Fonts
-%\newcommand*{\goth}{\fontspec{URW Gothic L}\selectfont}
-
-% These commands use free TeX fonts from CTAN that are nearly identical
-\usepackage[T1]{fontenc}
-\newfontfamily\sansfont{Libertinus Sans}
-
-
-%% Set Minion Pro macro \minion
-% This command uses locally installed OTF/TTF Fonts
-%\newcommand*{\minion}{\fontspec{Minion Pro}\selectfont}
-%\newcommand*{\minionHead}{\fontspec{MinionPro-BoldIt}\selectfont}
-
-% These commands use free TeX fonts from CTAN that are nearly identical
-%\usepackage{gentium}
-%\usepackage[T1]{fontenc}
-%\newfontfamily\minion{Gentium Book Basic}
-
-\newfontfamily\primaryfont{Libertinus Serif}
-\newfontfamily\titlefont{Libertinus Serif}
-
-%\setmainfont
-%\renewcommand{\sfdefault}{URW Gothic}
-%\setmonofont
 
 %% Provides support for drop caps
 \usepackage{lettrine}
