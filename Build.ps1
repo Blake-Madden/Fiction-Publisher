@@ -89,10 +89,8 @@ foreach ($bookName in $Books)
 
 
         $content = [System.IO.File]::ReadAllText($file)
-        if ($content -match "[`"`']+")
-            {
-            $WarningList.Add("Warning: straight single/double quote(s) found in '$($simpleFilePath)'. Considering converting these into smart quotes to make your intention explicit.")
-            }
+
+        # space issues
         if ($content -match '[ ]{2,}[^\r\n]')
             {
             $WarningList.Add("Warning: multiple spaces between words/sentences found in '$($simpleFilePath)'. Considering changing these into single spaces.")
@@ -100,6 +98,16 @@ foreach ($bookName in $Books)
         if ($content -match '([^\s])(\r\n\r\n\r\n|\n\n\r|\r\r\r)([^\s])')
             {
             $WarningList.Add("Warning: extra blank lines found in '$($simpleFilePath)'. If these are intended to be scene separators, considering moving this text into another markdown file.")
+            }
+        # check for possible stray spaces or newlines that cause issues with paragraphs being split or joined incorrectly
+        $matchResult = $content | Select-String -Pattern '([^ ]+[ ]+)(\r\n|\n|\r)([^ ]+)'
+        if ($matchResult.Matches.Count -gt 0)
+            {
+            $WarningList.Add("Warning: line followed by spaces, then a single line break '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). If this is intended to be a new paragraph, it is recommended to change this to a blank line for clarity. If this should be the same paragraph, then remove the space.")
+            }
+        if ($content -match "[`"`']+")
+            {
+            $WarningList.Add("Warning: straight single/double quote(s) found in '$($simpleFilePath)'. Considering converting these into smart quotes to make your intention explicit.")
             }
         # quotation issues
         $matchResult = $content | Select-String -Pattern '(\w+[^,.]["”][,.])'
