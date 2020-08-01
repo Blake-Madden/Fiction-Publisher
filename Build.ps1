@@ -1,7 +1,7 @@
 ﻿# clean up any output from previous run
-if ([System.IO.Directory]::Exists("$PSScriptRoot/Books/Output"))
+if ([IO.Directory]::Exists("$PSScriptRoot/Books/Output"))
     {
-    $oldOutputs = [System.IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/Output", "*.*", [IO.SearchOption]::TopDirectoryOnly)
+    $oldOutputs = [IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/Output", "*.*", [IO.SearchOption]::TopDirectoryOnly)
     foreach ($oldOutput in $oldOutputs)
         { Remove-Item -Path "$oldOutput" }
     Remove-Item -Path "$PSScriptRoot/Books/Output"
@@ -27,12 +27,12 @@ foreach ($bookName in $Books)
     Copy-Item -Path "$PSScriptRoot/Books/$bookName/outline" -Destination "$PSScriptRoot/Books/$bookName/build/" -Recurse -Force
 
     # get all the chapters and scenes (these should all be prefixed with numbers to control their ordering)
-    $mdFiles = [System.IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/$bookName/build/outline", "*.md", [IO.SearchOption]::AllDirectories)
+    $mdFiles = [IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/$bookName/build/outline", "*.md", [IO.SearchOption]::AllDirectories)
 
     # don't include files with "compile: 0" in the build
     foreach ($file in $mdFiles)
         {
-        $content = [System.IO.File]::ReadAllText($file)
+        $content = [IO.File]::ReadAllText($file)
         if ($content -match '\bcompile:[ ]*0[\s]+')
             {
             Write-Output "Ignoring '$($file)'"
@@ -48,7 +48,7 @@ foreach ($bookName in $Books)
         $fileInfo = New-Object System.IO.FileInfo($file)
 
         # remove YAML header
-        $content = [System.IO.File]::ReadAllText($file) -replace '^([\w]+:.*[\r\n]*)*', [Environment]::NewLine
+        $content = [IO.File]::ReadAllText($file) -replace '^([\w]+:.*[\r\n]*)*', [Environment]::NewLine
 
         # if missing top-level header and file is the first scene in the chapter (i.e., filename starts with zero),
         # then add a chapter heading based on the chapter folder name
@@ -68,7 +68,7 @@ foreach ($bookName in $Books)
         $content = $content -replace '([A-Z]{2,})-([0-9]+)',
                                      '$1&#X2011;$2'
         
-        [void] [System.IO.File]::WriteAllText($file, $content)
+        [void] [IO.File]::WriteAllText($file, $content)
         }
 
     # check for possible formatting issues from the markdown files that author may want to fix
@@ -103,7 +103,7 @@ foreach ($bookName in $Books)
         $matchResult = $content | Select-String -Pattern '([^ ]+[ ]+)(\r\n|\n|\r)([^ ]+)'
         if ($matchResult.Matches.Count -gt 0)
             {
-            $WarningList.Add("Warning: line followed by spaces, then a single line break '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). If this is intended to be a new paragraph, it is recommended to change this to a blank line for clarity. If this should be the same paragraph, then remove the space.")
+            $WarningList.Add("Warning: line followed by spaces, then a single line break '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). If this is intended to be a new paragraph, it is recommended to change this to a blank line for clarity. If this should be the same paragraph, then remove the newline.")
             }
         if ($content -match "[`"`']+")
             {
@@ -250,7 +250,7 @@ foreach ($bookName in $Books)
         {
         $fileInfo = New-Object System.IO.FileInfo($file)
 
-        $content = [System.IO.File]::ReadAllText($file)
+        $content = [IO.File]::ReadAllText($file)
 
         # replace *** with scene separator (i.e., flourishes)
         $content = $content -replace '([\r\n]+)([ ]*[*]{3,}[ ]*)',
@@ -260,6 +260,13 @@ foreach ($bookName in $Books)
         # Note that a leading quotation mark at start of paragraph will be removed, per Chicago Manual of Style
         $content = $content -replace '(^[\s]*#[^\r\n]+[\r\n]+)[‘'"“«]?([A-ZÀ-ÖØ-Ý])([\w'’]*[\s,])',
                                      '$1\lettrine{$2}{$3}'
+
+        # CriticMarkup
+        $content = $content -replace '({--)([^-]*)(--})', '\st{$2}' # deletion
+        $content = $content -replace '({[+]{2})([^+]*)([+]{2}})', '\underline{$2}' # addition
+        $content = $content -replace '({>>)([^<]*)(<<})', '\marginpar{$2}' # comment
+        $content = $content -replace '({==)([^=]*)(==})', '\hl{$2}' # highlight
+        $content = $content -replace '({~~)([^~]*)(~>)([^}]*)(~~})', '\st{$2}\underline{$4}' # change
         
         # files that don't start with zero should be new scenes in a chapter, so unindent their first paragraph
         if ($fileInfo.BaseName -match '^[^0].*')
@@ -267,20 +274,27 @@ foreach ($bookName in $Books)
             $content = $content -replace '^([\s\r\n]*)(.)', '$1\noindent $2'
             }
 
-        [void] [System.IO.File]::WriteAllText($file, $content)
+        [void] [IO.File]::WriteAllText($file, $content)
         }
 
     # format for epub (i.e., html) conversion
     Write-Output "Formatting for epub..."
     foreach ($file in $epubMdFiles)
         {
-        $content = [System.IO.File]::ReadAllText($file)
+        $content = [IO.File]::ReadAllText($file)
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
         $content = $content -replace '(^[\s]*#[^\r\n]+[\r\n]+)([‘'"“«]?[A-ZÀ-ÖØ-Ý])([\w'’]*[\s,])',
                                      '$1<span class="drop-caps">$2</span><span class="small-caps">$3</span>'
 
-        [void] [System.IO.File]::WriteAllText($file, $content)
+        # CriticMarkup
+        $content = $content -replace '({--)([^-]*)(--})', '<del>$2</del>' # deletion
+        $content = $content -replace '({[+]{2})([^+]*)([+]{2}})', '<ins>$2</ins>' # addition
+        $content = $content -replace '({>>)([^<]*)(<<})', '<aside><mark>$2</mark></aside>' # comment
+        $content = $content -replace '({==)([^=]*)(==})', '<mark>$2</mark>' # highlight
+        $content = $content -replace '({~~)([^~]*)(~>)([^}]*)(~~})', '<del>$2</del><ins>$4</ins>' # change
+
+        [void] [IO.File]::WriteAllText($file, $content)
         }
 
     # Build the books

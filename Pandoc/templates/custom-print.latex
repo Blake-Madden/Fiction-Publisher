@@ -13,12 +13,16 @@
   \geometry{
   paperheight=$if(paper-height)$$paper-height$$else$228.6mm$endif$,  %actual height measurement of the page (default is 6x9 inches)
   paperwidth=$if(paper-width)$$paper-width$$else$152.4mm$endif$,    %actual width measurement of the page
-  includehead, %include header inside of text area calculation (footer and margin notes aren't used in this template)
+  $if(copyedit)$
+    includeall, %include header, footer, and margin notes inside of text area calculation (in copyedit mode, show margin notes off to the side)
+  $else$
+    includehead, %include header inside of text area calculation (footer and margin notes aren't used in this template)
+  $endif$
   top=$if(top-margin)$$top-margin$$else$30.0mm$endif$, % top margin
   bottom=$if(bottom-margin)$$bottom-margin$$else$27.0mm$endif$, %bottom margin
   inner=$if(inner-margin)$$inner-margin$$else$22.0mm$endif$, %inner/gutter margin
   outer=$if(outer-margin)$$outer-margin$$else$19.0mm$endif$, %outer margin
-  $if(debug)$
+  $if(copyedit)$
     showframe %show lines drawn around text, footer, header, and margin note areas
   $endif$
   }
@@ -240,6 +244,9 @@ $endif$
 %\renewcommand{\LettrineFontHook}{\calligra}
 %% Or a block letter
 %\renewcommand{\LettrineFontHook}{\Eileenfamily}
+
+%% Add support for strikethrough (\st{} command)
+\usepackage{soul}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
