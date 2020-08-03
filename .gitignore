@@ -1,9 +1,7 @@
 .bundle
 .sass-cache
-Gemfile.lock
 *.kate-swp
 .*~
 
 vendor
 bin
-Books/Example
