@@ -30,7 +30,7 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher
 #### Adds formatting to output (PDF and epub)
 - [X] Adds header to start of chapters if missing (based on parent folder name)
 - [X] Formats start of chapter with drop cap and smart caps
-- [X] Can convert *\*\*\** separators between scene breaks/POV changes with custom flourish code (currently PDF only)
+- [X] Can convert **\*\*\*** separators between scene breaks/POV changes with custom flourish code (currently PDF only)
 - [X] Unindents starting paragraph of new scenes/POV changes
 - [X] Formats start of chapter with drop cap and smart caps
 - [X] Supports [CriticMarkup](https://github.com/CriticMarkup/CriticMarkup-toolkit) syntax
