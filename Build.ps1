@@ -4,7 +4,7 @@ if ([IO.Directory]::Exists("$PSScriptRoot/Books/Output"))
     $oldOutputs = [IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/Output", "*.*", [IO.SearchOption]::TopDirectoryOnly)
     foreach ($oldOutput in $oldOutputs)
         { Remove-Item -Path "$oldOutput" }
-    Remove-Item -Path "$PSScriptRoot/Books/Output"
+    Remove-Item -Path "$PSScriptRoot/Books/Output" -Force
     }
 
 # get a list of all projects in the 'Books' folder
@@ -335,6 +335,6 @@ foreach ($bookName in $Books)
     Set-Location "$PSScriptRoot"
 
     Get-ChildItem -Path "$PSScriptRoot/Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
-    Remove-Item -Path "$PSScriptRoot/Books/$bookName/build"
+    Remove-Item -Path "$PSScriptRoot/Books/$bookName/build" -Force
     Remove-Item -Path "$PSScriptRoot/Books/Output/$bookName.epub"
     }
