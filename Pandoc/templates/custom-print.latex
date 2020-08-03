@@ -166,24 +166,8 @@ $endfor$
 $if(fancy-chapter)$
   \usepackage[$fancy-chapter$]{fncychap}
 $else$
-  \titleformat{\chapter}[display]{\bfseries\titlefont}{\Large Chapter \thechapter \normalfont}{0.5mm}{\small}
+  \input{chapter-heading.latex}
 $endif$
-
-%%%%%%%%%%%%%%%%%%
-%% This part says to style the titles for "chapters"
-% \titleformat{\chapter}[display]
-
-%% Use this font
-%{\bfseries\titlefont}
-
-%% This styles the "Chapter 1" part
-%{\Large Chapter \thechapter \normalfont}
-
-%% This is the spacing between the "Chapter 1" and the actual chapter title
-%{0.5mm}
-
-%% This is the size of the chapter title
-%{\small}%
 
 % Add spacing for the chapter title that appears on the first page of each chapter
 %%%%%%%%%%%%%%%%%%%

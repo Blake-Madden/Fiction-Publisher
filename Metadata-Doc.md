@@ -39,6 +39,7 @@
 - **outer-margin**: The outer margin in the print output
 
 - **fancy-chapter**: Chapter heading style from the "fncychap" library (print output only). Styles include Sonny, Lenny, Glenn, Conny, Rejne, Bjarne, and Bjornstrup
+- **chapter-heading**: The name of the custom chapter heading theme to use ("default" and "romance" are available). Note that using **fancy-chapter** will override this
 
 - **copyedit**: Set as true to draw an outline around the various sections in the print output and show marginal notes in the print output (useful if using [CriticMarkup](https://github.com/CriticMarkup/CriticMarkup-toolkit))
 

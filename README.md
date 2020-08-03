@@ -18,7 +18,11 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher
 
 #### Configurable components for output (PDF and epub)
 - [X] Copyright page template
-  - [X] Creative commons template
+  - [X] creative-commons
+- [X] Chapter heading templates
+  - [X] default
+  - [X] romance
+  - [X] Or you can select styles from the **fncychap** latex package
 - [X] Half-title page template
 - [X] Series page template
 - [X] Author biography page template

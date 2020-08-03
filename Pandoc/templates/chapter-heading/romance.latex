@@ -1,0 +1,19 @@
+%%%%%%%%%%%%%%%%%%
+%% This part says to style the titles for "chapters"
+% \titleformat{\chapter}[display]
+
+%% Use this font
+%{\bfseries\titlefont}
+
+%% This styles the "Chapter 1" part
+%{\Large Chapter \thechapter \normalfont}
+
+%% This is the spacing between the "Chapter 1" and the actual chapter title
+%{0.5mm}
+
+%% This is the size of the chapter title
+%{\small}%
+
+\usepackage{calligra}
+
+\titleformat{\chapter}[display]{\bfseries \filcenter}{\hspace{-.5 mm}\calligra\Large\adforn{60}\hspace{.5 mm}Chapter \thechapter\hspace{4 mm}\adforn{32}}{0.5mm}{\titlefont \huge}

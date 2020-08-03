@@ -234,6 +234,14 @@ foreach ($bookName in $Books)
 
     # half titlepage doesn't really make sense because e-readers force the main title page to the front
 
+    # Create the latex chapter heading file to insert into the print documents.
+    # Note that we don't do this with epub because their chapter headings should be fairly standard looking.
+    # Select the copyright page template (can be customized by "copyright-page" line in metadata file)
+    $chapterHeading = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^chapter-heading:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
+    $chapterHeading = If ($chapterHeading.Length -gt 0) { $chapterHeading } Else { "default" }
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/chapter-heading.latex" -t latex `
+           --template="$PSScriptRoot/Pandoc/templates/chapter-heading/$chapterHeading.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+
     # Create the author biography file to insert into the print
     # TODO: need to be able to exclude this from hardcover editions via metadata
     pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/bio.latex" -t latex `
