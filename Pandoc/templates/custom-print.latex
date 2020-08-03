@@ -50,6 +50,9 @@
 %% Set language and hyphenation rules
 \usepackage[english]{babel}
 
+%% Explicit list of word that not be split across linebreaks (or showing how they should be hyphenated with split across lines)
+\hyphenation{$no-hyphenate-list$}
+
 %% Set encoding
 %\usepackage[utf8]{inputenc}
 

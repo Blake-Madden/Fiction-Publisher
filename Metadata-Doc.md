@@ -63,4 +63,6 @@
     - **title**: This handles up to 5 books
     - **link**: http://www.amazon.com/dp/XXXXXXXXX
       
-- **emphasis-check**: semicolon-separated list of phrases that should be italicized. If they are not, a warning will be logged
+- **emphasis-check**: Semicolon-separated list of phrases that should be italicized. If they are not, a warning will be logged
+
+- **no-hyphenate-list**: Space-separated list of words that explicitly show how words should be hyphenated when split across lines; useful for listing (non-hyphenated) names of characters whose names should not be split between lines
