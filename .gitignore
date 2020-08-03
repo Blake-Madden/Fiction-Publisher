@@ -2,6 +2,3 @@
 .sass-cache
 *.kate-swp
 .*~
-
-vendor
-bin
