@@ -261,8 +261,13 @@ foreach ($bookName in $Books)
         $content = [IO.File]::ReadAllText($file)
 
         # replace *** with scene separator (i.e., flourishes)
-        $content = $content -replace '([\r\n]+)([ ]*[*]{3,}[ ]*)',
-                                     '$1\vspace{5mm}\centerline{\adforn{60}\quad\adforn{11}\quad\adforn{32}}\vspace{5mm}'
+        $sceneSeparator = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^scene-separator-latex:(.*)' | % {($_.matches.groups[1].Value) }
+        if ($sceneSeparator.Length -gt 0)
+            {
+            Write-Output $sceneSeparator
+            $content = $content -replace '([\r\n]+)([ ]*[*]{3,}[ ]*)',
+                                     "`$1$sceneSeparator"
+            }
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
         # Note that a leading quotation mark at start of paragraph will be removed, per Chicago Manual of Style
