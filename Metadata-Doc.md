@@ -38,8 +38,8 @@
 - **inner-margin**: The inner/gutter margin in the print output
 - **outer-margin**: The outer margin in the print output
 
-- **fancy-chapter**: Chapter heading style from the "fncychap" library (print output only). Styles include Sonny, Lenny, Glenn, Conny, Rejne, Bjarne, and Bjornstrup
-- **chapter-heading**: The name of the custom chapter heading theme to use ("default" and "romance" are available). Note that using **fancy-chapter** will override this
+- **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only). Styles include **Sonny**, **Lenny**, **Glenn**, **Conny**, **Rejne**, **Bjarne**, and **Bjornstrup**
+- **chapter-heading**: The name of the custom chapter heading theme to use (**default** and **romance** are available). Note that using **fancy-chapter** will override this
 
 - **scene-separator-latex**: LaTeX code to replace **\*\*\*** sequences between scenes
 
@@ -65,7 +65,6 @@
 - **book3**:
     - **title**: This handles up to 5 books
     - **link**: http://www.amazon.com/dp/XXXXXXXXX
-      
-- **emphasis-check**: Semicolon-separated list of phrases that should be italicized. If they are not, a warning will be logged
 
+- **emphasis-check**: Semicolon-separated list of phrases that should be italicized. If they are not, a warning will be logged
 - **no-hyphenate-list**: Space-separated list of words that explicitly show how words should be hyphenated when split across lines; useful for listing (non-hyphenated) names of characters whose names should not be split between lines
