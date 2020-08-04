@@ -89,6 +89,12 @@ foreach ($bookName in $Books)
 
         $content = [IO.File]::ReadAllText($file)
 
+        # italics issues
+         $matchResult = $content | Select-String -Pattern "([*][\w ]+['’]s[*])"
+        if ($matchResult.Matches.Count -gt 0)
+            {
+            $WarningList.Add("Warning: possesive suffix being italicized in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). Apostrophe and es should not be italicized with the rest of the word.")
+            }
         # space issues
         if ($content -match '[ ]{2,}[^\r\n]')
             {
@@ -102,7 +108,7 @@ foreach ($bookName in $Books)
         $matchResult = $content | Select-String -Pattern '([^ ]+[ ]+)(\r\n|\n|\r)([^ ]+)'
         if ($matchResult.Matches.Count -gt 0)
             {
-            $WarningList.Add("Warning: line followed by spaces, then a single line break '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). If this is intended to be a new paragraph, it is recommended to change this to a blank line for clarity. If this should be the same paragraph, then remove the newline.")
+            $WarningList.Add("Warning: line followed by spaces, then a single line break found in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). If this is intended to be a new paragraph, it is recommended to change this to a blank line for clarity. If this should be the same paragraph, then remove the newline.")
             }
         if ($content -match "[`"`']+")
             {
