@@ -22,7 +22,7 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher
 - [X] Chapter heading templates (PDF only)
   - [X] default
   - [X] romance
-  - [X] Or you can select styles from the **fncychap** latex package
+  - [X] Or you can select styles from the [fncychap](https://www.ctan.org/pkg/fncychap) latex package
 - [X] Half-title page template (PDF only)
 - [X] Series page template
 - [X] Author biography page template
