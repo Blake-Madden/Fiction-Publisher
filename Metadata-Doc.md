@@ -11,7 +11,7 @@
 - **website**: Author website
 
 - **type**: Genre of your book
-- **lang**: A string value in BCP 47 format: http://tools.ietf.org/html/bcp47 (example: en-US)
+- **lang**: A string value in BCP 47 format: http://tools.ietf.org/html/bcp47 (e.g., en-US)
 - **date**: YYYY-MM-DD
 - **year**: YYYY
 
