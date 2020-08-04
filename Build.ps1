@@ -87,7 +87,6 @@ foreach ($bookName in $Books)
         $fileInfo = New-Object System.IO.FileInfo($file)
         $simpleFilePath = $fileInfo.Directory.Name + [IO.Path]::DirectorySeparatorChar + $fileInfo.Name
 
-
         $content = [IO.File]::ReadAllText($file)
 
         # space issues
@@ -264,7 +263,6 @@ foreach ($bookName in $Books)
         $sceneSeparator = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^scene-separator-latex:[ ]*(.*)' | % {($_.matches.groups[1].Value) }
         if ($sceneSeparator.Length -gt 0)
             {
-            Write-Output $sceneSeparator
             $content = $content -replace '([\r\n]+)([ ]*[*]{3,}[ ]*)',
                                      "`$1$sceneSeparator"
             }
