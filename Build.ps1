@@ -88,7 +88,7 @@ foreach ($bookName in $Books)
         $simpleFilePath = $fileInfo.Directory.Name + [IO.Path]::DirectorySeparatorChar + $fileInfo.Name
 
 
-        $content = [System.IO.File]::ReadAllText($file)
+        $content = [IO.File]::ReadAllText($file)
 
         # space issues
         if ($content -match '[ ]{2,}[^\r\n]')
@@ -261,7 +261,7 @@ foreach ($bookName in $Books)
         $content = [IO.File]::ReadAllText($file)
 
         # replace *** with scene separator (i.e., flourishes)
-        $sceneSeparator = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^scene-separator-latex:(.*)' | % {($_.matches.groups[1].Value) }
+        $sceneSeparator = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^scene-separator-latex:[ ]*(.*)' | % {($_.matches.groups[1].Value) }
         if ($sceneSeparator.Length -gt 0)
             {
             Write-Output $sceneSeparator
