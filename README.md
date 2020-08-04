@@ -9,8 +9,8 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher
 
 #### PowerShell build script which creates
   - [X] PDF (print)
-  - [X] epub
-  - [X] mobi
+  - [X] ePub
+  - [X] Mobi
   - [X] Word (using a **Draft** template)
 
 #### Input formats
