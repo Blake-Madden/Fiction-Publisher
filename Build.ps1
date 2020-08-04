@@ -259,7 +259,7 @@ foreach ($bookName in $Books)
 
         $content = [IO.File]::ReadAllText($file)
 
-        # replace *** with scene separator (i.e., flourishes)
+        # replace *** with scene separator (e.g., flourishes)
         $sceneSeparator = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^scene-separator-latex:[ ]*(.*)' | % {($_.matches.groups[1].Value) }
         if ($sceneSeparator.Length -gt 0)
             {
@@ -293,6 +293,14 @@ foreach ($bookName in $Books)
     foreach ($file in $epubMdFiles)
         {
         $content = [IO.File]::ReadAllText($file)
+
+        # replace *** with scene separator (e.g., flourishes)
+        $sceneSeparator = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^scene-separator-html:[ ]*(.*)' | % {($_.matches.groups[1].Value) }
+        if ($sceneSeparator.Length -gt 0)
+            {
+            $content = $content -replace '([\r\n]+)([ ]*[*]{3,}[ ]*)',
+                                     "`$1$sceneSeparator"
+            }
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
         $content = $content -replace '(^[\s]*#[^\r\n]+[\r\n]+)([‘'"“«]?[A-ZÀ-ÖØ-Ý])([\w'’]*[\s,])',
