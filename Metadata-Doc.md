@@ -8,6 +8,7 @@
 - **subtitle-latex**: Latex formatted subtitle (will override "subtitle" value on the title page of PDF output)
 - **series-header**: Header that should appear on the series title page (default is "Also Available")
 - **author**: Author name
+- **email**: Author e-mail
 - **website**: Author website
 
 - **type**: Genre of your book
@@ -20,11 +21,19 @@
 - **cover-image**: The path (relative to **Build.ps1**) to the EPUB cover image
 
 - **publisher**: Publisher of your book
+- **publisher-address-latex**: LaTeX-formatted publisher address (used in PDF copyright page)
+- **publisher-address-html**: HTML-formatted publisher address (used in ePub copyright page)
 - **rights**: A single sentence regarding the licensing of your book
 
-- **isbn**: Optional ISBN of your print book
-- **isbn-13**: Optional 13 digit ISBN of your print book
-- **epub-isbn**: Optional ISBN of your epub
+- **paperback-isbn-13**: Optional 13 digit ISBN of your paperback book
+- **hardcover-isbn-13**: Optional 13 digit ISBN of your hardcover book
+- **epub-isbn-13**: Optional 13 digit ISBN of your epub book
+- **paperback-isbn-10**: Optional 10 digit ISBN of your paperback book
+- **hardcover-isbn-10**: Optional 10 digit ISBN of your hardcover book
+- **epub-isbn-10**: Optional 10 digit ISBN of your epub book
+- **first-paperback-date**: Publication date of first paperback edition (used in copyright page)
+- **lcc-info-latex**: LaTeX-formatted Library of Congress Cataloging-in-Publication Data (used in PDF copyright page)
+- **lcc-info-html**: HTML-formatted Library of Congress Cataloging-in-Publication Data (used in ePub copyright page)
 
 - **dedication**: Optional dedication
 

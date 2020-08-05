@@ -19,6 +19,7 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher
 #### Configurable components for output (PDF and epub)
 - [X] Copyright page template
   - [X] creative-commons
+  - [X] commercial
 - [X] Chapter heading templates (PDF only)
   - [X] default
   - [X] romance
@@ -53,4 +54,3 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher
 ## Fiction Publisher v2 Roadmap
 
 - [ ] Remove YAML headers from markdowns files
-- [ ] Add commercial copyright page template

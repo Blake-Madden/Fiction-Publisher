@@ -34,14 +34,41 @@
 
 <p style="text-indent: 0;"><strong>No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.</strong></p><br />
 
-<p class="center" style="text-indent: 0;">$for(contributors)$$if(contributors.artist)$Cover Artist: $for(contributors)$$contributors.artist$$endfor$$endif$$endfor$</p><br />
+$for(contributors)$
+$if(contributors.artist)$
+<p class="center" style="text-indent: 0;">Cover Artist: $for(contributors)$$contributors.artist$$endfor$</p><br />
+$endif$
+$endfor$
 
-<p class="center" style="text-indent: 0;">$for(contributors)$$if(contributors.editor)$Editor: $for(contributors)$$contributors.editor$$endfor$$endif$$endfor$</p><br />
+$for(contributors)$
+$if(contributors.editor)$
+<p class="center" style="text-indent: 0;">Editor: $for(contributors)$$contributors.editor$$endfor$</p><br />
+$endif$
+$endfor$
 
-<p class="center" style="text-indent: 0;">$for(contributors)$$if(contributors.designer)$Design: $for(contributors)$$contributors.designer$$endfor$$endif$$endfor$</p><br />
+$for(contributors)$
+$if(contributors.designer)$
+<p class="center" style="text-indent: 0;">Design: $for(contributors)$$contributors.designer$$endfor$</p><br />
+$endif$
+$endfor$
 
-<p class="center" style="text-indent: 0;">$if(paperback-isbn)$Paperback ISBN: $paperback-isbn$$endif$</p>
-<p class="center" style="text-indent: 0;">$if(hardcover-isbn)$Hardcover ISBN: $hardcover-isbn$$endif$</p>
-<p class="center"  style="text-indent: 0;">$if(epub-isbn)$ePub ISBN: $epub-isbn$$endif$</p>
+$if(paperback-isbn-13)$
+<p class="center" style="text-indent: 0;">ISBN-13: $paperback-isbn-13$ (paperback)</p>
+$endif$
+$if(paperback-isbn-10)$
+<p class="center" style="text-indent: 0;">ISBN-10: $paperback-isbn-10$ (paperback)</p>
+$endif$
+$if(hardcover-isbn-13)$
+<p class="center" style="text-indent: 0;">ISBN-13: $hardcover-isbn-13$ (hardcover)</p>
+$endif$
+$if(hardcover-isbn-10)$
+<p class="center" style="text-indent: 0;">ISBN-10: $hardcover-isbn-10$ (hardcover)</p>
+$endif$
+$if(epub-isbn-13)$
+<p class="center"  style="text-indent: 0;">ISBN-13: $epub-isbn-13$ (ePub)</p>
+$endif$
+$if(epub-isbn-10)$
+<p class="center"  style="text-indent: 0;">ISBN-10: $epub-isbn-10$ (ePub)</p>
+$endif$
 
 </div>
