@@ -150,33 +150,6 @@ $endfor$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%% TITLE SETTINGS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Needed for styling chapter title headings
-\usepackage{titlesec}
-
-% Turn off subsection numbering for titles
-\renewcommand{\thesection}{}
-
-%% Style the chapter title that appears on the first page of each chapter
-\titlespacing*{\chapter}
-{0pt}%left margin
-{150pt}%top margin
-{25pt}%bottom margin
-
-% This tells it to style the title format for chapters (or use a style from fncychap, if requested)
-$if(fancy-chapter)$
-  \usepackage[$fancy-chapter$]{fncychap}
-$else$
-  \input{chapter-heading.latex}
-$endif$
-
-% Add spacing for the chapter title that appears on the first page of each chapter
-%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%% HEADERS AND FOOTERS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -272,6 +245,36 @@ $endif$
 
 %% Use the year instead of the full date
 \date{$year$}
+
+%% Converts number to string
+\usepackage{fmtcount}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% TITLE SETTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Needed for styling chapter title headings
+\usepackage{titlesec}
+
+% Turn off subsection numbering for titles
+\renewcommand{\thesection}{}
+
+%% Style the chapter title that appears on the first page of each chapter
+\titlespacing*{\chapter}
+{0pt}%left margin
+{150pt}%top margin
+{25pt}%bottom margin
+
+% This tells it to style the title format for chapters (or use a style from fncychap, if requested)
+$if(fancy-chapter)$
+  \usepackage[$fancy-chapter$]{fncychap}
+$else$
+  \input{chapter-heading.latex}
+$endif$
+
+% Add spacing for the chapter title that appears on the first page of each chapter
+%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1,7 +1,0 @@
-%%%%%%%%%%%%%%%%%%
-%% This part says to style the titles for "chapters"
-% \titleformat{\chapter}[display]
-
-\usepackage{calligra}
-
-\titleformat{\chapter}[display]{\bfseries \filcenter}{\hspace{-.5 mm}\calligra\Large\adforn{60}\hspace{.5 mm}Chapter \thechapter\hspace{4 mm}\adforn{32}}{0.5mm}{\titlefont \huge}

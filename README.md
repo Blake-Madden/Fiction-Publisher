@@ -22,7 +22,8 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher
   - [X] commercial
 - [X] Chapter heading templates (PDF only)
   - [X] default
-  - [X] romance
+  - [X] romance-calligraphy
+  - [X] romance-cursive
   - [X] Or you can select styles from the [fncychap](https://www.ctan.org/pkg/fncychap) latex package
 - [X] Half-title page template (PDF only)
 - [X] Series page template
