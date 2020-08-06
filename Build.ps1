@@ -48,7 +48,7 @@ foreach ($bookName in $Books)
         $fileInfo = New-Object System.IO.FileInfo($file)
 
         # remove YAML header
-        $content = [IO.File]::ReadAllText($file) -replace '^([\w]+:.*[\r\n]*)*', [Environment]::NewLine
+        $content = [IO.File]::ReadAllText($file) -replace '^(---(\r\n|\r|\n))?([\w]+:.+(\r\n|\r|\n))+(---)?(\r\n|\r|\n){2,}', [Environment]::NewLine
 
         # if missing top-level header and file is the first scene in the chapter (i.e., filename starts with zero),
         # then add a chapter heading based on the chapter folder name

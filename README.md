@@ -52,6 +52,3 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher
 - [X] Checks for items that should be italicized (items are user-defined in metadata)
 - [X] Checks for possesive suffixes being italicized
 
-## Fiction Publisher v2 Roadmap
-
-- [ ] Remove YAML headers from markdowns files
