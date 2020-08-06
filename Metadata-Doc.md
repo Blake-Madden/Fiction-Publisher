@@ -48,7 +48,7 @@
 - **outer-margin**: The outer margin in the print output
 
 - **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only). Styles include **Sonny**, **Lenny**, **Glenn**, **Conny**, **Rejne**, **Bjarne**, and **Bjornstrup**
-- **chapter-heading**: The name of the custom chapter heading theme to use (**default** and **romance** are available). Note that using **fancy-chapter** will override this
+- **chapter-heading**: The name of the custom chapter heading theme to use (**default**, **romance-calligraphy**, **romance-cursive** are available). Note that using **fancy-chapter** will override this
 
 - **scene-separator-latex**: LaTeX code to replace **\*\*\*** sequences between scenes (used for PDF output)
 - **scene-separator-html**: HTML code to replace **\*\*\*** sequences between scenes (used for ePub output)
