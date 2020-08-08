@@ -29,8 +29,15 @@ $endif$
 \vspace{0.4cm}
 
 $if(lcc-info-latex)$
-\noindent  Library of Congress Cataloging-in-Publication Data: \par
+\noindent Library of Congress Cataloging-in-Publication Data: \par
 $lcc-info-latex$ \par
+\vspace{0.4cm}
+$endif$
+
+%% The impression number (a.k.a. printer line)
+$if(impression-line-editions)$
+$if(impression-line-years)$\noindent $impression-line-years$\hspace{.5cm}$endif$
+$if(impression-line-editions)$\noindent $impression-line-editions$$endif$
 \vspace{0.4cm}
 $endif$
 

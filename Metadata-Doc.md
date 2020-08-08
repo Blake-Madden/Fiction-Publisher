@@ -34,6 +34,8 @@
 - **first-paperback-date**: Publication date of first paperback edition (used in copyright page)
 - **lcc-info-latex**: LaTeX-formatted Library of Congress Cataloging-in-Publication Data (used in PDF copyright page)
 - **lcc-info-html**: HTML-formatted Library of Congress Cataloging-in-Publication Data (used in ePub copyright page)
+- **impression-line-years**: The year part of the impression number/printer line (appears in the copyright page)
+- **impression-line-editions**: The edition part of the impression number/printer line (appears in the copyright page)
 
 - **dedication**: Optional dedication
 
