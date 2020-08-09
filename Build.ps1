@@ -56,7 +56,7 @@ foreach ($bookName in $Books)
             {
             # chapter (folder) names should begin with number and hyphen prefix to control order, so strip that off
             $ChapterName = $fileInfo.Directory.Name -replace('^[0-9]*-','') -replace('[_]', ' ')
-            $content = "# $ChapterName" + [Environment]::NewLine + [Environment]::NewLine + $content
+            $content = "# $ChapterName" + [Environment]::NewLine + $content
             }
 
         # replace single new line (between lines of text) with a blank line--this is how paragraphs are supposed to be separated
@@ -100,9 +100,10 @@ foreach ($bookName in $Books)
             {
             $WarningList.Add("Warning: multiple spaces between words/sentences found in '$($simpleFilePath)'. Considering changing these into single spaces.")
             }
-        if ($content -match '([^\s])(\r\n\r\n\r\n|\n\n\r|\r\r\r)([^\s])')
+        $matchResult = $content | Select-String -Pattern '([^\s]+)(\r\n\r\n\r\n|\n\n\r|\r\r\r)([^\s]+)'
+        if ($matchResult.Matches.Count -gt 0)
             {
-            $WarningList.Add("Warning: extra blank lines found in '$($simpleFilePath)'. If these are intended to be scene separators, considering moving this text into another markdown file.")
+            $WarningList.Add("Warning: extra blank lines found in '$($simpleFilePath)'(`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). If these are intended to be scene separators, considering moving this text into another markdown file.")
             }
         # check for possible stray spaces or newlines that cause issues with paragraphs being split or joined incorrectly
         $matchResult = $content | Select-String -Pattern '([^ ]+[ ]+)(\r\n|\n|\r)([^ ]+)'
