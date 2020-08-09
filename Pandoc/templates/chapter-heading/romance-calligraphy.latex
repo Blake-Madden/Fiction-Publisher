@@ -2,6 +2,11 @@
 %% This part says to style the titles for "chapters"
 % \titleformat{\chapter}[display]
 
-\usepackage{calligra}
+\usepackage{fmtcount}
 
-\titleformat{\chapter}[display]{\bfseries \filcenter}{\hspace{-.5 mm}\calligra\Large\adforn{60}\hspace{.5 mm}Chapter \thechapter\hspace{4 mm}\adforn{32}}{0.5mm}{\titlefont \huge}
+\usepackage{calligra}
+% this font is very oblique, so when using it, push it over to the left a little so that it lines up with content proceeding it better
+\newcommand{\chapterheaderfont}{\hspace{-.5 mm}\calligra}
+\def\chapterheaderfontname{Calligra}
+
+\titleformat{\chapter}[display]{\bfseries \filcenter}{\chapterheaderfont\Large\adforn{60}\hspace{.5 mm}Chapter \Numberstringnum{\thechapter}\hspace{3 mm}\adforn{32}}{0.5mm}{\titlefont \huge}

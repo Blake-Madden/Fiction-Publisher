@@ -468,8 +468,17 @@ $endif$
 % Don't indent new paragraphs
 \setlength{\parindent}{0mm}
 
-% Add space between paragraphs
-\parskip = \baselineskip
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create the colophon
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+$if(colophon)$
+\input{colophon.latex}
+
+\clearpage{\thispagestyle{empty}\cleardoublepage}
+$endif$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%

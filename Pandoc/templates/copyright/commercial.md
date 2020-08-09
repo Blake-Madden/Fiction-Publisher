@@ -35,16 +35,6 @@ $if(lcc-info-html)$
 <p>$lcc-info-html$</p>
 $endif$
 
-
-%% The impression number (a.k.a. printer line)
-$if(impression-line-editions)$
-<p style="text-indent: 0;">
-$if(impression-line-years)$$impression-line-years$&nbsp;&nbsp;&nbsp;&nbsp;$endif$
-$if(impression-line-editions)$$impression-line-editions$$endif$
-</p>
-<br />
-$endif$
-
 $if(first-paperback-date)$
 <p style="text-indent: 0;">First paperback edition $first-paperback-date$.</p><br />
 $endif$

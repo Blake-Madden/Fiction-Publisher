@@ -35,12 +35,14 @@
 - **lcc-info-latex**: LaTeX-formatted Library of Congress Cataloging-in-Publication Data (used in PDF copyright page)
 - **lcc-info-html**: HTML-formatted Library of Congress Cataloging-in-Publication Data (used in ePub copyright page)
 - **impression-line-years**: The year part of the impression number/printer line (appears in the copyright page)
-- **impression-line-editions**: The edition part of the impression number/printer line (appears in the copyright page)
+- **impression-line-printings**: The print-run part of the impression number/printer line (appears in the copyright page)
 
 - **dedication**: Optional dedication
 
 - **toc**: Whether to include a table of contents in the print output (true or false)
 - **toc-title**: The header text for the Table of Contents
+
+- **colophon**: Whether to include a colophon page (detailing typesetting information) in the print output
 
 - **paperheight**: The height of the paper for print output (the default papersize is 6x9 inches)
 - **paperwidth**: The width of the paper for print output

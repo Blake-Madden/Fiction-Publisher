@@ -234,10 +234,15 @@ foreach ($bookName in $Books)
     Copy-Item -Path "$PSScriptRoot/Pandoc/templates/copyright/ccbynasa.png" -Destination "$PSScriptRoot/Books/$bookName/build/ccbynasa.png"
 
     # Create the latex half titlepage
+    # half titlepage doesn't really make sense because e-readers force the main title page to the front
     pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/half-titlepage.latex" -t latex `
            --template="$PSScriptRoot/Pandoc/templates/half-titlepage/half-titlepage.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
-    # half titlepage doesn't really make sense because e-readers force the main title page to the front
+    
+    # Create the latex colophon page
+    # ePub doesn't use typesetting, so not built for those
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/colophon.latex" -t latex `
+           --template="$PSScriptRoot/Pandoc/templates/colophon/default.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the latex chapter heading file to insert into the print documents.
     # Note that we don't do this with epub because their chapter headings should be fairly standard looking.

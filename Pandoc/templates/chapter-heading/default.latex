@@ -14,4 +14,8 @@
 %% This is the size of the chapter title
 %{\small}%
 
+% just used in colophon
+\newfontfamily\chapterheaderfont{Libertinus}
+\def\chapterheaderfontname{Libertinus}
+
 \titleformat{\chapter}[display]{\bfseries\titlefont}{\Large Chapter \thechapter \normalfont}{0.5mm}{\small}
