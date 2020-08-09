@@ -35,7 +35,7 @@ $lcc-info-latex$ \par
 $endif$
 
 %% The impression number (a.k.a. printer line)
-$if(impression-line-editions)$
+$if(impression-line-printings)$
 $if(impression-line-years)$\noindent $impression-line-years$\hspace{.5cm}$endif$
 $if(impression-line-printings)$\noindent $impression-line-printings$$endif$
 \vspace{0.4cm}
