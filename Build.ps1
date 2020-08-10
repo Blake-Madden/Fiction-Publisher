@@ -1,4 +1,12 @@
-﻿# clean up any output from previous run
+﻿$q1 = [char] 0x201c  # left smart double quote
+$sq1 = [char] 0x2018 # left smart sinlge
+$gm1 = [char] 0x00AB # left Guillemet
+$agrave = [char] 0x00C0 # A with grave
+$oumlauts = [char] 0x00D6 # O with umlauts
+$ostroke = [char] 0x00D8 # O with stroke
+$yacute = [char] 0x00DD # Y with acute
+
+# clean up any output from previous run
 if ([IO.Directory]::Exists("$PSScriptRoot/Books/Output"))
     {
     $oldOutputs = [IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/Output", "*.*", [IO.SearchOption]::TopDirectoryOnly)
@@ -281,7 +289,7 @@ foreach ($bookName in $Books)
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
         # Note that a leading quotation mark at start of paragraph will be removed, per Chicago Manual of Style
-        $content = $content -replace '(^[\s]*#[^\r\n]+[\r\n]+)[‘'"“«]?([A-ZÀ-ÖØ-Ý])([\w'’]*[\s,])',
+        $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([A-Z$agrave-$oumlauts$ostroke-$yacute])([\w'’]*[\s,])",
                                      '$1\lettrine{$2}{$3}'
 
         # CriticMarkup
@@ -315,7 +323,7 @@ foreach ($bookName in $Books)
             }
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
-        $content = $content -replace '(^[\s]*#[^\r\n]+[\r\n]+)([‘'"“«]?[A-ZÀ-ÖØ-Ý])([\w'’]*[\s,])',
+        $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)([$sq1'`"$q1$gm1 ]?[A-Z$agrave-$oumlauts$ostroke-$yacute])([\w'’]*[\s,])",
                                      '$1<span class="drop-caps">$2</span><span class="small-caps">$3</span>'
 
         # CriticMarkup
