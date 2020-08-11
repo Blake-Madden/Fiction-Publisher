@@ -191,6 +191,7 @@ $endfor$
 \newfontfamily\sansfont{Libertinus Sans}
 \newfontfamily\primaryfont{Libertinus Serif}
 \newfontfamily\titlefont{Libertinus Serif}
+\def\primaryfontname{Libertinus}
 
 %% Make our quotes curly
 \defaultfontfeatures{Mapping=tex-text}

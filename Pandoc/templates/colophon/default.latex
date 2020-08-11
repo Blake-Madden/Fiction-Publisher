@@ -3,5 +3,9 @@
 This book was typeset in \LaTeX . \par
 The main font was set in Libertinus. \par
 $if(chapter-heading)$
-Chapter headings were set in {\chapterheaderfont \chapterheaderfontname}.
+\ifx\chapterheaderfontname\primaryfontname
+  % no need to print anything if the fonts are the same
+\else
+  Chapter headings were set in {\chapterheaderfont \chapterheaderfontname}.
+\fi
 $endif$
