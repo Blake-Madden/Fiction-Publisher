@@ -1,6 +1,5 @@
-﻿# define extended ASCII characters to prevent encoding issues when editing and running this file on different platforms
-$q1 = [char] 0x201C  # left smart double quote
-$q2 = [char] 0x201D  # right smart double quote
+﻿$q1 = [char] 0x201C  # left smart double quote
+$q2 = [char] 0x201D  # left smart double quote
 $sq1 = [char] 0x2018 # left smart single quote
 $sq2 = [char] 0x2019 # right smart single quote
 $gm1 = [char] 0x00AB # left Guillemet
@@ -34,7 +33,7 @@ foreach ($bookName in $Books)
     ###############################################################
 
     # copy source files into build folder and set that to the current working directory
-    Write-Output "Copying files . . ."
+    Write-Output "Copying files..."
     New-Item -ItemType Directory -Path "$PSScriptRoot/Books/$bookName/build" -Force | Out-Null
     Get-ChildItem -Path "$PSScriptRoot/Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
     Copy-Item -Path "$PSScriptRoot/Books/$bookName/outline" -Destination "$PSScriptRoot/Books/$bookName/build/" -Recurse -Force
@@ -55,7 +54,7 @@ foreach ($bookName in $Books)
 
     # Pre-process files
     ###############################################################
-    Write-Output "Preprocessing source files . .. "
+    Write-Output "Preprocessing source files..."
     foreach ($file in $mdFiles)
         {
         $fileInfo = New-Object System.IO.FileInfo($file)
@@ -86,7 +85,7 @@ foreach ($bookName in $Books)
 
     # check for possible formatting issues from the markdown files that author may want to fix
     ###############################################################
-    Write-Output "Reviewing formatting in source files . . ."
+    Write-Output "Reviewing formatting in source files..."
     $WarningList = New-Object Collections.Generic.List[string]
 
     # semicolon separated list of items that should be italicized (specified in meatadata)
@@ -116,7 +115,7 @@ foreach ($bookName in $Books)
         $matchResult = $content | Select-String -Pattern '([^\s]+)(\r\n\r\n\r\n|\n\n\r|\r\r\r)([^\s]+)'
         if ($matchResult.Matches.Count -gt 0)
             {
-            $WarningList.Add("Warning: extra blank lines found in '$($simpleFilePath)'(`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). If these are intended to be scene separators, considering moving this text into another markdown file.")
+            $WarningList.Add("Warning: extra blank lines found in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). If these are intended to be scene separators, considering moving this text into another markdown file.")
             }
         # check for possible stray spaces or newlines that cause issues with paragraphs being split or joined incorrectly
         $matchResult = $content | Select-String -Pattern '([^ ]+[ ]+)(\r\n|\n|\r)([^ ]+)'
@@ -172,6 +171,12 @@ foreach ($bookName in $Books)
             {
             $WarningList.Add("Warning: space indenting found in '$($simpleFilePath)', (' $($matchResult.Matches.Groups[0].Captures[0].Value)'). Considering removing these.")
             }
+        # stray period or comma around ? or !
+        $matchResult = $content | Select-String -Pattern '([.,][?!]|[?!][.,])'
+        if ($matchResult.Matches.Count -gt 0)
+            {
+            $WarningList.Add("Warning: stray period or comma found in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`").")
+            }
         # check for items that should be italicized
         foreach ($item in $itemsToEmphacize)
             {
@@ -195,7 +200,7 @@ foreach ($bookName in $Books)
     $epubMdFiles = [IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/$bookName/build/epub", "*.md", [IO.SearchOption]::AllDirectories)
 
     # Build a draft copy before doing any output-specific formatting
-    Write-Output "Building draft copy . . ."
+    Write-Output "Building draft copy..."
     pandoc --toc "$PSScriptRoot/Books/$bookName/config.yml" --reference-doc "$PSScriptRoot/Pandoc/templates/draft.docx" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName DRAFT.docx"
 
     # copy epub cover image to build
@@ -277,7 +282,7 @@ foreach ($bookName in $Books)
            -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # format for print (i.e., latex) conversion
-    Write-Output "Formatting for print . . ."
+    Write-Output "Formatting for print..."
     foreach ($file in $mdFiles)
         {
         $fileInfo = New-Object System.IO.FileInfo($file)
@@ -314,7 +319,7 @@ foreach ($bookName in $Books)
         }
 
     # format for epub (i.e., html) conversion
-    Write-Output "Formatting for epub . . ."
+    Write-Output "Formatting for epub..."
     foreach ($file in $epubMdFiles)
         {
         $content = [IO.File]::ReadAllText($file)
@@ -345,8 +350,19 @@ foreach ($bookName in $Books)
     ###############################################################
     Set-Location "$PSScriptRoot/Books/$bookName/build/"
 
+    # epub
+    Write-Output "Building for e-pub..."
+    pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
+           $includeToc --toc-depth=1 `
+           --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
+           --epub-cover-image="$coverImage" `
+           --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
+           -i "$PSScriptRoot/Books/$bookName/build/copyright.md" "$includeSeriesPageEpub" `
+           $epubMdFiles `
+           "$PSScriptRoot/Books/$bookName/build/bio.md"           
+
     # Amazon mobi
-    Write-Output "Building for Amazon mobi . . ."
+    Write-Output "Building for Amazon mobi..."
     pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
            $includeToc --toc-depth=1 `
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
@@ -357,29 +373,17 @@ foreach ($bookName in $Books)
            "$PSScriptRoot/Books/$bookName/build/bio.md"           
     kindlegen -c2 "$PSScriptRoot/Books/Output/$bookName.epub"
 
-    # epub
-    Write-Output "Building for epub . . ."
-    Remove-Item -Path "$PSScriptRoot/Books/Output/$bookName.epub" # remove file used for mobi input
-    pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
-           $includeToc --toc-depth=1 `
-           --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
-           --epub-cover-image="$coverImage" `
-           --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
-           -i "$PSScriptRoot/Books/$bookName/build/copyright.md" "$includeSeriesPageEpub" `
-           $epubMdFiles `
-           "$PSScriptRoot/Books/$bookName/build/bio.md"   
-
     # Print publication output
-    Write-Output "Building for print . . ."
+    Write-Output "Building for print..."
     pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
            --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
            -f markdown+smart $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-print.pdf"
 
     # clean up
     ###############################################################
-    Write-Output "Cleaning up . . ."
     Set-Location "$PSScriptRoot"
 
     Get-ChildItem -Path "$PSScriptRoot/Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
     Remove-Item -Path "$PSScriptRoot/Books/$bookName/build" -Force
+    Remove-Item -Path "$PSScriptRoot/Books/Output/$bookName.epub"
     }

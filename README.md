@@ -52,3 +52,4 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher
 - [X] Checks for a line that ends with space(s), followed by single newline (indicates ambiguous intention as to whether this should be a new paragraph [a full blank line is recommended here] or the same paragraph [the newline should be removed])
 - [X] Checks for items that should be italicized (items are user-defined in metadata)
 - [X] Checks for possesive suffixes being italicized
+- [X] Checks for stray period or comma around '?' or '!'
