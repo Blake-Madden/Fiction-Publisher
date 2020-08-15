@@ -172,7 +172,7 @@ foreach ($bookName in $Books)
             $WarningList.Add("Warning: space indenting found in '$($simpleFilePath)', (' $($matchResult.Matches.Groups[0].Captures[0].Value)'). Considering removing these.")
             }
         # stray period or comma around ? or !
-        $matchResult = $content | Select-String -Pattern '([.,][?!]|[?!][.,])'
+        $matchResult = $content | Select-String -Pattern '([.,][?!]|[?!][.,]|[,][.])'
         if ($matchResult.Matches.Count -gt 0)
             {
             $WarningList.Add("Warning: stray period or comma found in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`").")
@@ -233,8 +233,8 @@ foreach ($bookName in $Books)
     pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/amazon-seriespage.md" `
            --template="$PSScriptRoot/Pandoc/templates/seriespage/amazon-seriespage.md" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/seriespage.latex" -t latex `
-           --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/seriespage.tex" -t latex `
+           --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.tex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Select the copyright page template (can be customized by "copyright-page" line in metadata file)
     $copyrightPage = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^copyright-page:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
@@ -242,8 +242,8 @@ foreach ($bookName in $Books)
 
     # Create the latex copyright file to insert into the print documents.
     # Note that we are simply using the copyright template and expanding the variables from our config.yml into it.
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/copyright.latex" -t latex `
-           --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/copyright.tex" -t latex `
+           --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.tex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the copyright file to insert into the epub documents.
     # Also, note that we are simply using the copyright template and expanding the variables from our config.yml into it.
@@ -254,27 +254,27 @@ foreach ($bookName in $Books)
 
     # Create the latex half titlepage
     # half titlepage doesn't really make sense because e-readers force the main title page to the front
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/half-titlepage.latex" -t latex `
-           --template="$PSScriptRoot/Pandoc/templates/half-titlepage/half-titlepage.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/half-titlepage.tex" -t latex `
+           --template="$PSScriptRoot/Pandoc/templates/half-titlepage/half-titlepage.tex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     
     # Create the latex colophon page
     # ePub doesn't use typesetting, so not built for those
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/colophon.latex" -t latex `
-           --template="$PSScriptRoot/Pandoc/templates/colophon/default.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/colophon.tex" -t latex `
+           --template="$PSScriptRoot/Pandoc/templates/colophon/default.tex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the latex chapter heading file to insert into the print documents.
     # Note that we don't do this with epub because their chapter headings should be fairly standard looking.
     # Select the copyright page template (can be customized by "copyright-page" line in metadata file)
     $chapterHeading = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^chapter-heading:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
     $chapterHeading = If ($chapterHeading.Length -gt 0) { $chapterHeading } Else { "default" }
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/chapter-heading.latex" -t latex `
-           --template="$PSScriptRoot/Pandoc/templates/chapter-heading/$chapterHeading.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/chapter-heading.tex" -t latex `
+           --template="$PSScriptRoot/Pandoc/templates/chapter-heading/$chapterHeading.tex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the author biography file to insert into the print
     # TODO: need to be able to exclude this from hardcover editions via metadata
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/bio.latex" -t latex `
-           --template="$PSScriptRoot/Pandoc/templates/biography/bio.latex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/bio.tex" -t latex `
+           --template="$PSScriptRoot/Pandoc/templates/biography/bio.tex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the author biography file to insert into the epub documents
     pandoc --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/bio.md" `
@@ -375,7 +375,7 @@ foreach ($bookName in $Books)
 
     # Print publication output
     Write-Output "Building for print..."
-    pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.latex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
+    pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.tex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
            --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
            -f markdown+smart $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-print.pdf"
 
