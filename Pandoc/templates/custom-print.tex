@@ -214,8 +214,11 @@ $if(drop-cap-style)$
 
   %% Or a block letter
   \ifx\$drop-cap-style$\blockletter
-    \usepackage{Eileen}
-    \renewcommand{\LettrineFontHook}{\Eileenfamily}
+    \usepackage{Romantik}
+    \renewcommand{\LettrineFontHook}{\usefont{U}{Romantik}{xl}{n}}
+    \renewcommand*{\DefaultLoversize}{.5}
+    \setlength{\DefaultFindent}{0.2em}
+    \setlength{\DefaultNindent}{0.2em}
   \fi
 
 $endif$

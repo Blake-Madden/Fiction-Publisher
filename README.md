@@ -17,7 +17,7 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher
 - [X] Supports Markdown files within [Manuskript](https://github.com/olivierkes/manuskript) folder structure
 
 #### Configurable components for output (PDF and epub)
-- [X] Copyright page template
+- [X] Copyright page templates
   - [X] creative-commons
   - [X] commercial
 - [X] Chapter heading templates (PDF only)
@@ -25,8 +25,8 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher
   - [X] romance-calligraphy
   - [X] romance-cursive
   - [X] Or you can select styles from the [fncychap](https://www.ctan.org/pkg/fncychap) LaTeX package
-- [X] Drop cap style (PDF only, epub uses a simple default format)
-  - [X] default
+- [X] Drop cap styles (PDF only, epub uses a simple default format)
+  - [X] default (same font as the body text)
   - [X] romance
   - [X] blockletter
   - [X] none
