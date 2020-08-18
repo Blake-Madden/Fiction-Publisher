@@ -299,8 +299,31 @@ foreach ($bookName in $Books)
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
         # Note that a leading quotation mark at start of paragraph will be removed, per Chicago Manual of Style
-        $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([A-Z$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
-                                     '$1\lettrine{$2}{$3}'
+        $dropCapStyle = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^drop-cap-style:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
+
+        # romance style is oblique, so need some special commands for certain letters to look nice
+        if ($dropCapStyle -eq 'romance')
+          {
+          $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([ACEIKLMRSTUXZ$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
+                              '$1\lettrine{$2}{$3}'
+
+          # 'G' has a lengthy descender with the font that we use for romance
+          $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([G])([\w'$sq2]*[\s,])",
+                              '$1\lettrine[findent=.5em, nindent=0em, depth=1]{$2}{$3}'
+
+          $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([BH])([\w'$sq2]*[\s,])",
+                              '$1\lettrine[findent=.5em, nindent=0em]{$2}{$3}'
+
+          $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([DFJNOPQVWY])([\w'$sq2]*[\s,])",
+                              '$1\lettrine[findent=.5em, nindent=-.5em]{$2}{$3}'
+          }
+        elseif ($dropCapStyle -eq 'none')
+          {} # noop
+        else
+          {
+          $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([A-Z$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
+                              '$1\lettrine{$2}{$3}'
+          }
 
         # CriticMarkup
         $content = $content -replace '({--)([^-]*)(--})', '\st{$2}' # deletion

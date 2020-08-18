@@ -25,6 +25,11 @@ Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher
   - [X] romance-calligraphy
   - [X] romance-cursive
   - [X] Or you can select styles from the [fncychap](https://www.ctan.org/pkg/fncychap) LaTeX package
+- [X] Drop cap style (PDF only, epub uses a simple default format)
+  - [X] default
+  - [X] romance
+  - [X] blockletter
+  - [X] none
 - [X] Half-title page template (PDF only)
 - [X] Series page template
 - [X] Colophon page template (PDF only, details typesetting information)

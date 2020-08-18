@@ -1,11 +1,17 @@
 \pagestyle{empty}
 
-This book was typeset in \LaTeX . \par
+This book was created using \LaTeX .\par
 The main font was set in Libertinus. \par
 $if(chapter-heading)$
 \ifx\chapterheaderfontname\primaryfontname
   % no need to print anything if the fonts are the same
 \else
-  Chapter headings were set in {\chapterheaderfont \chapterheaderfontname}.
+  Chapter headings were set in {\chapterheaderfont \chapterheaderfontname}. \par
 \fi
 $endif$
+\ifx\$drop-cap-style$\romance
+  Drop caps were set in {\dropcapfont TeX Gyre Chorus}.
+\fi
+\ifx\$drop-cap-style$\blockletter
+  Drop caps were set in Eileen ({\Eileenfamily Eileen}).
+\fi

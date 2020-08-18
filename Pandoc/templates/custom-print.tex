@@ -183,6 +183,43 @@ $endfor$
 %% Used to set some things to all caps
 \usepackage{textcase}
 
+%% Provides symbols for flourishes (scene dividers, chapter title decorations)
+\usepackage{adforn}
+
+%% Provides Creative Commons Icons
+\usepackage{ccicons}
+
+%% Color macros for fonts
+\usepackage{xcolor}
+
+%% Add support for strikethrough (\st{} command)
+\usepackage{soul}
+
+%% Provides support for drop caps
+\usepackage{lettrine}
+
+\def\romance{romance}
+\def\blockletter{blockletter}
+
+$if(drop-cap-style)$
+
+  %% If you want the first letter to be a calligraphy font
+  \ifx\$drop-cap-style$\romance
+    \usepackage{tgchorus}
+    \newfontfamily\dropcapfont{TeX Gyre Chorus}
+    \renewcommand{\LettrineFontHook}{\dropcapfont\color{lightgray}}
+    \renewcommand*{\DefaultLhang}{.25}
+    \renewcommand*{\DefaultLoversize}{.7}
+  \fi
+
+  %% Or a block letter
+  \ifx\$drop-cap-style$\blockletter
+    \usepackage{Eileen}
+    \renewcommand{\LettrineFontHook}{\Eileenfamily}
+  \fi
+
+$endif$
+
 % These commands use free TeX fonts from CTAN that are nearly identical to Palatino
 \usepackage{libertinus}
 
@@ -195,22 +232,6 @@ $endfor$
 
 %% Make our quotes curly
 \defaultfontfeatures{Mapping=tex-text}
-
-%% Provides symbols for flourishes (scene dividers, chapter title decorations)
-\usepackage{adforn}
-
-%% Provides Creative Commons Icons
-\usepackage{ccicons}
-
-%% Provides support for drop caps
-\usepackage{lettrine}
-%% If you want the first letter to be a calligraphy font
-%\renewcommand{\LettrineFontHook}{\calligra}
-%% Or a block letter
-%\renewcommand{\LettrineFontHook}{\Eileenfamily}
-
-%% Add support for strikethrough (\st{} command)
-\usepackage{soul}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
