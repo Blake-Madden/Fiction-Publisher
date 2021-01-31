@@ -22,6 +22,7 @@ Refer [here](https://github.com/Blake-Madden/Fiction-Publisher/wiki/Structure) f
 - [X] Copyright page templates
   - [X] `creative-commons`
   - [X] `commercial`
+- [X] Impression lines
 - [X] Chapter heading templates (PDF only)
   - [X] `default`
   - [X] `romance-calligraphy`
