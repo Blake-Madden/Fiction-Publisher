@@ -1,9 +1,11 @@
 ## What is Fiction Publisher
-**Fiction Publisher** is a fork of [Open Publisher](https://github.com/chrisanthropic/Open-Publisher), redesigned to work with [Manuskript](https://github.com/olivierkes/manuskript) projects. It is a [PowerShell](https://github.com/PowerShell/PowerShell) script that wraps [Pandoc](https://github.com/jgm/pandoc), KindleGen, and LaTeX and uses a set of custom Pandoc templates (created with a focus on fiction).
+**Fiction Publisher** is a fork of [Open Publisher](https://github.com/chrisanthropic/Open-Publisher), redesigned to work with [Manuskript](https://github.com/olivierkes/manuskript) and [Bookdown](https://bookdown.org/) projects. It is a [PowerShell](https://github.com/PowerShell/PowerShell) script that wraps [Pandoc](https://github.com/jgm/pandoc), KindleGen, and LaTeX and uses a set of custom Pandoc templates (created with a focus on fiction).
 
 Write your manuscript in markdown, write a Pandoc [metadata](Metadata-Doc.md) file, run a script, and receive some beautifully formatted ePub, Mobi, and print-ready PDF books.
 
-Full documentation on the [wiki](https://github.com/Blake-Eryx/Fiction-Publisher/wiki).
+Full documentation on the [wiki](https://github.com/Blake-Madden/Fiction-Publisher/wiki).
+
+Refer [here](https://github.com/Blake-Madden/Fiction-Publisher/wiki/Structure) for the recommended file structure for your book.
 
 ## Features
 
