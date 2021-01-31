@@ -20,18 +20,18 @@ Refer [here](https://github.com/Blake-Madden/Fiction-Publisher/wiki/Structure) f
 
 #### Configurable components for output (PDF and epub)
 - [X] Copyright page templates
-  - [X] creative-commons
-  - [X] commercial
+  - [X] `creative-commons`
+  - [X] `commercial`
 - [X] Chapter heading templates (PDF only)
-  - [X] default
-  - [X] romance-calligraphy
-  - [X] romance-cursive
+  - [X] `default`
+  - [X] `romance-calligraphy`
+  - [X] `romance-cursive`
   - [X] Or you can select styles from the [fncychap](https://www.ctan.org/pkg/fncychap) LaTeX package
 - [X] Drop cap styles (PDF only, epub uses a simple default format)
-  - [X] default (same font as the body text)
-  - [X] romance
-  - [X] blockletter
-  - [X] none
+  - [X] `default` (same font as the body text)
+  - [X] `romance`
+  - [X] `blockletter`
+  - [X] `none`
 - [X] Half-title page template (PDF only)
 - [X] Series page template
 - [X] Colophon page template (PDF only, details typesetting information)
