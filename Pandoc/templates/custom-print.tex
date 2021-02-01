@@ -155,6 +155,9 @@ $endfor$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Needed for headers and footers
 \usepackage{fancyhdr}
+%% Useful for stacking text in a title
+\usepackage{stackengine}
+\def\stackalignment{l}
 
 %% Prevent headers from appearing on empty pages
 \usepackage{emptypage}
@@ -281,6 +284,8 @@ $endif$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Needed for styling chapter title headings
 \usepackage{titlesec}
+% justification
+\usepackage{ragged2e}
 
 % Turn off subsection numbering for titles
 \renewcommand{\thesection}{}
@@ -342,12 +347,13 @@ $endif$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % No headers/footers
 \pagestyle{empty}
-% Center everything
+% Center and single space everything
+  \begin{spacing}{.75}
   \begin{center}
 
 % Add a vertical space
   \vspace*{3cm}
-  
+
 % Write the Book Title
 $if(title-latex)$
   \makeatletter \Huge \bfseries \titlefont \textbf{\textsc{$title-latex$}} \par \makeatother    
@@ -371,8 +377,9 @@ $endif$
 % Write the author name
   \Large \normalfont \sansfont  \makeatletter \MakeUppercase\@author \makeatother \par
 
-% Stop centering everything
+% Stop centering and single spacing everything
   \end{center}
+  \end{spacing}
 
 % End the page
 \clearpage

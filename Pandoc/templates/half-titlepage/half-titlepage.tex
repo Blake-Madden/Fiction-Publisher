@@ -1,6 +1,7 @@
 % No headers/footers
 \pagestyle{empty}
-% Center everything
+% Center and single space everything
+  \begin{spacing}{.75}
   \begin{center}
 
 % Add a vertical space
@@ -13,5 +14,6 @@ $else$
   \makeatletter \Huge \bfseries \titlefont \textbf{\textsc{\@title}} \par \makeatother    
 $endif$
 
-% Stop centering everything
+% Stop centering and single spacing everything
   \end{center}
+  \end{spacing}
