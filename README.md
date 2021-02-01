@@ -40,7 +40,7 @@ Refer [here](https://github.com/Blake-Madden/Fiction-Publisher/wiki/Structure) f
 
 #### Adds formatting to output (PDF and epub)
 - [X] Adds header to start of chapters if missing (based on parent folder name)
-- [X] Formats start of chapter with drop cap and smart caps
+- [X] Formats start of chapter with drop cap and small caps
 - [X] Can convert `***` separators between scene breaks/POV changes with custom code (e.g., fleurons)
 - [X] Unindents starting paragraph of new scenes/POV changes
 - [X] Formats start of chapter with drop cap and smart caps
