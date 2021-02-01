@@ -48,8 +48,8 @@ Refer [here](https://github.com/Blake-Madden/Fiction-Publisher/wiki/Structure) f
 
 #### Validation features
 - [X] Checks for paragraphs not separated by blank lines (this is recommended over ending lines with double spaces because it makes the intention clearer and avoids possible errors)
-- [X] Checks for straight quotes (proper smart quotes should be included in source markdown to avoid ambiguity)
-- [X] Checks for '--' (en dashes and em dashes should be included in source markdown to avoid ambiguity)
+- [X] Checks for straight quotes (smart quotes should be included in source markdown to avoid ambiguity)
+- [X] Checks for `--` (en dashes and em dashes should be included in source markdown to avoid ambiguity)
 - [X] Checks for correct ordering of closing quotation marks and commas/periods
 - [X] Checks for Unicode ellipsis (should be spaced periods)
 - [X] Checks for en dash at the end of a quote (should be an em dash)
