@@ -1,24 +1,24 @@
 ## Metadata Options
 
-#### The following can be specified in a book project's "config.yml" file (which should be in the root of the book project's folder)
+### The following can be specified in a book project's "config.yml" file (which should be in the root of the book project's folder)
+
+### Title & Author
 
 - **title**: Title of your book
 - **title-latex**: Latex formatted title (will override "title" value on the title and half-title pages of PDF output)
 - **subtitle**: Optional subtitle
-- **subtitle-latex**: Latex formatted subtitle (will override "subtitle" value on the title page of PDF output)
+- **subtitle-latex**: LaTeX formatted subtitle (will override "subtitle" value on the title page of PDF output)
 - **series-header**: Header that should appear on the series title page (default is "Also Available")
 - **author**: Author name
 - **email**: Author e-mail
 - **website**: Author website
 
+### Book Info
+
 - **type**: Genre of your book
 - **lang**: A string value in BCP 47 format: http://tools.ietf.org/html/bcp47 (e.g., en-US)
 - **date**: YYYY-MM-DD
 - **year**: YYYY
-
-- **copyright-page**: Which copyright page template to use. Templates to select from are available in the **Pandoc\templates\copyright** folder (e.g., **creative-commons**)
-
-- **cover-image**: The path (relative to **Build.ps1**) to the EPUB cover image
 
 - **publisher**: Publisher of your book
 - **publisher-address-latex**: LaTeX-formatted publisher address (used in PDF copyright page)
@@ -34,8 +34,27 @@
 - **first-paperback-date**: Publication date of first paperback edition (used in copyright page)
 - **lcc-info-latex**: LaTeX-formatted Library of Congress Cataloging-in-Publication Data (used in PDF copyright page)
 - **lcc-info-html**: HTML-formatted Library of Congress Cataloging-in-Publication Data (used in ePub copyright page)
+
+- **identifier**:
+    - **scheme**: UUID
+    - **text**: A unique UUID for your ebook
+
+### Cover
+
+- **cover-image**: The path (relative to **Build.ps1**) to the EPUB cover image
+
+### Copyright Page
+
+- **copyright-page**: Which copyright page template to use. Templates to select from are available in the **Pandoc\templates\copyright** folder (e.g., **creative-commons**)
+
+- **contributors**:
+    - **designer**: Who designed your book/cover
+    - **artist**: Who created the art of your book cover
+    - **editor**: Who edited your book
+
 - **impression-line-years**: The year part of the impression number/printer line (appears in the copyright page)
 - **impression-line-printings**: The print-run part of the impression number/printer line (appears in the copyright page)
+
 
 - **dedication**: Optional dedication
 
@@ -61,14 +80,9 @@
 
 - **copyedit**: Set as true to draw an outline around the various sections in the print output and show marginal notes in the print output (useful if using [CriticMarkup](https://github.com/CriticMarkup/CriticMarkup-toolkit))
 
-- **identifier**:
-    - **scheme**: UUID
-    - **text**: A unique UUID for your ebook
+
       
-- **contributors**:
-    - **designer**: Who designed your book/cover
-    - **artist**: Who created the art of your book cover
-    - **editor**: Who edited your book
+
 
 - **header-includes**: Raw content to embed in the template file's header (e.g., Latex commands)
 
