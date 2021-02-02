@@ -1,6 +1,6 @@
 ## Metadata Options
 
-### The following can be specified in a book project's "config.yml" file (which should be in the root of the book project's folder)
+The following can be specified in a book project's "config.yml" file (which should be in the root of the book project's folder)
 
 ### Title & Author
 
