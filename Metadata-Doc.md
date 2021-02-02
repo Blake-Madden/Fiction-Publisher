@@ -8,7 +8,6 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **title-latex**: Latex formatted title (will override "title" value on the title and half-title pages of PDF output)
 - **subtitle**: Optional subtitle
 - **subtitle-latex**: LaTeX formatted subtitle (will override "subtitle" value on the title page of PDF output)
-- **series-header**: Header that should appear on the series title page (default is "Also Available")
 - **author**: Author name
 - **email**: Author e-mail
 - **website**: Author website
@@ -19,21 +18,6 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **lang**: A string value in BCP 47 format: http://tools.ietf.org/html/bcp47 (e.g., en-US)
 - **date**: YYYY-MM-DD
 - **year**: YYYY
-
-- **publisher**: Publisher of your book
-- **publisher-address-latex**: LaTeX-formatted publisher address (used in PDF copyright page)
-- **publisher-address-html**: HTML-formatted publisher address (used in ePub copyright page)
-- **rights**: A single sentence regarding the licensing of your book
-
-- **paperback-isbn-13**: Optional 13 digit ISBN of your paperback book
-- **hardcover-isbn-13**: Optional 13 digit ISBN of your hardcover book
-- **epub-isbn-13**: Optional 13 digit ISBN of your epub book
-- **paperback-isbn-10**: Optional 10 digit ISBN of your paperback book
-- **hardcover-isbn-10**: Optional 10 digit ISBN of your hardcover book
-- **epub-isbn-10**: Optional 10 digit ISBN of your epub book
-- **first-paperback-date**: Publication date of first paperback edition (used in copyright page)
-- **lcc-info-latex**: LaTeX-formatted Library of Congress Cataloging-in-Publication Data (used in PDF copyright page)
-- **lcc-info-html**: HTML-formatted Library of Congress Cataloging-in-Publication Data (used in ePub copyright page)
 
 - **identifier**:
     - **scheme**: UUID
@@ -51,9 +35,24 @@ The following can be specified in a book project's "config.yml" file (which shou
     - **designer**: Who designed your book/cover
     - **artist**: Who created the art of your book cover
     - **editor**: Who edited your book
+    
+- **publisher**: Publisher of your book
+- **publisher-address-latex**: LaTeX-formatted publisher address (used on PDF copyright page)
+- **publisher-address-html**: HTML-formatted publisher address (used on ePub copyright page)
+- **rights**: A single sentence regarding the licensing of your book
 
-- **impression-line-years**: The year part of the impression number/printer line (appears on the copyright page)
-- **impression-line-printings**: The print-run part of the impression number/printer line (appears on the copyright page)
+- **paperback-isbn-13**: Optional 13 digit ISBN of your paperback book
+- **hardcover-isbn-13**: Optional 13 digit ISBN of your hardcover book
+- **epub-isbn-13**: Optional 13 digit ISBN of your epub book
+- **paperback-isbn-10**: Optional 10 digit ISBN of your paperback book
+- **hardcover-isbn-10**: Optional 10 digit ISBN of your hardcover book
+- **epub-isbn-10**: Optional 10 digit ISBN of your epub book
+- **first-paperback-date**: Publication date of first paperback edition
+- **lcc-info-latex**: LaTeX-formatted Library of Congress Cataloging-in-Publication Data (used on PDF copyright page)
+- **lcc-info-html**: HTML-formatted Library of Congress Cataloging-in-Publication Data (used on ePub copyright page)
+
+- **impression-line-years**: The year part of the impression number/printer line (years run right-to-left, and are usually 2-digit)
+- **impression-line-printings**: The print-run part of the impression number/printer line (number run left-to-right)
 
 ### Dedication Page
 
@@ -64,9 +63,26 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **toc**: Whether to include a table of contents in the print output (`true` or `false`)
 - **toc-title**: The header text for the Table of Contents
 
+### Series Page
+
+- **book1**: 
+    - **title**: Optional books to include on the title page
+- **book2**:
+    - **title**: Add a second book
+- **book3**:
+    - **title**: Third book
+- **book4**:
+    - **title**: Fourth book
+- **book5**:
+    - **title**: Fifth book
+- **series-header**: Header that should appear on the series title page (default is "Also Available")
+
 ### Colophon
 
 - **colophon**: Whether to include a colophon page (detailing typesetting information) in the print output
+
+### Author Bio
+- author-bio: Author biography
 
 ### Page Formatting
 - **paperheight**: The height of the paper for print output (the default papersize is 6x9 inches)
@@ -85,22 +101,6 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **scene-separator-html**: HTML code to replace `***` sequences between scenes (used for ePub output)
 
 - **no-hyphenate-list**: Space-separated list of words that explicitly show how words should be hyphenated when split across lines; useful for listing (non-hyphenated) names of characters whose names should not be split between lines
-
-### Author Bio
-- author-bio: Author biography
-
-### Series Page
-
-- **book1**: 
-    - **title**: Optional books to include on the title page
-- **book2**:
-    - **title**: Add a second book
-- **book3**:
-    - **title**: Third
-- **book4**:
-    - **title**: Fourth
-- **book5**:
-    - **title**: Fifth
 
 ### Extra
 
