@@ -45,15 +45,15 @@
 
 ### Copyright Page
 
-- **copyright-page**: Which copyright page template to use. Templates to select from are available in the **Pandoc\templates\copyright** folder (e.g., **creative-commons**)
+- **copyright-page**: Which copyright page template to use. Templates to select from are available in the **Pandoc\templates\copyright** folder (e.g., `creative-commons` and `commercial`)
 
 - **contributors**:
     - **designer**: Who designed your book/cover
     - **artist**: Who created the art of your book cover
     - **editor**: Who edited your book
 
-- **impression-line-years**: The year part of the impression number/printer line (appears in the copyright page)
-- **impression-line-printings**: The print-run part of the impression number/printer line (appears in the copyright page)
+- **impression-line-years**: The year part of the impression number/printer line (appears on the copyright page)
+- **impression-line-printings**: The print-run part of the impression number/printer line (appears on the copyright page)
 
 ### Dedication Page
 
@@ -61,7 +61,7 @@
 
 ### Table of Contents
 
-- **toc**: Whether to include a table of contents in the print output (true or false)
+- **toc**: Whether to include a table of contents in the print output (`true` or `false`)
 - **toc-title**: The header text for the Table of Contents
 
 ### Colophon
@@ -76,18 +76,18 @@
 - **inner-margin**: The inner/gutter margin in the print output
 - **outer-margin**: The outer margin in the print output
 
-- **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only). Styles include **Sonny**, **Lenny**, **Glenn**, **Conny**, **Rejne**, **Bjarne**, and **Bjornstrup**
-- **chapter-heading**: The name of the custom chapter heading theme to use (**default**, **romance-calligraphy**, **romance-cursive** are available). Note that using **fancy-chapter** will override this
+- **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only). Styles include `Sonny`, `Lenny`, `Glenn`, `Conny`, `Rejne`, `Bjarne`, and `Bjornstrup`
+- **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive` are available). Note that using **fancy-chapter** will override this
 
-- **drop-cap-style**: The drop cap style to use for first letter at the start of each chapter (**default**, **romance**, **blockletter**, **none**)
+- **drop-cap-style**: The drop cap style to use for first letter at the start of each chapter (`default`, `romance`, `blockletter`, `none`)
 
-- **scene-separator-latex**: LaTeX code to replace **\*\*\*** sequences between scenes (used for PDF output)
-- **scene-separator-html**: HTML code to replace **\*\*\*** sequences between scenes (used for ePub output)
+- **scene-separator-latex**: LaTeX code to replace `***` sequences between scenes (used for PDF output)
+- **scene-separator-html**: HTML code to replace `***` sequences between scenes (used for ePub output)
 
 - **no-hyphenate-list**: Space-separated list of words that explicitly show how words should be hyphenated when split across lines; useful for listing (non-hyphenated) names of characters whose names should not be split between lines
 
 ### Author Bio
-- author-bio: The author's biography
+- author-bio: Author biography
 
 ### Series Page
 
@@ -109,4 +109,4 @@
 ### Validation & Testing
 
 - **emphasis-check**: Semicolon-separated list of phrases that should be italicized. If they are not, a warning will be logged
-- **copyedit**: Set as true to draw an outline around the various sections in the print output and show marginal notes in the print output (useful if using [CriticMarkup](https://github.com/CriticMarkup/CriticMarkup-toolkit))
+- **copyedit**: Set as `true` to draw an outline around the various sections in the print output and show marginal notes in the print output (useful if using [CriticMarkup](https://github.com/CriticMarkup/CriticMarkup-toolkit))
