@@ -55,14 +55,20 @@
 - **impression-line-years**: The year part of the impression number/printer line (appears in the copyright page)
 - **impression-line-printings**: The print-run part of the impression number/printer line (appears in the copyright page)
 
+### Dedication Page
 
 - **dedication**: Optional dedication
+
+### Table of Contents
 
 - **toc**: Whether to include a table of contents in the print output (true or false)
 - **toc-title**: The header text for the Table of Contents
 
+### Colophon
+
 - **colophon**: Whether to include a colophon page (detailing typesetting information) in the print output
 
+### Page Formatting
 - **paperheight**: The height of the paper for print output (the default papersize is 6x9 inches)
 - **paperwidth**: The width of the paper for print output
 - **top-margin**: The top margin in the print output (headers will be inside of the text body)
@@ -78,23 +84,29 @@
 - **scene-separator-latex**: LaTeX code to replace **\*\*\*** sequences between scenes (used for PDF output)
 - **scene-separator-html**: HTML code to replace **\*\*\*** sequences between scenes (used for ePub output)
 
-- **copyedit**: Set as true to draw an outline around the various sections in the print output and show marginal notes in the print output (useful if using [CriticMarkup](https://github.com/CriticMarkup/CriticMarkup-toolkit))
+- **no-hyphenate-list**: Space-separated list of words that explicitly show how words should be hyphenated when split across lines; useful for listing (non-hyphenated) names of characters whose names should not be split between lines
 
+### Author Bio
+- author-bio: The author's biography
 
-      
-
-
-- **header-includes**: Raw content to embed in the template file's header (e.g., Latex commands)
+### Series Page
 
 - **book1**: 
     - **title**: Optional books to include on the title page
-    - **link**: If you include Amazon links here, they'll get linked in the Amazon version
 - **book2**:
     - **title**: Add a second book
-    - **link**: http://www.amazon.com/dp/XXXXXXXXX
 - **book3**:
-    - **title**: This handles up to 5 books
-    - **link**: http://www.amazon.com/dp/XXXXXXXXX
+    - **title**: Third
+- **book4**:
+    - **title**: Fourth
+- **book5**:
+    - **title**: Fifth
+
+### Extra
+
+- **header-includes**: Raw content to embed in the template file's header (e.g., LaTeX commands)
+
+### Validation & Testing
 
 - **emphasis-check**: Semicolon-separated list of phrases that should be italicized. If they are not, a warning will be logged
-- **no-hyphenate-list**: Space-separated list of words that explicitly show how words should be hyphenated when split across lines; useful for listing (non-hyphenated) names of characters whose names should not be split between lines
+- **copyedit**: Set as true to draw an outline around the various sections in the print output and show marginal notes in the print output (useful if using [CriticMarkup](https://github.com/CriticMarkup/CriticMarkup-toolkit))
