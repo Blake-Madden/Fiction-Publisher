@@ -6,6 +6,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 - **title**: Title of your book
 - **title-latex**: Latex formatted title (will override "title" value on the title and half-title pages of PDF output)
+  - A `raggedrighttitle` environment is available for multiline titles to make them ragged right. It takes a parameter specifying the width of the left and right margins.
 - **subtitle**: Optional subtitle
 - **subtitle-latex**: LaTeX formatted subtitle (will override "subtitle" value on the title page of PDF output)
 - **author**: Author name
