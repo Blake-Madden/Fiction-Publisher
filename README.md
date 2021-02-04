@@ -147,7 +147,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **colophon**: Whether to include a colophon page (detailing typesetting information) in the print output
 
 ### Author Bio
-- author-bio: Author biography
+- **author-bio**: Author biography
 
 ### Page Formatting
 - **paperheight**: The height of the paper for print output (the default papersize is 6x9 inches)
