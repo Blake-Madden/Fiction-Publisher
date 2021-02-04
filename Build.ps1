@@ -431,5 +431,8 @@ foreach ($bookName in $Books)
 
     Get-ChildItem -Path "$PSScriptRoot/Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
     Remove-Item -Path "$PSScriptRoot/Books/$bookName/build" -Force
-    Remove-Item -Path "$PSScriptRoot/Books/Output/$bookName.epub"
+    If ($buildEpub -ne "false")
+        {
+        Remove-Item -Path "$PSScriptRoot/Books/Output/$bookName.epub"
+        }
     }
