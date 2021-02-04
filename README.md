@@ -98,9 +98,9 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 - **contributors**:
     - **designer**: Who designed your book/cover
-    - **artist**: Who created the art of your book cover
+    - **cover-artist**: Who created the art of your book cover
     - **editor**: Who edited your book
-    
+
 - **publisher**: Publisher of your book
 - **publisher-address-latex**: LaTeX-formatted publisher address (used on PDF copyright page)
 - **publisher-address-html**: HTML-formatted publisher address (used on ePub copyright page)
