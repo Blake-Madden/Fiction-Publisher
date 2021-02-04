@@ -176,3 +176,6 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **emphasis-check**: Semicolon-separated list of phrases that should be italicized. If they are not, a warning will be logged
 - **copyedit**: Set as `true` to draw an outline around the various sections in the print output and show marginal notes in the print output (useful if using [CriticMarkup](https://github.com/CriticMarkup/CriticMarkup-toolkit))
 
+### Build Options
+
+- **build-draft**: `false` to not build a draft copy (DOCX file). By default, draft copies are included.
