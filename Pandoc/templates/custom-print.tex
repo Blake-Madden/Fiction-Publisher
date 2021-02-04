@@ -284,8 +284,15 @@ $endif$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Needed for styling chapter title headings
 \usepackage{titlesec}
+
 % justification
 \usepackage{ragged2e}
+\usepackage{quoting}
+
+% https://tex.stackexchange.com/questions/27977/centered-but-left-aligned-paragraph
+\newenvironment{raggedrighttitle}[1][4.5cm]
+  {\begin{spacing}{.75}\begin{quoting}[leftmargin=#1,rightmargin=#1]\RaggedRight}
+  {\end{quoting}\end{spacing}}
 
 % Turn off subsection numbering for titles
 \renewcommand{\thesection}{}
