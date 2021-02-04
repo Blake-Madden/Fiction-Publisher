@@ -201,6 +201,9 @@ $endfor$
 %% Provides support for drop caps
 \usepackage{lettrine}
 
+%% Support for custom font sizes
+\usepackage{anyfontsize}
+
 \def\romance{romance}
 \def\blockletter{blockletter}
 
@@ -285,15 +288,16 @@ $endif$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Needed for styling chapter title headings
 \usepackage{titlesec}
+\usepackage{fp}
 
 % justification
 \usepackage{ragged2e}
 \usepackage{quoting}
 
 % https://tex.stackexchange.com/questions/27977/centered-but-left-aligned-paragraph
-\newenvironment{raggedrighttitle}[1][4.5cm]
-  {\begin{spacing}{.75}\begin{quoting}[leftmargin=#1,rightmargin=#1]\RaggedRight}
-  {\end{quoting}\end{spacing}}
+\newenvironment{raggedrighttitle}[1][3cm]
+  {\begin{quoting}[leftmargin=#1,rightmargin=#1]\RaggedRight}
+  {\end{quoting}}
 
 % Turn off subsection numbering for titles
 \renewcommand{\thesection}{}
@@ -360,17 +364,19 @@ $endif$
   \begin{center}
 
 % Add a vertical space
-  \vspace*{3cm}
+  \vspace{.5cm}
 
 % Write the Book Title
+\def\titlefontsize{$if(title-font-pointsize)$$title-font-pointsize$$else$50$endif$}
+\FPeval\titlefontbaseline{\titlefontsize*1.2}
 $if(title-latex)$
-  \makeatletter \Huge \bfseries \titlefont \textbf{\textsc{$title-latex$}} \par \makeatother    
+  \makeatletter {\titlefont\fontsize{\titlefontsize}{\titlefontbaseline}\selectfont \textbf{\textsc{$title-latex$}}} \par \makeatother
 $else$
-  \makeatletter \Huge \bfseries \titlefont \textbf{\textsc{\@title}} \par \makeatother    
+  \makeatletter {\titlefont\fontsize{\titlefontsize}{\titlefontbaseline}\selectfont \textbf{\textsc{\@title}}} \par \makeatother
 $endif$
 
 % Add a vertical space
-  \vspace{1cm}
+  \vspace{.5cm}
     
 % Write the subtitle
 $if(subtitle-latex)$
