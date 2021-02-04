@@ -259,8 +259,9 @@ $endif$
 %% Set editor from Yaml Metadata
 \def\editor{$for(contributors)$$contributors.editor$$endfor$}
 
-%% Set cover artist from Yaml Metadata
-\def\artist{$for(contributors)$$contributors.artist$$endfor$}
+%% Set cover artist/illustrator from Yaml Metadata
+\def\coverartist{$for(contributors)$$contributors.cover-artist$$endfor$}
+\def\illustrator{$for(contributors)$$contributors.illustrator$$endfor$}
 
 %% Set designer from Yaml Metadata
 \def\designer{$for(contributors)$$contributors.designer$$endfor$}
@@ -382,7 +383,10 @@ $endif$
   \vspace{4cm}
     
 % Write the author name
-  \Large \normalfont \sansfont  \makeatletter \MakeUppercase\@author \makeatother \par
+  \Large \normalfont \sansfont \makeatletter \MakeUppercase\@author \makeatother \par
+
+% Illustrator
+$for(contributors)$$if(contributors.illustrator)$ \vspace{4cm} \normalsize Illustrated by \par \Large \illustrator \par$endif$$endfor$
 
 % Stop centering and single spacing everything
   \end{center}

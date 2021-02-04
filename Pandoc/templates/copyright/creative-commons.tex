@@ -69,7 +69,10 @@
     \begin{center}
 
 % Attribute the cover artist
-      $for(contributors)$$if(contributors.artist)$ Cover Artist: \artist \par$endif$$endfor$
+      $for(contributors)$$if(contributors.cover-artist)$ Cover Artist: \coverartist \par$endif$$endfor$
+
+% Illustrator
+      $for(contributors)$$if(contributors.illustrator)$\noindent Illustrator: \illustrator \par$endif$$endfor$
       
 % Attribute the editor
       $for(contributors)$$if(contributors.editor)$ Editor: \editor \par$endif$$endfor$

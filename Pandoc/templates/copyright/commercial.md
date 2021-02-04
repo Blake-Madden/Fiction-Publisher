@@ -42,8 +42,14 @@ $endif$
 $if(contributors)$
 
 $for(contributors)$
-$if(contributors.artist)$
-<p style="text-indent: 0;">Cover Artist: $for(contributors)$$contributors.artist$$endfor$</p><br />
+$if(contributors.cover-artist)$
+<p style="text-indent: 0;">Cover Artist: $for(contributors)$$contributors.cover-artist$$endfor$</p><br />
+$endif$
+$endfor$
+
+$for(contributors)$
+$if(contributors.illustrator)$
+<p style="text-indent: 0;">Illustrator: $for(contributors)$$contributors.illustrator$$endfor$</p><br />
 $endif$
 $endfor$
 

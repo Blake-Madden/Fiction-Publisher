@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"$if(lang)$ xml:lang="$lang$"$endif$>
 <head>
@@ -35,6 +35,14 @@ $for(author)$
 $endfor$
 $for(creator)$
   <p class="$creator.role$">$creator.text$</p>
+$endfor$
+$for(contributors)$
+$if(contributors.illustrator)$
+    <p class="illustrator-label">Illustrated by</p>
+    $for(contributors.illustrator)$
+      <p class="illustrator">$contributors.illustrator$</p>
+    $endfor$
+$endif$
 $endfor$
 $if(publisher)$
   <p class="publisher">$publisher$</p>

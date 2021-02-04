@@ -35,8 +35,14 @@
 <p style="text-indent: 0;"><strong>No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.</strong></p><br />
 
 $for(contributors)$
-$if(contributors.artist)$
-<p class="center" style="text-indent: 0;">Cover Artist: $for(contributors)$$contributors.artist$$endfor$</p><br />
+$if(contributors.cover-artist)$
+<p class="center" style="text-indent: 0;">Cover Artist: $for(contributors)$$contributors.cover-artist$$endfor$</p><br />
+$endif$
+$endfor$
+
+$for(contributors)$
+$if(contributors.illustrator)$
+<p style="text-indent: 0;">Illustrator: $for(contributors)$$contributors.illustrator$$endfor$</p><br />
 $endif$
 $endfor$
 

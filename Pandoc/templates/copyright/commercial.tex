@@ -50,7 +50,9 @@ $if(contributors)$
  % Attribute the editor
   $for(contributors)$$if(contributors.editor)$\noindent Editor: \editor \par$endif$$endfor$
  % Attribute the cover artist
-  $for(contributors)$$if(contributors.artist)$\noindent Cover Artist: \artist \par$endif$$endfor$
+  $for(contributors)$$if(contributors.cover-artist)$\noindent Cover Artist: \coverartist \par$endif$$endfor$
+% Illustrator
+  $for(contributors)$$if(contributors.illustrator)$\noindent Illustrator: \illustrator \par$endif$$endfor$
  % Attribute the designer
   $for(contributors)$$if(contributors.designer)$\noindent Design: \designer \par$endif$$endfor$
 \vspace{0.4cm}
