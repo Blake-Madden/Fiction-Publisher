@@ -200,8 +200,12 @@ foreach ($bookName in $Books)
     $epubMdFiles = [IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/$bookName/build/epub", "*.md", [IO.SearchOption]::AllDirectories)
 
     # Build a draft copy before doing any output-specific formatting
-    Write-Output "Building draft copy..."
-    pandoc --toc "$PSScriptRoot/Books/$bookName/config.yml" --reference-doc "$PSScriptRoot/Pandoc/templates/draft.docx" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName DRAFT.docx"
+    $buildDraft = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-draft:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
+    If ($buildDraft -ne "false")
+       {
+        Write-Output "Building draft copy..."
+        pandoc --toc "$PSScriptRoot/Books/$bookName/config.yml" --reference-doc "$PSScriptRoot/Pandoc/templates/draft.docx" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName DRAFT.docx"
+        }
 
     # copy epub cover image to build
     $coverImage = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^cover-image:[ ]*([\w-/\\.]*)' | % {($_.matches.groups[1].Value) }
@@ -281,7 +285,7 @@ foreach ($bookName in $Books)
            --template="$PSScriptRoot/Pandoc/templates/biography/bio.md" `
            -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
-    # format for print (i.e., latex) conversion
+    # format for print (i.e., LaTeX) conversion
     Write-Output "Formatting for print..."
     foreach ($file in $mdFiles)
         {
@@ -374,33 +378,45 @@ foreach ($bookName in $Books)
     Set-Location "$PSScriptRoot/Books/$bookName/build/"
 
     # epub
-    Write-Output "Building for e-pub..."
-    pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
-           $includeToc --toc-depth=1 `
-           --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
-           --epub-cover-image="$coverImage" `
-           --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
-           -i "$PSScriptRoot/Books/$bookName/build/copyright.md" "$includeSeriesPageEpub" `
-           $epubMdFiles `
-           "$PSScriptRoot/Books/$bookName/build/bio.md"           
+    $buildEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-epub:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
+    If ($buildEpub -ne "false")
+       {
+        Write-Output "Building for e-pub..."
+        pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
+               $includeToc --toc-depth=1 `
+               --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
+               --epub-cover-image="$coverImage" `
+               --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
+               -i "$PSScriptRoot/Books/$bookName/build/copyright.md" "$includeSeriesPageEpub" `
+               $epubMdFiles `
+               "$PSScriptRoot/Books/$bookName/build/bio.md"
+        }
 
     # Amazon mobi
-    Write-Output "Building for Amazon mobi..."
-    pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
-           $includeToc --toc-depth=1 `
-           --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
-           --epub-cover-image="$coverImage" `
-           --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
-           -i "$PSScriptRoot/Books/$bookName/build/copyright.md" "$includeSeriesPageAmazonEpub" `
-           $epubMdFiles `
-           "$PSScriptRoot/Books/$bookName/build/bio.md"           
-    kindlegen -c2 "$PSScriptRoot/Books/Output/$bookName.epub"
+    $buildMobi = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-mobi:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
+    If ($buildEpub -ne "false" -and $buildMobi -ne "false")
+       {
+        Write-Output "Building for Amazon mobi..."
+        pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
+               $includeToc --toc-depth=1 `
+               --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
+               --epub-cover-image="$coverImage" `
+               --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
+               -i "$PSScriptRoot/Books/$bookName/build/copyright.md" "$includeSeriesPageAmazonEpub" `
+               $epubMdFiles `
+               "$PSScriptRoot/Books/$bookName/build/bio.md"           
+        kindlegen -c2 "$PSScriptRoot/Books/Output/$bookName.epub"
+        }
 
     # Print publication output
-    Write-Output "Building for print..."
-    pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.tex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
-           --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
-           -f markdown+smart $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-print.pdf"
+    $buildPrint = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-print:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
+    If ($buildPrint -ne "false")
+        {
+        Write-Output "Building for print..."
+        pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.tex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
+               --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
+               -f markdown+smart $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-print.pdf"
+        }
 
     # clean up
     ###############################################################
