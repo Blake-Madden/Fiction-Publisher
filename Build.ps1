@@ -83,7 +83,7 @@ foreach ($bookName in $Books)
         [void] [IO.File]::WriteAllText($file, $content)
         }
 
-    # check for possible formatting issues from the markdown files that author may want to fix
+    # Check for possible formatting issues from the markdown files that author may want to fix
     ###############################################################
     Write-Output "Reviewing formatting in source files..."
     $WarningList = New-Object Collections.Generic.List[string]
@@ -199,8 +199,13 @@ foreach ($bookName in $Books)
     Copy-Item -Path "$PSScriptRoot/Books/$bookName/build/outline/" -Destination "$PSScriptRoot/Books/$bookName/build/epub/" -Recurse -Force
     $epubMdFiles = [IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/$bookName/build/epub", "*.md", [IO.SearchOption]::AllDirectories)
 
-    # Build a draft copy before doing any output-specific formatting
+    # Build options
     $buildDraft = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-draft:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
+    $buildEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-epub:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
+    $buildMobi = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-mobi:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
+    $buildPrint = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-print:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
+
+    # Build a draft copy before doing any output-specific formatting
     If ($buildDraft -ne "false")
        {
         Write-Output "Building draft copy..."
@@ -209,7 +214,7 @@ foreach ($bookName in $Books)
 
     # copy epub cover image to build
     $coverImage = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^cover-image:[ ]*([\w-/\\.]*)' | % {($_.matches.groups[1].Value) }
-    If ($coverImage.Length -gt 0)
+    If (($coverImage.Length -gt 0) -and ($buildEpub -ne "false"))
         {
         $fileInfo = New-Object System.IO.FileInfo("$PSScriptRoot/Books/$bookName/$coverImage")
         Copy-Item -Path "$PSScriptRoot/Books/$bookName/$coverImage" -Destination "$PSScriptRoot/Books/$bookName/build/$($fileInfo.Name)"
@@ -261,7 +266,6 @@ foreach ($bookName in $Books)
     pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/half-titlepage.tex" -t latex `
            --template="$PSScriptRoot/Pandoc/templates/half-titlepage/half-titlepage.tex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
-    
     # Create the latex colophon page
     # ePub doesn't use typesetting, so not built for those
     pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/colophon.tex" -t latex `
@@ -286,91 +290,97 @@ foreach ($bookName in $Books)
            -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # format for print (i.e., LaTeX) conversion
-    Write-Output "Formatting for print..."
-    foreach ($file in $mdFiles)
+    If ($buildPrint -ne "false")
         {
-        $fileInfo = New-Object System.IO.FileInfo($file)
-
-        $content = [IO.File]::ReadAllText($file)
-
-        # replace *** with scene separator (e.g., flourishes)
-        $sceneSeparator = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^scene-separator-latex:[ ]*(.*)' | % {($_.matches.groups[1].Value) }
-        if ($sceneSeparator.Length -gt 0)
+        Write-Output "Formatting for print..."
+        foreach ($file in $mdFiles)
             {
-            $content = $content -replace '([\r\n]+)([ ]*[*]{3,}[ ]*)',
-                                     "`$1$sceneSeparator"
-            }
+            $fileInfo = New-Object System.IO.FileInfo($file)
 
-        # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
-        # Note that a leading quotation mark at start of paragraph will be removed, per Chicago Manual of Style
-        $dropCapStyle = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^drop-cap-style:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
+            $content = [IO.File]::ReadAllText($file)
 
-        # romance style is oblique, so need some special commands for certain letters to look nice
-        if ($dropCapStyle -eq 'romance')
-          {
-          $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([ACEIKLMRSTUXZ$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
-                              '$1\lettrine{$2}{$3}'
+            # replace *** with scene separator (e.g., flourishes)
+            $sceneSeparator = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^scene-separator-latex:[ ]*(.*)' | % {($_.matches.groups[1].Value) }
+            if ($sceneSeparator.Length -gt 0)
+                {
+                $content = $content -replace '([\r\n]+)([ ]*[*]{3,}[ ]*)',
+                                         "`$1$sceneSeparator"
+                }
 
-          # 'G' has a lengthy descender with the font that we use for romance
-          $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([G])([\w'$sq2]*[\s,])",
-                              '$1\lettrine[findent=.5em, nindent=0em, depth=1]{$2}{$3}'
+            # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
+            # Note that a leading quotation mark at start of paragraph will be removed, per Chicago Manual of Style
+            $dropCapStyle = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^drop-cap-style:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
 
-          $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([BH])([\w'$sq2]*[\s,])",
-                              '$1\lettrine[findent=.5em, nindent=0em]{$2}{$3}'
+            # romance style is oblique, so need some special commands for certain letters to look nice
+            if ($dropCapStyle -eq 'romance')
+              {
+              $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([ACEIKLMRSTUXZ$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
+                                  '$1\lettrine{$2}{$3}'
 
-          $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([DFJNOPQVWY])([\w'$sq2]*[\s,])",
-                              '$1\lettrine[findent=.5em, nindent=-.5em]{$2}{$3}'
-          }
-        elseif ($dropCapStyle -eq 'none')
-          {} # noop
-        else
-          {
-          $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([A-Z$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
-                              '$1\lettrine{$2}{$3}'
-          }
+              # 'G' has a lengthy descender with the font that we use for romance
+              $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([G])([\w'$sq2]*[\s,])",
+                                  '$1\lettrine[findent=.5em, nindent=0em, depth=1]{$2}{$3}'
 
-        # CriticMarkup
-        $content = $content -replace '({--)([^-]*)(--})', '\st{$2}' # deletion
-        $content = $content -replace '({[+]{2})([^+]*)([+]{2}})', '\underline{$2}' # addition
-        $content = $content -replace '({>>)([^<]*)(<<})', '\marginpar{$2}' # comment
-        $content = $content -replace '({==)([^=]*)(==})', '\hl{$2}' # highlight
-        $content = $content -replace '({~~)([^~]*)(~>)([^}]*)(~~})', '\st{$2}\underline{$4}' # change
+              $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([BH])([\w'$sq2]*[\s,])",
+                                  '$1\lettrine[findent=.5em, nindent=0em]{$2}{$3}'
+
+              $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([DFJNOPQVWY])([\w'$sq2]*[\s,])",
+                                  '$1\lettrine[findent=.5em, nindent=-.5em]{$2}{$3}'
+              }
+            elseif ($dropCapStyle -eq 'none')
+              {} # noop
+            else
+              {
+              $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([A-Z$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
+                                  '$1\lettrine{$2}{$3}'
+              }
+
+            # CriticMarkup
+            $content = $content -replace '({--)([^-]*)(--})', '\st{$2}' # deletion
+            $content = $content -replace '({[+]{2})([^+]*)([+]{2}})', '\underline{$2}' # addition
+            $content = $content -replace '({>>)([^<]*)(<<})', '\marginpar{$2}' # comment
+            $content = $content -replace '({==)([^=]*)(==})', '\hl{$2}' # highlight
+            $content = $content -replace '({~~)([^~]*)(~>)([^}]*)(~~})', '\st{$2}\underline{$4}' # change
         
-        # files that don't start with zero should be new scenes in a chapter, so unindent their first paragraph
-        if ($fileInfo.BaseName -match '^[^0].*')
-            {
-            $content = $content -replace '^([\s\r\n]*)(.)', '$1\noindent $2'
-            }
+            # files that don't start with zero should be new scenes in a chapter, so unindent their first paragraph
+            if ($fileInfo.BaseName -match '^[^0].*')
+                {
+                $content = $content -replace '^([\s\r\n]*)(.)', '$1\noindent $2'
+                }
 
-        [void] [IO.File]::WriteAllText($file, $content)
+            [void] [IO.File]::WriteAllText($file, $content)
+            }
         }
 
     # format for epub (i.e., html) conversion
-    Write-Output "Formatting for epub..."
-    foreach ($file in $epubMdFiles)
+    If ($buildEpub -ne "false")
         {
-        $content = [IO.File]::ReadAllText($file)
-
-        # replace *** with scene separator (e.g., flourishes)
-        $sceneSeparator = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^scene-separator-html:[ ]*(.*)' | % {($_.matches.groups[1].Value) }
-        if ($sceneSeparator.Length -gt 0)
+        Write-Output "Formatting for epub..."
+        foreach ($file in $epubMdFiles)
             {
-            $content = $content -replace '([\r\n]+)([ ]*[*]{3,}[ ]*)',
-                                     "`$1$sceneSeparator"
+            $content = [IO.File]::ReadAllText($file)
+
+            # replace *** with scene separator (e.g., flourishes)
+            $sceneSeparator = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^scene-separator-html:[ ]*(.*)' | % {($_.matches.groups[1].Value) }
+            if ($sceneSeparator.Length -gt 0)
+                {
+                $content = $content -replace '([\r\n]+)([ ]*[*]{3,}[ ]*)',
+                                         "`$1$sceneSeparator"
+                }
+
+            # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
+            $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)([$sq1'`"$q1$gm1 ]?[A-Z$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
+                                         '$1<span class="drop-caps">$2</span><span class="small-caps">$3</span>'
+
+            # CriticMarkup
+            $content = $content -replace '({--)([^-]*)(--})', '<del>$2</del>' # deletion
+            $content = $content -replace '({[+]{2})([^+]*)([+]{2}})', '<ins>$2</ins>' # addition
+            $content = $content -replace '({>>)([^<]*)(<<})', '<aside><mark>$2</mark></aside>' # comment
+            $content = $content -replace '({==)([^=]*)(==})', '<mark>$2</mark>' # highlight
+            $content = $content -replace '({~~)([^~]*)(~>)([^}]*)(~~})', '<del>$2</del><ins>$4</ins>' # change
+
+            [void] [IO.File]::WriteAllText($file, $content)
             }
-
-        # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
-        $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)([$sq1'`"$q1$gm1 ]?[A-Z$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
-                                     '$1<span class="drop-caps">$2</span><span class="small-caps">$3</span>'
-
-        # CriticMarkup
-        $content = $content -replace '({--)([^-]*)(--})', '<del>$2</del>' # deletion
-        $content = $content -replace '({[+]{2})([^+]*)([+]{2}})', '<ins>$2</ins>' # addition
-        $content = $content -replace '({>>)([^<]*)(<<})', '<aside><mark>$2</mark></aside>' # comment
-        $content = $content -replace '({==)([^=]*)(==})', '<mark>$2</mark>' # highlight
-        $content = $content -replace '({~~)([^~]*)(~>)([^}]*)(~~})', '<del>$2</del><ins>$4</ins>' # change
-
-        [void] [IO.File]::WriteAllText($file, $content)
         }
 
     # Build the books
@@ -378,7 +388,6 @@ foreach ($bookName in $Books)
     Set-Location "$PSScriptRoot/Books/$bookName/build/"
 
     # epub
-    $buildEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-epub:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
     If ($buildEpub -ne "false")
        {
         Write-Output "Building for e-pub..."
@@ -393,7 +402,6 @@ foreach ($bookName in $Books)
         }
 
     # Amazon mobi
-    $buildMobi = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-mobi:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
     If ($buildEpub -ne "false" -and $buildMobi -ne "false")
        {
         Write-Output "Building for Amazon mobi..."
@@ -409,7 +417,6 @@ foreach ($bookName in $Books)
         }
 
     # Print publication output
-    $buildPrint = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-print:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
     If ($buildPrint -ne "false")
         {
         Write-Output "Building for print..."
