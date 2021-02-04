@@ -178,4 +178,6 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 ### Build Options
 
-- **build-draft**: `false` to not build a draft copy (DOCX file). By default, draft copies are included.
+- **build-draft**: `false` to not build a draft copy (`true` by default)
+- **build-epub**: `false` to not build an EPub file (`true` by default)
+- **build-mobi*: `false` to not build a Mobi file (`true` by default)
