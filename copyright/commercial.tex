@@ -1,0 +1,71 @@
+\vspace*{\fill}
+
+\begin{singlespacing}
+
+\noindent Copyright © $year$ $for(author)$$author$$endfor$ \par
+
+% Add a vertical space
+\vspace{0.4cm}
+
+\noindent All rights reserved. No part of this book may be reproduced 
+or used in any manner without the prior written permission of the copyright owner, 
+except for the use of brief quotations in critical articles and book reviews. \par
+
+\vspace{0.4cm}
+
+$if(email)$
+\noindent To request permissions, contact the author at $email$. \par
+\vspace{0.4cm}
+$endif$
+
+% If ISBNs are defined in Yaml front matter then write them here
+  $if(paperback-isbn)$\noindent ISBN-13: {$paperback-isbn-13$} (paperback) \par $endif$
+  $if(paperback-isbn)$\noindent ISBN-10: {$paperback-isbn-10$} (paperback) \par $endif$
+  $if(hardcover-isbn)$\noindent ISBN-13: {$hardcover-isbn-13$} (hardcover) \par $endif$
+  $if(hardcover-isbn)$\noindent ISBN-10: {$hardcover-isbn-10$} (hardcover) \par $endif$
+  $if(epub-isbn)$\noindent ISBN-13: {$epub-isbn-13$} (ePub) \par $endif$
+  $if(epub-isbn)$\noindent ISBN-10: {$epub-isbn-10$} (ePub) \par $endif$
+
+\vspace{0.4cm}
+
+$if(lcc-info-latex)$
+\noindent Library of Congress Cataloging-in-Publication Data: \par
+$lcc-info-latex$ \par
+\vspace{0.4cm}
+$endif$
+
+%% The impression number (a.k.a. printer line)
+$if(impression-line-printings)$
+$if(impression-line-years)$\noindent $impression-line-years$\hspace{.5cm}$endif$
+$if(impression-line-printings)$\noindent $impression-line-printings$$endif$
+\vspace{0.4cm}
+$endif$
+
+$if(first-paperback-date)$
+\noindent  First paperback edition $first-paperback-date$. \par
+\vspace{0.4cm}
+$endif$
+
+$if(contributors)$
+ % Attribute the editor
+  $for(contributors)$$if(contributors.editor)$\noindent Editor: \editor \par$endif$$endfor$
+ % Attribute the cover artist
+  $for(contributors)$$if(contributors.cover-artist)$\noindent Cover Artist: \coverartist \par$endif$$endfor$
+ % Attribute the designer
+  $for(contributors)$$if(contributors.designer)$\noindent Design: \designer \par$endif$$endfor$
+\vspace{0.4cm}
+$endif$
+
+\noindent Printed by $for(publisher)$$publisher$$endfor$ in the United States of America. \par
+\vspace{0.4cm}
+
+$for(publisher)$\noindent $publisher$$endfor$ \par
+$if(publisher-address-latex)$\noindent $publisher-address-latex$ \par $endif$
+
+\vspace{0.4cm}
+
+$for(website)$\noindent $website$$endfor$
+
+\end{singlespacing}
+
+\vspace*{\fill}
