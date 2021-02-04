@@ -73,6 +73,7 @@ The following can be specified in a book project's "config.yml" file (which shou
   - A `raggedrighttitle` environment is available for multiline titles to make them ragged right. It takes a parameter specifying the width of the left and right margins.
 - **subtitle**: Optional subtitle
 - **subtitle-latex**: LaTeX formatted subtitle (will override "subtitle" value on the title page of PDF output)
+- **title-font-pointsize**: Font size of title in PDF output (default is 50)
 - **author**: Author name
 - **email**: Author e-mail
 - **website**: Author website
