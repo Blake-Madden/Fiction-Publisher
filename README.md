@@ -100,6 +100,7 @@ The following can be specified in a book project's "config.yml" file (which shou
     - **designer**: Who designed your book/cover
     - **cover-artist**: Who created the art of your book cover
     - **editor**: Who edited your book
+    - **illustrator**: Who did the interior illustrations (will appear on the title page)
 
 - **publisher**: Publisher of your book
 - **publisher-address-latex**: LaTeX-formatted publisher address (used on PDF copyright page)
