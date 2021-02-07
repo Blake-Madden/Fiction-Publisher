@@ -22,14 +22,15 @@ $if(author-font)$
 \ifx\$author-font$\primaryfontname
   % no need to print anything if the fonts are the same
 \else
-  Author name was set in 
-  {\titlefont \StrDel{$author-font$}{.ttf}}.
-  \par
+  Author name was set in {\titlefont \StrDel{$author-font$}{.ttf}}. \par
 \fi
 $endif$
 \ifx\$drop-cap-style$\romance
-  Drop caps were set in {\dropcapfont TeX Gyre Chorus}.
+  Drop caps were set in {\dropcapfont TeX Gyre Chorus}. \par
+\fi
+\ifx\$drop-cap-style$\scifi
+  Drop caps were set in {\dropcapfont Orbitron Bold}. \par
 \fi
 \ifx\$drop-cap-style$\blockletter
-  Drop caps were set in Romantik ({\usefont{U}{Romantik}{xl}{n} Romantik}).
+  Drop caps were set in Romantik ({\usefont{U}{Romantik}{xl}{n} Romantik}). \par
 \fi

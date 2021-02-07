@@ -221,6 +221,13 @@ $if(drop-cap-style)$
     \renewcommand*{\DefaultLoversize}{.7}
   \fi
 
+  %% A science-fiction look
+  \ifx\$drop-cap-style$\scifi
+    \newfontfamily\dropcapfont{Orbitron-Bold.ttf}
+    \renewcommand{\LettrineFontHook}{\dropcapfont\color{lightgray}}
+    \renewcommand*{\DefaultLoversize}{.5}
+  \fi
+
   %% Or a block letter
   \ifx\$drop-cap-style$\blockletter
     \usepackage{Romantik}
