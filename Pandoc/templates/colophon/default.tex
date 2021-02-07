@@ -2,11 +2,29 @@
 
 This book was created using \LaTeX .\par
 The main font was set in Libertinus. \par
+$if(title-font)$
+\ifx\$title-font$\primaryfontname
+  % no need to print anything if the fonts are the same
+\else
+  Title was set in 
+  {\titlefont \StrDel{$title-font$}{.ttf}}.
+  \par
+\fi
+$endif$
 $if(chapter-heading)$
 \ifx\chapterheaderfontname\primaryfontname
   % no need to print anything if the fonts are the same
 \else
   Chapter headings were set in {\chapterheaderfont \chapterheaderfontname}. \par
+\fi
+$endif$
+$if(author-font)$
+\ifx\$author-font$\primaryfontname
+  % no need to print anything if the fonts are the same
+\else
+  Author name was set in 
+  {\titlefont \StrDel{$author-font$}{.ttf}}.
+  \par
 \fi
 $endif$
 \ifx\$drop-cap-style$\romance

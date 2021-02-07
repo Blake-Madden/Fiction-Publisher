@@ -183,6 +183,9 @@ $endfor$
 \usepackage{fontspec}
 \usepackage[T1]{fontenc}
 
+%% For editing font names
+\usepackage{xstring}
+
 %% Used to set some things to all caps
 \usepackage{textcase}
 
@@ -203,10 +206,6 @@ $endfor$
 
 %% Support for custom font sizes
 \usepackage{anyfontsize}
-
-$if(author-font)$
-  \newfontfamily\authorfont{$author-font$}
-$endif$
 
 \def\romance{romance}
 \def\blockletter{blockletter}
@@ -240,8 +239,18 @@ $endif$
 \setmainfont{Libertinus Serif}
 \newfontfamily\sansfont{Libertinus Sans}
 \newfontfamily\primaryfont{Libertinus Serif}
-\newfontfamily\titlefont{Libertinus Serif}
 \def\primaryfontname{Libertinus}
+\newfontfamily\chapterheadingfont{Libertinus Serif}
+
+$if(author-font)$
+  \newfontfamily\authorfont{$author-font$}
+$endif$
+
+$if(title-font)$
+  \newfontfamily\titlefont{$title-font$}
+$else$
+  \newfontfamily\titlefont{Libertinus Serif}
+$endif$
 
 %% Make our quotes curly
 \defaultfontfeatures{Mapping=tex-text}
@@ -524,7 +533,7 @@ $endif$
 {25pt}%bottom
 
 % This designs the page title
-\titleformat{\section}[display]{\bfseries\titlefont}{}{0.5mm}{\centering \Large} % Don't say 'chapter X'
+\titleformat{\section}[display]{\bfseries\chapterheadingfont}{}{0.5mm}{\centering \Large} % Don't say 'chapter X'
 
 % Don't indent new paragraphs
 \setlength{\parindent}{0mm}
