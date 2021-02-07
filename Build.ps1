@@ -37,6 +37,7 @@ foreach ($bookName in $Books)
     New-Item -ItemType Directory -Path "$PSScriptRoot/Books/$bookName/build" -Force | Out-Null
     Get-ChildItem -Path "$PSScriptRoot/Books/$bookName/build" -Recurse | Remove-Item -Recurse -Force
     Copy-Item -Path "$PSScriptRoot/Books/$bookName/outline" -Destination "$PSScriptRoot/Books/$bookName/build/" -Recurse -Force
+    Copy-Item -Path "$PSScriptRoot/Pandoc/fonts/*.*" -Destination "$PSScriptRoot/Books/$bookName/build/" -Recurse -Force
 
     # get all the chapters and scenes (these should all be prefixed with numbers to control their ordering)
     $mdFiles = [IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/$bookName/build/outline", "*.md", [IO.SearchOption]::AllDirectories)
