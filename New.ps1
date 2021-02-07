@@ -1,7 +1,10 @@
 ﻿# Fills Book projects (in "Books" folder) with configuration templates
 
-# create empty Books folder in not not available
+# create empty Books folder if not available
 New-Item -ItemType Directory -Path "$PSScriptRoot/Books" -Force | Out-Null
+
+# create empty fonts folder if not available
+New-Item -ItemType Directory -Path "$PSScriptRoot/Pandoc/fonts" -Force | Out-Null
 
 # get a list of all projects in the 'Books' folder
 $Books = (Get-ChildItem "$PSScriptRoot/Books" -Directory).Name
@@ -60,5 +63,3 @@ foreach ($bookName in $Books)
       { Write-Error "Unable to create file. $($_.Exception.Message)" }
     }
   }
-
-pause
