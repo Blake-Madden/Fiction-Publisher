@@ -204,6 +204,10 @@ $endfor$
 %% Support for custom font sizes
 \usepackage{anyfontsize}
 
+$if(author-font)$
+  \newfontfamily\authorfont{$author-font$}
+$endif$
+
 \def\romance{romance}
 \def\blockletter{blockletter}
 
@@ -393,7 +397,11 @@ $endif$
   \vspace{4cm}
     
 % Write the author name
+$if(author-font)$
+  \Large \normalfont \sansfont {\authorfont \makeatletter \MakeUppercase\@author} \makeatother \par
+$else$
   \Large \normalfont \sansfont \makeatletter \MakeUppercase\@author \makeatother \par
+$endif$
 
 % Illustrator
 $for(contributors)$$if(contributors.illustrator)$ \vspace{4cm} \normalsize Illustrated by \par \Large \illustrator \par$endif$$endfor$
