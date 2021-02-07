@@ -159,6 +159,8 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **inner-margin**: The inner/gutter margin in the print output
 - **outer-margin**: The outer margin in the print output
 
+- **author-font**: The font for the author's name on the title page (can be a TTF/OTF file in the "Pandoc/fonts" folder or font name)
+
 - **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only). Styles include `Sonny`, `Lenny`, `Glenn`, `Conny`, `Rejne`, `Bjarne`, and `Bjornstrup`
 - **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive` are available). Note that using **fancy-chapter** will override this
 
