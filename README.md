@@ -37,6 +37,7 @@ Refer [here](https://github.com/Blake-Madden/Fiction-Publisher/wiki/Project-Stru
 - [X] Series page template
 - [X] Colophon page template (PDF only, details typesetting information)
 - [X] Author biography page template
+- [X] Customizable fonts for author name and title
 
 #### Adds formatting to output (PDF and epub)
 - [X] Adds header to start of chapters if missing (based on parent folder name)
