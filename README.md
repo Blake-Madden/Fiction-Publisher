@@ -27,6 +27,7 @@ Refer [here](https://github.com/Blake-Madden/Fiction-Publisher/wiki/Project-Stru
   - [X] `default`
   - [X] `romance-calligraphy`
   - [X] `romance-cursive`
+  - [X] `scifi`
   - [X] Or you can select styles from the [fncychap](https://www.ctan.org/pkg/fncychap) LaTeX package
 - [X] Drop cap styles (PDF only, epub uses a simple default format)
   - [X] `default` (same font as the body text)
@@ -165,7 +166,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **title-font** : The font for the book title on the title and half-title pages (can be a TTF/OTF file in the "Pandoc/fonts" folder or font name)
 
 - **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only). Styles include `Sonny`, `Lenny`, `Glenn`, `Conny`, `Rejne`, `Bjarne`, and `Bjornstrup`
-- **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive` are available). Note that using **fancy-chapter** will override this
+- **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive`, `scifi`). Note that using **fancy-chapter** will override this
 
 - **drop-cap-style**: The drop cap style to use for first letter at the start of each chapter (`default`, `romance`, `blockletter`, `scifi` (requires the font "Orbitron-Bold.ttf"), `none`)
 
