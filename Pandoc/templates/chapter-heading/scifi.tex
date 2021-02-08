@@ -1,0 +1,15 @@
+%%%%%%%%%%%%%%%%%%
+%% This part says to style the titles for "chapters"
+% \titleformat{\chapter}[display]
+
+\newfontfamily\chapterheaderfont{Orbitron-Bold.ttf}
+\def\chapterheaderfontname{Orbitron Bold}
+
+%% https://tex.stackexchange.com/questions/94729/how-to-customize-chapter-heading-style
+\titleformat{\chapter}[display]
+  {\normalsize \huge \color{black}}%
+  {\flushright\Large %
+   \chapterheaderfont\MakeUppercase{\chaptertitlename}\hspace{1ex}%
+   {\color{lightgray}\fontsize{60}{60}\selectfont\thechapter}}%
+  {10 pt}%
+  {\chapterheadingfont\huge}%
