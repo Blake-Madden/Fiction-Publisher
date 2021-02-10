@@ -2,3 +2,4 @@
 .sass-cache
 *.kate-swp
 .*~
+.vs
