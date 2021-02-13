@@ -8,10 +8,12 @@
   \vspace*{3cm}
   
 % Write the Book Title
+\def\titlefontsize{$if(title-font-pointsize)$$title-font-pointsize$$else$50$endif$}
+\FPeval\titlefontbaseline{\titlefontsize*1.2}
 $if(title-latex)$
-  \makeatletter \Huge \bfseries \titlefont \textbf{\textsc{$title-latex$}} \par \makeatother    
+  \makeatletter {\titlefont\fontsize{\titlefontsize}{\titlefontbaseline}\selectfont \textbf{\textsc{$title-latex$}}} \par \makeatother
 $else$
-  \makeatletter \Huge \bfseries \titlefont \textbf{\textsc{\@title}} \par \makeatother    
+  \makeatletter {\titlefont\fontsize{\titlefontsize}{\titlefontbaseline}\selectfont \textbf{\textsc{\@title}}} \par \makeatother
 $endif$
 
 % Stop centering and single spacing everything
