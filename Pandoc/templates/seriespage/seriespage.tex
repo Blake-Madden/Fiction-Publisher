@@ -4,35 +4,77 @@
 
 \textit{$if(series-header)$$series-header$$else$Also Available$endif$}
 
-  \vspace{1cm}
+\vspace{1cm}
 
-$for(book1)$
-$if(book1.title)$
-$book1.title$
+$for(series-book1)$
+$if(series-book1.title)$
+\textbf{\textsc{$series-book1.title$}}
+$elseif(series-book1.title-latex)$
+\textbf{\textsc{$series-book1.title-latex$}}
+$endif$
+%% Add the subtitle (if available)
+$if(series-book1.subtitle)$
+\par $series-book1.subtitle$
+$elseif(series-book1.subtitle-latex)$
+\par $series-book1.subtitle-latex$
 $endif$
 $endfor$
 
-$for(book2)$
-$if(book2.title)$
-$book2.title$
+\vspace{1cm}
+
+$for(series-book2)$
+$if(series-book2.title)$
+\textbf{\textsc{$series-book2.title$}}
+$elseif(series-book2.title-latex)$
+\textbf{\textsc{$series-book2.title-latex$}}
+$endif$
+%% Add the subtitle (if available)
+$if(series-book2.subtitle)$
+\par $series-book2.subtitle$
+$elseif(series-book2.subtitle-latex)$
+\par $series-book2.subtitle-latex$
 $endif$
 $endfor$
 
-$for(book3)$
-$if(book3.title)$
-$book3.title$
+$for(series-book3)$
+$if(series-book3.title)$
+\textbf{\textsc{$series-book3.title$}}
+$elseif(series-book3.title-latex)$
+\textbf{\textsc{$series-book3.title-latex$}}
+$endif$
+%% Add the subtitle (if available)
+$if(series-book3.subtitle)$
+\par $series-book3.subtitle$
+$elseif(series-book3.subtitle-latex)$
+\par $series-book3.subtitle-latex$
 $endif$
 $endfor$
 
-$for(book4)$
-$if(book4.title)$
-$book4.title$
+$for(series-book4)$
+$if(series-book4.title)$
+\textbf{\textsc{$series-book4.title$}}
+$elseif(series-book4.title-latex)$
+\textbf{\textsc{$series-book4.title-latex$}}
+$endif$
+%% Add the subtitle (if available)
+$if(series-book4.subtitle)$
+\par $series-book4.subtitle$
+$elseif(series-book4.subtitle-latex)$
+\par $series-book4.subtitle-latex$
 $endif$
 $endfor$
 
-$for(book5)$
-$if(book5.title)$
-$book5.title$
+$for(series-book5)$
+$if(series-book5.title)$
+\textbf{\textsc{$series-book5.title$}}
+$elseif(series-book5.title-latex)$
+\textbf{\textsc{$series-book5.title-latex$}}
+$endif$
+%% Add the subtitle (if available)
+$if(series-book5.subtitle)$
+\par $series-book5.subtitle$
+$elseif(series-book5.subtitle-latex)$
+\par $series-book5.subtitle-latex$
 $endif$
 $endfor$
 

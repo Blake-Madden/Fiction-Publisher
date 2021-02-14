@@ -73,11 +73,15 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 - **title**: Title of your book
 - **title-latex**: Latex formatted title (will override "title" value on the title and half-title pages of PDF output)
-  - A `raggedrighttitle` environment is available for multiline titles to make them ragged right. It takes a parameter specifying the width of the left and right margins.
+  - A `raggedrighttitle` environment is available for multi-line titles to make them ragged right. It takes a parameter specifying the width of the left and right margins.
+- **title-page-top-margin**: How much space should be above the title on the title page (default is 4cm). This is useful if you are needing to add illustrator information to the title page and need a smaller top margin to make it all fit on one page
+- **title-font** : The font for the book title on the title and half-title pages (can be a TTF/OTF filename in the "Pandoc/fonts" folder or font name)
+- **title-font-pointsize**: Font size of title in PDF output (default is 50)
 - **subtitle**: Optional subtitle
 - **subtitle-latex**: LaTeX formatted subtitle (will override "subtitle" value on the title page of PDF output)
-- **title-font-pointsize**: Font size of title in PDF output (default is 50)
 - **author**: Author name
+- **author-font**: The font for the author's name on the title page (can be a TTF/OTF filename in the "Pandoc/fonts" folder or font name)
+- **author-by-header**: The 'By' label that appears above the author on the title page (default is blank)
 - **email**: Author e-mail
 - **website**: Author website
 
@@ -89,8 +93,8 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **year**: YYYY
 
 - **identifier**:
-    - **scheme**: UUID
-    - **text**: A unique UUID for your ebook
+  - **scheme**: UUID
+  - **text**: A unique UUID for your ebook
 
 ### Cover
 
@@ -101,10 +105,10 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **copyright-page**: Which copyright page template to use. Templates to select from are available in the **Pandoc\templates\copyright** folder (e.g., `creative-commons` and `commercial`)
 
 - **contributors**:
-    - **designer**: Who designed your book/cover
-    - **cover-artist**: Who created the art of your book cover
-    - **editor**: Who edited your book
-    - **illustrator**: Who did the interior illustrations (will appear on the title page)
+  - **designer**: Who designed your book/cover
+  - **cover-artist**: Who created the art of your book cover
+  - **editor**: Who edited your book
+  - **illustrator**: Who did the interior illustrations (will appear on the title page)
 
 - **publisher**: Publisher of your book
 - **publisher-address-latex**: LaTeX-formatted publisher address (used on PDF copyright page)
@@ -135,15 +139,18 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 ### Series Page
 
-- **book1**: 
+- **series-book1**: 
     - **title**: Optional books to include on the title page
-- **book2**:
+    - **title-latex**: LaTeX-formatted title for PDF output (will override **title**)
+    - **subtitle**: Subtitle of book
+    - **subtitle-latex**: LaTeX-formatted subtitle of book (will override **subtitle**)
+- **series-book2**:
     - **title**: Add a second book
-- **book3**:
+- **series-book3**:
     - **title**: Third book
-- **book4**:
+- **series-book4**:
     - **title**: Fourth book
-- **book5**:
+- **series-book5**:
     - **title**: Fifth book
 - **series-header**: Header that should appear on the series title page (default is "Also Available")
 
@@ -162,13 +169,10 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **inner-margin**: The inner/gutter margin in the print output
 - **outer-margin**: The outer margin in the print output
 
-- **author-font**: The font for the author's name on the title page (can be a TTF/OTF file in the "Pandoc/fonts" folder or font name)
-- **title-font** : The font for the book title on the title and half-title pages (can be a TTF/OTF file in the "Pandoc/fonts" folder or font name)
-
 - **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only). Styles include `Sonny`, `Lenny`, `Glenn`, `Conny`, `Rejne`, `Bjarne`, and `Bjornstrup`
 - **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive`, `scifi`). Note that using **fancy-chapter** will override this
 
-- **drop-cap-style**: The drop cap style to use for first letter at the start of each chapter (`default`, `romance`, `blockletter`, `scifi` (requires the font "Orbitron-Bold.ttf"), `none`)
+- **drop-cap-style**: The drop cap style to use for first letter at the start of each chapter (`default`, `romance`, `blockletter`, `scifi` (requires the font file "Orbitron-Bold.ttf"), `none`)
 
 - **scene-separator-latex**: LaTeX code to replace `***` sequences between scenes (used for PDF output)
 - **scene-separator-html**: HTML code to replace `***` sequences between scenes (used for ePub output)

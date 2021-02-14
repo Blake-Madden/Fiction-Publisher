@@ -373,8 +373,8 @@ $endif$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-$if(book1.title)$
-\input{seriespage.tex}
+$if(series-book1)$
+  \input{seriespage.tex}
 $endif$
 
 \clearpage{\thispagestyle{empty}\cleardoublepage}
@@ -391,7 +391,7 @@ $endif$
   \begin{center}
 
 % Add a vertical space
-  \vspace{.5cm}
+  \vspace*{$if(title-page-top-margin)$$title-page-top-margin$$else$4cm$endif$}
 
 % Write the Book Title
 \def\titlefontsize{$if(title-font-pointsize)$$title-font-pointsize$$else$50$endif$}
@@ -403,7 +403,7 @@ $else$
 $endif$
 
 % Add a vertical space
-  \vspace{.5cm}
+  \vspace*{.5cm}
     
 % Write the subtitle
 $if(subtitle-latex)$
@@ -412,18 +412,23 @@ $elseif(subtitle)$
   \Large \primaryfont $subtitle$ \par
 $endif$
     
-% Add a vertical space
-  \vspace{4cm}
-    
+% Add a vertical space and switch to regular title page font
+  \vspace*{4cm}
+  \normalfont \sansfont \normalsize
+
 % Write the author name
+$if(author-by-header)$
+  $author-by-header$ \par
+$endif$
+
 $if(author-font)$
-  \Large \normalfont \sansfont {\authorfont \makeatletter \MakeUppercase\@author} \makeatother \par
+  {\Large \authorfont \makeatletter \MakeUppercase\@author} \makeatother \par
 $else$
-  \Large \normalfont \sansfont \makeatletter \MakeUppercase\@author \makeatother \par
+  {\Large \makeatletter \MakeUppercase\@author} \makeatother \par
 $endif$
 
 % Illustrator
-$for(contributors)$$if(contributors.illustrator)$ \vspace{4cm} \normalsize Illustrated by \par \Large \illustrator \par$endif$$endfor$
+$for(contributors)$$if(contributors.illustrator)$ \vspace*{4cm} \normalsize Illustrated by \par \Large \illustrator \par$endif$$endfor$
 
 % Stop centering and single spacing everything
   \end{center}
