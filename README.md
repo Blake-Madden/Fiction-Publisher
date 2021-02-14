@@ -62,7 +62,7 @@ Refer [here](https://github.com/Blake-Madden/Fiction-Publisher/wiki/Project-Stru
 - [X] Checks for tabs
 - [X] Checks for a line that ends with space(s), followed by single newline (indicates ambiguous intention as to whether this should be a new paragraph [a full blank line is recommended here] or the same paragraph [the newline should be removed])
 - [X] Checks for items that should be italicized (items are user-defined in metadata)
-- [X] Checks for possesive suffixes being italicized
+- [X] Checks for possessive suffixes being italicized
 - [X] Checks for stray periods or commas around '?' or '!'
 
 ## Metadata Options
@@ -81,7 +81,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **subtitle-latex**: LaTeX formatted subtitle (will override "subtitle" value on the title page of PDF output)
 - **author**: Author name
 - **author-font**: The font for the author's name on the title page (can be a TTF/OTF filename in the "Pandoc/fonts" folder or font name)
-- **author-by-header**: The 'By' label that appears above the author on the title page (default is blank)
+- **author-by-header**: The "By" label that appears above the author on the title page (default is blank)
 - **email**: Author e-mail
 - **website**: Author website
 
@@ -98,11 +98,11 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 ### Cover
 
-- **cover-image**: The path (relative to **Build.ps1**) to the EPUB cover image
+- **cover-image**: The path (relative to "Build.ps1") to the EPUB cover image
 
 ### Copyright Page
 
-- **copyright-page**: Which copyright page template to use. Templates to select from are available in the **Pandoc\templates\copyright** folder (e.g., `creative-commons` and `commercial`)
+- **copyright-page**: Which copyright page template to use. Templates to select from are available in the "Pandoc\templates\copyright" folder (e.g., `creative-commons` and `commercial`)
 
 - **contributors**:
   - **designer**: Who designed your book/cover
