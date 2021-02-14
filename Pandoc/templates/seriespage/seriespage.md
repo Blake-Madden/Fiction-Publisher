@@ -9,7 +9,7 @@ $if(series-book1.title)$
 <p class="title">$series-book1.title$</p>
 $endif$
 $if(series-book1.subtitle)$
-<p class="center">$series-book1.subtitle</p>
+<p class="center">$series-book1.subtitle$</p>
 $endif$
 $endfor$
 
@@ -20,7 +20,7 @@ $if(series-book2.title)$
 <p class="title">$series-book2.title$</p>
 $endif$
 $if(series-book2.subtitle)$
-<p class="center">$series-book2.subtitle</p>
+<p class="center">$series-book2.subtitle$</p>
 $endif$
 $endfor$
 
@@ -31,7 +31,7 @@ $if(series-book3.title)$
 <p class="title">$series-book3.title$</p>
 $endif$
 $if(series-book3.subtitle)$
-<p class="center">$series-book3.subtitle</p>
+<p class="center">$series-book3.subtitle$</p>
 $endif$
 $endfor$
 
@@ -42,7 +42,7 @@ $if(series-book4.title)$
 <p class="title">$series-book4.title$</p>
 $endif$
 $if(series-book4.subtitle)$
-<p class="center">$series-book4.subtitle</p>
+<p class="center">$series-book4.subtitle$</p>
 $endif$
 $endfor$
 
@@ -53,7 +53,7 @@ $if(series-book5.title)$
 <p class="title">$series-book5.title$</p>
 $endif$
 $if(series-book5.subtitle)$
-<p class="center">$series-book5.subtitle</p>
+<p class="center">$series-book5.subtitle$</p>
 $endif$
 $endfor$
 
