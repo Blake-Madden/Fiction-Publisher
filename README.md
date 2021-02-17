@@ -85,7 +85,7 @@ Refer [here](#project-structure) for the recommended file structure for your boo
 Each book project will contain a "config.yml", which is used to define metadata about your book. Refer to the [Metadata Documentation](#metadata-options) for more information.
 
 ### Build Your Books
-Use the "Build.ps1" script to create your books, which will appear in the "Output" folder.
+Use the "Build.ps1" script to create your books, which will appear in the "Books/Output" folder.
 
 ## Metadata Options
 
