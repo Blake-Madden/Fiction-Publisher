@@ -2,6 +2,7 @@
 
 - [What is Fiction Publisher](#what-is-fiction-publisher)
 - [Features](#features)
+- [Building your Books](#building-your-books)
 - [Metadata Options](#metadata-options)
 - [Requirements](#requirements)
 
@@ -72,6 +73,19 @@ Refer [here](https://github.com/Blake-Madden/Fiction-Publisher/wiki/Project-Stru
 - [X] Checks for items that should be italicized (items are user-defined in metadata)
 - [X] Checks for possessive suffixes being italicized
 - [X] Checks for stray periods or commas around '?' or '!'
+
+## Building your Books
+
+### Organize Book Projects
+- Create a folder named "Books" In your "Fiction-Publisher" folder.
+- Copy your Manuskript project(s) into this folder.
+- Add a "config.yml" file to each book project.
+
+### Update Your MetaData
+Each book project will contain a "config.yml", which is used to define metadata about your book. Refer to the [Metadata Documentation](#metadata-options) for more information.
+
+### Build Your Books
+Use the "Build.ps1" script to create your books, which will appear in the "Output" folder.
 
 ## Metadata Options
 
