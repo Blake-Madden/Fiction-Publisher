@@ -243,13 +243,13 @@ This is the stylesheet used when creating epub and mobi/Amazon files.
 This folder contains the custom templates Fiction-Publisher uses when converting files with Pandoc.
 
 ##### Pandoc/templates/bibliography
-This folder contains the custom templates bibliography templates.
+This folder contains the custom bibliography templates.
 
 ##### Pandoc/templates/biography
-This folder contains the custom templates biography templates.
+This folder contains the custom biography templates.
 
 ##### Pandoc/templates/copyright
-This folder contains the custom templates copyright templates. You can select which template to use using the `copyright-page` field in your **config.yml** file.
+This folder contains the custom copyright templates. You can select which template to use using the `copyright-page` field in your **config.yml** file.
 
 #### Pandoc/fonts
 This folder contains any font files (TTF, OFT) you would like to use in your PDF output.
