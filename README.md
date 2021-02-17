@@ -258,7 +258,7 @@ This folder contains any font files (TTF, OFT) you would like to use in your PDF
 Fiction Publisher needs the following tools to be installed in order to work:
 
 ### Pandoc
-[Pandoc](http://pandoc.org/) - converts _from_ many file formats _to_ many other file formats. For our purposes, it converts our markdown file to epub and pdf.
+[Pandoc](http://pandoc.org/) - converts _from_ many file formats _to_ many other file formats. For our purposes, it converts our markdown files to epub and pdf.
 
 ### Kindlegen
 [KindleGen](https://www.amazon.com/gp/feature.html?docId=1000765211) - Amazon's free tool to create .mobi/kindle files. For our purposes, it converts epub to mobi.
