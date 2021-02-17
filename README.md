@@ -217,19 +217,19 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **build-mobi**: `false` to not build a Mobi file (`true` by default)
 - **build-print**: `false` to not build a PDF file (`true` by default)
 
-# Requirements
+## Requirements
 Fiction Publisher needs the following tools to be installed in order to work:
 
-## Pandoc
+### Pandoc
 [Pandoc](http://pandoc.org/) - converts _from_ many file formats _to_ many other file formats. For our purposes, it converts our markdown file to epub and pdf.
 
-## Kindlegen
+### Kindlegen
 [KindleGen](https://www.amazon.com/gp/feature.html?docId=1000765211) - Amazon's free tool to create .mobi/kindle files. For our purposes, it converts epub to mobi.
 
-## LaTeX / TexLive / MiKTeX
+### LaTeX / TexLive / MiKTeX
 [LaTeX](https://www.latex-project.org/) - typesetting software that can output PDF files.
 
-## Fiction Publisher
+### Fiction Publisher
 Git clone the [Fiction Publisher](https://github.com/Blake-Madden/Fiction-Publisher) repo.
 
 `git clone https://github.com/Blake-Madden/Fiction-Publisher`
