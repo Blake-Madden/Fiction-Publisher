@@ -1,5 +1,7 @@
 ## Table of Contents
 
+- [What is Fiction Publisher](#what-is-fiction-publisher)
+- [Features](#features)
 - [Metadata Options](#metadata-options)
 
 
