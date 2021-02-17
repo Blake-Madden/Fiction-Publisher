@@ -70,7 +70,7 @@ Refer [here](https://github.com/Blake-Madden/Fiction-Publisher/wiki/Project-Stru
 - [X] Checks for possessive suffixes being italicized
 - [X] Checks for stray periods or commas around '?' or '!'
 
-## Metadata Options(#metadata-options)
+## Metadata Options
 
 The following can be specified in a book project's "config.yml" file (which should be in the root of the book project's folder)
 
