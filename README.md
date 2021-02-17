@@ -79,7 +79,7 @@ Refer [here](https://github.com/Blake-Madden/Fiction-Publisher/wiki/Project-Stru
 ### Organize Book Projects
 - Create a folder named "Books" In your "Fiction-Publisher" folder.
 - Copy your Manuskript project(s) into this folder.
-- Add a "config.yml" file to each book project.
+- Add a "config.yml" file to each book project (running "New.ps1" will create skeleton config files in each folder in "Books").
 
 ### Update Your MetaData
 Each book project will contain a "config.yml", which is used to define metadata about your book. Refer to the [Metadata Documentation](#metadata-options) for more information.
