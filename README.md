@@ -13,9 +13,7 @@
 
 Write your manuscript in markdown, configure a Pandoc [metadata](#Metadata-Options) file, run a build script, and receive some beautifully formatted ePub, Mobi, and print-ready PDF books.
 
-Full documentation on the [wiki](https://github.com/Blake-Madden/Fiction-Publisher/wiki).
-
-Refer [here](https://github.com/Blake-Madden/Fiction-Publisher/wiki/Project-Structure) for the recommended file structure for your book.
+Refer [here](#project-structure) for the recommended file structure for your book.
 
 ## Features
 
