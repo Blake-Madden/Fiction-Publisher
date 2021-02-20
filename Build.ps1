@@ -1,5 +1,5 @@
 ﻿$q1 = [char] 0x201C  # left smart double quote
-$q2 = [char] 0x201D  # left smart double quote
+$q2 = [char] 0x201D  # right smart double quote
 $sq1 = [char] 0x2018 # left smart single quote
 $sq2 = [char] 0x2019 # right smart single quote
 $gm1 = [char] 0x00AB # left Guillemet
@@ -108,6 +108,12 @@ foreach ($bookName in $Books)
         if ($matchResult.Matches.Count -gt 0)
             {
             $WarningList.Add("Warning: possesive suffix being italicized in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). Apostrophe and es should not be italicized with the rest of the word.")
+            }
+        # interrogative issues
+        $matchResult = $content | Select-String -Pattern "(\w+[^?][`"$q2] (the )?\w+ (asked|queried|wondered))"
+        if ($matchResult.Matches.Count -gt 0)
+            {
+            $WarningList.Add("Warning: question mark may be needed in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`").")
             }
         # space issues
         if ($content -match '[ ]{2,}[^\r\n]')

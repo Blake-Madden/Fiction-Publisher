@@ -64,6 +64,7 @@ Refer [here](https://github.com/Blake-Madden/Fiction-Publisher/wiki/Project-Stru
 - [X] Checks for items that should be italicized (items are user-defined in metadata)
 - [X] Checks for possessive suffixes being italicized
 - [X] Checks for stray periods or commas around '?' or '!'
+- [X] Checks for dialogue that probably should end with a '?'
 
 ## Metadata Options
 
