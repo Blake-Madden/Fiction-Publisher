@@ -1,11 +1,19 @@
+## Table of Contents
+
+- [What is Fiction Publisher](#what-is-fiction-publisher)
+- [Features](#features)
+- [Building your Books](#building-your-books)
+- [Metadata Options](#metadata-options)
+- [Project Structure](#project-structure)
+- [Requirements](#requirements)
+
+
 ## What is Fiction Publisher
 **Fiction Publisher** is a fork of [Open Publisher](https://github.com/chrisanthropic/Open-Publisher), redesigned to work with [Manuskript](https://github.com/olivierkes/manuskript) and [Bookdown](https://bookdown.org/) projects. It is a [PowerShell](https://github.com/PowerShell/PowerShell) script that wraps [Pandoc](https://github.com/jgm/pandoc), KindleGen, and LaTeX and uses a set of custom Pandoc templates (created with a focus on fiction).
 
 Write your manuscript in markdown, configure a Pandoc [metadata](#Metadata-Options) file, run a build script, and receive some beautifully formatted ePub, Mobi, and print-ready PDF books.
 
-Full documentation on the [wiki](https://github.com/Blake-Madden/Fiction-Publisher/wiki).
-
-Refer [here](https://github.com/Blake-Madden/Fiction-Publisher/wiki/Project-Structure) for the recommended file structure for your book.
+Refer [here](#project-structure) for the recommended file structure for your book.
 
 ## Features
 
@@ -65,6 +73,20 @@ Refer [here](https://github.com/Blake-Madden/Fiction-Publisher/wiki/Project-Stru
 - [X] Checks for possessive suffixes being italicized
 - [X] Checks for stray periods or commas around '?' or '!'
 - [X] Checks for dialogue that probably should end with a '?'
+
+## Building your Books
+
+### Organize Book Projects
+- Create a folder named "Books" In your "Fiction-Publisher" folder.
+- Copy your Manuskript project(s) into this folder. Refer [here](#project-structure) for a description of how your book project should be organized.
+- Add a "config.yml" file to each book project (running "New.ps1" will create skeleton config files in each folder in "Books").
+- Copy any custom fonts that you wish to use into the "Pandoc/fonts" folder.
+
+### Update Your MetaData
+Each book project will contain a "config.yml", which is used to define metadata about your book. Refer to the [Metadata Documentation](#metadata-options) for more information.
+
+### Build Your Books
+Use the "Build.ps1" script to create your books, which will appear in the "Books/Output" folder.
 
 ## Metadata Options
 
@@ -195,3 +217,58 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **build-epub**: `false` to not build an EPub file (`true` by default)
 - **build-mobi**: `false` to not build a Mobi file (`true` by default)
 - **build-print**: `false` to not build a PDF file (`true` by default)
+
+## Project Structure
+The following is the folder structure for **Fiction Publisher** as well as the structure your books projects should be in:
+
+### Books
+This folder holds your Book projects (preferably in [Manuskript](https://github.com/olivierkes/manuskript) format).
+
+A book folder should have the following:
+
+- A "config.yml" file with [build settings](#metadata-options).
+- A subfolder named "outline" which contains the chapters.
+  - In the "outline" folder, there should be a subfolder for each chapter, prefixed with a 2-digit number and hyphen. (This will inform the build script about how to order the chapters.)
+    - In each chapter folder, there should be a separate Markdown file for each scene. (A numeric prefix on these files will inform the build script of their order.) It is recommended to add a `***` at the end of each Markdown file (except for the last one) in a chapter if you wish to have scene separators added.
+
+#### Books/Output
+This folder holds your finished books. Inside you'll find a folder for each book you've created, containing every format you've created for it.
+
+### Pandoc
+This directory holds stuff that Pandoc needs.
+
+#### Pandoc/css
+This is the stylesheet used when creating epub and mobi/Amazon files.
+
+#### Pandoc/templates
+This folder contains the custom templates Fiction-Publisher uses when converting files with Pandoc.
+
+##### Pandoc/templates/bibliography
+This folder contains the custom bibliography templates.
+
+##### Pandoc/templates/biography
+This folder contains the custom biography templates.
+
+##### Pandoc/templates/copyright
+This folder contains the custom copyright templates. You can select which template to use using the `copyright-page` field in your **config.yml** file.
+
+#### Pandoc/fonts
+This folder contains any font files (TTF, OFT) you would like to use in your PDF output.
+
+## Requirements
+Fiction Publisher needs the following tools to be installed in order to work:
+
+### Pandoc
+[Pandoc](http://pandoc.org/) - converts _from_ many file formats _to_ many other file formats. For our purposes, it converts our markdown files to epub and pdf.
+
+### Kindlegen
+[KindleGen](https://www.amazon.com/gp/feature.html?docId=1000765211) - Amazon's free tool to create .mobi/kindle files. For our purposes, it converts epub to mobi.
+
+### LaTeX / TexLive / MiKTeX
+[LaTeX](https://www.latex-project.org/) - typesetting software that can output PDF files.
+
+### Fiction Publisher
+Git clone the [Fiction Publisher](https://github.com/Blake-Madden/Fiction-Publisher) repo.
+
+`git clone https://github.com/Blake-Madden/Fiction-Publisher`
+
