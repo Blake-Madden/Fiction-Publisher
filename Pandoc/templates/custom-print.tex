@@ -211,6 +211,8 @@ $endfor$
 \usepackage{anyfontsize}
 
 \def\romance{romance}
+\def\scifi{scifi}
+\def\oldwest{oldwest}
 \def\blockletter{blockletter}
 
 $if(drop-cap-style)$
@@ -227,6 +229,13 @@ $if(drop-cap-style)$
   %% A science-fiction look
   \ifx\$drop-cap-style$\scifi
     \newfontfamily\dropcapfont{Orbitron-Bold.ttf}
+    \renewcommand{\LettrineFontHook}{\dropcapfont\color{lightgray}}
+    \renewcommand*{\DefaultLoversize}{.5}
+  \fi
+
+  %% Old Western look
+  \ifx\$drop-cap-style$\oldwest
+    \newfontfamily\dropcapfont{ChunkFive-Regular.ttf}
     \renewcommand{\LettrineFontHook}{\dropcapfont\color{lightgray}}
     \renewcommand*{\DefaultLoversize}{.5}
   \fi

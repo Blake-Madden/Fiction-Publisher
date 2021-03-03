@@ -42,6 +42,7 @@ Refer [here](#project-structure) for the recommended file structure for your boo
   - [X] `romance`
   - [X] `blockletter`
   - [X] `scifi`
+  - [X] `oldwest`
   - [X] `none`
 - [X] Half-title page template (PDF only)
 - [X] Series page template
@@ -195,7 +196,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only). Styles include `Sonny`, `Lenny`, `Glenn`, `Conny`, `Rejne`, `Bjarne`, and `Bjornstrup`
 - **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive`, `scifi`). Note that using **fancy-chapter** will override this
 
-- **drop-cap-style**: The drop cap style to use for first letter at the start of each chapter (`default`, `romance`, `blockletter`, `scifi` (requires the font file "Orbitron-Bold.ttf"), `none`)
+- **drop-cap-style**: The drop cap style to use for first letter at the start of each chapter (`default`, `romance`, `blockletter`, `scifi` (requires "Orbitron-Bold.ttf"), `oldwest` (requires "ChunkFive-Regular.ttf"), `none`)
 
 - **scene-separator-latex**: LaTeX code to replace `***` sequences between scenes (used for PDF output)
 - **scene-separator-html**: HTML code to replace `***` sequences between scenes (used for ePub output)
