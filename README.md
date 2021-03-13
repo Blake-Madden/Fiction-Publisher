@@ -74,6 +74,7 @@ Refer [here](#project-structure) for the recommended file structure for your boo
 - [X] Checks for possessive suffixes being italicized
 - [X] Checks for stray periods or commas around '?' or '!'
 - [X] Checks for dialogue that probably should end with a '?'
+- [X] Checks for dialogue that probably should end with a ','
 
 ## Building your Books
 

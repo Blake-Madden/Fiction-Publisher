@@ -103,6 +103,12 @@ foreach ($bookName in $Books)
 
         $content = [IO.File]::ReadAllText($file)
 
+        # dialogue issues
+        $matchResult = $content | Select-String -Pattern "([\w]+[.][`"$q2] (\w+[.] )?([\w-]+) (said|[a-z]{2}ed))"
+        if ($matchResult.Matches.Count -gt 0)
+            {
+            $WarningList.Add("Warning: period used at end of dialogue in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). Did you intend to use a comma?")
+            }
         # italics issues
         $matchResult = $content | Select-String -Pattern "([*][\w ]+['$sq2]s[*])"
         if ($matchResult.Matches.Count -gt 0)
