@@ -9,9 +9,9 @@
 
 
 ## What is Fiction Publisher
-**Fiction Publisher** is a fork of [Open Publisher](https://github.com/chrisanthropic/Open-Publisher), redesigned to work with [Manuskript](https://github.com/olivierkes/manuskript) and [Bookdown](https://bookdown.org/) projects. It is a [PowerShell](https://github.com/PowerShell/PowerShell) script that wraps [Pandoc](https://github.com/jgm/pandoc), KindleGen, and LaTeX and uses a set of custom Pandoc templates (created with a focus on fiction).
+**Fiction Publisher** is a fork of [Open Publisher](https://github.com/chrisanthropic/Open-Publisher), redesigned to work with [Manuskript](https://github.com/olivierkes/manuskript) and [Bookdown](https://bookdown.org/) projects. It is a [PowerShell](https://github.com/PowerShell/PowerShell) script that wraps [Pandoc](https://github.com/jgm/pandoc) and LaTeX and uses a set of custom Pandoc templates (created with a focus on fiction).
 
-Write your manuscript in markdown, configure a Pandoc [metadata](#Metadata-Options) file, run a build script, and receive some beautifully formatted ePub, Mobi, and print-ready PDF books.
+Write your manuscript in markdown, configure a Pandoc [metadata](#Metadata-Options) file, run a build script, and receive some beautifully formatted ePub (including an Amazon KDP-ready ePub) and print-ready PDF books.
 
 Refer [here](#project-structure) for the recommended file structure for your book.
 
@@ -20,7 +20,7 @@ Refer [here](#project-structure) for the recommended file structure for your boo
 #### PowerShell build script which creates
   - [X] PDF (print)
   - [X] ePub
-  - [X] Mobi
+  - [X] Amazon KDP ePub (with Amazon-specific series page)
   - [X] Word (using a **Draft** template)
 
 #### Input formats
@@ -217,7 +217,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 - **build-draft**: `false` to not build a draft copy (`true` by default)
 - **build-epub**: `false` to not build an EPub file (`true` by default)
-- **build-mobi**: `false` to not build a Mobi file (`true` by default)
+- **build-amazon-epub**: `false` to not build the Amazon KDP ePub, `<book>-amazon.epub` (`true` by default)
 - **build-print**: `false` to not build a PDF file (`true` by default)
 
 ## Project Structure
@@ -240,7 +240,7 @@ This folder holds your finished books. Inside you'll find a folder for each book
 This directory holds stuff that Pandoc needs.
 
 #### Pandoc/css
-This is the stylesheet used when creating epub and mobi/Amazon files.
+This is the stylesheet used when creating epub and Amazon epub files.
 
 #### Pandoc/templates
 This folder contains the custom templates Fiction-Publisher uses when converting files with Pandoc.
@@ -262,9 +262,6 @@ Fiction Publisher needs the following tools to be installed in order to work:
 
 ### Pandoc
 [Pandoc](http://pandoc.org/) - converts _from_ many file formats _to_ many other file formats. For our purposes, it converts our markdown files to epub and pdf.
-
-### Kindlegen
-[KindleGen](https://www.amazon.com/gp/feature.html?docId=1000765211) - Amazon's free tool to create .mobi/kindle files. For our purposes, it converts epub to mobi.
 
 ### LaTeX / TexLive / MiKTeX
 [LaTeX](https://www.latex-project.org/) - typesetting software that can output PDF files.

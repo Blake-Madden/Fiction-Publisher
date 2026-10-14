@@ -216,7 +216,7 @@ foreach ($bookName in $Books)
     # Build options
     $buildDraft = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-draft:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
     $buildEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-epub:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
-    $buildMobi = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-mobi:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
+    $buildAmazonEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-amazon-epub:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
     $buildPrint = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-print:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
 
     # Build a draft copy before doing any output-specific formatting
@@ -251,13 +251,13 @@ foreach ($bookName in $Books)
 
     # build epub and print series pages (although they may not be included)
     pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/seriespage.md" `
-           --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.md" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+           --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.md" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/amazon-seriespage.md" `
-           --template="$PSScriptRoot/Pandoc/templates/seriespage/amazon-seriespage.md" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+           --template="$PSScriptRoot/Pandoc/templates/seriespage/amazon-seriespage.md" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/seriespage.tex" -t latex `
-           --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.tex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+           --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.tex" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Select the copyright page template (can be customized by "copyright-page" line in metadata file)
     $copyrightPage = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^copyright-page:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
@@ -266,24 +266,24 @@ foreach ($bookName in $Books)
     # Create the latex copyright file to insert into the print documents.
     # Note that we are simply using the copyright template and expanding the variables from our config.yml into it.
     pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/copyright.tex" -t latex `
-           --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.tex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+           --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.tex" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the copyright file to insert into the epub documents.
     # Also, note that we are simply using the copyright template and expanding the variables from our config.yml into it.
     pandoc --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/copyright.md" `
            --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.md" `
-           -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+           "$PSScriptRoot/Books/$bookName/build/dummy.txt"
     Copy-Item -Path "$PSScriptRoot/Pandoc/templates/copyright/ccbynasa.png" -Destination "$PSScriptRoot/Books/$bookName/build/ccbynasa.png"
 
     # Create the latex half titlepage
     # half titlepage doesn't really make sense because e-readers force the main title page to the front
     pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/half-titlepage.tex" -t latex `
-           --template="$PSScriptRoot/Pandoc/templates/half-titlepage/half-titlepage.tex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+           --template="$PSScriptRoot/Pandoc/templates/half-titlepage/half-titlepage.tex" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the latex colophon page
     # ePub doesn't use typesetting, so not built for those
     pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/colophon.tex" -t latex `
-           --template="$PSScriptRoot/Pandoc/templates/colophon/default.tex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+           --template="$PSScriptRoot/Pandoc/templates/colophon/default.tex" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the latex chapter heading file to insert into the print documents.
     # Note that we don't do this with epub because their chapter headings should be fairly standard looking.
@@ -291,17 +291,17 @@ foreach ($bookName in $Books)
     $chapterHeading = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^chapter-heading:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
     $chapterHeading = If ($chapterHeading.Length -gt 0) { $chapterHeading } Else { "default" }
     pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/chapter-heading.tex" -t latex `
-           --template="$PSScriptRoot/Pandoc/templates/chapter-heading/$chapterHeading.tex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+           --template="$PSScriptRoot/Pandoc/templates/chapter-heading/$chapterHeading.tex" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the author biography file to insert into the print
     # TODO: need to be able to exclude this from hardcover editions via metadata
     pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/bio.tex" -t latex `
-           --template="$PSScriptRoot/Pandoc/templates/biography/bio.tex" -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+           --template="$PSScriptRoot/Pandoc/templates/biography/bio.tex" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the author biography file to insert into the epub documents
     pandoc --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/bio.md" `
            --template="$PSScriptRoot/Pandoc/templates/biography/bio.md" `
-           -i "$PSScriptRoot/Books/$bookName/build/dummy.txt"
+           "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # format for print (i.e., LaTeX) conversion
     If ($buildPrint -ne "false")
@@ -410,24 +410,23 @@ foreach ($bookName in $Books)
                --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
                --epub-cover-image="$coverImage" `
                --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
-               -i "$PSScriptRoot/Books/$bookName/build/copyright.md" "$includeSeriesPageEpub" `
+               "$PSScriptRoot/Books/$bookName/build/copyright.md" "$includeSeriesPageEpub" `
                $epubMdFiles `
                "$PSScriptRoot/Books/$bookName/build/bio.md"
         }
 
-    # Amazon mobi
-    If ($buildEpub -ne "false" -and $buildMobi -ne "false")
+    # Amazon (KDP) epub; same as the standard epub, except for the Amazon-specific series page
+    If ($buildEpub -ne "false" -and $buildAmazonEpub -ne "false")
        {
-        Write-Output "Building for Amazon mobi..."
+        Write-Output "Building epub for Amazon KDP..."
         pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
                $includeToc --toc-depth=1 `
                --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
                --epub-cover-image="$coverImage" `
-               --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
-               -i "$PSScriptRoot/Books/$bookName/build/copyright.md" "$includeSeriesPageAmazonEpub" `
+               --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName-amazon.epub" `
+               "$PSScriptRoot/Books/$bookName/build/copyright.md" "$includeSeriesPageAmazonEpub" `
                $epubMdFiles `
-               "$PSScriptRoot/Books/$bookName/build/bio.md"           
-        kindlegen -c2 "$PSScriptRoot/Books/Output/$bookName.epub"
+               "$PSScriptRoot/Books/$bookName/build/bio.md"
         }
 
     # Print publication output
