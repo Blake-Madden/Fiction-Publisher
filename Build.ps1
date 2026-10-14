@@ -231,10 +231,7 @@ if ($projectErrors.Count)
 # clean up any output from previous run
 if ([IO.Directory]::Exists("$PSScriptRoot/Books/Output"))
     {
-    $oldOutputs = [IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/Output", "*.*", [IO.SearchOption]::TopDirectoryOnly)
-    foreach ($oldOutput in $oldOutputs)
-        { Remove-Item -Path "$oldOutput" }
-    Remove-Item -Path "$PSScriptRoot/Books/Output" -Force
+    Remove-Item -LiteralPath "$PSScriptRoot/Books/Output" -Recurse -Force
     }
 
 # get a list of all projects in the 'Books' folder
@@ -571,7 +568,8 @@ foreach ($bookName in $Books)
             # files that don't start with zero should be new scenes in a chapter, so unindent their first paragraph
             if ($fileInfo.BaseName -match '^[^0].*')
                 {
-                $content = $content -replace '^([\s\r\n]*)(.)', '$1\noindent $2'
+                # unless the file starts with a heading, which shouldn't be prefixed
+                $content = $content -replace '^(\s*)([^#\s])', '$1\noindent $2'
                 }
 
             [void] [IO.File]::WriteAllText($file, $content)
@@ -642,7 +640,9 @@ foreach ($bookName in $Books)
         }
 
     # Optional epub validation
-    $epubFiles = Get-ChildItem -Path "$PSScriptRoot/Books/Output" -Filter "$bookName*.epub" -File -ErrorAction SilentlyContinue
+    # (listed by name, so that a similarly named book's output isn't included)
+    $epubFiles = @("$bookName.epub", "$bookName-amazon.epub") |
+        ForEach-Object { Get-Item -LiteralPath "$PSScriptRoot/Books/Output/$_" -ErrorAction SilentlyContinue }
     if ($epubFiles)
         {
         $epubcheck = Get-Command epubcheck -ErrorAction SilentlyContinue | Select-Object -First 1
