@@ -438,12 +438,14 @@ foreach ($bookName in $Books)
         }
 
     # copy epub cover image to build
-    $coverImage = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^cover-image:[ ]*([\w-/\\.]*)' | % {($_.matches.groups[1].Value) }
+    # (passed to pandoc as an array, so that the option is left out entirely if there is no cover image)
+    $coverImage = (Get-ConfigValue (Get-Content "$PSScriptRoot/Books/$bookName/config.yml") 'cover-image').Value
+    $coverImageOption = @()
     If (($coverImage.Length -gt 0) -and ($buildEpub -ne "false"))
         {
         $fileInfo = New-Object System.IO.FileInfo("$PSScriptRoot/Books/$bookName/$coverImage")
-        Copy-Item -Path "$PSScriptRoot/Books/$bookName/$coverImage" -Destination "$PSScriptRoot/Books/$bookName/build/$($fileInfo.Name)"
-        $coverImage = "$PSScriptRoot/Books/$bookName/build/$($fileInfo.Name)"
+        Copy-Item -LiteralPath "$PSScriptRoot/Books/$bookName/$coverImage" -Destination "$PSScriptRoot/Books/$bookName/build/$($fileInfo.Name)"
+        $coverImageOption = @("--epub-cover-image=$PSScriptRoot/Books/$bookName/build/$($fileInfo.Name)")
         }
 
     # The "dummy.txt" is just a blank input file required by pandoc when we build are template subfiles
@@ -619,7 +621,7 @@ foreach ($bookName in $Books)
         Invoke-Pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
                $includeToc --toc-depth=1 `
                --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
-               --epub-cover-image="$coverImage" `
+               $coverImageOption `
                --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
                "$PSScriptRoot/Books/$bookName/build/copyright.md" $includeSeriesPageEpub `
                $epubMdFiles `
@@ -633,7 +635,7 @@ foreach ($bookName in $Books)
         Invoke-Pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
                $includeToc --toc-depth=1 `
                --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
-               --epub-cover-image="$coverImage" `
+               $coverImageOption `
                --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName-amazon.epub" `
                "$PSScriptRoot/Books/$bookName/build/copyright.md" $includeSeriesPageAmazonEpub `
                $epubMdFiles `
