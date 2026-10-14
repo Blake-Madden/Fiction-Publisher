@@ -28,7 +28,7 @@ foreach ($bookName in $Books)
                "lang: en-US" + [environment]::NewLine + `
                "date: YYYY-MM-DD" + [environment]::NewLine + `
                "year: YYYY" + [environment]::NewLine + `
-               "cover-image: images/XXXXX.jpg" + [environment]::NewLine + `
+               "cover-image:" + [environment]::NewLine + `
                "publisher:" + [environment]::NewLine + `
                "rights: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Unported License." + [environment]::NewLine + `
                "paperback-isbn-13:" + [environment]::NewLine + `

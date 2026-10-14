@@ -136,7 +136,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 ### Cover
 
-- **cover-image**: The path (relative to "Build.ps1") to the EPUB cover image
+- **cover-image**: The path to the EPUB cover image, relative to the book's folder (e.g., `images/cover.jpg` for "Books/MyBook/images/cover.jpg")
 
 ### Copyright Page
 
