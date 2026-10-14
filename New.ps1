@@ -50,13 +50,13 @@ foreach ($bookName in $Books)
                "    - designer:" + [environment]::NewLine + `
                "      artist:" + [environment]::NewLine + `
                "      editor:" + [environment]::NewLine + `
-               "book1:" + [environment]::NewLine + `
+               "series-book1:" + [environment]::NewLine + `
                "    - title: Any book you've written" + [environment]::NewLine + `
                "      link: http://www.amazon.com/dp/XXXXXXXX" + [environment]::NewLine + `
-               "book2:" + [environment]::NewLine + `
+               "series-book2:" + [environment]::NewLine + `
                "    - title: These books get added to the title page" + [environment]::NewLine + `
                "      link: and for Amazon, they use the links you provide here" + [environment]::NewLine + `
-               "book3:" + [environment]::NewLine + `
+               "series-book3:" + [environment]::NewLine + `
                "    - title: You can add up to 5 books" + [environment]::NewLine + `
                "      link:" + [environment]::NewLine + `
                "---") `

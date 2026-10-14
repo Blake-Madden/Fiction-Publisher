@@ -455,10 +455,10 @@ foreach ($bookName in $Books)
     $includeToc = If ($includeToc -eq "true") { @("--toc") } Else { @() }
 
     # whether the series page should be included (based on whether a "book" value is mentioned in the metadata)
-    $includeSeriesPageEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^book[1-5]:'
+    $includeSeriesPageEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^series-book[1-5]:'
     $includeSeriesPageEpub = If ($includeSeriesPageEpub.Matches.Count -gt 0) { @("$PSScriptRoot/Books/$bookName/build/seriespage.md") } Else { @() }
 
-    $includeSeriesPageAmazonEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^book[1-5]:'
+    $includeSeriesPageAmazonEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^series-book[1-5]:'
     $includeSeriesPageAmazonEpub = If ($includeSeriesPageAmazonEpub.Matches.Count -gt 0) { @("$PSScriptRoot/Books/$bookName/build/amazon-seriespage.md") } Else { @() }
 
     # build epub and print series pages (although they may not be included)
