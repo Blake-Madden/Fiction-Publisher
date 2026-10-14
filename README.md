@@ -182,6 +182,7 @@ The following can be specified in a book project's "config.yml" file (which shou
     - **title-latex**: LaTeX-formatted title for PDF output (will override **title**)
     - **subtitle**: Subtitle of book
     - **subtitle-latex**: LaTeX-formatted subtitle of book (will override **subtitle**)
+    - **link**: Store link for the book (used in the Amazon ePub)
 - **series-book2**:
     - **title**: Add a second book
 - **series-book3**:
