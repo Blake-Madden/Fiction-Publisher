@@ -266,6 +266,9 @@ Fiction Publisher needs the following tools to be installed in order to work:
 ### LaTeX / TexLive / MiKTeX
 [LaTeX](https://www.latex-project.org/) - typesetting software that can output PDF files.
 
+### Ghostscript (optional)
+[Ghostscript](https://ghostscript.com/) - if installed (`gs` on Linux/macOS, `gswin64c` on Windows), the build will check the print PDF for an odd page count and fonts that are not embedded. If it isn't installed, these checks are skipped.
+
 ### Fiction Publisher
 Git clone the [Fiction Publisher](https://github.com/Blake-Madden/Fiction-Publisher) repo.
 

@@ -436,6 +436,39 @@ foreach ($bookName in $Books)
         pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.tex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
                --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
                -f markdown+smart $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-print.pdf"
+
+        # Optional print checks (requires Ghostscript, skipped if not installed)
+        $ghostscript = Get-Command gs, gswin64c, gswin32c -ErrorAction SilentlyContinue | Select-Object -First 1
+        If ($null -eq $ghostscript)
+            {
+            Write-Output "Ghostscript not found. Skipping print PDF checks."
+            }
+        Else
+            {
+            $printPdf = "$PSScriptRoot/Books/Output/$bookName-print.pdf"
+
+            # Printers need an even page count (a sheet has two sides)
+            $pageCount = & $ghostscript.Source -q -dNODISPLAY -dNOSAFER -dBATCH -dNOPAUSE -c "($printPdf) (r) file runpdfbegin pdfpagecount = quit" 2>&1
+            If ($pageCount -match '^\d+$')
+                {
+                If ([int]$pageCount % 2 -ne 0)
+                    {
+                    Write-Warning ("'$bookName-print.pdf' has an odd number of pages ($pageCount). Most printers require an even page count.")
+                    }
+                }
+            Else
+                {
+                Write-Warning ("Unable to determine the page count of '$bookName-print.pdf' with Ghostscript.")
+                }
+
+            # Printers require all fonts to be embedded
+            $pdfInfo = & $ghostscript.Source -q -dNODISPLAY -dNOSAFER -dBATCH -dNOPAUSE -dPDFINFO $printPdf 2>&1
+            $unembeddedFonts = $pdfInfo | Where-Object { $_ -match 'Font' -and $_ -match 'not embedded' }
+            If ($unembeddedFonts)
+                {
+                Write-Warning ("'$bookName-print.pdf' contains fonts that are not embedded: $(($unembeddedFonts | ForEach-Object { $_.ToString().Trim() }) -join '; ')")
+                }
+            }
         }
 
     # clean up
