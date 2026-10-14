@@ -11,7 +11,7 @@ $else$
 <p class="center">$series-book1.title$</p>
 $endif$
 $if(series-book1.subtitle)$
-<p class="center">$series-book4.subtitle$</p>
+<p class="center">$series-book1.subtitle$</p>
 $endif$
 $endfor$
 
@@ -24,7 +24,7 @@ $else$
 <p class="center">$series-book2.title$</p>
 $endif$
 $if(series-book2.subtitle)$
-<p class="center">$series-book4.subtitle$</p>
+<p class="center">$series-book2.subtitle$</p>
 $endif$
 $endfor$
 
@@ -37,7 +37,7 @@ $else$
 <p class="center">$series-book3.title$</p>
 $endif$
 $if(series-book3.subtitle)$
-<p class="center">$series-book4.subtitle$</p>
+<p class="center">$series-book3.subtitle$</p>
 $endif$
 $endfor$
 
