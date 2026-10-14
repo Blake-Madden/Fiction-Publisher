@@ -31,9 +31,12 @@ foreach ($bookName in $Books)
                "cover-image: images/XXXXX.jpg" + [environment]::NewLine + `
                "publisher:" + [environment]::NewLine + `
                "rights: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Unported License." + [environment]::NewLine + `
-               "paperback-isbn:" + [environment]::NewLine + `
-               "hardcover-isbn:" + [environment]::NewLine + `
-               "epub-isbn:" + [environment]::NewLine + `
+               "paperback-isbn-13:" + [environment]::NewLine + `
+               "paperback-isbn-10:" + [environment]::NewLine + `
+               "hardcover-isbn-13:" + [environment]::NewLine + `
+               "hardcover-isbn-10:" + [environment]::NewLine + `
+               "epub-isbn-13:" + [environment]::NewLine + `
+               "epub-isbn-10:" + [environment]::NewLine + `
                "dedication: Dedicated to my readers." + [environment]::NewLine + `
                "toc: true" + [environment]::NewLine + `
                "top-margin:" + [environment]::NewLine + `
