@@ -80,7 +80,7 @@ Refer [here](#project-structure) for the recommended file structure for your boo
 
 ### Organize Book Projects
 - Create a folder named "Books" In your "Fiction-Publisher" folder.
-- Copy your Manuskript project(s) into this folder. Refer [here](#project-structure) for a description of how your book project should be organized.
+- Copy your **Manuskript** project(s) into this folder. Refer [here](#project-structure) for a description of how your book project should be organized.
 - Add a "config.yml" file to each book project (running "New.ps1" will create skeleton config files in each folder in "Books").
 - Copy any custom fonts that you wish to use into the "Pandoc/fonts" folder.
 
@@ -89,6 +89,8 @@ Each book project will contain a "config.yml", which is used to define metadata 
 
 ### Build Your Books
 Use the "Build.ps1" script to create your books, which will appear in the "Books/Output" folder.
+
+Before building, the script checks that **Pandoc** and **XeLaTeX** are available and that each book project is valid.
 
 ### Using VS Codium / VS Code
 Opening the "Fiction-Publisher" folder provides these tasks (`Ctrl+Shift+P` > "Tasks: Run Task"):
@@ -277,6 +279,9 @@ Fiction Publisher needs the following tools to be installed in order to work:
 
 ### PowerShell 7
 [PowerShell 7](https://github.com/PowerShell/PowerShell) (`pwsh`) - runs the build scripts. On macOS use `brew install --cask powershell`; on Linux install it with your package manager (refer to the [install docs](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-linux)). Verify with `pwsh --version`.
+
+### EPUBCheck (optional)
+[EPUBCheck](https://www.w3.org/publishing/epubcheck/) - if installed (`epubcheck` on the PATH), the build will validate the generated ePub files and report any problems. If it isn't installed, this check is skipped.
 
 ### Ghostscript (optional)
 [Ghostscript](https://ghostscript.com/) - if installed (`gs` on Linux/macOS, `gswin64c` on Windows), the build will check the print PDF for an odd page count and fonts that are not embedded. If it isn't installed, these checks are skipped.

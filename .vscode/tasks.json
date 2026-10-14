@@ -13,7 +13,7 @@
                 "fileLocation": ["relative", "${workspaceFolder}"],
                 "severity": "warning",
                 "pattern": {
-                    "regexp": "^(.+)\\((\\d+)\\): (warning): (.*)$",
+                    "regexp": "^(.+)\\((\\d+)\\): (warning|error): (.*)$",
                     "file": 1,
                     "line": 2,
                     "severity": 3,

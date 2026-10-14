@@ -1,4 +1,4 @@
-﻿$q1 = [char] 0x201C  # left smart double quote
+$q1 = [char] 0x201C  # left smart double quote
 $q2 = [char] 0x201D  # right smart double quote
 $sq1 = [char] 0x2018 # left smart single quote
 $sq2 = [char] 0x2019 # right smart single quote
@@ -36,6 +36,155 @@ function Test-FormatIssue
     $WarningList.Add([pscustomobject]@{ File = $displayPath; Line = $lineNumber; Message = ($Message -f $matchedText) })
     }
 
+# Runs pandoc and stops the build if it fails
+function Invoke-Pandoc
+    {
+    & pandoc @args
+    if ($LASTEXITCODE -ne 0)
+        {
+        Write-Host -ForegroundColor Red "pandoc failed (exit code $LASTEXITCODE) while processing '$bookName'. Please review the output above."
+        Set-Location "$PSScriptRoot"
+        exit 1
+        }
+    }
+
+# Returns the value (and line number) of a top-level key in a config.yml (or $null if missing/empty)
+function Get-ConfigValue
+    {
+    param([string[]]$Lines, [string]$Key)
+    for ($i = 0; $i -lt $Lines.Count; $i++)
+        {
+        if ($Lines[$i] -match "^$([regex]::Escape($Key)):[ ]*(.*?)[ ]*$")
+            {
+            $value = $Matches[1] -replace '^["'']|["'']$', ''
+            if ($value.Length -gt 0)
+                { return [pscustomobject]@{ Value = $value; Line = $i + 1 } }
+            return $null
+            }
+        }
+    return $null
+    }
+
+# Validates an ISBN-10 or ISBN-13 check digit (hyphens and spaces are ignored)
+function Test-Isbn
+    {
+    param([string]$Isbn, [int]$Length)
+    $digits = $Isbn -replace '[\s-]', ''
+    if ($Length -eq 13 -and $digits -match '^\d{13}$')
+        {
+        $sum = 0
+        for ($i = 0; $i -lt 13; $i++)
+            { $sum += [int][string]$digits[$i] * $(If ($i % 2) { 3 } Else { 1 }) }
+        return ($sum % 10 -eq 0)
+        }
+    if ($Length -eq 10 -and $digits -match '^\d{9}[\dXx]$')
+        {
+        $sum = 0
+        for ($i = 0; $i -lt 10; $i++)
+            {
+            $digit = If ($digits[$i] -in 'X', 'x') { 10 } Else { [int][string]$digits[$i] }
+            $sum += $digit * (10 - $i)
+            }
+        return ($sum % 11 -eq 0)
+        }
+    return $false
+    }
+
+# Reviews a book project's structure and config.yml (e.g., that referenced files exist).
+# Returns a list of issues, each with a File, Line, Severity ('error' or 'warning'), and Message.
+function Test-BookProject
+    {
+    param([string]$BookName)
+
+    $issues = New-Object Collections.Generic.List[object]
+    $bookDir = "$PSScriptRoot/Books/$BookName"
+    $bookPath = "Books/$BookName"
+    $configPath = "$bookPath/config.yml"
+
+    if (-not [IO.Directory]::Exists("$bookDir/outline"))
+        {
+        $issues.Add([pscustomobject]@{ File = $bookPath; Line = 1; Severity = 'error'; Message = "'outline' folder not found (this should contain the book's markdown chapters)." })
+        }
+    if (-not [IO.File]::Exists("$bookDir/config.yml"))
+        {
+        $issues.Add([pscustomobject]@{ File = $bookPath; Line = 1; Severity = 'error'; Message = "'config.yml' not found (run 'New.ps1' to create a skeleton)." })
+        return $issues
+        }
+
+    $lines = Get-Content "$bookDir/config.yml"
+    $buildEpub = (Get-ConfigValue $lines 'build-epub').Value -ne 'false'
+    $buildPrint = (Get-ConfigValue $lines 'build-print').Value -ne 'false'
+
+    # cover image (path is relative to the book's folder)
+    $cover = Get-ConfigValue $lines 'cover-image'
+    if ($buildEpub -and $cover -and -not [IO.File]::Exists("$bookDir/$($cover.Value)"))
+        {
+        $issues.Add([pscustomobject]@{ File = $configPath; Line = $cover.Line; Severity = 'error'; Message = "cover-image '$($cover.Value)' not found in '$bookPath'." })
+        }
+
+    # fonts (only validated if specified as a font file; otherwise, it is a font name installed on the system)
+    if ($buildPrint)
+        {
+        foreach ($key in 'title-font', 'author-font')
+            {
+            $font = Get-ConfigValue $lines $key
+            if ($font -and $font.Value -match '\.(ttf|otf)$' -and -not [IO.File]::Exists("$PSScriptRoot/Pandoc/fonts/$($font.Value)"))
+                {
+                $issues.Add([pscustomobject]@{ File = $configPath; Line = $font.Line; Severity = 'error'; Message = "$key '$($font.Value)' not found in 'Pandoc/fonts'." })
+                }
+            }
+        }
+
+    # templates
+    $copyright = Get-ConfigValue $lines 'copyright-page'
+    $copyrightName = If ($copyright) { $copyright.Value } Else { 'creative-commons' }
+    foreach ($extension in 'tex', 'md')
+        {
+        if (-not [IO.File]::Exists("$PSScriptRoot/Pandoc/templates/copyright/$copyrightName.$extension"))
+            {
+            $issues.Add([pscustomobject]@{ File = $configPath; Line = If ($copyright) { $copyright.Line } Else { 1 }; Severity = 'error'; Message = "copyright-page template '$copyrightName.$extension' not found in 'Pandoc/templates/copyright'." })
+            }
+        }
+
+    $chapterHeading = Get-ConfigValue $lines 'chapter-heading'
+    $chapterHeadingName = If ($chapterHeading) { $chapterHeading.Value } Else { 'default' }
+    if (-not [IO.File]::Exists("$PSScriptRoot/Pandoc/templates/chapter-heading/$chapterHeadingName.tex"))
+        {
+        $issues.Add([pscustomobject]@{ File = $configPath; Line = If ($chapterHeading) { $chapterHeading.Line } Else { 1 }; Severity = 'error'; Message = "chapter-heading template '$chapterHeadingName.tex' not found in 'Pandoc/templates/chapter-heading'." })
+        }
+
+    # drop caps
+    $dropCap = Get-ConfigValue $lines 'drop-cap-style'
+    if ($buildPrint -and $dropCap)
+        {
+        $dropCapFonts = @{ scifi = 'Orbitron-Bold.ttf'; oldwest = 'ChunkFive-Regular.ttf' }
+        if ($dropCap.Value -notin 'default', 'romance', 'blockletter', 'scifi', 'oldwest', 'none')
+            {
+            $issues.Add([pscustomobject]@{ File = $configPath; Line = $dropCap.Line; Severity = 'warning'; Message = "drop-cap-style '$($dropCap.Value)' is not recognized (the default style will be used)." })
+            }
+        elseif ($dropCapFonts.ContainsKey($dropCap.Value) -and -not [IO.File]::Exists("$PSScriptRoot/Pandoc/fonts/$($dropCapFonts[$dropCap.Value])"))
+            {
+            $issues.Add([pscustomobject]@{ File = $configPath; Line = $dropCap.Line; Severity = 'error'; Message = "drop-cap-style '$($dropCap.Value)' requires '$($dropCapFonts[$dropCap.Value])' in 'Pandoc/fonts'." })
+            }
+        }
+
+    # ISBNs
+    foreach ($format in 'paperback', 'hardcover', 'epub')
+        {
+        foreach ($length in 13, 10)
+            {
+            $key = "$format-isbn-$length"
+            $isbn = Get-ConfigValue $lines $key
+            if ($isbn -and -not (Test-Isbn -Isbn $isbn.Value -Length $length))
+                {
+                $issues.Add([pscustomobject]@{ File = $configPath; Line = $isbn.Line; Severity = 'warning'; Message = "$key '$($isbn.Value)' is not a valid ISBN-$length (check digit or length is incorrect)." })
+                }
+            }
+        }
+
+    return $issues
+    }
+
 # make sure the required tools are available before touching anything (e.g., previous output)
 $missingTools = @()
 if (-not (Get-Command pandoc -ErrorAction SilentlyContinue))
@@ -49,6 +198,25 @@ if ($missingTools.Count)
     exit 1
     }
 Write-Output "Using $(pandoc --version | Select-Object -First 1)"
+
+# review the book projects before cleaning up or building anything
+$bookProjects = @()
+if ([IO.Directory]::Exists("$PSScriptRoot/Books"))
+    { $bookProjects = @(Get-ChildItem "$PSScriptRoot/Books" -Directory | Where-Object { $_.Name -ne 'Output' }) }
+if ($bookProjects.Count -eq 0)
+    {
+    Write-Host -ForegroundColor Red "No book projects found in '$PSScriptRoot/Books'. Add your book project folder(s) there (see README.md)."
+    exit 1
+    }
+$projectIssues = @($bookProjects | ForEach-Object { Test-BookProject -BookName $_.Name })
+foreach ($issue in $projectIssues)
+    { Write-Output "$($issue.File)($($issue.Line)): $($issue.Severity): $($issue.Message)" }
+$projectErrors = @($projectIssues | Where-Object { $_.Severity -eq 'error' })
+if ($projectErrors.Count)
+    {
+    Write-Host -ForegroundColor Red "$($projectErrors.Count) error(s) found in the book project(s). Please fix these and try again."
+    exit 1
+    }
 
 # clean up any output from previous run
 if ([IO.Directory]::Exists("$PSScriptRoot/Books/Output"))
@@ -226,7 +394,7 @@ foreach ($bookName in $Books)
     If ($buildDraft -ne "false")
        {
         Write-Output "Building draft copy..."
-        pandoc --toc "$PSScriptRoot/Books/$bookName/config.yml" --reference-doc "$PSScriptRoot/Pandoc/templates/draft.docx" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName DRAFT.docx"
+        Invoke-Pandoc --toc "$PSScriptRoot/Books/$bookName/config.yml" --reference-doc "$PSScriptRoot/Pandoc/templates/draft.docx" $mdFiles -o "$PSScriptRoot/Books/Output/$bookName DRAFT.docx"
         }
 
     # copy epub cover image to build
@@ -253,13 +421,13 @@ foreach ($bookName in $Books)
     $includeSeriesPageAmazonEpub = If ($includeSeriesPageAmazonEpub.Matches.Count -gt 0) { "$PSScriptRoot/Books/$bookName/build/amazon-seriespage.md" } Else { "" }
 
     # build epub and print series pages (although they may not be included)
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/seriespage.md" `
+    Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/seriespage.md" `
            --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.md" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/amazon-seriespage.md" `
+    Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/amazon-seriespage.md" `
            --template="$PSScriptRoot/Pandoc/templates/seriespage/amazon-seriespage.md" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/seriespage.tex" -t latex `
+    Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/seriespage.tex" -t latex `
            --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.tex" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Select the copyright page template (can be customized by "copyright-page" line in metadata file)
@@ -268,24 +436,24 @@ foreach ($bookName in $Books)
 
     # Create the latex copyright file to insert into the print documents.
     # Note that we are simply using the copyright template and expanding the variables from our config.yml into it.
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/copyright.tex" -t latex `
+    Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/copyright.tex" -t latex `
            --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.tex" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the copyright file to insert into the epub documents.
     # Also, note that we are simply using the copyright template and expanding the variables from our config.yml into it.
-    pandoc --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/copyright.md" `
+    Invoke-Pandoc --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/copyright.md" `
            --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.md" `
            "$PSScriptRoot/Books/$bookName/build/dummy.txt"
     Copy-Item -Path "$PSScriptRoot/Pandoc/templates/copyright/ccbynasa.png" -Destination "$PSScriptRoot/Books/$bookName/build/ccbynasa.png"
 
     # Create the latex half titlepage
     # half titlepage doesn't really make sense because e-readers force the main title page to the front
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/half-titlepage.tex" -t latex `
+    Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/half-titlepage.tex" -t latex `
            --template="$PSScriptRoot/Pandoc/templates/half-titlepage/half-titlepage.tex" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the latex colophon page
     # ePub doesn't use typesetting, so not built for those
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/colophon.tex" -t latex `
+    Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/colophon.tex" -t latex `
            --template="$PSScriptRoot/Pandoc/templates/colophon/default.tex" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the latex chapter heading file to insert into the print documents.
@@ -293,16 +461,16 @@ foreach ($bookName in $Books)
     # Select the copyright page template (can be customized by "copyright-page" line in metadata file)
     $chapterHeading = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^chapter-heading:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
     $chapterHeading = If ($chapterHeading.Length -gt 0) { $chapterHeading } Else { "default" }
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/chapter-heading.tex" -t latex `
+    Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/chapter-heading.tex" -t latex `
            --template="$PSScriptRoot/Pandoc/templates/chapter-heading/$chapterHeading.tex" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the author biography file to insert into the print
     # TODO: need to be able to exclude this from hardcover editions via metadata
-    pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/bio.tex" -t latex `
+    Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/bio.tex" -t latex `
            --template="$PSScriptRoot/Pandoc/templates/biography/bio.tex" "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
     # Create the author biography file to insert into the epub documents
-    pandoc --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/bio.md" `
+    Invoke-Pandoc --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/bio.md" `
            --template="$PSScriptRoot/Pandoc/templates/biography/bio.md" `
            "$PSScriptRoot/Books/$bookName/build/dummy.txt"
 
@@ -408,7 +576,7 @@ foreach ($bookName in $Books)
     If ($buildEpub -ne "false")
        {
         Write-Output "Building for e-pub..."
-        pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
+        Invoke-Pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
                $includeToc --toc-depth=1 `
                --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
                --epub-cover-image="$coverImage" `
@@ -422,7 +590,7 @@ foreach ($bookName in $Books)
     If ($buildEpub -ne "false" -and $buildAmazonEpub -ne "false")
        {
         Write-Output "Building epub for Amazon KDP..."
-        pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
+        Invoke-Pandoc --top-level-division=chapter --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
                $includeToc --toc-depth=1 `
                --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
                --epub-cover-image="$coverImage" `
@@ -432,11 +600,32 @@ foreach ($bookName in $Books)
                "$PSScriptRoot/Books/$bookName/build/bio.md"
         }
 
+    # Optional epub validation
+    $epubFiles = Get-ChildItem -Path "$PSScriptRoot/Books/Output" -Filter "$bookName*.epub" -File -ErrorAction SilentlyContinue
+    if ($epubFiles)
+        {
+        $epubcheck = Get-Command epubcheck -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($null -eq $epubcheck)
+            {
+            Write-Output "epubcheck not found. Skipping epub validation."
+            }
+        else
+            {
+            foreach ($epubFile in $epubFiles)
+                {
+                Write-Output "Validating '$($epubFile.Name)'..."
+                & $epubcheck.Source $epubFile.FullName
+                if ($LASTEXITCODE -ne 0)
+                    { Write-Warning "epubcheck found problems in '$($epubFile.Name)'." }
+                }
+            }
+        }
+
     # Print publication output
     If ($buildPrint -ne "false")
         {
         Write-Output "Building for print..."
-        pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.tex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
+        Invoke-Pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.tex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
                --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" `
                -f markdown+smart $mdFiles -o "$PSScriptRoot/Books/Output/$bookName-print.pdf"
 
