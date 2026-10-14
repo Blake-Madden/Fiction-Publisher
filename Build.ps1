@@ -313,7 +313,7 @@ foreach ($bookName in $Books)
     $itemsToEmphacize = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^emphasis-check:(.*)' | % {($_.matches.groups[1].Value) }
     if ($itemsToEmphacize.Length -gt 0)
         {
-        $itemsToEmphacize = $itemsToEmphacize.Split(';') | % { $_.Trim() }
+        $itemsToEmphacize = $itemsToEmphacize.Split(';') | % { $_.Trim() } | Where-Object { $_.Length -gt 0 }
         }
     foreach ($file in $mdFiles)
         {
@@ -403,7 +403,8 @@ foreach ($bookName in $Books)
         # check for items that should be italicized
         foreach ($item in $itemsToEmphacize)
             {
-            Test-FormatIssue -Pattern "(?<![*])\b$item\b(?![*])" -CaseSensitive `
+            # item is matched literally, the lookarounds act like word boundaries, but also work with items that start or end with punctuation
+            Test-FormatIssue -Pattern "(?<![*\w])$([regex]::Escape($item))(?![*\w])" -CaseSensitive `
                              -Message "'$item' should be enclosed in astericks to format as italic."
             }
         }
