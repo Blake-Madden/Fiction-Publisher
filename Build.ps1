@@ -36,6 +36,20 @@ function Test-FormatIssue
     $WarningList.Add([pscustomobject]@{ File = $displayPath; Line = $lineNumber; Message = ($Message -f $matchedText) })
     }
 
+# make sure the required tools are available before touching anything (e.g., previous output)
+$missingTools = @()
+if (-not (Get-Command pandoc -ErrorAction SilentlyContinue))
+    { $missingTools += "pandoc (https://pandoc.org/installing.html)" }
+if (-not (Get-Command xelatex -ErrorAction SilentlyContinue))
+    { $missingTools += "xelatex (install TeX Live, MiKTeX, or MacTeX)" }
+if ($missingTools.Count)
+    {
+    Write-Host -ForegroundColor Red "Required tool(s) not found on PATH:"
+    $missingTools | ForEach-Object { Write-Host -ForegroundColor Red "  - $_" }
+    exit 1
+    }
+Write-Output "Using $(pandoc --version | Select-Object -First 1)"
+
 # clean up any output from previous run
 if ([IO.Directory]::Exists("$PSScriptRoot/Books/Output"))
     {
