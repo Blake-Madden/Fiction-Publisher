@@ -70,18 +70,21 @@
 % Thanks to LSinev for most of this PDF X-1a stuff;
 % https://gist.github.com/LSinev/74ea05423c9208d6677d
 
-%(mm size * 72)/25.4 = bp size
+% TrimBox is the page size in bp, calculated from paper-width and paper-height
+% (rounded to avoid exceeding the page size)
+\newcommand{\trimboxwidth}{\fpeval{round(\paperwidth*72/72.27, 2)}}
+\newcommand{\trimboxheight}{\fpeval{round(\paperheight*72/72.27, 2)}}
 \usepackage{atbegshi}
 \AtBeginShipout{% %A hook that is executed for every page (after first one)
     \special{pdf: put @thispage
       <<
-        /TrimBox [0 0 360 576] %put here other numbers = size of page in bp
+        /TrimBox [0 0 \trimboxwidth\space\trimboxheight]
       >>
     }
 }
 \special{pdf: put @thispage
   <<
-    /TrimBox [0 0 360 576] %put here other numbers = size of page in bp
+    /TrimBox [0 0 \trimboxwidth\space\trimboxheight]
   >>
 }
 \special{pdf:docinfo
