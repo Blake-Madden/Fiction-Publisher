@@ -362,6 +362,35 @@ foreach ($bookName in $Books)
         # stray period or comma around ? or !
         Test-FormatIssue -Pattern '([.,][?!]|[?!][.,]|[,][.])' `
                          -Message "stray period or comma found (`"{0}`")."
+        # unbalanced double quotes (each line is a paragraph); a quote left open at the end of a paragraph
+        # is fine if the next paragraph opens with a quote (i.e., the same speaker continues)
+        $paragraphs = [regex]::Split($content, '\r\n|\r|\n')
+        $previousLeftOpen = $false
+        for ($i = 0; $i -lt $paragraphs.Count; $i++)
+            {
+            $paragraph = $paragraphs[$i].Trim()
+            if ($paragraph.Length -eq 0)
+                { continue }
+            $opening = $paragraph.Split($q1).Count - 1
+            $closing = $paragraph.Split($q2).Count - 1
+
+            # find the next paragraph with text
+            $nextParagraph = ''
+            for ($j = $i + 1; $j -lt $paragraphs.Count -and $nextParagraph.Length -eq 0; $j++)
+                { $nextParagraph = $paragraphs[$j].Trim() }
+
+            $problem = $null
+            if ($opening -gt $closing -and -not $nextParagraph.StartsWith($q1))
+                { $problem = "opening quote ($q1) has no closing quote." }
+            elseif ($closing -gt $opening -and -not $previousLeftOpen)
+                { $problem = "closing quote ($q2) has no opening quote." }
+
+            if ($problem)
+                {
+                $WarningList.Add([pscustomobject]@{ File = $displayPath; Line = 1 + $lineOffset + $i; Message = "unbalanced quotes: $problem" })
+                }
+            $previousLeftOpen = ($opening -gt $closing)
+            }
         # check for items that should be italicized
         foreach ($item in $itemsToEmphacize)
             {
