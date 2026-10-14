@@ -451,14 +451,14 @@ foreach ($bookName in $Books)
 
     # whether the TOC should be included (this isn't read from metadata for epub, so we handle that here and pass it to the command line later)
     $includeToc = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^toc:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
-    $includeToc = If ($includeToc -eq "true") { "--toc" } Else { "" }
+    $includeToc = If ($includeToc -eq "true") { @("--toc") } Else { @() }
 
     # whether the series page should be included (based on whether a "book" value is mentioned in the metadata)
     $includeSeriesPageEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^book[1-5]:'
-    $includeSeriesPageEpub = If ($includeSeriesPageEpub.Matches.Count -gt 0) { "$PSScriptRoot/Books/$bookName/build/seriespage.md" } Else { "" }
+    $includeSeriesPageEpub = If ($includeSeriesPageEpub.Matches.Count -gt 0) { @("$PSScriptRoot/Books/$bookName/build/seriespage.md") } Else { @() }
 
     $includeSeriesPageAmazonEpub = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^book[1-5]:'
-    $includeSeriesPageAmazonEpub = If ($includeSeriesPageAmazonEpub.Matches.Count -gt 0) { "$PSScriptRoot/Books/$bookName/build/amazon-seriespage.md" } Else { "" }
+    $includeSeriesPageAmazonEpub = If ($includeSeriesPageAmazonEpub.Matches.Count -gt 0) { @("$PSScriptRoot/Books/$bookName/build/amazon-seriespage.md") } Else { @() }
 
     # build epub and print series pages (although they may not be included)
     Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$PSScriptRoot/Books/$bookName/config.yml" -o "$PSScriptRoot/Books/$bookName/build/seriespage.md" `
@@ -621,7 +621,7 @@ foreach ($bookName in $Books)
                --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
                --epub-cover-image="$coverImage" `
                --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName.epub" `
-               "$PSScriptRoot/Books/$bookName/build/copyright.md" "$includeSeriesPageEpub" `
+               "$PSScriptRoot/Books/$bookName/build/copyright.md" $includeSeriesPageEpub `
                $epubMdFiles `
                "$PSScriptRoot/Books/$bookName/build/bio.md"
         }
@@ -635,7 +635,7 @@ foreach ($bookName in $Books)
                --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
                --epub-cover-image="$coverImage" `
                --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$PSScriptRoot/Books/Output/$bookName-amazon.epub" `
-               "$PSScriptRoot/Books/$bookName/build/copyright.md" "$includeSeriesPageAmazonEpub" `
+               "$PSScriptRoot/Books/$bookName/build/copyright.md" $includeSeriesPageAmazonEpub `
                $epubMdFiles `
                "$PSScriptRoot/Books/$bookName/build/bio.md"
         }
