@@ -341,7 +341,7 @@ foreach ($bookName in $Books)
         # space issues
         Test-FormatIssue -Pattern '[ ]{2,}[^\r\n]' `
                          -Message "multiple spaces between words/sentences found. Considering changing these into single spaces."
-        Test-FormatIssue -Pattern '([^\s]+)(\r\n\r\n\r\n|\n\n\r|\r\r\r)([^\s]+)' `
+        Test-FormatIssue -Pattern '([^\s]+)((\r\n){3,}|\n{3,}|\r{3,})([^\s]+)' `
                          -Message "extra blank lines found (`"{0}`"). If these are intended to be scene separators, considering moving this text into another markdown file."
         # check for possible stray spaces or newlines that cause issues with paragraphs being split or joined incorrectly
         Test-FormatIssue -Pattern '([^ ]+[ ]+)(\r\n|\n|\r)([^ ]+)' `
