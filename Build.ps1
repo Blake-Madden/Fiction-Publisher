@@ -353,9 +353,7 @@ foreach ($bookName in $Books)
                          -Message "comma or period inside of quote (`"{0}`"). Should be on the outside."
         # ellipses checks
         Test-FormatIssue -Pattern "[$ellipsis]+" `
-                         -Message "Unicode ellipses ($ellipsis) found. Considering changing these into spaced periods."
-        Test-FormatIssue -Pattern '[ ]{3,}' `
-                         -Message "period ellipses found without spaces. Considering changing these into spaced periods."
+                         -Message "Unicode ellipses ($ellipsis) found. Considering changing these into three periods (...)."
         # hyphen/en dash/em dash checks
         Test-FormatIssue -Pattern '[-]{2,}' `
                          -Message "multiple dashes found. Considering changing these into en-dashes or em-dashes to make your intention explicit."

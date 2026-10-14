@@ -64,7 +64,7 @@ Refer [here](#project-structure) for the recommended file structure for your boo
 - [X] Checks for straight quotes (smart quotes should be included in source markdown to avoid ambiguity)
 - [X] Checks for `--` (en dashes and em dashes should be included in source markdown to avoid ambiguity)
 - [X] Checks for correct ordering of closing quotation marks and commas/periods
-- [X] Checks for Unicode ellipsis (should be spaced periods)
+- [X] Checks for Unicode ellipsis (should be three periods, "...")
 - [X] Checks for en dash at the end of a quote (should be an em dash)
 - [X] Checks for hyphen between numbers (should be an en dash)
 - [X] Checks for extra spaces
