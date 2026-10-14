@@ -10,6 +10,32 @@ $yacute = [char] 0x00DD # Y with acute
 $ellipsis = [char] 0x2026 # ellipsis
 $endash = [char] 0x2013 # en dash
 
+# YAML header at the start of a markdown file (removed before building)
+$yamlHeaderPattern = '^(---(\r\n|\r|\n))?([\w]+:.+(\r\n|\r|\n))+(---)?(\r\n|\r|\n){2,}'
+
+# Records a formatting issue if '$Pattern' is found in the file being reviewed ($content).
+# Uses the enclosing script's $content, $lineOffset, $displayPath and $WarningList.
+# '{0}' in the message is replaced with the matched text.
+function Test-FormatIssue
+    {
+    param(
+        [string]$Pattern,
+        [string]$Message,
+        [switch]$CaseSensitive,
+        [int]$ValueGroup = 0,   # which regex group is shown in the message
+        [int]$IndexGroup = 0    # which regex group determines the reported line
+        )
+
+    $options = If ($CaseSensitive) { [Text.RegularExpressions.RegexOptions]::None } Else { [Text.RegularExpressions.RegexOptions]::IgnoreCase }
+    $match = [regex]::Match($content, $Pattern, $options)
+    If (-not $match.Success)
+        { return }
+
+    $lineNumber = 1 + $lineOffset + [regex]::Matches($content.Substring(0, $match.Groups[$IndexGroup].Index), '\r\n|\r|\n').Count
+    $matchedText = $match.Groups[$ValueGroup].Value -replace '\r\n|\r|\n', '\n'
+    $WarningList.Add([pscustomobject]@{ File = $displayPath; Line = $lineNumber; Message = ($Message -f $matchedText) })
+    }
+
 # clean up any output from previous run
 if ([IO.Directory]::Exists("$PSScriptRoot/Books/Output"))
     {
@@ -62,7 +88,7 @@ foreach ($bookName in $Books)
         $fileInfo = New-Object System.IO.FileInfo($file)
 
         # remove YAML header
-        $content = [IO.File]::ReadAllText($file) -replace '^(---(\r\n|\r|\n))?([\w]+:.+(\r\n|\r|\n))+(---)?(\r\n|\r|\n){2,}', [Environment]::NewLine
+        $content = [IO.File]::ReadAllText($file) -replace $yamlHeaderPattern, [Environment]::NewLine
 
         # if missing top-level header and file is the first scene in the chapter (i.e., filename starts with zero),
         # then add a chapter heading based on the chapter folder name
@@ -88,7 +114,7 @@ foreach ($bookName in $Books)
     # Check for possible formatting issues from the markdown files that author may want to fix
     ###############################################################
     Write-Output "Reviewing formatting in source files..."
-    $WarningList = New-Object Collections.Generic.List[string]
+    $WarningList = New-Object Collections.Generic.List[object]
 
     # semicolon separated list of items that should be italicized (specified in meatadata)
     $itemsToEmphacize = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^emphasis-check:(.*)' | % {($_.matches.groups[1].Value) }
@@ -98,115 +124,78 @@ foreach ($bookName in $Books)
         }
     foreach ($file in $mdFiles)
         {
-        $fileInfo = New-Object System.IO.FileInfo($file)
-        $simpleFilePath = $fileInfo.Directory.Name + [IO.Path]::DirectorySeparatorChar + $fileInfo.Name
+        # the pre-processed copy in the build folder is what gets built, but warnings are reported
+        # against the author's original file (so that line numbers are meaningful)
+        $relativePath = [IO.Path]::GetRelativePath("$PSScriptRoot/Books/$bookName/build/outline", $file)
+        $sourceFile = Join-Path "$PSScriptRoot/Books/$bookName/outline" $relativePath
+        $displayPath = [IO.Path]::GetRelativePath($PSScriptRoot, $sourceFile) -replace '\\', '/'
 
-        $content = [IO.File]::ReadAllText($file)
+        # skip the YAML header (it isn't prose), but account for its lines when reporting line numbers
+        $sourceText = [IO.File]::ReadAllText($sourceFile)
+        $yamlHeader = [regex]::Match($sourceText, $yamlHeaderPattern)
+        $content = $sourceText.Substring($yamlHeader.Length)
+        $lineOffset = [regex]::Matches($yamlHeader.Value, '\r\n|\r|\n').Count
 
         # dialogue issues
-        $matchResult = $content | Select-String -Pattern "([\w]+[.][`"$q2] (\w+[.] )?([\w-]+) (said|[a-z]{2}ed))"
-        if ($matchResult.Matches.Count -gt 0)
-            {
-            $WarningList.Add("Warning: period used at end of dialogue in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). Did you intend to use a comma?")
-            }
+        Test-FormatIssue -Pattern "([\w]+[.][`"$q2] (\w+[.] )?([\w-]+) (said|[a-z]{2}ed))" `
+                         -Message "period used at end of dialogue (`"{0}`"). Did you intend to use a comma?"
         # italics issues
-        $matchResult = $content | Select-String -Pattern "([*][\w ]+['$sq2]s[*])"
-        if ($matchResult.Matches.Count -gt 0)
-            {
-            $WarningList.Add("Warning: possesive suffix being italicized in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). Apostrophe and es should not be italicized with the rest of the word.")
-            }
+        Test-FormatIssue -Pattern "([*][\w ]+['$sq2]s[*])" `
+                         -Message "possesive suffix being italicized (`"{0}`"). Apostrophe and es should not be italicized with the rest of the word."
         # interrogative issues
-        $matchResult = $content | Select-String -Pattern "(\w+[^?][`"$q2] (the )?\w+ (asked|queried|wondered))"
-        if ($matchResult.Matches.Count -gt 0)
-            {
-            $WarningList.Add("Warning: question mark may be needed in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`").")
-            }
+        Test-FormatIssue -Pattern "(\w+[^?][`"$q2] (the )?\w+ (asked|queried|wondered))" `
+                         -Message "question mark may be needed (`"{0}`")."
         # space issues
-        if ($content -match '[ ]{2,}[^\r\n]')
-            {
-            $WarningList.Add("Warning: multiple spaces between words/sentences found in '$($simpleFilePath)'. Considering changing these into single spaces.")
-            }
-        $matchResult = $content | Select-String -Pattern '([^\s]+)(\r\n\r\n\r\n|\n\n\r|\r\r\r)([^\s]+)'
-        if ($matchResult.Matches.Count -gt 0)
-            {
-            $WarningList.Add("Warning: extra blank lines found in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). If these are intended to be scene separators, considering moving this text into another markdown file.")
-            }
+        Test-FormatIssue -Pattern '[ ]{2,}[^\r\n]' `
+                         -Message "multiple spaces between words/sentences found. Considering changing these into single spaces."
+        Test-FormatIssue -Pattern '([^\s]+)(\r\n\r\n\r\n|\n\n\r|\r\r\r)([^\s]+)' `
+                         -Message "extra blank lines found (`"{0}`"). If these are intended to be scene separators, considering moving this text into another markdown file."
         # check for possible stray spaces or newlines that cause issues with paragraphs being split or joined incorrectly
-        $matchResult = $content | Select-String -Pattern '([^ ]+[ ]+)(\r\n|\n|\r)([^ ]+)'
-        if ($matchResult.Matches.Count -gt 0)
-            {
-            $WarningList.Add("Warning: line followed by spaces, then a single line break found in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). If this is intended to be a new paragraph, it is recommended to change this to a blank line for clarity. If this should be the same paragraph, then remove the newline.")
-            }
-        if ($content -match "[`"`']+")
-            {
-            $WarningList.Add("Warning: straight single/double quote(s) found in '$($simpleFilePath)'. Considering converting these into smart quotes to make your intention explicit.")
-            }
+        Test-FormatIssue -Pattern '([^ ]+[ ]+)(\r\n|\n|\r)([^ ]+)' `
+                         -Message "line followed by spaces, then a single line break found (`"{0}`"). If this is intended to be a new paragraph, it is recommended to change this to a blank line for clarity. If this should be the same paragraph, then remove the newline."
+        Test-FormatIssue -Pattern "[`"`']+" `
+                         -Message "straight single/double quote(s) found. Considering converting these into smart quotes to make your intention explicit."
         # quotation issues
-        $matchResult = $content | Select-String -Pattern "(\w+[^,.][`"$q2][,.])"
-        if ($matchResult.Matches.Count -gt 0)
-            {
-            $WarningList.Add("Warning: comma or period inside of quote in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). Should be on the outside.")
-            }
+        Test-FormatIssue -Pattern "(\w+[^,.][`"$q2][,.])" `
+                         -Message "comma or period inside of quote (`"{0}`"). Should be on the outside."
         # ellipses checks
-        if ($content -match "[$ellipsis]+")
-            {
-            $WarningList.Add("Warning: Unicode ellipses ($ellipsis) found in '$($simpleFilePath)'. Considering changing these into spaced periods.")
-            }
-        if ($content -match '[ ]{3,}')
-            {
-            $WarningList.Add("Warning: period ellipses found in '$($simpleFilePath)' without spaces. Considering changing these into spaced periods.")
-            }
+        Test-FormatIssue -Pattern "[$ellipsis]+" `
+                         -Message "Unicode ellipses ($ellipsis) found. Considering changing these into spaced periods."
+        Test-FormatIssue -Pattern '[ ]{3,}' `
+                         -Message "period ellipses found without spaces. Considering changing these into spaced periods."
         # hyphen/en dash/em dash checks
-        if ($content -match '[-]{2,}')
-            {
-            $WarningList.Add("Warning: multiple dashes found in '$($simpleFilePath)'. Considering changing these into en-dashes or em-dashes to make your intention explicit.")
-            }
-        if ($content -match "[$endash][`"$q2]")
-            {
-            $WarningList.Add("Warning: en dash ending a quote in '$($simpleFilePath)'. Considering changing this to an em dash.")
-            }
-        $matchResult = $content | Select-String -Pattern "([\w]+[$endash][\w]+)"
-        if ($matchResult.Matches.Count -gt 0)
-            {
-            $WarningList.Add("Warning: en dash between words in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). Did you intend to use a hyphen or an em dash?")
-            }
-         $matchResult = $content | Select-String -Pattern '([0-9]+[-][0-9]+)'
-         if ($matchResult.Matches.Count -gt 0)
-            {
-            $WarningList.Add("Warning: hyphen between numeric range in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`"). Did you intend to use an en dash?")
-            }
+        Test-FormatIssue -Pattern '[-]{2,}' `
+                         -Message "multiple dashes found. Considering changing these into en-dashes or em-dashes to make your intention explicit."
+        Test-FormatIssue -Pattern "[$endash][`"$q2]" `
+                         -Message "en dash ending a quote. Considering changing this to an em dash."
+        Test-FormatIssue -Pattern "([\w]+[$endash][\w]+)" `
+                         -Message "en dash between words (`"{0}`"). Did you intend to use a hyphen or an em dash?"
+        Test-FormatIssue -Pattern '([0-9]+[-][0-9]+)' `
+                         -Message "hyphen between numeric range (`"{0}`"). Did you intend to use an en dash?"
         # print and e-books handle their own indenting
-        if ($content -match '[\t]+')
-            {
-            $WarningList.Add("Warning: tab found in '$($simpleFilePath)'. Considering removing these.")
-            }
-        $matchResult = $content | Select-String -Pattern '[\r\n]+[ ]+(\w+)'
-        if ($matchResult.Matches.Count -gt 0)
-            {
-            $WarningList.Add("Warning: space indenting found in '$($simpleFilePath)', (' $($matchResult.Matches.Groups[0].Captures[0].Value)'). Considering removing these.")
-            }
+        Test-FormatIssue -Pattern '[\t]+' `
+                         -Message "tab found. Considering removing these."
+        Test-FormatIssue -Pattern '[\r\n]+[ ]+(\w+)' -ValueGroup 1 -IndexGroup 1 `
+                         -Message "space indenting found (`" {0}`"). Considering removing these."
         # stray period or comma around ? or !
-        $matchResult = $content | Select-String -Pattern '([.,][?!]|[?!][.,]|[,][.])'
-        if ($matchResult.Matches.Count -gt 0)
-            {
-            $WarningList.Add("Warning: stray period or comma found in '$($simpleFilePath)' (`"$($matchResult.Matches.Groups[0].Captures[0].Value)`").")
-            }
+        Test-FormatIssue -Pattern '([.,][?!]|[?!][.,]|[,][.])' `
+                         -Message "stray period or comma found (`"{0}`")."
         # check for items that should be italicized
         foreach ($item in $itemsToEmphacize)
             {
-            if ($content -cmatch "(^|[^*])\b$item\b($|[^*])")
-                {
-                $WarningList.Add("Warning: '$($item)' in '$($simpleFilePath)' should be enclosed in astericks to format as italic.")
-                }
+            Test-FormatIssue -Pattern "(?<![*])\b$item\b(?![*])" -CaseSensitive `
+                             -Message "'$item' should be enclosed in astericks to format as italic."
             }
         }
 
     # Write out any formatting warnings
+    # (formatted as "<path>(<line>): warning: <message>", which editors can use to link back to the source)
     if ($WarningList.Count)
         {
         Write-Host -ForegroundColor Red "Formatting issues found in source files. Please review 'Output/$bookName Format Warnings.log'"
-        $WarningList.Sort()
-        $WarningList -replace '(.*found in ")(.*[/\\]build[/\\]outline[/\\])','$1' | Out-File "$PSScriptRoot/Books/Output/$bookName Format Warnings.log"
+        $warningLines = $WarningList | Sort-Object File, Line | ForEach-Object { "$($_.File)($($_.Line)): warning: $($_.Message)" }
+        $warningLines | Out-File "$PSScriptRoot/Books/Output/$bookName Format Warnings.log"
+        $warningLines | ForEach-Object { Write-Output $_ }
         }
 
     # source markdown files are cleaned up and reviewed, now copy to different folders to pre-process for the different output formats

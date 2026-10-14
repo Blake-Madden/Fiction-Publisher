@@ -1,0 +1,45 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Books",
+            "type": "shell",
+            "command": "pwsh",
+            "args": ["-NoProfile", "-File", "${workspaceFolder}/Build.ps1"],
+            "group": { "kind": "build", "isDefault": true },
+            "presentation": { "reveal": "always", "panel": "dedicated", "clear": true },
+            "problemMatcher": {
+                "owner": "fiction-publisher",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "severity": "warning",
+                "pattern": {
+                    "regexp": "^(.+)\\((\\d+)\\): (warning): (.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "severity": 3,
+                    "message": 4
+                }
+            }
+        },
+        {
+            "label": "New Book Configs",
+            "type": "shell",
+            "command": "pwsh",
+            "args": ["-NoProfile", "-File", "${workspaceFolder}/New.ps1"],
+            "presentation": { "reveal": "always", "panel": "dedicated", "clear": true },
+            "problemMatcher": []
+        },
+        {
+            "label": "Open Format Warnings Log",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile", "-Command",
+                "$cli = Get-Command codium, code -ErrorAction SilentlyContinue | Select-Object -First 1; if (-not $cli) { Write-Error 'Neither codium nor code was found on PATH.'; exit 1 }; Get-ChildItem -Path (Join-Path $env:FP_WORKSPACE 'Books/Output') -Filter '*Format Warnings.log' | ForEach-Object { & $cli.Source -r $_.FullName }"
+            ],
+            "options": { "env": { "FP_WORKSPACE": "${workspaceFolder}" } },
+            "presentation": { "reveal": "silent" },
+            "problemMatcher": []
+        }
+    ]
+}

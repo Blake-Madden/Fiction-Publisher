@@ -90,6 +90,15 @@ Each book project will contain a "config.yml", which is used to define metadata 
 ### Build Your Books
 Use the "Build.ps1" script to create your books, which will appear in the "Books/Output" folder.
 
+### Using VS Codium / VS Code
+Opening the "Fiction-Publisher" folder provides these tasks (`Ctrl+Shift+P` > "Tasks: Run Task"):
+
+- **Build Books** (also `Ctrl+Shift+B`): runs "Build.ps1" and shows its output in the Terminal panel. Formatting warnings for your source files are also listed in the Problems panel (with file and line number), and clicking one opens the file at that line.
+- **New Book Configs**: runs "New.ps1".
+- **Open Format Warnings Log**: opens the "Format Warnings.log" file(s) from "Books/Output" (requires the `codium` or `code` command to be on your PATH).
+
+The optional PowerShell extension (search for "PowerShell" in the Extensions view) adds syntax highlighting and debugging for the scripts.
+
 ## Metadata Options
 
 The following can be specified in a book project's "config.yml" file (which should be in the root of the book project's folder)
@@ -265,6 +274,9 @@ Fiction Publisher needs the following tools to be installed in order to work:
 
 ### LaTeX / TexLive / MiKTeX
 [LaTeX](https://www.latex-project.org/) - typesetting software that can output PDF files.
+
+### PowerShell 7
+[PowerShell 7](https://github.com/PowerShell/PowerShell) (`pwsh`) - runs the build scripts. On macOS use `brew install --cask powershell`; on Linux install it with your package manager (refer to the [install docs](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-linux)). Verify with `pwsh --version`.
 
 ### Ghostscript (optional)
 [Ghostscript](https://ghostscript.com/) - if installed (`gs` on Linux/macOS, `gswin64c` on Windows), the build will check the print PDF for an odd page count and fonts that are not embedded. If it isn't installed, these checks are skipped.

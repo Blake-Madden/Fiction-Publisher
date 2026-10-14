@@ -5,3 +5,5 @@
 .vs
 Books/
 Pandoc/fonts/
+.vscode/*
+!.vscode/tasks.json
