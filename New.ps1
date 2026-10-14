@@ -48,7 +48,7 @@ foreach ($bookName in $Books)
                "      text: [Grab a free Version4 UUID from here: https://www.uuidgenerator.net/version4]" + [environment]::NewLine + `
                "contributors:" + [environment]::NewLine + `
                "    - designer:" + [environment]::NewLine + `
-               "      artist:" + [environment]::NewLine + `
+               "      cover-artist:" + [environment]::NewLine + `
                "      editor:" + [environment]::NewLine + `
                "series-book1:" + [environment]::NewLine + `
                "    - title: Any book you've written" + [environment]::NewLine + `
