@@ -13,6 +13,16 @@ $endash = [char] 0x2013 # en dash
 # YAML header at the start of a markdown file (removed before building)
 $yamlHeaderPattern = '^(---(\r\n|\r|\n))?([\w]+:.+(\r\n|\r|\n))+(---)?(\r\n|\r|\n){2,}'
 
+# Returns the markdown files under a folder in a stable order (folders and files are numbered to control their order).
+function Get-MarkdownFiles
+    {
+    param([string]$Folder)
+    $files = [string[]][IO.Directory]::GetFiles($Folder, "*.md", [IO.SearchOption]::AllDirectories)
+    $keys = [string[]]($files | ForEach-Object { $_ -replace '[\\/]', [string][char]1 })
+    [Array]::Sort($keys, $files, [StringComparer]::OrdinalIgnoreCase)
+    return $files
+    }
+
 # Records a formatting issue if '$Pattern' is found in the file being reviewed ($content).
 # Uses the enclosing script's $content, $lineOffset, $displayPath and $WarningList.
 # '{0}' in the message is replaced with the matched text.
@@ -249,7 +259,7 @@ foreach ($bookName in $Books)
     Copy-Item -Path "$PSScriptRoot/Pandoc/fonts/*.otf" -Destination "$PSScriptRoot/Books/$bookName/build/" -Recurse -Force
 
     # get all the chapters and scenes (these should all be prefixed with numbers to control their ordering)
-    $mdFiles = [IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/$bookName/build/outline", "*.md", [IO.SearchOption]::AllDirectories)
+    $mdFiles = Get-MarkdownFiles "$PSScriptRoot/Books/$bookName/build/outline"
 
     # don't include files with "compile: 0" in the build
     foreach ($file in $mdFiles)
@@ -261,6 +271,7 @@ foreach ($bookName in $Books)
             Remove-Item -Path $file
             }
         }
+    $mdFiles = Get-MarkdownFiles "$PSScriptRoot/Books/$bookName/build/outline"
 
     # Pre-process files
     ###############################################################
@@ -411,7 +422,7 @@ foreach ($bookName in $Books)
 
     # source markdown files are cleaned up and reviewed, now copy to different folders to pre-process for the different output formats
     Copy-Item -Path "$PSScriptRoot/Books/$bookName/build/outline/" -Destination "$PSScriptRoot/Books/$bookName/build/epub/" -Recurse -Force
-    $epubMdFiles = [IO.Directory]::EnumerateFiles("$PSScriptRoot/Books/$bookName/build/epub", "*.md", [IO.SearchOption]::AllDirectories)
+    $epubMdFiles = Get-MarkdownFiles "$PSScriptRoot/Books/$bookName/build/epub"
 
     # Build options
     $buildDraft = Get-Content "$PSScriptRoot/Books/$bookName/config.yml" | Select-String -Pattern '^build-draft:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
