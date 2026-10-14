@@ -350,7 +350,7 @@ foreach ($bookName in $Books)
                          -Message "straight single/double quote(s) found. Considering converting these into smart quotes to make your intention explicit."
         # quotation issues
         Test-FormatIssue -Pattern "(\w+[^,.][`"$q2][,.])" `
-                         -Message "comma or period inside of quote (`"{0}`"). Should be on the outside."
+                         -Message "comma or period outside of quote (`"{0}`"). Should be on the inside."
         # ellipses checks
         Test-FormatIssue -Pattern "[$ellipsis]+" `
                          -Message "Unicode ellipses ($ellipsis) found. Considering changing these into three periods (...)."
