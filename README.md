@@ -80,26 +80,42 @@ Refer [here](#project-structure) for the recommended file structure for your boo
 
 ## Building your Books
 
-### Organize Book Projects
-- Create a folder named "Books" In your "Fiction-Publisher" folder.
-- Copy your **Manuskript** project(s) into this folder. Refer [here](#project-structure) for a description of how your book project should be organized.
-- Add a "config.yml" file to each book project (running "New.ps1" will create skeleton config files in each folder in "Books").
+### Set Up a Book Project
+- Keep your project wherever you like. Refer [here](#project-structure) for a description of how your book project should be organized.
+- Run "New.ps1" on your book's folder:
+
+      pwsh -File New.ps1 -BookFolder /path/to/your/book
+
+  This adds a skeleton "config.yml" (if the book doesn't already have one) and a ".vscode/tasks.json" for building the book from VS Codium.
+  The "tasks.json" is replaced each time "New.ps1" is run, so don't customize it.
 - Copy any custom fonts that you wish to use into the "Pandoc/fonts" folder.
 
 ### Update Your MetaData
-Each book project will contain a "config.yml", which is used to define metadata about your book. Refer to the [Metadata Documentation](#metadata-options) for more information.
+Each book project contains a "config.yml", which is used to define metadata about your book. Refer to the [Metadata Documentation](#metadata-options) for more information.
 
-### Build Your Books
-Use the "Build.ps1" script to create your books, which will appear in the "Books/Output" folder.
+### Build Your Book
+Use the "Build.ps1" script to build your book, passing it your book's folder:
 
-Before building, the script checks that **Pandoc** and **XeLaTeX** are available and that each book project is valid.
+    pwsh -File Build.ps1 -BookFolder /path/to/your/book
+
+The finished files are written to a "Fiction-Publisher-Output" folder inside your book's folder, and are named after the book's folder.
+
+> **Note:** Each build deletes and recreates the "Fiction-Publisher-Output" folder, so don't keep anything else in it.
+(If a folder with that name already exists but wasn't created by a build, the build stops rather than deleting it.)
+
+Before building, the script checks that **Pandoc** and **XeLaTeX** are available and that the book project is valid.
 
 ### Using VS Codium / VS Code
-Opening the "Fiction-Publisher" folder provides these tasks (`Ctrl+Shift+P` > "Tasks: Run Task"):
+Open your book's folder to write. The tasks that "New.ps1" added are available from `Ctrl+Shift+P` > "Tasks: Run Task":
 
-- **Build Books** (also `Ctrl+Shift+B`): runs "Build.ps1" and shows its output in the Terminal panel. Formatting warnings for your source files are also listed in the Problems panel (with file and line number), and clicking one opens the file at that line.
-- **New Book Configs**: runs "New.ps1".
-- **Open Format Warnings Log**: opens the "Format Warnings.log" file(s) from "Books/Output" (requires the `codium` or `code` command to be on your PATH).
+- **Build Book** (also `Ctrl+Shift+B`): runs "Build.ps1" on the book and shows its output in the Terminal panel.
+  Formatting warnings for your source files are also listed in the Problems panel (with file and line number), which opens automatically when there are any.
+  Clicking a warning opens the file at that line.
+- **Open Format Warnings Log**: opens the book's "Format Warnings.log" from its "Fiction-Publisher-Output" folder (requires the `codium` or `code` command to be on your PATH).
+
+These tasks refer to "Build.ps1" by its full path, so if you move or update the "Fiction-Publisher" folder, run "New.ps1" on the book again to update them.
+
+Opening the "Fiction-Publisher" folder itself provides the same tasks (plus **New Book Config**, which runs "New.ps1"), which ask for the book's folder each time.
 
 The optional PowerShell extension (search for "PowerShell" in the Extensions view) adds syntax highlighting and debugging for the scripts.
 
@@ -136,7 +152,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 ### Cover
 
-- **cover-image**: The path to the EPUB cover image, relative to the book's folder (e.g., `images/cover.jpg` for "Books/MyBook/images/cover.jpg")
+- **cover-image**: The path to the EPUB cover image, relative to the book's folder (e.g., `images/cover.jpg` for "MyBook/images/cover.jpg")
 
 ### Copyright Page
 
@@ -235,10 +251,10 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **build-print**: `false` to not build a PDF file (`true` by default)
 
 ## Project Structure
-The following is the folder structure for **Fiction Publisher** as well as the structure your books projects should be in:
+The following is the folder structure for **Fiction Publisher** as well as the structure your book projects should be in:
 
-### Books
-This folder holds your Book projects (preferably in [Manuskript](https://github.com/olivierkes/manuskript) format).
+### Your Book Folder
+This folder (kept outside of "Fiction-Publisher" and passed to the scripts with `-BookFolder`) holds your book project (preferably in [Manuskript](https://github.com/olivierkes/manuskript) format).
 
 A book folder should have the following:
 
@@ -247,8 +263,8 @@ A book folder should have the following:
   - In the "outline" folder, there should be a subfolder for each chapter, prefixed with a 2-digit number and hyphen. (This will inform the build script about how to order the chapters.)
     - In each chapter folder, there should be a separate Markdown file for each scene. (A numeric prefix on these files will inform the build script of their order.) It is recommended to add a `***` at the end of each Markdown file (except for the last one) in a chapter if you wish to have scene separators added.
 
-#### Books/Output
-This folder holds your finished books. Inside you'll find a folder for each book you've created, containing every format you've created for it.
+#### Fiction-Publisher-Output
+This folder (created inside your book folder by "Build.ps1") holds your finished book in each format you've built, along with any format warnings log.
 
 ### Pandoc
 This directory holds stuff that Pandoc needs.

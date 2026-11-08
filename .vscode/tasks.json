@@ -1,16 +1,23 @@
 {
     "version": "2.0.0",
+    "inputs": [
+        {
+            "id": "bookFolder",
+            "type": "promptString",
+            "description": "Book project folder"
+        }
+    ],
     "tasks": [
         {
-            "label": "Build Books",
+            "label": "Build Book",
             "type": "shell",
             "command": "pwsh",
-            "args": ["-NoProfile", "-File", "${workspaceFolder}/Build.ps1"],
+            "args": ["-NoProfile", "-File", "${workspaceFolder}/Build.ps1", "-BookFolder", "${input:bookFolder}"],
             "group": { "kind": "build", "isDefault": true },
-            "presentation": { "reveal": "always", "panel": "dedicated", "clear": true },
+            "presentation": { "reveal": "always", "revealProblems": "onProblem", "panel": "dedicated", "clear": true },
             "problemMatcher": {
                 "owner": "fiction-publisher",
-                "fileLocation": ["relative", "${workspaceFolder}"],
+                "fileLocation": ["autoDetect", "${workspaceFolder}"],
                 "severity": "warning",
                 "pattern": {
                     "regexp": "^(.+)\\((\\d+)\\): (warning|error): (.*)$",
@@ -22,10 +29,10 @@
             }
         },
         {
-            "label": "New Book Configs",
+            "label": "New Book Config",
             "type": "shell",
             "command": "pwsh",
-            "args": ["-NoProfile", "-File", "${workspaceFolder}/New.ps1"],
+            "args": ["-NoProfile", "-File", "${workspaceFolder}/New.ps1", "-BookFolder", "${input:bookFolder}"],
             "presentation": { "reveal": "always", "panel": "dedicated", "clear": true },
             "problemMatcher": []
         },
@@ -35,9 +42,9 @@
             "command": "pwsh",
             "args": [
                 "-NoProfile", "-Command",
-                "$cli = Get-Command codium, code -ErrorAction SilentlyContinue | Select-Object -First 1; if (-not $cli) { Write-Error 'Neither codium nor code was found on PATH.'; exit 1 }; Get-ChildItem -Path (Join-Path $env:FP_WORKSPACE 'Books/Output') -Filter '*Format Warnings.log' | ForEach-Object { & $cli.Source -r $_.FullName }"
+                "$cli = Get-Command codium, code -ErrorAction SilentlyContinue | Select-Object -First 1; if (-not $cli) { Write-Error 'Neither codium nor code was found on PATH.'; exit 1 }; Get-ChildItem -LiteralPath (Join-Path $env:FP_BOOK 'Fiction-Publisher-Output') -Filter '*Format Warnings.log' -ErrorAction SilentlyContinue | ForEach-Object { & $cli.Source -r $_.FullName }"
             ],
-            "options": { "env": { "FP_WORKSPACE": "${workspaceFolder}" } },
+            "options": { "env": { "FP_BOOK": "${input:bookFolder}" } },
             "presentation": { "reveal": "silent" },
             "problemMatcher": []
         }
