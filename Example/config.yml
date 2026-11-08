@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=../config.schema.json
 title: A Dark and Stormy Night
 subtitle: An Example Book
 author: A. N. Author

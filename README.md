@@ -155,7 +155,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 - **identifier**:
   - **scheme**: UUID
-  - **text**: A unique UUID for your ebook
+  - **text**: A unique UUID for your ebook ("Config.ps1" generates one for you)
 
 ### Cover
 
@@ -197,6 +197,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 - **toc**: Whether to include a table of contents in the print output (`true` or `false`)
 - **toc-title**: The header text for the Table of Contents
+- **toc-depth**: How many heading levels the Table of Contents in the print output shows (`0` for chapters only, `1` to also show sections [headings marked with `##`], and so on)
 
 ### Series Page
 
@@ -224,8 +225,8 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **author-bio**: Author biography
 
 ### Page Formatting
-- **paperheight**: The height of the paper for print output (the default papersize is 6x9 inches)
-- **paperwidth**: The width of the paper for print output
+- **paper-height**: The height of the paper for print output (the default papersize is 6x9 inches)
+- **paper-width**: The width of the paper for print output
 - **top-margin**: The top margin in the print output (headers will be inside of the text body)
 - **bottom-margin**: The bottom margin in the print output
 - **inner-margin**: The inner/gutter margin in the print output

@@ -1,0 +1,186 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Fiction-Publisher book configuration (config.yml)",
+    "description": "Metadata and build settings for a Fiction-Publisher book project. Empty values are allowed (they are treated as not set).",
+    "type": "object",
+    "definitions": {
+        "text": { "type": ["string", "null"] },
+        "number": { "type": ["number", "string", "null"] },
+        "switch": { "type": ["boolean", "null"] },
+        "length": {
+            "type": ["string", "null"],
+            "pattern": "^\\s*\\d*\\.?\\d+\\s*(pt|pc|in|bp|cm|mm|dd|cc|sp|em|ex)\\s*$",
+            "examples": ["0.75in", "2cm", "18mm", "54pt"]
+        },
+        "isbn13": {
+            "type": ["string", "integer", "null"],
+            "pattern": "^[\\d\\s-]{13,17}$"
+        },
+        "isbn10": {
+            "type": ["string", "integer", "null"],
+            "pattern": "^[\\d\\s-]{9,13}[\\dXx]$"
+        },
+        "seriesBook": {
+            "type": ["array", "null"],
+            "description": "A book to list on the series (\"Also Available\") page.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "title": { "$ref": "#/definitions/text", "description": "Title of the book." },
+                    "title-latex": { "$ref": "#/definitions/text", "description": "LaTeX-formatted title for PDF output (overrides title)." },
+                    "subtitle": { "$ref": "#/definitions/text", "description": "Subtitle of the book." },
+                    "subtitle-latex": { "$ref": "#/definitions/text", "description": "LaTeX-formatted subtitle for PDF output (overrides subtitle)." },
+                    "link": { "$ref": "#/definitions/text", "description": "Store link for the book (used in the Amazon ePub)." }
+                }
+            }
+        }
+    },
+    "properties": {
+        "title": { "$ref": "#/definitions/text", "description": "Title of your book." },
+        "title-latex": { "$ref": "#/definitions/text", "description": "LaTeX-formatted title (overrides title on the title and half-title pages of PDF output). A raggedrighttitle environment is available for multi-line titles." },
+        "title-page-top-margin": { "$ref": "#/definitions/length", "description": "Space above the title on the title page (default is 4cm)." },
+        "title-font": { "$ref": "#/definitions/text", "description": "Font for the book title on the title and half-title pages (a TTF/OTF filename in Pandoc/fonts, or a font name)." },
+        "title-font-pointsize": { "$ref": "#/definitions/number", "description": "Font size of the title in PDF output (default is 50)." },
+        "subtitle": { "$ref": "#/definitions/text", "description": "Optional subtitle." },
+        "subtitle-latex": { "$ref": "#/definitions/text", "description": "LaTeX-formatted subtitle (overrides subtitle on the title page of PDF output)." },
+        "author": { "$ref": "#/definitions/text", "description": "Author name." },
+        "author-font": { "$ref": "#/definitions/text", "description": "Font for the author's name on the title page (a TTF/OTF filename in Pandoc/fonts, or a font name)." },
+        "author-by-header": { "$ref": "#/definitions/text", "description": "The \"By\" label above the author on the title page (default is blank)." },
+        "email": { "$ref": "#/definitions/text", "description": "Author e-mail." },
+        "website": { "$ref": "#/definitions/text", "description": "Author website." },
+
+        "type": { "$ref": "#/definitions/text", "description": "Genre of your book." },
+        "lang": {
+            "type": ["string", "null"],
+            "description": "Language in BCP 47 format (e.g., en-US).",
+            "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$",
+            "examples": ["en-US", "en-GB", "es-ES", "fr-FR", "de-DE"]
+        },
+        "date": {
+            "type": ["string", "null"],
+            "description": "Publication date (YYYY-MM-DD).",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "year": {
+            "type": ["integer", "string", "null"],
+            "description": "Publication year (YYYY).",
+            "pattern": "^\\d{4}$"
+        },
+        "identifier": {
+            "type": ["array", "null"],
+            "description": "Unique identifier for your ebook.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "scheme": { "type": ["string", "null"], "enum": ["UUID", null], "description": "Identifier scheme." },
+                    "text": {
+                        "type": ["string", "null"],
+                        "description": "A unique (version 4) UUID for your ebook.",
+                        "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$"
+                    }
+                }
+            }
+        },
+
+        "cover-image": { "$ref": "#/definitions/text", "description": "Path to the ePub cover image, relative to the book's folder (e.g., images/cover.jpg)." },
+
+        "copyright-page": {
+            "description": "Copyright page template (from Pandoc/templates/copyright). Default is creative-commons.",
+            "anyOf": [
+                { "enum": ["creative-commons", "commercial"] },
+                { "type": ["string", "null"] }
+            ]
+        },
+        "contributors": {
+            "type": ["array", "null"],
+            "description": "People who contributed to the book.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "designer": { "$ref": "#/definitions/text", "description": "Who designed your book/cover." },
+                    "cover-artist": { "$ref": "#/definitions/text", "description": "Who created the art of your book cover." },
+                    "editor": { "$ref": "#/definitions/text", "description": "Who edited your book." },
+                    "illustrator": { "$ref": "#/definitions/text", "description": "Who did the interior illustrations (appears on the title page)." }
+                }
+            }
+        },
+        "publisher": { "$ref": "#/definitions/text", "description": "Publisher of your book." },
+        "publisher-address-latex": { "$ref": "#/definitions/text", "description": "LaTeX-formatted publisher address (PDF copyright page)." },
+        "publisher-address-html": { "$ref": "#/definitions/text", "description": "HTML-formatted publisher address (ePub copyright page)." },
+        "rights": { "$ref": "#/definitions/text", "description": "A single sentence regarding the licensing of your book." },
+        "paperback-isbn-13": { "$ref": "#/definitions/isbn13", "description": "Optional 13-digit ISBN of your paperback book." },
+        "hardcover-isbn-13": { "$ref": "#/definitions/isbn13", "description": "Optional 13-digit ISBN of your hardcover book." },
+        "epub-isbn-13": { "$ref": "#/definitions/isbn13", "description": "Optional 13-digit ISBN of your epub book." },
+        "paperback-isbn-10": { "$ref": "#/definitions/isbn10", "description": "Optional 10-digit ISBN of your paperback book." },
+        "hardcover-isbn-10": { "$ref": "#/definitions/isbn10", "description": "Optional 10-digit ISBN of your hardcover book." },
+        "epub-isbn-10": { "$ref": "#/definitions/isbn10", "description": "Optional 10-digit ISBN of your epub book." },
+        "first-paperback-date": { "$ref": "#/definitions/text", "description": "Publication date of the first paperback edition." },
+        "lcc-info-latex": { "$ref": "#/definitions/text", "description": "LaTeX-formatted Library of Congress Cataloging-in-Publication Data (PDF copyright page)." },
+        "lcc-info-html": { "$ref": "#/definitions/text", "description": "HTML-formatted Library of Congress Cataloging-in-Publication Data (ePub copyright page)." },
+        "impression-line-years": { "$ref": "#/definitions/number", "description": "Year part of the printer line (years run right-to-left, usually 2-digit)." },
+        "impression-line-printings": { "$ref": "#/definitions/number", "description": "Print-run part of the printer line (numbers run left-to-right)." },
+
+        "dedication": { "$ref": "#/definitions/text", "description": "Optional dedication." },
+
+        "toc": { "$ref": "#/definitions/switch", "description": "Whether to include a table of contents in the print output." },
+        "toc-title": { "$ref": "#/definitions/text", "description": "Header text for the table of contents." },
+        "toc-depth": {
+            "type": ["integer", "null"],
+            "description": "How many heading levels the print table of contents shows: 0 for chapters only, 1 to also show sections (headings marked with ##), and so on.",
+            "minimum": -1,
+            "maximum": 5,
+            "examples": [0, 1]
+        },
+
+        "series-book1": { "$ref": "#/definitions/seriesBook" },
+        "series-book2": { "$ref": "#/definitions/seriesBook" },
+        "series-book3": { "$ref": "#/definitions/seriesBook" },
+        "series-book4": { "$ref": "#/definitions/seriesBook" },
+        "series-book5": { "$ref": "#/definitions/seriesBook" },
+        "series-header": { "$ref": "#/definitions/text", "description": "Header on the series page (default is \"Also Available\")." },
+
+        "colophon": { "$ref": "#/definitions/switch", "description": "Whether to include a colophon page (typesetting information) in the print output." },
+
+        "author-bio": { "$ref": "#/definitions/text", "description": "Author biography." },
+
+        "paper-height": { "$ref": "#/definitions/length", "description": "Paper height for print output (default paper size is 6x9 inches)." },
+        "paper-width": { "$ref": "#/definitions/length", "description": "Paper width for print output." },
+        "top-margin": { "$ref": "#/definitions/length", "description": "Top margin in the print output (headers are inside the text body)." },
+        "bottom-margin": { "$ref": "#/definitions/length", "description": "Bottom margin in the print output." },
+        "inner-margin": { "$ref": "#/definitions/length", "description": "Inner (gutter) margin in the print output." },
+        "outer-margin": { "$ref": "#/definitions/length", "description": "Outer margin in the print output." },
+        "fancy-chapter": {
+            "type": ["string", "null"],
+            "description": "Chapter heading style from the fncychap package (PDF only). Overrides chapter-heading.",
+            "enum": ["Sonny", "Lenny", "Glenn", "Conny", "Rejne", "Bjarne", "Bjornstrup", null]
+        },
+        "chapter-heading": {
+            "description": "Custom chapter heading theme (from Pandoc/templates/chapter-heading). Default is default.",
+            "anyOf": [
+                { "enum": ["default", "romance-calligraphy", "romance-cursive", "scifi"] },
+                { "type": ["string", "null"] }
+            ]
+        },
+        "drop-cap-style": {
+            "type": ["string", "null"],
+            "description": "Drop cap style for the first letter of each chapter (PDF only). scifi requires Orbitron-Bold.ttf and oldwest requires ChunkFive-Regular.ttf in Pandoc/fonts.",
+            "enum": ["default", "romance", "blockletter", "scifi", "oldwest", "none", null]
+        },
+        "scene-separator-latex": { "$ref": "#/definitions/text", "description": "LaTeX code to replace *** between scenes (PDF output)." },
+        "scene-separator-html": { "$ref": "#/definitions/text", "description": "HTML code to replace *** between scenes (ePub output)." },
+        "no-hyphenate-list": { "$ref": "#/definitions/text", "description": "Space-separated list of words showing how they should be hyphenated (e.g., character names that shouldn't be split)." },
+
+        "header-includes": {
+            "type": ["string", "array", "null"],
+            "description": "Raw content to embed in the template's header (e.g., LaTeX commands)."
+        },
+
+        "emphasis-check": { "$ref": "#/definitions/text", "description": "Semicolon-separated list of phrases that should be italicized (a warning is logged if they aren't)." },
+        "copyedit": { "$ref": "#/definitions/switch", "description": "Outline the sections and show marginal notes in the print output (useful with CriticMarkup)." },
+
+        "build-draft": { "$ref": "#/definitions/switch", "description": "false to not build a draft copy (default is true)." },
+        "build-epub": { "$ref": "#/definitions/switch", "description": "false to not build an ePub file (default is true)." },
+        "build-amazon-epub": { "$ref": "#/definitions/switch", "description": "false to not build the Amazon KDP ePub (default is true)." },
+        "build-print": { "$ref": "#/definitions/switch", "description": "false to not build a PDF file (default is true)." }
+    }
+}

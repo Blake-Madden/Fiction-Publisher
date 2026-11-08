@@ -24,10 +24,33 @@ $bookDir = $resolvedFolder.ProviderPath.TrimEnd('/', '\')
 # create empty fonts folder if not available
 New-Item -ItemType Directory -Path "$PSScriptRoot/Pandoc/fonts" -Force | Out-Null
 
+# Points the YAML extension (redhat.vscode-yaml) to our schema, which provides autocompletion, hover help, and validation.
+# This goes inside the YAML block because the draft build also reads config.yml as markdown,
+# where a comment above the "---" would become a heading.
+# The path is relative to the book's folder, so that the book can be version controlled and used on other machines
+# (as long as the book and Fiction-Publisher are kept in the same places relative to each other).
+$schemaPath = [IO.Path]::GetRelativePath($bookDir, "$PSScriptRoot/config.schema.json") -replace '\\', '/'
+$schemaLine = $null
+if ([IO.Path]::IsPathRooted($schemaPath))
+  {
+  # (e.g., on a different drive)
+  Write-Warning "The book isn't on the same drive as Fiction-Publisher, so config.yml can't refer to its schema with a relative path. Autocompletion for config.yml won't be available."
+  }
+else
+  {
+  # the extension reads the path up to the first space, so spaces are escaped
+  $schemaLine = "# yaml-language-server: `$schema=$($schemaPath -replace ' ', '%20')"
+  }
+
 # create a skeleton configuration (YAML) file
 if (Test-Path -LiteralPath "$bookDir/config.yml" -PathType Leaf)
   {
   Write-Output "'$bookDir/config.yml' already exists; leaving it as is."
+  if ($schemaLine -and [IO.File]::ReadAllText("$bookDir/config.yml") -notmatch 'yaml-language-server:\s*\$schema=')
+    {
+    Write-Output "To get autocompletion for it in VS Codium/VS Code, add this line below its first '---':"
+    Write-Output "  $schemaLine"
+    }
   }
 else
   {
@@ -35,14 +58,15 @@ else
     {
     Set-Content -Encoding UTF8 -LiteralPath "$bookDir/config.yml" `
       -Value ("---" + [environment]::NewLine + `
+             $(If ($schemaLine) { $schemaLine + [environment]::NewLine }) + `
              "title:" + [environment]::NewLine + `
              "subtitle:" + [environment]::NewLine + `
              "author:" + [environment]::NewLine + `
              "website:" + [environment]::NewLine + `
-             "type: [GENRE]" + [environment]::NewLine + `
+             "type:" + [environment]::NewLine + `
              "lang: en-US" + [environment]::NewLine + `
-             "date: YYYY-MM-DD" + [environment]::NewLine + `
-             "year: YYYY" + [environment]::NewLine + `
+             "date:" + [environment]::NewLine + `
+             "year:" + [environment]::NewLine + `
              "cover-image:" + [environment]::NewLine + `
              "publisher:" + [environment]::NewLine + `
              "rights: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Unported License." + [environment]::NewLine + `
@@ -60,20 +84,19 @@ else
              "outer-margin:" + [environment]::NewLine + `
              "identifier:" + [environment]::NewLine + `
              "    - scheme: UUID" + [environment]::NewLine + `
-             "      text: [Grab a free Version4 UUID from here: https://www.uuidgenerator.net/version4]" + [environment]::NewLine + `
+             "      text: $([guid]::NewGuid())" + [environment]::NewLine + `
              "contributors:" + [environment]::NewLine + `
              "    - designer:" + [environment]::NewLine + `
              "      cover-artist:" + [environment]::NewLine + `
              "      editor:" + [environment]::NewLine + `
-             "series-book1:" + [environment]::NewLine + `
-             "    - title: Any book you've written" + [environment]::NewLine + `
-             "      link: http://www.amazon.com/dp/XXXXXXXX" + [environment]::NewLine + `
-             "series-book2:" + [environment]::NewLine + `
-             "    - title: These books get added to the title page" + [environment]::NewLine + `
-             "      link: and for Amazon, they use the links you provide here" + [environment]::NewLine + `
-             "series-book3:" + [environment]::NewLine + `
-             "    - title: You can add up to 5 books" + [environment]::NewLine + `
-             "      link:" + [environment]::NewLine + `
+             "# Your other books to list on a series page (up to 5, series-book1 through series-book5)." + [environment]::NewLine + `
+             "# The link is used in the Amazon ePub. Remove the leading '#' from these lines to use them." + [environment]::NewLine + `
+             "#series-book1:" + [environment]::NewLine + `
+             "#    - title: Any book you've written" + [environment]::NewLine + `
+             "#      link: http://www.amazon.com/dp/XXXXXXXX" + [environment]::NewLine + `
+             "#series-book2:" + [environment]::NewLine + `
+             "#    - title: Another book you've written" + [environment]::NewLine + `
+             "#      link:" + [environment]::NewLine + `
              "---") `
       -ErrorAction Stop
     Write-Output "Created '$bookDir/config.yml'."
