@@ -9,7 +9,7 @@
 
 
 ## What is Fiction Publisher
-**Fiction Publisher** is a fork of [Open Publisher](https://github.com/chrisanthropic/Open-Publisher), redesigned to work with [Manuskript](https://github.com/olivierkes/manuskript) projects.
+**Fiction Publisher** is a fork of [Open Publisher](https://github.com/chrisanthropic/Open-Publisher), redesigned to work with [Manuskript](https://github.com/olivierkes/manuskript)-structured projects.
 It is a [PowerShell](https://github.com/PowerShell/PowerShell) script that wraps [Pandoc](https://github.com/jgm/pandoc) and LaTeX and uses a set of custom Pandoc templates (created with a focus on fiction).
 
 Write your manuscript in markdown, configure a Pandoc [metadata](#Metadata-Options) file, run a build script, and receive some beautifully formatted ePub (including an Amazon KDP-ready ePub) and print-ready PDF books.
@@ -88,6 +88,7 @@ Refer [here](#project-structure) for the recommended file structure for your boo
 
   This adds a skeleton "config.yml" (if the book doesn't already have one) and a ".vscode/tasks.json" for building the book from VS Codium.
   The "tasks.json" is replaced each time "Config.ps1" is run, so don't customize it.
+  If the book already has its own "tasks.json", it is left as is.
 - Copy any custom fonts that you wish to use into the "Pandoc/fonts" folder.
 
 ### Update Your MetaData

@@ -83,9 +83,15 @@ else
   }
 
 # create VS Codium/VS Code tasks for building the book from its own folder
-# (points to the scripts in this copy of Fiction-Publisher; always replaced, so that it stays up to date)
+# (points to the scripts in this copy of Fiction-Publisher and is replaced each time to stay up to date.
+#  A tasks file without our problem matcher's owner is the user's own, so it is left alone.)
 $tasksFile = "$bookDir/.vscode/tasks.json"
 $tasksExisted = Test-Path -LiteralPath $tasksFile -PathType Leaf
+if ($tasksExisted -and [IO.File]::ReadAllText($tasksFile) -notmatch '"owner"\s*:\s*"fiction-publisher"')
+  {
+  Write-Warning "'$tasksFile' wasn't created by Fiction-Publisher, so it was left as is. To add the build tasks, remove it and run Config.ps1 again."
+  exit 0
+  }
 $tasks = @'
 {
     "version": "2.0.0",
