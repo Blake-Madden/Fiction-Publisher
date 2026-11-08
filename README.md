@@ -107,9 +107,9 @@ The finished files are written to a "Fiction-Publisher-Output" folder inside you
 Before building, the script checks that **Pandoc** and **XeLaTeX** are available and that the book project is valid.
 
 ### Using VS Codium / VS Code
-Open your book's folder to write. The tasks that "Config.ps1" added are available from `Ctrl+Shift+P` > "Tasks: Run Task":
+Open your book's folder to write. The tasks that "Config.ps1" added are available from `Ctrl+Shift+P` (`Cmd+Shift+P` on macOS) > "Tasks: Run Task":
 
-- **Build Book** (also `Ctrl+Shift+B`): runs "Build.ps1" on the book and shows its output in the Terminal panel.
+- **Build Book** (also `Ctrl+Shift+B`, or `Cmd+Shift+B` on macOS): runs "Build.ps1" on the book and shows its output in the Terminal panel.
   Formatting warnings for your source files are also listed in the Problems panel (with file and line number), which opens automatically when there are any.
   Clicking a warning opens the file at that line.
 - **Open Format Warnings Log**: opens the book's "Format Warnings.log" from its "Fiction-Publisher-Output" folder (requires the `codium` or `code` command to be on your PATH).
