@@ -694,7 +694,10 @@ If ($buildPrint -ne "false")
         $printPdf = "$outputDir/$bookName-print.pdf"
 
         # Printers need an even page count (a sheet has two sides)
-        $pageCount = & $ghostscript.Source -q -dNODISPLAY -dNOSAFER -dBATCH -dNOPAUSE -c "($printPdf) (r) file runpdfbegin pdfpagecount = quit" 2>&1
+        # (the path is inside a PostScript string, where '\' is an escape character and parentheses delimit the string,
+        #  so use forward slashes and escape any parentheses)
+        $psPrintPdf = ($printPdf -replace '\\', '/') -replace '([()])', '\$1'
+        $pageCount = & $ghostscript.Source -q -dNODISPLAY -dNOSAFER -dBATCH -dNOPAUSE -c "($psPrintPdf) (r) file runpdfbegin pdfpagecount = quit" 2>&1
         If ($pageCount -match '^\d+$')
             {
             If ([int]$pageCount % 2 -ne 0)
