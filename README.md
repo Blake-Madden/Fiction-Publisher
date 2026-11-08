@@ -106,6 +106,12 @@ The finished files are written to a "Fiction-Publisher-Output" folder inside you
 
 Before building, the script checks that **Pandoc** and **XeLaTeX** are available and that the book project is valid.
 
+### Try the Example
+The "Example" folder is a short sample book with deliberate formatting mistakes.
+Build it to see the warnings that the script reports:
+
+    pwsh -File Build.ps1 -BookFolder Example
+
 ### Using VS Codium / VS Code
 Open your book's folder to write. The tasks that "Config.ps1" added are available from `Ctrl+Shift+P` (`Cmd+Shift+P` on macOS) > "Tasks: Run Task":
 

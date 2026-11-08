@@ -4,6 +4,9 @@
 .*~
 .vs
 Books/
+Example/build/
+Example/Fiction-Publisher-Output/
+Example/.vscode/
 Pandoc/fonts/
 .vscode/*
 !.vscode/tasks.json
