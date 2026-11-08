@@ -341,7 +341,7 @@ foreach ($file in $mdFiles)
     $lineOffset = [regex]::Matches($yamlHeader.Value, '\r\n|\r|\n').Count
 
     # dialogue issues
-    Test-FormatIssue -Pattern "([\w]+[.][`"$q2] (\w+[.] )?([\w-]+) (said|[a-z]{2}ed))" `
+    Test-FormatIssue -Pattern "([\w]+[.][`"$q2] (\w+[.] )?([\w-]+) (said|whispered|replied|answered|muttered|murmured|mumbled|shouted|yelled|screamed|cried|called|exclaimed|added|continued|explained|stated|declared|announced|admitted|agreed|offered|suggested|insisted|warned|snapped|growled|grumbled|sighed|laughed|chuckled|sneered|stammered|stuttered|hissed)\b)" `
                      -Message "period used at end of dialogue (`"{0}`"). Did you intend to use a comma?"
     # italics issues
     Test-FormatIssue -Pattern "([*][\w ]+['$sq2]s[*])" `
