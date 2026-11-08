@@ -139,7 +139,7 @@ function Test-BookProject
         }
     if (-not [IO.File]::Exists("$bookDir/config.yml"))
         {
-        $issues.Add([pscustomobject]@{ File = $bookPath; Line = 1; Severity = 'error'; Message = "'config.yml' not found (run 'New.ps1' to create a skeleton)." })
+        $issues.Add([pscustomobject]@{ File = $bookPath; Line = 1; Severity = 'error'; Message = "'config.yml' not found (run 'Config.ps1' to create a skeleton)." })
         return $issues
         }
 

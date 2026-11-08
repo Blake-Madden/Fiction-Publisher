@@ -8,7 +8,7 @@ param(
 # Resolve the book folder
 if ([string]::IsNullOrWhiteSpace($BookFolder))
     {
-    Write-Host -ForegroundColor Red "Please specify the book project folder (e.g., pwsh -File New.ps1 -BookFolder ~/Novels/MyBook)."
+    Write-Host -ForegroundColor Red "Please specify the book project folder (e.g., pwsh -File Config.ps1 -BookFolder ~/Novels/MyBook)."
     exit 1
     }
 if ($BookFolder.StartsWith('~'))

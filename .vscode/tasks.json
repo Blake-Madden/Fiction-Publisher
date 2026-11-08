@@ -29,10 +29,10 @@
             }
         },
         {
-            "label": "New Book Config",
+            "label": "Configure Book",
             "type": "shell",
             "command": "pwsh",
-            "args": ["-NoProfile", "-File", "${workspaceFolder}/New.ps1", "-BookFolder", "${input:bookFolder}"],
+            "args": ["-NoProfile", "-File", "${workspaceFolder}/Config.ps1", "-BookFolder", "${input:bookFolder}"],
             "presentation": { "reveal": "always", "panel": "dedicated", "clear": true },
             "problemMatcher": []
         },

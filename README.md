@@ -82,12 +82,12 @@ Refer [here](#project-structure) for the recommended file structure for your boo
 
 ### Set Up a Book Project
 - Keep your project wherever you like. Refer [here](#project-structure) for a description of how your book project should be organized.
-- Run "New.ps1" on your book's folder:
+- Run "Config.ps1" on your book's folder:
 
-      pwsh -File New.ps1 -BookFolder /path/to/your/book
+      pwsh -File Config.ps1 -BookFolder /path/to/your/book
 
   This adds a skeleton "config.yml" (if the book doesn't already have one) and a ".vscode/tasks.json" for building the book from VS Codium.
-  The "tasks.json" is replaced each time "New.ps1" is run, so don't customize it.
+  The "tasks.json" is replaced each time "Config.ps1" is run, so don't customize it.
 - Copy any custom fonts that you wish to use into the "Pandoc/fonts" folder.
 
 ### Update Your MetaData
@@ -106,16 +106,16 @@ The finished files are written to a "Fiction-Publisher-Output" folder inside you
 Before building, the script checks that **Pandoc** and **XeLaTeX** are available and that the book project is valid.
 
 ### Using VS Codium / VS Code
-Open your book's folder to write. The tasks that "New.ps1" added are available from `Ctrl+Shift+P` > "Tasks: Run Task":
+Open your book's folder to write. The tasks that "Config.ps1" added are available from `Ctrl+Shift+P` > "Tasks: Run Task":
 
 - **Build Book** (also `Ctrl+Shift+B`): runs "Build.ps1" on the book and shows its output in the Terminal panel.
   Formatting warnings for your source files are also listed in the Problems panel (with file and line number), which opens automatically when there are any.
   Clicking a warning opens the file at that line.
 - **Open Format Warnings Log**: opens the book's "Format Warnings.log" from its "Fiction-Publisher-Output" folder (requires the `codium` or `code` command to be on your PATH).
 
-These tasks refer to "Build.ps1" by its full path, so if you move or update the "Fiction-Publisher" folder, run "New.ps1" on the book again to update them.
+These tasks refer to "Build.ps1" by its full path, so if you move or update the "Fiction-Publisher" folder, run "Config.ps1" on the book again to update them.
 
-Opening the "Fiction-Publisher" folder itself provides the same tasks (plus **New Book Config**, which runs "New.ps1"), which ask for the book's folder each time.
+Opening the "Fiction-Publisher" folder itself provides the same tasks (plus **Configure Book**, which runs "Config.ps1"), which ask for the book's folder each time.
 
 The optional PowerShell extension (search for "PowerShell" in the Extensions view) adds syntax highlighting and debugging for the scripts.
 
