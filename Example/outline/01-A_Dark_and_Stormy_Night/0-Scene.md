@@ -13,6 +13,6 @@ Mabel pressed her nose to the window and read the *Gazette’s* headline for the
 
 
 The candle guttered. 
-Somewhere below, a dog began to howl.
+Somewhere below - far below - a dog began to howl.
 
   Then came the knocking again–three slow raps, and a voice from the dark: “Let me in–”

@@ -373,6 +373,8 @@ foreach ($file in $mdFiles)
     # hyphen/en dash/em dash checks
     Test-FormatIssue -Pattern '[-]{2,}' `
                      -Message "multiple dashes found. Considering changing these into en-dashes or em-dashes to make your intention explicit."
+    Test-FormatIssue -Pattern "(\w+[ ]+-[ ]+\w+|\w+[ ]+-[`"$q2])" `
+                     -Message "hyphen surrounded by spaces (`"{0}`"). Did you intend to use an em dash?"
     Test-FormatIssue -Pattern "[$endash][`"$q2]" `
                      -Message "en dash ending a quote. Considering changing this to an em dash."
     Test-FormatIssue -Pattern "([\w]+[$endash][\w]+)" `
