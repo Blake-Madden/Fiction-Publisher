@@ -352,6 +352,9 @@ foreach ($file in $mdFiles)
                      -Message "period used at end of dialogue (`"{0}`"). Did you intend to use a comma?"
     Test-FormatIssue -Pattern "(\w+[`"$q2] (\w+[.] )?[\w-]+ ($speechVerbs)\b)" `
                      -Message "dialogue followed by a speech tag has no punctuation before the closing quote (`"{0}`"). Did you intend to use a comma?"
+    # ("I" and names are capitalized anyway, so only the other pronouns are checked)
+    Test-FormatIssue -Pattern "(\w+[,?!][`"$q2] (He|She|They|We|You|It) ($speechVerbs|asked)\b)" -CaseSensitive `
+                     -Message "dialogue tag starts with a capital letter (`"{0}`"). The pronoun should be lowercase because the tag continues the sentence."
     # italics issues
     Test-FormatIssue -Pattern "([*][\w ]+['$sq2]s[*])" `
                      -Message "possesive suffix being italicized (`"{0}`"). Apostrophe and es should not be italicized with the rest of the word."

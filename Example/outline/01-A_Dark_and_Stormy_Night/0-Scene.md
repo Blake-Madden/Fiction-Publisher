@@ -18,3 +18,5 @@ Somewhere below - far below - a dog began to howl.
   Then came the knocking again–three slow raps, and a voice from the dark: “Let me in–”
 
 “Don’t open it” Mabel whispered.
+
+“Then who is it?” He asked.
