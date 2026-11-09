@@ -71,6 +71,7 @@ Every occurrence of an issue is reported, along with its file and line number.
 - [X] Checks for en dash at the end of a quote (should be an em dash)
 - [X] Checks for hyphen between numbers (should be an en dash)
 - [X] Checks for extra spaces
+- [X] Checks for spaces before punctuation (e.g., "Hello , world" or "Really ?")
 - [X] Checks for indenting spaces (these should not be hardcoded in source markdown files)
 - [X] Checks for tabs
 - [X] Checks for a line that ends with space(s), followed by single newline (indicates ambiguous intention as to whether this should be a new paragraph [a full blank line is recommended here] or the same paragraph [the newline should be removed])

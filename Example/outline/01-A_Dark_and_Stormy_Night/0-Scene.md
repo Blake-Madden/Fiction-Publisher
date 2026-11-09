@@ -8,7 +8,7 @@ Mabel pressed her nose to the window and read the *Gazette’s* headline for the
 
 “Then the wind has learned to knock”, she said.
 
-“It’s only the wind,” Harold said, turning the page. “Go back to bed.
+“It’s only the wind,” Harold said , turning the page. “Go back to bed.
 
 
 

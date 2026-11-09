@@ -357,6 +357,9 @@ foreach ($file in $mdFiles)
     # space issues
     Test-FormatIssue -Pattern '[ ]{2,}[^\r\n]' `
                      -Message "multiple spaces between words/sentences found. Considering changing these into single spaces."
+    # (a space before an ellipsis is allowed)
+    Test-FormatIssue -Pattern '(\w+[ ]+[,;:?!]|\w+[ ]+[.](?![.]))' `
+                     -Message "space before punctuation (`"{0}`"). Considering removing the space."
     Test-FormatIssue -Pattern '([^\s]+)((\r\n){3,}|\n{3,}|\r{3,})([^\s]+)' `
                      -Message "extra blank lines found (`"{0}`"). If these are intended to be scene separators, considering moving this text into another markdown file."
     # check for possible stray spaces or newlines that cause issues with paragraphs being split or joined incorrectly
