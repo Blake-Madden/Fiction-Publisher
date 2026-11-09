@@ -311,7 +311,7 @@ foreach ($file in $mdFiles)
     $content = $content -replace '([^\s])(\r\n|\n|\r)([^\s])',
                                  "`$1$blankLine`$3"
 
-    # ALL-CAPS word followed by hyphen and a number should use a non-breaking hypen
+    # ALL-CAPS word followed by hyphen and a number should use a non-breaking hyphen
     $content = $content -replace '([A-Z]{2,})-([0-9]+)',
                                  '$1&#X2011;$2'
     
@@ -323,11 +323,11 @@ foreach ($file in $mdFiles)
 Write-Output "Reviewing formatting in source files..."
 $WarningList = New-Object Collections.Generic.List[object]
 
-# semicolon separated list of items that should be italicized (specified in meatadata)
-$itemsToEmphacize = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^emphasis-check:(.*)' | % {($_.matches.groups[1].Value) }
-if ($itemsToEmphacize.Length -gt 0)
+# semicolon separated list of items that should be italicized (specified in metadata)
+$itemsToEmphasize = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^emphasis-check:(.*)' | % {($_.matches.groups[1].Value) }
+if ($itemsToEmphasize.Length -gt 0)
     {
-    $itemsToEmphacize = $itemsToEmphacize.Split(';') | % { $_.Trim() } | Where-Object { $_.Length -gt 0 }
+    $itemsToEmphasize = $itemsToEmphasize.Split(';') | % { $_.Trim() } | Where-Object { $_.Length -gt 0 }
     }
 # invisible characters that are often pasted in from word processors or web pages
 $invisibleCharacters = [ordered]@{
@@ -367,60 +367,60 @@ foreach ($file in $mdFiles)
                      -Message "dialogue tag starts with a capital letter (`"{0}`"). The pronoun should be lowercase because the tag continues the sentence."
     # italics issues
     Test-FormatIssue -Pattern "([*][\w ]+['$sq2]s[*])" `
-                     -Message "possesive suffix being italicized (`"{0}`"). Apostrophe and es should not be italicized with the rest of the word."
+                     -Message "possessive suffix being italicized (`"{0}`"). The apostrophe and s should not be italicized with the rest of the word."
     # interrogative issues
     Test-FormatIssue -Pattern "(\w+[^?][`"$q2] (the )?\w+ (asked|queried|wondered))" `
                      -Message "question mark may be needed (`"{0}`")."
     # space issues
     Test-FormatIssue -Pattern '[ ]{2,}[^\r\n]' `
-                     -Message "multiple spaces between words/sentences found. Considering changing these into single spaces."
+                     -Message "multiple spaces between words/sentences found. Considerchanging these into single spaces."
     # (a space before an ellipsis is allowed)
     Test-FormatIssue -Pattern '(\w+[ ]+[,;:?!]|\w+[ ]+[.](?![.]))' `
-                     -Message "space before punctuation (`"{0}`"). Considering removing the space."
+                     -Message "space before punctuation (`"{0}`"). Considerremoving the space."
     # (words must be at least two letters, so that numbers like "1,000" and abbreviations like "e.g." and "U.S." are allowed;
     #  the following word is only looked ahead at so that it can be checked too, as in "Why?Because;nothing")
     Test-FormatIssue -Pattern '(?=(\w*[a-z]{2,}([,;:][A-Za-z]|[.?!][A-Z][a-z])\w*))\w*[a-z]{2,}[,;:.?!]' -CaseSensitive -ValueGroup 1 `
                      -Message "missing space after punctuation (`"{0}`")."
     Test-FormatIssue -Pattern '([^\s]+)((\r\n){3,}|\n{3,}|\r{3,})([^\s]+)' `
-                     -Message "extra blank lines found (`"{0}`"). If these are intended to be scene separators, considering moving this text into another markdown file."
+                     -Message "extra blank lines found (`"{0}`"). If these are intended to be scene separators, considermoving this text into another markdown file."
     # check for possible stray spaces or newlines that cause issues with paragraphs being split or joined incorrectly
     Test-FormatIssue -Pattern '([^ ]+[ ]+)(\r\n|\n|\r)([^ ]+)' `
                      -Message "line followed by spaces, then a single line break found (`"{0}`"). If this is intended to be a new paragraph, it is recommended to change this to a blank line for clarity. If this should be the same paragraph, then remove the newline."
     Test-FormatIssue -Pattern "[`"`']+" `
-                     -Message "straight single/double quote(s) found. Considering converting these into smart quotes to make your intention explicit."
+                     -Message "straight single/double quote(s) found. Considerconverting these into smart quotes to make your intention explicit."
     # quotation issues
     Test-FormatIssue -Pattern "(\w+[^,.][`"$q2][,.])" `
                      -Message "comma or period outside of quote (`"{0}`"). Should be on the inside."
     # ellipses checks
     Test-FormatIssue -Pattern "[$ellipsis]+" `
-                     -Message "Unicode ellipses ($ellipsis) found. Considering changing these into three periods (...)."
+                     -Message "Unicode ellipses ($ellipsis) found. Considerchanging these into three periods (...)."
     # (four periods are allowed, as that is an ellipsis at the end of a sentence)
     Test-FormatIssue -Pattern '((?<![.])[.]{2}(?![.])|[.]{5,}|[,]{2,}|[!]{2,}|[?]{2,})' `
                      -Message "repeated punctuation (`"{0}`"). Ellipses should be three periods; otherwise, consider using a single punctuation mark."
     # hyphen/en dash/em dash checks
     Test-FormatIssue -Pattern '[-]{2,}' `
-                     -Message "multiple dashes found. Considering changing these into en-dashes or em-dashes to make your intention explicit."
+                     -Message "multiple dashes found. Considerchanging these into en-dashes or em-dashes to make your intention explicit."
     Test-FormatIssue -Pattern "(\w+[ ]+-[ ]+\w+|\w+[ ]+-[`"$q2])" `
                      -Message "hyphen surrounded by spaces (`"{0}`"). Did you intend to use an em dash?"
     Test-FormatIssue -Pattern "[$endash][`"$q2]" `
-                     -Message "en dash ending a quote. Considering changing this to an em dash."
+                     -Message "en dash ending a quote. Considerchanging this to an em dash."
     Test-FormatIssue -Pattern "([\w]+[$endash][\w]+)" `
                      -Message "en dash between words (`"{0}`"). Did you intend to use a hyphen or an em dash?"
     Test-FormatIssue -Pattern '([0-9]+[-][0-9]+)' `
                      -Message "hyphen between numeric range (`"{0}`"). Did you intend to use an en dash?"
     # print and e-books handle their own indenting
     Test-FormatIssue -Pattern '[\t]+' `
-                     -Message "tab found. Considering removing these."
+                     -Message "tab found. Considerremoving these."
     Test-FormatIssue -Pattern '[\r\n]+[ ]+(\w+)' -ValueGroup 1 -IndexGroup 1 `
-                     -Message "space indenting found (`" {0}`"). Considering removing these."
+                     -Message "space indenting found (`" {0}`"). Considerremoving these."
     # lines that look like scene separators, but won't be converted ('scene-separator-latex/html' only replace "***")
     Test-FormatIssue -Pattern '(?m)^[ ]*([*][ ]+[*]([ ]*[*])+|#([ ]*#)*|~{3,}|-{3,}|_{3,}|={3,})[ ]*(?=\r?$)' -ValueGroup 1 -IndexGroup 1 `
-                     -Message "`"{0}`" looks like a scene separator, but only `"***`" is converted into one. Considering changing this to `"***`"."
+                     -Message "`"{0}`" looks like a scene separator, but only `"***`" is converted into one. Considerchanging this to `"***`"."
     # invisible characters (the matched text isn't shown, since it can't be seen)
     foreach ($character in $invisibleCharacters.GetEnumerator())
         {
         Test-FormatIssue -Pattern ([regex]::Escape([string]$character.Key)) `
-                         -Message ("{0} (U+{1:X4}) found. This is usually pasted in from a word processor or web page; considering removing it (or replacing it with a regular space)." -f $character.Value, [int]$character.Key)
+                         -Message ("{0} (U+{1:X4}) found. This is usually pasted in from a word processor or web page; considerremoving it (or replacing it with a regular space)." -f $character.Value, [int]$character.Key)
         }
     # stray period or comma around ? or !
     Test-FormatIssue -Pattern '([.,][?!]|[?!][.,]|[,][.])' `
@@ -476,11 +476,11 @@ foreach ($file in $mdFiles)
             }
         }
     # check for items that should be italicized
-    foreach ($item in $itemsToEmphacize)
+    foreach ($item in $itemsToEmphasize)
         {
         # item is matched literally, the lookarounds act like word boundaries, but also work with items that start or end with punctuation
         Test-FormatIssue -Pattern "(?<![*\w])$([regex]::Escape($item))(?![*\w])" -CaseSensitive `
-                         -Message "'$item' should be enclosed in astericks to format as italic."
+                         -Message "'$item' should be enclosed in asterisks to format as italic."
         }
     }
 
@@ -522,7 +522,7 @@ If (($coverImage.Length -gt 0) -and ($buildEpub -ne "false"))
     $coverImageOption = @("--epub-cover-image=$bookDir/build/$($fileInfo.Name)")
     }
 
-# The "dummy.txt" is just a blank input file required by pandoc when we build are template subfiles
+# The "dummy.txt" is just a blank input file required by pandoc when we build our template subfiles
 "" | Out-File -Encoding utf8 -LiteralPath "$bookDir/build/dummy.txt"
 
 # whether the TOC should be included (this isn't read from metadata for epub, so we handle that here and pass it to the command line later)
@@ -574,7 +574,7 @@ Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$bo
 
 # Create the latex chapter heading file to insert into the print documents.
 # Note that we don't do this with epub because their chapter headings should be fairly standard looking.
-# Select the copyright page template (can be customized by "copyright-page" line in metadata file)
+# Select the chapter heading template (can be customized by "chapter-heading" line in metadata file)
 $chapterHeading = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^chapter-heading:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
 $chapterHeading = If ($chapterHeading.Length -gt 0) { $chapterHeading } Else { "default" }
 Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$bookDir/build/chapter-heading.tex" -t latex `

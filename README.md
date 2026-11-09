@@ -56,7 +56,6 @@ Refer [here](#project-structure) for the recommended file structure for your boo
 - [X] Formats start of chapter with drop cap and small caps
 - [X] Can convert `***` separators between scene breaks/POV changes with custom code (e.g., fleurons)
 - [X] Unindents starting paragraph of new scenes/POV changes
-- [X] Formats start of chapter with drop cap and smart caps
 - [X] Supports [CriticMarkup](https://github.com/CriticMarkup/CriticMarkup-toolkit) syntax
 
 #### Validation features
