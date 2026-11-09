@@ -167,7 +167,7 @@
         },
         "drop-cap-style": {
             "type": ["string", "null"],
-            "description": "Drop cap style for the first letter of each chapter (PDF only). scifi requires Orbitron-Bold.ttf and oldwest requires ChunkFive-Regular.ttf in Pandoc/fonts.",
+            "description": "Drop cap style for the first letter of each chapter (PDF only). oldwest requires ChunkFive-Regular.ttf in Pandoc/fonts.",
             "enum": ["default", "romance", "blockletter", "scifi", "oldwest", "none", null]
         },
         "scene-separator-latex": { "$ref": "#/definitions/text", "description": "LaTeX code to replace *** between scenes (PDF output)." },
