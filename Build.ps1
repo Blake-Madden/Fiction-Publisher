@@ -26,6 +26,8 @@ $outputMarker = "$outputDir/.fiction-publisher-output"
 # It is inside the output folder, so nothing in the book's own folder is overwritten.
 # If the build fails, it is left in place so that the generated files can be reviewed.
 $buildDir = "$outputDir/build"
+# pandoc's errors and warnings (e.g., from LaTeX) are saved here
+$buildLog = "$outputDir/$bookName Build Errors.log"
 
 $q1 = [char] 0x201C  # left smart double quote
 $q2 = [char] 0x201D  # right smart double quote
@@ -78,13 +80,21 @@ function Test-FormatIssue
         }
     }
 
-# Runs pandoc and stops the build if it fails
+# Runs pandoc and stops the build if it fails.
+# Any messages from pandoc are shown and also added to the build log (under a heading naming the file being built).
 function Invoke-Pandoc
     {
-    & pandoc @args
-    if ($LASTEXITCODE -ne 0)
+    $messages = @(& pandoc @args 2>&1 | ForEach-Object { $line = $_.ToString(); Write-Host $line; $line })
+    $exitCode = $LASTEXITCODE
+    if ($messages.Count)
         {
-        Write-Host -ForegroundColor Red "pandoc failed (exit code $LASTEXITCODE) while processing '$bookName'. Please review the output above."
+        $outputIndex = [Array]::IndexOf($args, '-o')
+        $target = If ($outputIndex -ge 0 -and $outputIndex + 1 -lt $args.Count) { Split-Path -Leaf $args[$outputIndex + 1] } Else { 'pandoc' }
+        @("== $target ==") + $messages + @('') | Out-File -Append -LiteralPath $buildLog
+        }
+    if ($exitCode -ne 0)
+        {
+        Write-Host -ForegroundColor Red "pandoc failed (exit code $exitCode) while processing '$bookName'. Please review 'Fiction-Publisher-Output/$bookName Build Errors.log'."
         Write-Host -ForegroundColor Red "The generated files that were being built are in '$buildDir'."
         Set-Location "$PSScriptRoot"
         exit 1
@@ -793,3 +803,9 @@ If ($buildPrint -ne "false")
 Set-Location "$PSScriptRoot"
 
 Remove-Item -LiteralPath $buildDir -Recurse -Force
+
+# the build succeeded, but pandoc may have reported warnings (e.g., characters missing from a font)
+if ([IO.File]::Exists($buildLog))
+    {
+    Write-Host -ForegroundColor Yellow "pandoc reported warnings while building. Please review 'Fiction-Publisher-Output/$bookName Build Errors.log'."
+    }
