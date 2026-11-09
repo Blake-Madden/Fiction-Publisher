@@ -68,6 +68,7 @@ Every occurrence of an issue is reported, along with its file and line number.
 - [X] Checks for a hyphen surrounded by spaces (e.g., "word - word"), which was probably intended to be an em dash
 - [X] Checks for correct ordering of closing quotation marks and commas/periods
 - [X] Checks for Unicode ellipsis (should be three periods, "...")
+- [X] Checks for repeated punctuation (e.g., "..", ".....", ",,", "!!", or "??")
 - [X] Checks for en dash at the end of a quote (should be an em dash)
 - [X] Checks for hyphen between numbers (should be an en dash)
 - [X] Checks for extra spaces

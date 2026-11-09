@@ -377,6 +377,9 @@ foreach ($file in $mdFiles)
     # ellipses checks
     Test-FormatIssue -Pattern "[$ellipsis]+" `
                      -Message "Unicode ellipses ($ellipsis) found. Considering changing these into three periods (...)."
+    # (four periods are allowed, as that is an ellipsis at the end of a sentence)
+    Test-FormatIssue -Pattern '((?<![.])[.]{2}(?![.])|[.]{5,}|[,]{2,}|[!]{2,}|[?]{2,})' `
+                     -Message "repeated punctuation (`"{0}`"). Ellipses should be three periods; otherwise, consider using a single punctuation mark."
     # hyphen/en dash/em dash checks
     Test-FormatIssue -Pattern '[-]{2,}' `
                      -Message "multiple dashes found. Considering changing these into en-dashes or em-dashes to make your intention explicit."
