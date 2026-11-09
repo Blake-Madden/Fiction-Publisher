@@ -69,6 +69,15 @@ else
              "year:" + [environment]::NewLine + `
              "# Enter the path to your cover image below." + [environment]::NewLine + `
              "# cover-image:" + [environment]::NewLine + `
+             "# Fonts for the print PDF. Each can be a TTF/OTF file in Pandoc/fonts or an installed font name." + [environment]::NewLine + `
+             "# The main font is Crimson Text unless main-font is specified." + [environment]::NewLine + `
+             "# The bold/italic lines are only needed when main-font is a font file." + [environment]::NewLine + `
+             "# main-font:" + [environment]::NewLine + `
+             "# main-font-bold:" + [environment]::NewLine + `
+             "# main-font-italic:" + [environment]::NewLine + `
+             "# main-font-bold-italic:" + [environment]::NewLine + `
+             "# title-font:" + [environment]::NewLine + `
+             "# author-font:" + [environment]::NewLine + `
              "publisher:" + [environment]::NewLine + `
              "rights: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Unported License." + [environment]::NewLine + `
              "paperback-isbn-13:" + [environment]::NewLine + `

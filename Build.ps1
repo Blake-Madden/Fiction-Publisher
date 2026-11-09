@@ -157,7 +157,7 @@ function Test-BookProject
     # fonts (only validated if specified as a font file; otherwise, it is a font name installed on the system)
     if ($buildPrint)
         {
-        foreach ($key in 'title-font', 'author-font')
+        foreach ($key in 'main-font', 'main-font-bold', 'main-font-italic', 'main-font-bold-italic', 'title-font', 'author-font')
             {
             $font = Get-ConfigValue $lines $key
             if ($font -and $font.Value -match '\.(ttf|otf)$' -and -not [IO.File]::Exists("$PSScriptRoot/Pandoc/fonts/$($font.Value)"))
@@ -725,4 +725,4 @@ If ($buildPrint -ne "false")
 Set-Location "$PSScriptRoot"
 
 Get-ChildItem -LiteralPath "$bookDir/build" -Recurse | Remove-Item -Recurse -Force
-Remove-Item -LiteralPath "$bookDir/build" -Force
+Remove-Item -LiteralPath "$bookDir/build" -Recurse -Force

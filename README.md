@@ -136,6 +136,9 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **title-latex**: Latex formatted title (will override "title" value on the title and half-title pages of PDF output)
   - A `raggedrighttitle` environment is available for multi-line titles to make them ragged right. It takes a parameter specifying the width of the left and right margins.
 - **title-page-top-margin**: How much space should be above the title on the title page (default is 4cm). This is useful if you are needing to add illustrator information to the title page and need a smaller top margin to make it all fit on one page
+- **main-font**: The main body font for PDF output (can be a TTF/OTF filename in the "Pandoc/fonts" folder or font name). Default is Crimson Text
+- **main-font-bold**, **main-font-italic**, **main-font-bold-italic**: The bold, italic, and bold italic variants of **main-font** (TTF/OTF filenames in the "Pandoc/fonts" folder or font names).
+  These are needed when **main-font** is a font file; an installed font name will find its variants automatically
 - **title-font** : The font for the book title on the title and half-title pages (can be a TTF/OTF filename in the "Pandoc/fonts" folder or font name)
 - **title-font-pointsize**: Font size of title in PDF output (default is 50)
 - **subtitle**: Optional subtitle

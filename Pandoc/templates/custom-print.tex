@@ -254,15 +254,27 @@ $if(drop-cap-style)$
 
 $endif$
 
-% These commands use free TeX fonts from CTAN that are nearly identical to Palatino
-\usepackage{libertinus}
+%% Set Main Fonts (Crimson Text, unless main-font is specified)
+$if(main-font)$
+\def\primaryfontfile{$main-font$}
+\def\primaryfontfeatures{$if(main-font-bold)$BoldFont = $main-font-bold$,$endif$$if(main-font-italic)$ItalicFont = $main-font-italic$,$endif$$if(main-font-bold-italic)$BoldItalicFont = $main-font-bold-italic$$endif$}
+\StrDel{$main-font$}{.ttf}[\primaryfontname]
+\StrDel{\primaryfontname}{.otf}[\primaryfontname]
+$else$
+\def\primaryfontfile{CrimsonText-Regular.ttf}
+\def\primaryfontfeatures{BoldFont = CrimsonText-Bold.ttf, ItalicFont = CrimsonText-Italic.ttf, BoldItalicFont = CrimsonText-BoldItalic.ttf}
+\def\primaryfontname{Crimson Text}
+$endif$
 
-%% Set Main Fonts
-\setmainfont{Libertinus Serif}
-\newfontfamily\sansfont{Libertinus Sans}
-\newfontfamily\primaryfont{Libertinus Serif}
-\def\primaryfontname{Libertinus}
-\newfontfamily\chapterheadingfont{Libertinus Serif}
+% Runs a fontspec command (e.g., \setmainfont) with the primary font and its bold/italic variants
+\newcommand\withprimaryfont[1]{%
+  \edef\primaryfontcommand{\unexpanded{#1}{\primaryfontfile}[\primaryfontfeatures]}%
+  \primaryfontcommand}
+
+\withprimaryfont{\setmainfont}
+\withprimaryfont{\newfontfamily\sansfont}
+\withprimaryfont{\newfontfamily\primaryfont}
+\withprimaryfont{\newfontfamily\chapterheadingfont}
 
 $if(author-font)$
   \newfontfamily\authorfont{$author-font$}
@@ -271,7 +283,7 @@ $endif$
 $if(title-font)$
   \newfontfamily\titlefont{$title-font$}
 $else$
-  \newfontfamily\titlefont{Libertinus Serif}
+  \withprimaryfont{\newfontfamily\titlefont}
 $endif$
 
 %% Make our quotes curly
