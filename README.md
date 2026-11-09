@@ -113,6 +113,7 @@ The finished files are written to a "Fiction-Publisher-Output" folder inside you
 
 > **Note:** Each build deletes and recreates the "Fiction-Publisher-Output" folder, so don't keep anything else in it.
 (If a folder with that name already exists but wasn't created by a build, the build stops rather than deleting it.)
+If a build fails, its "build" subfolder is kept for troubleshooting. It contains the generated LaTeX pages and the processed markdown.
 
 Before building, the script checks that **Pandoc** and **XeLaTeX** are available and that the book project is valid.
 

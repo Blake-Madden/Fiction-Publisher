@@ -22,6 +22,10 @@ $bookName = Split-Path -Leaf $bookDir      # used to name the output files
 $outputDir = "$bookDir/Fiction-Publisher-Output"
 # marks the output folder as created by this script (so that it is safe to delete on the next build)
 $outputMarker = "$outputDir/.fiction-publisher-output"
+# Working folder for processing the source files.
+# It is inside the output folder, so nothing in the book's own folder is overwritten.
+# If the build fails, it is left in place so that the generated files can be reviewed.
+$buildDir = "$outputDir/build"
 
 $q1 = [char] 0x201C  # left smart double quote
 $q2 = [char] 0x201D  # right smart double quote
@@ -81,6 +85,7 @@ function Invoke-Pandoc
     if ($LASTEXITCODE -ne 0)
         {
         Write-Host -ForegroundColor Red "pandoc failed (exit code $LASTEXITCODE) while processing '$bookName'. Please review the output above."
+        Write-Host -ForegroundColor Red "The generated files that were being built are in '$buildDir'."
         Set-Location "$PSScriptRoot"
         exit 1
         }
@@ -266,14 +271,13 @@ Write-Host -BackgroundColor White -ForegroundColor Black "Processing '$bookName'
 
 # copy source files into build folder and set that to the current working directory
 Write-Output "Copying files..."
-[void] [IO.Directory]::CreateDirectory("$bookDir/build")
-Get-ChildItem -LiteralPath "$bookDir/build" -Recurse | Remove-Item -Recurse -Force
-Copy-Item -LiteralPath "$bookDir/outline" -Destination "$bookDir/build/" -Recurse -Force
-Copy-Item -Path "$PSScriptRoot/Pandoc/fonts/*.ttf" -Destination "$bookDir/build/" -Recurse -Force
-Copy-Item -Path "$PSScriptRoot/Pandoc/fonts/*.otf" -Destination "$bookDir/build/" -Recurse -Force
+[void] [IO.Directory]::CreateDirectory($buildDir)
+Copy-Item -LiteralPath "$bookDir/outline" -Destination "$buildDir/" -Recurse -Force
+Copy-Item -Path "$PSScriptRoot/Pandoc/fonts/*.ttf" -Destination "$buildDir/" -Recurse -Force
+Copy-Item -Path "$PSScriptRoot/Pandoc/fonts/*.otf" -Destination "$buildDir/" -Recurse -Force
 
 # get all the chapters and scenes (these should all be prefixed with numbers to control their ordering)
-$mdFiles = Get-MarkdownFiles "$bookDir/build/outline"
+$mdFiles = Get-MarkdownFiles "$buildDir/outline"
 
 # don't include files with "compile: 0" in the build
 foreach ($file in $mdFiles)
@@ -285,7 +289,7 @@ foreach ($file in $mdFiles)
         Remove-Item -LiteralPath $file
         }
     }
-$mdFiles = Get-MarkdownFiles "$bookDir/build/outline"
+$mdFiles = Get-MarkdownFiles "$buildDir/outline"
 
 # Pre-process files
 ###############################################################
@@ -345,7 +349,7 @@ foreach ($file in $mdFiles)
     {
     # the pre-processed copy in the build folder is what gets built, but warnings are reported
     # against the author's original file (so that line numbers are meaningful)
-    $relativePath = [IO.Path]::GetRelativePath("$bookDir/build/outline", $file)
+    $relativePath = [IO.Path]::GetRelativePath("$buildDir/outline", $file)
     $sourceFile = Join-Path "$bookDir/outline" $relativePath
     $displayPath = $sourceFile -replace '\\', '/'
 
@@ -495,8 +499,8 @@ if ($WarningList.Count)
     }
 
 # source markdown files are cleaned up and reviewed, now copy to different folders to pre-process for the different output formats
-Copy-Item -LiteralPath "$bookDir/build/outline/" -Destination "$bookDir/build/epub/" -Recurse -Force
-$epubMdFiles = Get-MarkdownFiles "$bookDir/build/epub"
+Copy-Item -LiteralPath "$buildDir/outline/" -Destination "$buildDir/epub/" -Recurse -Force
+$epubMdFiles = Get-MarkdownFiles "$buildDir/epub"
 
 # Build options
 $buildDraft = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^build-draft:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
@@ -518,12 +522,12 @@ $coverImageOption = @()
 If (($coverImage.Length -gt 0) -and ($buildEpub -ne "false"))
     {
     $fileInfo = New-Object System.IO.FileInfo("$bookDir/$coverImage")
-    Copy-Item -LiteralPath "$bookDir/$coverImage" -Destination "$bookDir/build/$($fileInfo.Name)"
-    $coverImageOption = @("--epub-cover-image=$bookDir/build/$($fileInfo.Name)")
+    Copy-Item -LiteralPath "$bookDir/$coverImage" -Destination "$buildDir/$($fileInfo.Name)"
+    $coverImageOption = @("--epub-cover-image=$buildDir/$($fileInfo.Name)")
     }
 
 # The "dummy.txt" is just a blank input file required by pandoc when we build our template subfiles
-"" | Out-File -Encoding utf8 -LiteralPath "$bookDir/build/dummy.txt"
+"" | Out-File -Encoding utf8 -LiteralPath "$buildDir/dummy.txt"
 
 # whether the TOC should be included (this isn't read from metadata for epub, so we handle that here and pass it to the command line later)
 $includeToc = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^toc:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
@@ -531,20 +535,20 @@ $includeToc = If ($includeToc -eq "true") { @("--toc") } Else { @() }
 
 # whether the series page should be included (based on whether a "book" value is mentioned in the metadata)
 $includeSeriesPageEpub = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^series-book[1-5]:'
-$includeSeriesPageEpub = If ($includeSeriesPageEpub.Matches.Count -gt 0) { @("$bookDir/build/seriespage.md") } Else { @() }
+$includeSeriesPageEpub = If ($includeSeriesPageEpub.Matches.Count -gt 0) { @("$buildDir/seriespage.md") } Else { @() }
 
 $includeSeriesPageAmazonEpub = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^series-book[1-5]:'
-$includeSeriesPageAmazonEpub = If ($includeSeriesPageAmazonEpub.Matches.Count -gt 0) { @("$bookDir/build/amazon-seriespage.md") } Else { @() }
+$includeSeriesPageAmazonEpub = If ($includeSeriesPageAmazonEpub.Matches.Count -gt 0) { @("$buildDir/amazon-seriespage.md") } Else { @() }
 
 # build epub and print series pages (although they may not be included)
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$bookDir/build/seriespage.md" `
-       --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.md" "$bookDir/build/dummy.txt"
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/seriespage.md" `
+       --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.md" "$buildDir/dummy.txt"
 
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$bookDir/build/amazon-seriespage.md" `
-       --template="$PSScriptRoot/Pandoc/templates/seriespage/amazon-seriespage.md" "$bookDir/build/dummy.txt"
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/amazon-seriespage.md" `
+       --template="$PSScriptRoot/Pandoc/templates/seriespage/amazon-seriespage.md" "$buildDir/dummy.txt"
 
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$bookDir/build/seriespage.tex" -t latex `
-       --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.tex" "$bookDir/build/dummy.txt"
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/seriespage.tex" -t latex `
+       --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.tex" "$buildDir/dummy.txt"
 
 # Select the copyright page template (can be customized by "copyright-page" line in metadata file)
 $copyrightPage = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^copyright-page:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
@@ -552,43 +556,43 @@ $copyrightPage = If ($copyrightPage.Length -gt 0) { $copyrightPage } Else { "cre
 
 # Create the latex copyright file to insert into the print documents.
 # Note that we are simply using the copyright template and expanding the variables from our config.yml into it.
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$bookDir/build/copyright.tex" -t latex `
-       --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.tex" "$bookDir/build/dummy.txt"
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/copyright.tex" -t latex `
+       --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.tex" "$buildDir/dummy.txt"
 
 # Create the copyright file to insert into the epub documents.
 # Also, note that we are simply using the copyright template and expanding the variables from our config.yml into it.
-Invoke-Pandoc --metadata-file "$bookDir/config.yml" -o "$bookDir/build/copyright.md" `
+Invoke-Pandoc --metadata-file "$bookDir/config.yml" -o "$buildDir/copyright.md" `
        --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.md" `
-       "$bookDir/build/dummy.txt"
-Copy-Item -Path "$PSScriptRoot/Pandoc/templates/copyright/ccbynasa.png" -Destination "$bookDir/build/ccbynasa.png"
+       "$buildDir/dummy.txt"
+Copy-Item -Path "$PSScriptRoot/Pandoc/templates/copyright/ccbynasa.png" -Destination "$buildDir/ccbynasa.png"
 
 # Create the latex half titlepage
 # half titlepage doesn't really make sense because e-readers force the main title page to the front
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$bookDir/build/half-titlepage.tex" -t latex `
-       --template="$PSScriptRoot/Pandoc/templates/half-titlepage/half-titlepage.tex" "$bookDir/build/dummy.txt"
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/half-titlepage.tex" -t latex `
+       --template="$PSScriptRoot/Pandoc/templates/half-titlepage/half-titlepage.tex" "$buildDir/dummy.txt"
 
 # Create the latex colophon page
 # ePub doesn't use typesetting, so not built for those
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$bookDir/build/colophon.tex" -t latex `
-       --template="$PSScriptRoot/Pandoc/templates/colophon/default.tex" "$bookDir/build/dummy.txt"
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/colophon.tex" -t latex `
+       --template="$PSScriptRoot/Pandoc/templates/colophon/default.tex" "$buildDir/dummy.txt"
 
 # Create the latex chapter heading file to insert into the print documents.
 # Note that we don't do this with epub because their chapter headings should be fairly standard looking.
 # Select the chapter heading template (can be customized by "chapter-heading" line in metadata file)
 $chapterHeading = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^chapter-heading:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
 $chapterHeading = If ($chapterHeading.Length -gt 0) { $chapterHeading } Else { "default" }
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$bookDir/build/chapter-heading.tex" -t latex `
-       --template="$PSScriptRoot/Pandoc/templates/chapter-heading/$chapterHeading.tex" "$bookDir/build/dummy.txt"
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/chapter-heading.tex" -t latex `
+       --template="$PSScriptRoot/Pandoc/templates/chapter-heading/$chapterHeading.tex" "$buildDir/dummy.txt"
 
 # Create the author biography file to insert into the print
 # TODO: need to be able to exclude this from hardcover editions via metadata
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$bookDir/build/bio.tex" -t latex `
-       --template="$PSScriptRoot/Pandoc/templates/biography/bio.tex" "$bookDir/build/dummy.txt"
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/bio.tex" -t latex `
+       --template="$PSScriptRoot/Pandoc/templates/biography/bio.tex" "$buildDir/dummy.txt"
 
 # Create the author biography file to insert into the epub documents
-Invoke-Pandoc --metadata-file "$bookDir/config.yml" -o "$bookDir/build/bio.md" `
+Invoke-Pandoc --metadata-file "$bookDir/config.yml" -o "$buildDir/bio.md" `
        --template="$PSScriptRoot/Pandoc/templates/biography/bio.md" `
-       "$bookDir/build/dummy.txt"
+       "$buildDir/dummy.txt"
 
 # format for print (i.e., LaTeX) conversion
 If ($buildPrint -ne "false")
@@ -687,7 +691,7 @@ If ($buildEpub -ne "false")
 
 # Build the books
 ###############################################################
-Set-Location -LiteralPath "$bookDir/build/"
+Set-Location -LiteralPath "$buildDir/"
 
 # epub
 If ($buildEpub -ne "false")
@@ -698,9 +702,9 @@ If ($buildEpub -ne "false")
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName.epub" `
-           "$bookDir/build/copyright.md" $includeSeriesPageEpub `
+           "$buildDir/copyright.md" $includeSeriesPageEpub `
            $epubMdFiles `
-           "$bookDir/build/bio.md"
+           "$buildDir/bio.md"
     }
 
 # Amazon (KDP) epub; same as the standard epub, except for the Amazon-specific series page
@@ -712,9 +716,9 @@ If ($buildEpub -ne "false" -and $buildAmazonEpub -ne "false")
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName-amazon.epub" `
-           "$bookDir/build/copyright.md" $includeSeriesPageAmazonEpub `
+           "$buildDir/copyright.md" $includeSeriesPageAmazonEpub `
            $epubMdFiles `
-           "$bookDir/build/bio.md"
+           "$buildDir/bio.md"
     }
 
 # Optional epub validation
@@ -788,5 +792,4 @@ If ($buildPrint -ne "false")
 ###############################################################
 Set-Location "$PSScriptRoot"
 
-Get-ChildItem -LiteralPath "$bookDir/build" -Recurse | Remove-Item -Recurse -Force
-Remove-Item -LiteralPath "$bookDir/build" -Recurse -Force
+Remove-Item -LiteralPath $buildDir -Recurse -Force

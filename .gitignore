@@ -4,7 +4,6 @@
 .*~
 .vs
 Books/
-Example/build/
 Example/Fiction-Publisher-Output/
 Example/.vscode/
 Pandoc/fonts/*
