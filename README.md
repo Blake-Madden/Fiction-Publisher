@@ -114,12 +114,12 @@ Configure it first (this adds its VS Codium/VS Code build tasks), then build it 
     pwsh -File Build.ps1 -BookFolder Example
 
 ### Using VS Codium / VS Code
-Open your book's folder to write. The tasks that "Config.ps1" added are available from `Ctrl+Shift+P` (`Cmd+Shift+P` on macOS) > "Tasks: Run Task":
 
-- **Build Book** (also `Ctrl+Shift+B`, or `Cmd+Shift+B` on macOS): runs "Build.ps1" on the book and shows its output in the Terminal panel.
-  Formatting warnings for your source files are also listed in the Problems panel (with file and line number), which opens automatically when there are any.
+- Run "Config.ps1" on your book's folder like normal.
+- Open your book's folder in VS Codium/VS Code.
+- Run the **Build Book** task (`Ctrl+Shift+B`, or `Cmd+Shift+B` on macOS): this will build the output and display any errors or formatting warnings.
+  Formatting warnings for your source files are also listed in the Problems panel (with file and line number).
   Clicking a warning opens the file at that line.
-- **Open Format Warnings Log**: opens the book's "Format Warnings.log" from its "Fiction-Publisher-Output" folder (requires the `codium` or `code` command to be on your PATH).
 
 These tasks refer to "Build.ps1" by its full path, so if you move or update the "Fiction-Publisher" folder, run "Config.ps1" on the book again to update them.
 
