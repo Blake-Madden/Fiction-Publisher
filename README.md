@@ -239,7 +239,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only). Styles include `Sonny`, `Lenny`, `Glenn`, `Conny`, `Rejne`, `Bjarne`, and `Bjornstrup`
 - **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive`, `scifi`). Note that using **fancy-chapter** will override this
 
-- **drop-cap-style**: The drop cap style to use for first letter at the start of each chapter (`default`, `romance`, `blockletter`, `scifi`, `oldwest` (requires "ChunkFive-Regular.ttf"), `none`)
+- **drop-cap-style**: The drop cap style to use for first letter at the start of each chapter (`default`, `romance`, `blockletter`, `scifi`, `oldwest`, `none`)
 
 - **scene-separator-latex**: LaTeX code to replace `***` sequences between scenes (used for PDF output)
 - **scene-separator-html**: HTML code to replace `***` sequences between scenes (used for ePub output)
@@ -299,9 +299,10 @@ This folder contains the custom copyright templates. You can select which templa
 #### Pandoc/fonts
 This folder contains any font files (TTF, OTF) you would like to use in your PDF output.
 
-The following fonts are included, both licensed under the [SIL Open Font License](https://openfontlicense.org) (see the `*-OFL.txt` files):
+The following fonts are included, all licensed under the [SIL Open Font License](https://openfontlicense.org) (see the `*-OFL.txt` files):
 - [Crimson Text](https://github.com/googlefonts/Crimson): the default main font
 - [Orbitron](https://github.com/theleagueof/orbitron): used by the `scifi` drop cap and chapter heading styles
+- [Chunk Five](https://github.com/theleagueof/chunk): used by the `oldwest` drop cap style
 
 ## Requirements
 Fiction Publisher needs the following tools to be installed in order to work:

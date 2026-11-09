@@ -10,6 +10,7 @@ Example/.vscode/
 Pandoc/fonts/*
 !Pandoc/fonts/CrimsonText-*.ttf
 !Pandoc/fonts/Orbitron-*.ttf
+!Pandoc/fonts/ChunkFive-*.ttf
 !Pandoc/fonts/*-OFL.txt
 .vscode/*
 !.vscode/tasks.json
