@@ -403,6 +403,9 @@ foreach ($file in $mdFiles)
                      -Message "tab found. Considering removing these."
     Test-FormatIssue -Pattern '[\r\n]+[ ]+(\w+)' -ValueGroup 1 -IndexGroup 1 `
                      -Message "space indenting found (`" {0}`"). Considering removing these."
+    # lines that look like scene separators, but won't be converted ('scene-separator-latex/html' only replace "***")
+    Test-FormatIssue -Pattern '(?m)^[ ]*([*][ ]+[*]([ ]*[*])+|#([ ]*#)*|~{3,}|-{3,}|_{3,}|={3,})[ ]*(?=\r?$)' -ValueGroup 1 -IndexGroup 1 `
+                     -Message "`"{0}`" looks like a scene separator, but only `"***`" is converted into one. Considering changing this to `"***`"."
     # stray period or comma around ? or !
     Test-FormatIssue -Pattern '([.,][?!]|[?!][.,]|[,][.])' `
                      -Message "stray period or comma found (`"{0}`")."

@@ -22,3 +22,7 @@ Somewhere below - far below - a dog began to howl.
 “Then who is it?” He asked.
 
 Mabel pulled her shawl tighter and whispered a *prayer.
+
+* * *
+
+By morning, the knocking had stopped.

@@ -86,6 +86,7 @@ Every occurrence of an issue is reported, along with its file and line number.
 - [X] Checks for dialogue followed by a speech tag that is missing punctuation before the closing quote (e.g., “Hello” she said)
 - [X] Checks for dialogue tags that start with a capitalized pronoun (e.g., “Hello,” She said)
 - [X] Checks for unbalanced quotes (quotes that continue into the next paragraph are allowed)
+- [X] Checks for lines that look like scene separators (e.g., `* * *`, `#`, `~~~`, or `---`), but won't be converted because they aren't `***`
 
 ## Building your Books
 
