@@ -20,3 +20,5 @@ Somewhere below - far below - a dog began to howl.
 “Don’t open it” Mabel whispered.
 
 “Then who is it?” He asked.
+
+Mabel pulled her shawl tighter and whispered a *prayer.

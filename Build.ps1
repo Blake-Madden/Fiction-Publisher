@@ -434,6 +434,27 @@ foreach ($file in $mdFiles)
             $WarningList.Add([pscustomobject]@{ File = $displayPath; Line = 1 + $lineOffset + $i; Message = "unbalanced quotes: $problem" })
             }
         $previousLeftOpen = ($opening -gt $closing)
+
+        # unbalanced italics/bold markers (emphasis can't continue into the next paragraph),
+        # skipping scene separators, list bullets, escaped asterisks, and asterisks surrounded by spaces (these are literal)
+        if ($paragraph -notmatch '^[* ]+$')
+            {
+            $markers = $paragraph -replace '^\*[ ]+', '' -replace '\\\*', '' -replace '(?<=\s)\*(?=\s)', ''
+            $italicCount = 0
+            $boldCount = 0
+            foreach ($run in [regex]::Matches($markers, '\*+'))
+                {
+                # "*" is italic, "**" is bold, and "***" is both
+                if ($run.Length -in 1, 3)
+                    { $italicCount++ }
+                if ($run.Length -in 2, 3)
+                    { $boldCount++ }
+                }
+            if ($italicCount % 2 -or $boldCount % 2)
+                {
+                $WarningList.Add([pscustomobject]@{ File = $displayPath; Line = 1 + $lineOffset + $i; Message = "unbalanced italics/bold markers (*): the text won't be formatted as intended, and a stray asterisk may appear in the output." })
+                }
+            }
         }
     # check for items that should be italicized
     foreach ($item in $itemsToEmphacize)
