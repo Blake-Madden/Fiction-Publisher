@@ -108,8 +108,9 @@ Before building, the script checks that **Pandoc** and **XeLaTeX** are available
 
 ### Try the Example
 The "Example" folder is a short sample book with deliberate formatting mistakes.
-Build it to see the warnings that the script reports:
+Configure it first (this adds its VS Codium/VS Code build tasks), then build it to see the warnings that the script reports:
 
+    pwsh -File Config.ps1 -BookFolder Example
     pwsh -File Build.ps1 -BookFolder Example
 
 ### Using VS Codium / VS Code
