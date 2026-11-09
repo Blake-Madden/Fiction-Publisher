@@ -48,8 +48,8 @@ function Get-MarkdownFiles
     return $files
     }
 
-# Records a formatting issue if '$Pattern' is found in the file being reviewed ($content).
-# Uses the enclosing script's $content, $lineOffset, $displayPath and $WarningList.
+# Records a formatting issue for each match of '$Pattern' in the file being reviewed ($content).
+# Uses the enclosing script's $content, $lineStarts, $lineOffset, $displayPath and $WarningList.
 # '{0}' in the message is replaced with the matched text.
 function Test-FormatIssue
     {
@@ -62,13 +62,16 @@ function Test-FormatIssue
         )
 
     $options = If ($CaseSensitive) { [Text.RegularExpressions.RegexOptions]::None } Else { [Text.RegularExpressions.RegexOptions]::IgnoreCase }
-    $match = [regex]::Match($content, $Pattern, $options)
-    If (-not $match.Success)
-        { return }
-
-    $lineNumber = 1 + $lineOffset + [regex]::Matches($content.Substring(0, $match.Groups[$IndexGroup].Index), '\r\n|\r|\n').Count
-    $matchedText = $match.Groups[$ValueGroup].Value -replace '\r\n|\r|\n', '\n'
-    $WarningList.Add([pscustomobject]@{ File = $displayPath; Line = $lineNumber; Message = ($Message -f $matchedText) })
+    foreach ($match in [regex]::Matches($content, $Pattern, $options))
+        {
+        # find the line that the match starts on (a miss returns the complement of the next line's index)
+        $lineIndex = [Array]::BinarySearch($lineStarts, $match.Groups[$IndexGroup].Index)
+        If ($lineIndex -lt 0)
+            { $lineIndex = -$lineIndex - 2 }
+        $lineNumber = 1 + $lineOffset + $lineIndex
+        $matchedText = $match.Groups[$ValueGroup].Value -replace '\r\n|\r|\n', '\n'
+        $WarningList.Add([pscustomobject]@{ File = $displayPath; Line = $lineNumber; Message = ($Message -f $matchedText) })
+        }
     }
 
 # Runs pandoc and stops the build if it fails
@@ -339,6 +342,8 @@ foreach ($file in $mdFiles)
     $yamlHeader = [regex]::Match($sourceText, $yamlHeaderPattern)
     $content = $sourceText.Substring($yamlHeader.Length)
     $lineOffset = [regex]::Matches($yamlHeader.Value, '\r\n|\r|\n').Count
+    # where each line starts in $content (used to look up the line number of an issue)
+    $lineStarts = [int[]](@(0) + @([regex]::Matches($content, '\r\n|\r|\n') | ForEach-Object { $_.Index + $_.Length }))
 
     # dialogue issues
     Test-FormatIssue -Pattern "([\w]+[.][`"$q2] (\w+[.] )?([\w-]+) (said|whispered|replied|answered|muttered|murmured|mumbled|shouted|yelled|screamed|cried|called|exclaimed|added|continued|explained|stated|declared|announced|admitted|agreed|offered|suggested|insisted|warned|snapped|growled|grumbled|sighed|laughed|chuckled|sneered|stammered|stuttered|hissed)\b)" `

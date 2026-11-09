@@ -60,6 +60,8 @@ Refer [here](#project-structure) for the recommended file structure for your boo
 - [X] Supports [CriticMarkup](https://github.com/CriticMarkup/CriticMarkup-toolkit) syntax
 
 #### Validation features
+Every occurrence of an issue is reported, along with its file and line number.
+
 - [X] Checks for paragraphs not separated by blank lines (this is recommended over ending lines with double spaces because it makes the intention clearer and avoids possible errors)
 - [X] Checks for straight quotes (smart quotes should be included in source markdown to avoid ambiguity)
 - [X] Checks for `--` (en dashes and em dashes should be included in source markdown to avoid ambiguity)
