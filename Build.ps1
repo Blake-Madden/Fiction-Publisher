@@ -329,6 +329,8 @@ if ($itemsToEmphacize.Length -gt 0)
     {
     $itemsToEmphacize = $itemsToEmphacize.Split(';') | % { $_.Trim() } | Where-Object { $_.Length -gt 0 }
     }
+# verbs used in dialogue tags (used to find dialogue punctuation issues; "asked" is checked separately for missing question marks)
+$speechVerbs = 'said|whispered|replied|answered|muttered|murmured|mumbled|shouted|yelled|screamed|cried|called|exclaimed|added|continued|explained|stated|declared|announced|admitted|agreed|offered|suggested|insisted|warned|snapped|growled|grumbled|sighed|laughed|chuckled|sneered|stammered|stuttered|hissed'
 foreach ($file in $mdFiles)
     {
     # the pre-processed copy in the build folder is what gets built, but warnings are reported
@@ -346,8 +348,10 @@ foreach ($file in $mdFiles)
     $lineStarts = [int[]](@(0) + @([regex]::Matches($content, '\r\n|\r|\n') | ForEach-Object { $_.Index + $_.Length }))
 
     # dialogue issues
-    Test-FormatIssue -Pattern "([\w]+[.][`"$q2] (\w+[.] )?([\w-]+) (said|whispered|replied|answered|muttered|murmured|mumbled|shouted|yelled|screamed|cried|called|exclaimed|added|continued|explained|stated|declared|announced|admitted|agreed|offered|suggested|insisted|warned|snapped|growled|grumbled|sighed|laughed|chuckled|sneered|stammered|stuttered|hissed)\b)" `
+    Test-FormatIssue -Pattern "([\w]+[.][`"$q2] (\w+[.] )?([\w-]+) ($speechVerbs)\b)" `
                      -Message "period used at end of dialogue (`"{0}`"). Did you intend to use a comma?"
+    Test-FormatIssue -Pattern "(\w+[`"$q2] (\w+[.] )?[\w-]+ ($speechVerbs)\b)" `
+                     -Message "dialogue followed by a speech tag has no punctuation before the closing quote (`"{0}`"). Did you intend to use a comma?"
     # italics issues
     Test-FormatIssue -Pattern "([*][\w ]+['$sq2]s[*])" `
                      -Message "possesive suffix being italicized (`"{0}`"). Apostrophe and es should not be italicized with the rest of the word."

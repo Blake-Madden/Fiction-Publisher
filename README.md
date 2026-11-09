@@ -82,6 +82,7 @@ Every occurrence of an issue is reported, along with its file and line number.
 - [X] Checks for stray periods or commas around '?' or '!'
 - [X] Checks for dialogue that probably should end with a '?'
 - [X] Checks for dialogue that probably should end with a ','
+- [X] Checks for dialogue followed by a speech tag that is missing punctuation before the closing quote (e.g., “Hello” she said)
 - [X] Checks for unbalanced quotes (quotes that continue into the next paragraph are allowed)
 
 ## Building your Books
