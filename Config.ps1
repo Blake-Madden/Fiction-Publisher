@@ -67,7 +67,8 @@ else
              "lang: en-US" + [environment]::NewLine + `
              "date:" + [environment]::NewLine + `
              "year:" + [environment]::NewLine + `
-             "cover-image:" + [environment]::NewLine + `
+             "# Enter the path to your cover image below." + [environment]::NewLine + `
+             "# cover-image:" + [environment]::NewLine + `
              "publisher:" + [environment]::NewLine + `
              "rights: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Unported License." + [environment]::NewLine + `
              "paperback-isbn-13:" + [environment]::NewLine + `
