@@ -25,4 +25,4 @@ Mabel pulled her shawl tighter and whispered a *prayer.
 
 * * *
 
-By morning, the knocking had stopped.
+By morning, the knocking​ had stopped.

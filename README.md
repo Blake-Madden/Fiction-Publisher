@@ -76,6 +76,7 @@ Every occurrence of an issue is reported, along with its file and line number.
 - [X] Checks for missing spaces after punctuation (e.g., "wait,then" or "the door.She")
 - [X] Checks for indenting spaces (these should not be hardcoded in source markdown files)
 - [X] Checks for tabs
+- [X] Checks for invisible characters (e.g., zero-width spaces, soft hyphens, and non-breaking spaces) that are often pasted in from word processors or web pages
 - [X] Checks for a line that ends with space(s), followed by single newline (indicates ambiguous intention as to whether this should be a new paragraph [a full blank line is recommended here] or the same paragraph [the newline should be removed])
 - [X] Checks for items that should be italicized (items are user-defined in metadata)
 - [X] Checks for possessive suffixes being italicized

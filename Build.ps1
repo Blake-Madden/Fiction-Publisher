@@ -329,6 +329,16 @@ if ($itemsToEmphacize.Length -gt 0)
     {
     $itemsToEmphacize = $itemsToEmphacize.Split(';') | % { $_.Trim() } | Where-Object { $_.Length -gt 0 }
     }
+# invisible characters that are often pasted in from word processors or web pages
+$invisibleCharacters = [ordered]@{
+    [char] 0x200B = 'zero-width space'
+    [char] 0x200C = 'zero-width non-joiner'
+    [char] 0x200D = 'zero-width joiner'
+    [char] 0x2060 = 'word joiner'
+    [char] 0xFEFF = 'byte order mark (zero-width no-break space)'
+    [char] 0x00AD = 'soft hyphen'
+    [char] 0x00A0 = 'non-breaking space'
+    }
 # verbs used in dialogue tags (used to find dialogue punctuation issues; "asked" is checked separately for missing question marks)
 $speechVerbs = 'said|whispered|replied|answered|muttered|murmured|mumbled|shouted|yelled|screamed|cried|called|exclaimed|added|continued|explained|stated|declared|announced|admitted|agreed|offered|suggested|insisted|warned|snapped|growled|grumbled|sighed|laughed|chuckled|sneered|stammered|stuttered|hissed'
 foreach ($file in $mdFiles)
@@ -406,6 +416,12 @@ foreach ($file in $mdFiles)
     # lines that look like scene separators, but won't be converted ('scene-separator-latex/html' only replace "***")
     Test-FormatIssue -Pattern '(?m)^[ ]*([*][ ]+[*]([ ]*[*])+|#([ ]*#)*|~{3,}|-{3,}|_{3,}|={3,})[ ]*(?=\r?$)' -ValueGroup 1 -IndexGroup 1 `
                      -Message "`"{0}`" looks like a scene separator, but only `"***`" is converted into one. Considering changing this to `"***`"."
+    # invisible characters (the matched text isn't shown, since it can't be seen)
+    foreach ($character in $invisibleCharacters.GetEnumerator())
+        {
+        Test-FormatIssue -Pattern ([regex]::Escape([string]$character.Key)) `
+                         -Message ("{0} (U+{1:X4}) found. This is usually pasted in from a word processor or web page; considering removing it (or replacing it with a regular space)." -f $character.Value, [int]$character.Key)
+        }
     # stray period or comma around ? or !
     Test-FormatIssue -Pattern '([.,][?!]|[?!][.,]|[,][.])' `
                      -Message "stray period or comma found (`"{0}`")."
