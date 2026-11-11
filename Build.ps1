@@ -224,6 +224,14 @@ function Test-BookProject
         {
         $issues.Add([pscustomobject]@{ File = $configPath; Line = If ($chapterHeading) { $chapterHeading.Line } Else { 1 }; Severity = 'error'; Message = "chapter-heading template '$chapterHeadingName.tex' not found in 'Pandoc/templates/chapter-heading'." })
         }
+    else
+        {
+        $chapterHeadingFonts = @{ 'romance-cursive' = 'Miama.otf'; scifi = 'Orbitron-Bold.ttf' }
+        if ($buildPrint -and $chapterHeadingFonts.ContainsKey($chapterHeadingName) -and -not [IO.File]::Exists("$PSScriptRoot/Pandoc/fonts/$($chapterHeadingFonts[$chapterHeadingName])"))
+            {
+            $issues.Add([pscustomobject]@{ File = $configPath; Line = $chapterHeading.Line; Severity = 'error'; Message = "chapter-heading '$chapterHeadingName' requires '$($chapterHeadingFonts[$chapterHeadingName])' in 'Pandoc/fonts'." })
+            }
+        }
 
     # drop caps
     $dropCap = Get-ConfigValue $lines 'drop-cap-style'
