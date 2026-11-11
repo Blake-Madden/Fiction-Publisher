@@ -79,7 +79,7 @@ else
              "# title-font:" + [environment]::NewLine + `
              "# author-font:" + [environment]::NewLine + `
              "publisher:" + [environment]::NewLine + `
-             "rights: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Unported License." + [environment]::NewLine + `
+             "rights: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License." + [environment]::NewLine + `
              "paperback-isbn-13:" + [environment]::NewLine + `
              "paperback-isbn-10:" + [environment]::NewLine + `
              "hardcover-isbn-13:" + [environment]::NewLine + `

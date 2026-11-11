@@ -12,10 +12,11 @@ $if(publisher)$
 <p class="center" style="text-indent: 0;">$for(publisher)$$publisher$$endfor$</p>
 $endif$
 $if(website)$
-<p class="center" style="text-indent: 0;">$for(website)$$website$$endfor$</p><br />
+<p class="center" style="text-indent: 0;">$for(website)$$website$$endfor$</p>
 $endif$
+$if(publisher)$<br />$elseif(website)$<br />$endif$
 
-<p class="center" style="text-indent: 0;">This book is distributed under a Creative Commons attribution-Non-Commercial-Sharealike 4.0 License.</p><br />
+<p class="center" style="text-indent: 0;">This book is distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</p><br />
 
 <img src="ccbynasa.png" class="center-image" height=46><br />
 
@@ -31,8 +32,8 @@ $endif$
 
 <ul>
 <li><strong>Attribution</strong>---You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.</li>
-<li><strong>Non-Commercial</strong>---You may not use the material for commercial purposes.</li>
-<li><strong>Share Alike</strong>---If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.</li>
+<li><strong>NonCommercial</strong>---You may not use the material for commercial purposes.</li>
+<li><strong>ShareAlike</strong>---If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.</li>
 </ul>
 <br />
 
@@ -46,7 +47,7 @@ $endfor$
 
 $for(contributors)$
 $if(contributors.illustrator)$
-<p style="text-indent: 0;">Illustrator: $for(contributors)$$contributors.illustrator$$endfor$</p><br />
+<p class="center" style="text-indent: 0;">Illustrator: $for(contributors)$$contributors.illustrator$$endfor$</p><br />
 $endif$
 $endfor$
 
