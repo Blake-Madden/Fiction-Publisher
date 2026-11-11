@@ -70,11 +70,13 @@ $endif$
 
 <p style="text-indent: 0;">Printed by $for(publisher)$$publisher$$endfor$ in the United States of America.</p><br />
 
-<p style="text-indent: 0;">$for(publisher)$\noindent $publisher$$endfor$</p>
+<p style="text-indent: 0;">$for(publisher)$$publisher$$endfor$</p>
 $if(publisher-address-html)$
 <p style="text-indent: 0;">$publisher-address-html$</p><br />
 $endif$
 
-$for(website)$<p style="text-indent: 0;">$website$$endfor$</p>
+$for(website)$
+<p style="text-indent: 0;">$website$</p>
+$endfor$
 
 </div>
