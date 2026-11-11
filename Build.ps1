@@ -400,54 +400,54 @@ foreach ($file in $mdFiles)
                      -Message "question mark may be needed (`"{0}`")."
     # space issues
     Test-FormatIssue -Pattern '[ ]{2,}[^\r\n]' `
-                     -Message "multiple spaces between words/sentences found. Considerchanging these into single spaces."
+                     -Message "multiple spaces between words/sentences found. Consider changing these into single spaces."
     # (a space before an ellipsis is allowed)
     Test-FormatIssue -Pattern '(\w+[ ]+[,;:?!]|\w+[ ]+[.](?![.]))' `
-                     -Message "space before punctuation (`"{0}`"). Considerremoving the space."
+                     -Message "space before punctuation (`"{0}`"). Consider removing the space."
     # (words must be at least two letters, so that numbers like "1,000" and abbreviations like "e.g." and "U.S." are allowed;
     #  the following word is only looked ahead at so that it can be checked too, as in "Why?Because;nothing")
     Test-FormatIssue -Pattern '(?=(\w*[a-z]{2,}([,;:][A-Za-z]|[.?!][A-Z][a-z])\w*))\w*[a-z]{2,}[,;:.?!]' -CaseSensitive -ValueGroup 1 `
                      -Message "missing space after punctuation (`"{0}`")."
     Test-FormatIssue -Pattern '([^\s]+)((\r\n){3,}|\n{3,}|\r{3,})([^\s]+)' `
-                     -Message "extra blank lines found (`"{0}`"). If these are intended to be scene separators, considermoving this text into another markdown file."
+                     -Message "extra blank lines found (`"{0}`"). If these are intended to be scene separators, consider moving this text into another markdown file."
     # check for possible stray spaces or newlines that cause issues with paragraphs being split or joined incorrectly
     Test-FormatIssue -Pattern '([^ ]+[ ]+)(\r\n|\n|\r)([^ ]+)' `
                      -Message "line followed by spaces, then a single line break found (`"{0}`"). If this is intended to be a new paragraph, it is recommended to change this to a blank line for clarity. If this should be the same paragraph, then remove the newline."
     Test-FormatIssue -Pattern "[`"`']+" `
-                     -Message "straight single/double quote(s) found. Considerconverting these into smart quotes to make your intention explicit."
+                     -Message "straight single/double quote(s) found. Consider converting these into smart quotes to make your intention explicit."
     # quotation issues
     Test-FormatIssue -Pattern "(\w+[^,.][`"$q2][,.])" `
                      -Message "comma or period outside of quote (`"{0}`"). Should be on the inside."
     # ellipses checks
     Test-FormatIssue -Pattern "[$ellipsis]+" `
-                     -Message "Unicode ellipses ($ellipsis) found. Considerchanging these into three periods (...)."
+                     -Message "Unicode ellipses ($ellipsis) found. Consider changing these into three periods (...)."
     # (four periods are allowed, as that is an ellipsis at the end of a sentence)
     Test-FormatIssue -Pattern '((?<![.])[.]{2}(?![.])|[.]{5,}|[,]{2,}|[!]{2,}|[?]{2,})' `
                      -Message "repeated punctuation (`"{0}`"). Ellipses should be three periods; otherwise, consider using a single punctuation mark."
     # hyphen/en dash/em dash checks
     Test-FormatIssue -Pattern '[-]{2,}' `
-                     -Message "multiple dashes found. Considerchanging these into en-dashes or em-dashes to make your intention explicit."
+                     -Message "multiple dashes found. Consider changing these into en-dashes or em-dashes to make your intention explicit."
     Test-FormatIssue -Pattern "(\w+[ ]+-[ ]+\w+|\w+[ ]+-[`"$q2])" `
                      -Message "hyphen surrounded by spaces (`"{0}`"). Did you intend to use an em dash?"
     Test-FormatIssue -Pattern "[$endash][`"$q2]" `
-                     -Message "en dash ending a quote. Considerchanging this to an em dash."
+                     -Message "en dash ending a quote. Consider changing this to an em dash."
     Test-FormatIssue -Pattern "([\w]+[$endash][\w]+)" `
                      -Message "en dash between words (`"{0}`"). Did you intend to use a hyphen or an em dash?"
     Test-FormatIssue -Pattern '([0-9]+[-][0-9]+)' `
                      -Message "hyphen between numeric range (`"{0}`"). Did you intend to use an en dash?"
     # print and e-books handle their own indenting
     Test-FormatIssue -Pattern '[\t]+' `
-                     -Message "tab found. Considerremoving these."
+                     -Message "tab found. Consider removing these."
     Test-FormatIssue -Pattern '[\r\n]+[ ]+(\w+)' -ValueGroup 1 -IndexGroup 1 `
-                     -Message "space indenting found (`" {0}`"). Considerremoving these."
+                     -Message "space indenting found (`" {0}`"). Consider removing these."
     # lines that look like scene separators, but won't be converted ('scene-separator-latex/html' only replace "***")
     Test-FormatIssue -Pattern '(?m)^[ ]*([*][ ]+[*]([ ]*[*])+|#([ ]*#)*|~{3,}|-{3,}|_{3,}|={3,})[ ]*(?=\r?$)' -ValueGroup 1 -IndexGroup 1 `
-                     -Message "`"{0}`" looks like a scene separator, but only `"***`" is converted into one. Considerchanging this to `"***`"."
+                     -Message "`"{0}`" looks like a scene separator, but only `"***`" is converted into one. Consider changing this to `"***`"."
     # invisible characters (the matched text isn't shown, since it can't be seen)
     foreach ($character in $invisibleCharacters.GetEnumerator())
         {
         Test-FormatIssue -Pattern ([regex]::Escape([string]$character.Key)) `
-                         -Message ("{0} (U+{1:X4}) found. This is usually pasted in from a word processor or web page; considerremoving it (or replacing it with a regular space)." -f $character.Value, [int]$character.Key)
+                         -Message ("{0} (U+{1:X4}) found. This is usually pasted in from a word processor or web page; consider removing it (or replacing it with a regular space)." -f $character.Value, [int]$character.Key)
         }
     # stray period or comma around ? or !
     Test-FormatIssue -Pattern '([.,][?!]|[?!][.,]|[,][.])' `
