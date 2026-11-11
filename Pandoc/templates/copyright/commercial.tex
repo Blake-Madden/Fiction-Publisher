@@ -58,8 +58,10 @@ $if(contributors)$
 \vspace{0.4cm}
 $endif$
 
-\noindent Printed by $for(publisher)$$publisher$$endfor$ in the United States of America. \par
+$if(publisher)$
+\noindent Printed by $for(publisher)$$publisher$$endfor$. \par
 \vspace{0.4cm}
+$endif$
 
 $for(publisher)$\noindent $publisher$$endfor$ \par
 $if(publisher-address-latex)$\noindent $publisher-address-latex$ \par $endif$

@@ -3,7 +3,7 @@
 <div style="font-size: small; font-family: sans-serif;">
 
 <p style="text-indent: 0;">Copyright &copy;$year$ $for(author)$$author$$endfor$</p><br />
-<p style="text-indent: 0;">All rights reserved. No part of this book may be reproduced or used in any manner without the prior written permission of the copyright owner, except for the use of brief quotations in critical articles and book reviews</p><br />
+<p style="text-indent: 0;">All rights reserved. No part of this book may be reproduced or used in any manner without the prior written permission of the copyright owner, except for the use of brief quotations in critical articles and book reviews.</p><br />
 
 $if(email)$
 <p style="text-indent: 0;">To request permissions, contact the author at $email$.</p><br />
@@ -69,8 +69,6 @@ $endfor$
 $endif$
 
 $if(publisher)$
-<p style="text-indent: 0;">Printed by $for(publisher)$$publisher$$endfor$ in the United States of America.</p><br />
-
 <p style="text-indent: 0;">$for(publisher)$$publisher$$endfor$</p>
 $endif$
 $if(publisher-address-html)$

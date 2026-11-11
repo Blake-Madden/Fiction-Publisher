@@ -16,11 +16,13 @@
 % Add a vertical space
     \vspace{0.4cm}
 
-% Write what country it was published in
-    Published in the United States by \par
-    
+$if(publisher)$
+% Write who published it
+    Published by \par
+
 % Write the publisher name
     \publisher \par
+$endif$
     
 % Write the website
     \website \par

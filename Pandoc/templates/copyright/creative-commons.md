@@ -7,8 +7,10 @@
 <p class="center" style="text-indent: 0;">Copyright &copy;$year$ $for(author)$$author$$endfor$</p>
 <p class="center" style="text-indent: 0;">Some rights reserved.</p><br />
 
-<p class="center" style="text-indent: 0;">Published in the United States by</p>
+$if(publisher)$
+<p class="center" style="text-indent: 0;">Published by</p>
 <p class="center" style="text-indent: 0;">$for(publisher)$$publisher$$endfor$</p>
+$endif$
 <p class="center" style="text-indent: 0;">$for(website)$$website$$endfor$</p><br />
 
 <p class="center" style="text-indent: 0;">This book is distributed under a Creative Commons attribution-Non-Commercial-Sharealike 4.0 License.</p><br />
