@@ -317,6 +317,14 @@ $mdFiles = Get-MarkdownFiles "$buildDir/outline"
 # Pre-process files
 ###############################################################
 Write-Output "Preprocessing source files..."
+
+# Chapter (folder) names that aren't numbered (e.g., a prologue), so that they don't affect the chapter numbering.
+# Semicolon-separated list (specified in metadata), defaulting to "Prologue" and "Epilogue".
+$unnumberedChapters = Get-ConfigValue (Get-Content -LiteralPath "$bookDir/config.yml") 'unnumbered-chapters'
+$unnumberedChapters = If ($unnumberedChapters)
+    { @($unnumberedChapters.Value.Split(';') | % { $_.Trim() } | Where-Object { $_.Length -gt 0 }) }
+    Else { @('Prologue', 'Epilogue') }
+
 foreach ($file in $mdFiles)
     {
     $fileInfo = New-Object System.IO.FileInfo($file)
@@ -324,13 +332,23 @@ foreach ($file in $mdFiles)
     # remove YAML header
     $content = [IO.File]::ReadAllText($file) -replace $yamlHeaderPattern, [Environment]::NewLine
 
+    # chapter (folder) names should begin with number and hyphen prefix to control order, so strip that off
+    $ChapterName = $fileInfo.Directory.Name -replace('^[0-9]*-','') -replace('[_]', ' ')
+    $isFirstScene = $fileInfo.BaseName -match '^[0].*'
+
     # if missing top-level header and file is the first scene in the chapter (i.e., filename starts with zero),
     # then add a chapter heading based on the chapter folder name
-    if (-not ($content -match '^\s*#[ \w]+') -and ($fileInfo.BaseName -match '^[0].*'))
+    if (-not ($content -match '^\s*#[ \w]+') -and $isFirstScene)
         {
-        # chapter (folder) names should begin with number and hyphen prefix to control order, so strip that off
-        $ChapterName = $fileInfo.Directory.Name -replace('^[0-9]*-','') -replace('[_]', ' ')
         $content = "# $ChapterName" + [Environment]::NewLine + $content
+        }
+
+    # Mark the heading of an unnumbered chapter (e.g., a prologue) with pandoc's "{-}" attribute.
+    # This prevents it from being labeled or counted as a numbered chapter, but it is still in the TOC.
+    # A heading that already has attributes is left alone.
+    if ($isFirstScene -and $unnumberedChapters -contains $ChapterName)
+        {
+        $content = $content -replace '^(\s*#[ ][^\r\n{]*?)[ ]*(\r\n|\n|\r|$)', '$1 {-}$2'
         }
 
     # replace single new line (between lines of text) with a blank line--this is how paragraphs are supposed to be separated

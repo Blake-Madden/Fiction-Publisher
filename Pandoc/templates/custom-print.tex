@@ -362,6 +362,14 @@ $else$
   \input{chapter-heading.tex}
 $endif$
 
+% Unnumbered chapters (e.g., a prologue or epilogue) don't increment the running header,
+% so set it to the chapter's title (rather than leaving the previous chapter's title there)
+\makeatletter
+\let\fp@chapter\chapter
+\renewcommand{\chapter}{\@ifstar{\fp@starchapter}{\fp@chapter}}
+\newcommand{\fp@starchapter}[1]{\fp@chapter*{#1}\markboth{#1}{}}
+\makeatother
+
 % Set spacing between chapters in TOC to be closer
 \usepackage[titles]{tocloft}
 \setlength{\cftbeforechapskip}{2pt}

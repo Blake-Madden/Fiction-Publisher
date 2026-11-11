@@ -179,6 +179,7 @@
             "description": "Raw content to embed in the template's header (e.g., LaTeX commands)."
         },
 
+        "unnumbered-chapters": { "$ref": "#/definitions/text", "description": "Semicolon-separated list of chapter folder names (without the number prefix) that are unnumbered, such as a prologue. These aren't labeled or counted as numbered chapters. Default is Prologue; Epilogue." },
         "emphasis-check": { "$ref": "#/definitions/text", "description": "Semicolon-separated list of phrases that should be italicized (a warning is logged if they aren't)." },
         "copyedit": { "$ref": "#/definitions/switch", "description": "Outline the sections and show marginal notes in the print output (useful with CriticMarkup)." },
 

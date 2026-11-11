@@ -252,6 +252,10 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only). Styles include `Sonny`, `Lenny`, `Glenn`, `Conny`, `Rejne`, `Bjarne`, and `Bjornstrup`
 - **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive`, `scifi`). Note that using **fancy-chapter** will override this
 
+- **unnumbered-chapters**: Semicolon-separated list of chapter folder names (without the number prefix) that are unnumbered chapters, such as a prologue (default is `Prologue; Epilogue`).
+  Names are case-insensitive, and underscores in folder names match spaces.
+  Setting this replaces the defaults, so include `Prologue` and `Epilogue` if you still want them (e.g., `Prologue; Interlude; Epilogue`).
+
 - **drop-cap-style**: The drop cap style to use for first letter at the start of each chapter (`default`, `romance`, `blockletter`, `scifi`, `oldwest`, `none`)
 
 - **scene-separator-latex**: LaTeX code to replace `***` sequences between scenes (used for PDF output)
@@ -286,6 +290,10 @@ A book folder should have the following:
 - A "config.yml" file with [build settings](#metadata-options).
 - A subfolder named "outline" which contains the chapters.
   - In the "outline" folder, there should be a subfolder for each chapter, prefixed with a 2-digit number and hyphen. (This will inform the build script about how to order the chapters.)
+    - A chapter folder named "Prologue" or "Epilogue" (e.g., "00-Prologue") is an unnumbered chapter.
+      Its title appears as is (with no "Chapter N" label) and in the TOC, and it isn't counted in the chapter numbering.
+      Other names (e.g., "Interlude" or names in another language) can be set with **unnumbered-chapters** in "config.yml".
+      Any other chapter can be made unnumbered by adding `{-}` to the end of its heading (e.g., `# Prologue {-}`).
     - In each chapter folder, there should be a separate Markdown file for each scene. (A numeric prefix on these files will inform the build script of their order.) It is recommended to add a `***` at the end of each Markdown file (except for the last one) in a chapter if you wish to have scene separators added.
 
 #### Fiction-Publisher-Output
