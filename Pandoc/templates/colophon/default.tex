@@ -3,12 +3,13 @@
 This book was created using \LaTeX .\par
 The main font was set in \primaryfontname. \par
 $if(title-font)$
-\ifx\$title-font$\primaryfontname
+\def\titlefontfile{$title-font$}
+\ifx\titlefontfile\primaryfontfile
   % no need to print anything if the fonts are the same
 \else
-  Title was set in 
-  {\titlefont \StrDel{$title-font$}{.ttf}}.
-  \par
+  \StrDel{$title-font$}{.ttf}[\titlefontname]%
+  \StrDel{\titlefontname}{.otf}[\titlefontname]%
+  Title was set in {\titlefont \titlefontname}. \par
 \fi
 $endif$
 $if(chapter-heading)$
@@ -19,10 +20,13 @@ $if(chapter-heading)$
 \fi
 $endif$
 $if(author-font)$
-\ifx\$author-font$\primaryfontname
+\def\authorfontfile{$author-font$}
+\ifx\authorfontfile\primaryfontfile
   % no need to print anything if the fonts are the same
 \else
-  Author name was set in {\authorfont \StrDel{$author-font$}{.ttf}}. \par
+  \StrDel{$author-font$}{.ttf}[\authorfontname]%
+  \StrDel{\authorfontname}{.otf}[\authorfontname]%
+  Author name was set in {\authorfont \authorfontname}. \par
 \fi
 $endif$
 \ifx\$drop-cap-style$\romance
