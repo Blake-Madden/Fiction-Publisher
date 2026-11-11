@@ -68,9 +68,11 @@ $endfor$
 <br />
 $endif$
 
+$if(publisher)$
 <p style="text-indent: 0;">Printed by $for(publisher)$$publisher$$endfor$ in the United States of America.</p><br />
 
 <p style="text-indent: 0;">$for(publisher)$$publisher$$endfor$</p>
+$endif$
 $if(publisher-address-html)$
 <p style="text-indent: 0;">$publisher-address-html$</p><br />
 $endif$
