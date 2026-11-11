@@ -1,4 +1,4 @@
-# {epub:type=seriespage}
+# {.unlisted epub:type=seriespage}
 
 <div style="font-size: small; font-family: sans-serif;">
 

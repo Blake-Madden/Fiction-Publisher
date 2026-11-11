@@ -1,4 +1,4 @@
-# {epub:type=copyright-page}
+# {.unlisted epub:type=copyright-page}
 
 <div style="font-size: small; font-family: sans-serif;">
 
