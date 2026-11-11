@@ -186,6 +186,9 @@ $endfor$
 \usepackage{fontspec}
 \usepackage[T1]{fontenc}
 
+%% Curly quotes and dashes (must come before fonts are defined)
+\defaultfontfeatures{Ligatures=TeX}
+
 %% For editing font names
 \usepackage{xstring}
 
@@ -285,9 +288,6 @@ $if(title-font)$
 $else$
   \withprimaryfont{\newfontfamily\titlefont}
 $endif$
-
-%% Make our quotes curly
-\defaultfontfeatures{Mapping=tex-text}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
