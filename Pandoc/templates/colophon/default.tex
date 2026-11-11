@@ -12,7 +12,9 @@ $if(title-font)$
   Title was set in {\titlefont \titlefontname}. \par
 \fi
 $endif$
-$if(chapter-heading)$
+$if(fancy-chapter)$
+$-- no-op: fancy-chapter replaces the chapter-heading template
+$elseif(chapter-heading)$
 \ifx\chapterheaderfontname\primaryfontname
   % no need to print anything if the fonts are the same
 \else
