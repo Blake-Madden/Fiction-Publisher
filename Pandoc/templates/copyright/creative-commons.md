@@ -37,7 +37,7 @@ $if(publisher)$<br />$elseif(website)$<br />$endif$
 </ul>
 <br />
 
-<p style="text-indent: 0;"><strong>No additional restrictions---You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.</strong></p><br />
+<p style="text-indent: 0;"><strong>No additional restrictions</strong>---You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.</p><br />
 
 $for(contributors)$
 $if(contributors.cover-artist)$
