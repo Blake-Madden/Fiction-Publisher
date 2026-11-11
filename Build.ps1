@@ -101,6 +101,19 @@ function Invoke-Pandoc
         }
     }
 
+# Prints a warning in the "<path>(<line>): warning: <message>" format that the
+# "Build Book" task's problem matcher recognizes, so that it appears in VS Code's Problems pane.
+# (A plain Write-Warning renders as "WARNING: ..." with no file or line, which the matcher can't parse.)
+function Write-Problem
+    {
+    param(
+        [string]$File,   # the file the warning applies to (absolute, or relative to the workspace folder)
+        [string]$Message,
+        [int]$Line = 1
+        )
+    Write-Output "$File($Line): warning: $Message"
+    }
+
 # Returns the value (and line number) of a top-level key in a config.yml (or $null if missing/empty)
 function Get-ConfigValue
     {
@@ -748,7 +761,7 @@ if ($epubFiles)
             Write-Output "Validating '$($epubFile.Name)'..."
             & $epubcheck.Source $epubFile.FullName
             if ($LASTEXITCODE -ne 0)
-                { Write-Warning "epubcheck found problems in '$($epubFile.Name)'." }
+                { Write-Problem -File $epubFile.FullName -Message "epubcheck found problems in '$($epubFile.Name)'." }
             }
         }
     }
@@ -780,12 +793,12 @@ If ($buildPrint -ne "false")
             {
             If ([int]$pageCount % 2 -ne 0)
                 {
-                Write-Warning ("'$bookName-print.pdf' has an odd number of pages ($pageCount). Most printers require an even page count.")
+                Write-Problem -File $printPdf -Message "'$bookName-print.pdf' has an odd number of pages ($pageCount). Most printers require an even page count."
                 }
             }
         Else
             {
-            Write-Warning ("Unable to determine the page count of '$bookName-print.pdf' with Ghostscript.")
+            Write-Problem -File $printPdf -Message "Unable to determine the page count of '$bookName-print.pdf' with Ghostscript."
             }
 
         # Printers require all fonts to be embedded
@@ -793,7 +806,7 @@ If ($buildPrint -ne "false")
         $unembeddedFonts = $pdfInfo | Where-Object { $_ -match 'Font' -and $_ -match 'not embedded' }
         If ($unembeddedFonts)
             {
-            Write-Warning ("'$bookName-print.pdf' contains fonts that are not embedded: $(($unembeddedFonts | ForEach-Object { $_.ToString().Trim() }) -join '; ')")
+            Write-Problem -File $printPdf -Message "'$bookName-print.pdf' contains fonts that are not embedded: $(($unembeddedFonts | ForEach-Object { $_.ToString().Trim() }) -join '; ')"
             }
         }
     }
