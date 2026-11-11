@@ -1,3 +1,4 @@
+$if(author-bio)$
 # {.unlisted}
 
 <div style="font-size: small; font-family: sans-serif;">
@@ -7,3 +8,4 @@
 <div style="text-indent: 0;">$author-bio$</div>
 
 </div>
+$endif$
