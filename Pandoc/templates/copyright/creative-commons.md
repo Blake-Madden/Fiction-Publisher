@@ -11,7 +11,9 @@ $if(publisher)$
 <p class="center" style="text-indent: 0;">Published by</p>
 <p class="center" style="text-indent: 0;">$for(publisher)$$publisher$$endfor$</p>
 $endif$
+$if(website)$
 <p class="center" style="text-indent: 0;">$for(website)$$website$$endfor$</p><br />
+$endif$
 
 <p class="center" style="text-indent: 0;">This book is distributed under a Creative Commons attribution-Non-Commercial-Sharealike 4.0 License.</p><br />
 
