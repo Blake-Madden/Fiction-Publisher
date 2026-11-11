@@ -18,21 +18,21 @@
 <p style="text-indent: 0;">That means you are free:</p><br />
 
 <ul>
-<li><strong>To Share</strong> -- copy and redistribute the material in any medium or format.</li>
-<li><strong>To Adapt</strong> -- remix, transform, and build upon the material.</li>
+<li><strong>To Share</strong>---copy and redistribute the material in any medium or format.</li>
+<li><strong>To Adapt</strong>---remix, transform, and build upon the material.</li>
 </ul>
 <br />
 
 <p style="text-indent: 0;">The licensor cannot revoke these freedoms as long as you follow the license terms:</p><br />
 
 <ul>
-<li><strong>Attribution</strong> -- You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.</li>
-<li><strong>Non-Commercial</strong> -- You may not use the material for commercial purposes.</li>
-<li><strong>Share Alike</strong> -- If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.</li>
+<li><strong>Attribution</strong>---You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.</li>
+<li><strong>Non-Commercial</strong>---You may not use the material for commercial purposes.</li>
+<li><strong>Share Alike</strong>---If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.</li>
 </ul>
 <br />
 
-<p style="text-indent: 0;"><strong>No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.</strong></p><br />
+<p style="text-indent: 0;"><strong>No additional restrictions---You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.</strong></p><br />
 
 $for(contributors)$
 $if(contributors.cover-artist)$
