@@ -229,7 +229,7 @@ function Test-BookProject
     $dropCap = Get-ConfigValue $lines 'drop-cap-style'
     if ($buildPrint -and $dropCap)
         {
-        $dropCapFonts = @{ scifi = 'Orbitron-Bold.ttf'; oldwest = 'ChunkFive-Regular.ttf' }
+        $dropCapFonts = @{ romance = 'texgyrechorus-mediumitalic.otf'; scifi = 'Orbitron-Bold.ttf'; oldwest = 'ChunkFive-Regular.ttf' }
         if ($dropCap.Value -notin 'default', 'romance', 'blockletter', 'scifi', 'oldwest', 'none')
             {
             $issues.Add([pscustomobject]@{ File = $configPath; Line = $dropCap.Line; Severity = 'warning'; Message = "drop-cap-style '$($dropCap.Value)' is not recognized (the default style will be used)." })
@@ -276,7 +276,7 @@ function Get-RequiredLatexPackages
         }
 
     # drop cap fonts are only loaded for their own style (so the drop-cap-style block is skipped while reading)
-    $dropCapPackages = @{ romance = 'tgchorus'; blockletter = 'Romantik' }
+    $dropCapPackages = @{ blockletter = 'Romantik' }
     $dropCapStyle = (Get-ConfigValue $ConfigLines 'drop-cap-style').Value
     if ($dropCapStyle -and $dropCapPackages.ContainsKey($dropCapStyle))
         { $packages += $dropCapPackages[$dropCapStyle] }
@@ -308,7 +308,7 @@ function Get-RequiredLatexPackages
         }
 
     # TeX Live packages that are named differently from their .sty file
-    $tlPackageNames = @{ tgchorus = 'tex-gyre'; Romantik = 'cfr-initials'; calligra = 'fundus-calligra'; longtable = 'tools' }
+    $tlPackageNames = @{ Romantik = 'cfr-initials'; calligra = 'fundus-calligra'; longtable = 'tools' }
     return $packages | Select-Object -Unique | ForEach-Object {
         [pscustomobject]@{ Sty = "$_.sty"; TlPackage = If ($tlPackageNames.ContainsKey($_)) { $tlPackageNames[$_] } Else { $_ } } }
     }

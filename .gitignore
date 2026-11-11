@@ -11,5 +11,7 @@ Pandoc/fonts/*
 !Pandoc/fonts/Orbitron-*.ttf
 !Pandoc/fonts/ChunkFive-*.ttf
 !Pandoc/fonts/*-OFL.txt
+!Pandoc/fonts/texgyrechorus-*.otf
+!Pandoc/fonts/TeX Gyre README.txt
 .vscode/*
 !.vscode/tasks.json
