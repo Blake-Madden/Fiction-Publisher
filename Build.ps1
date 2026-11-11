@@ -257,6 +257,62 @@ function Test-BookProject
     return $issues
     }
 
+# Returns the LaTeX packages (.sty files) that the print templates load for this book, along with
+# the TeX Live package that provides each one. The templates are read (rather than keeping a separate list)
+# so that this stays up to date when a package is added to them.
+function Get-RequiredLatexPackages
+    {
+    param([string[]]$ConfigLines)
+    $templates = @("$PSScriptRoot/Pandoc/templates/custom-print.tex")
+    $fancyChapter = (Get-ConfigValue $ConfigLines 'fancy-chapter').Value
+    if ($fancyChapter)
+        { $packages = @('fncychap') }
+    else
+        {
+        # the chapter heading template is only used when fancy-chapter isn't
+        $packages = @()
+        $chapterHeading = (Get-ConfigValue $ConfigLines 'chapter-heading').Value
+        $templates += "$PSScriptRoot/Pandoc/templates/chapter-heading/$(If ($chapterHeading) { $chapterHeading } Else { 'default' }).tex"
+        }
+
+    # drop cap fonts are only loaded for their own style (so the drop-cap-style block is skipped while reading)
+    $dropCapPackages = @{ romance = 'tgchorus'; blockletter = 'Romantik' }
+    $dropCapStyle = (Get-ConfigValue $ConfigLines 'drop-cap-style').Value
+    if ($dropCapStyle -and $dropCapPackages.ContainsKey($dropCapStyle))
+        { $packages += $dropCapPackages[$dropCapStyle] }
+
+    foreach ($template in $templates)
+        {
+        if (-not [IO.File]::Exists($template))
+            { continue } # (reported by the project review)
+        $inDropCapBlock = $false
+        foreach ($line in [IO.File]::ReadAllLines($template))
+            {
+            $line = $line -replace '(?<!\\)%.*$', '' # remove comments
+            if ($line -match '^\s*\$if\(drop-cap-style\)\$')
+                { $inDropCapBlock = $true; continue }
+            if ($inDropCapBlock)
+                {
+                if ($line -match '^\s*\$endif\$')
+                    { $inDropCapBlock = $false }
+                continue
+                }
+            foreach ($match in [regex]::Matches($line, '\\usepackage(\[[^\]]*\])?\{([^}]+)\}'))
+                {
+                # (a package loaded with a template variable, like fncychap, is handled above)
+                if ($match.Value -match '\$')
+                    { continue }
+                $packages += $match.Groups[2].Value.Split(',') | % { $_.Trim() } | Where-Object { $_ }
+                }
+            }
+        }
+
+    # TeX Live packages that are named differently from their .sty file
+    $tlPackageNames = @{ tgchorus = 'tex-gyre'; Romantik = 'cfr-initials'; calligra = 'fundus-calligra'; longtable = 'tools' }
+    return $packages | Select-Object -Unique | ForEach-Object {
+        [pscustomobject]@{ Sty = "$_.sty"; TlPackage = If ($tlPackageNames.ContainsKey($_)) { $tlPackageNames[$_] } Else { $_ } } }
+    }
+
 # make sure the required tools are available before touching anything (e.g., previous output)
 $missingTools = @()
 if (-not (Get-Command pandoc -ErrorAction SilentlyContinue))
@@ -280,6 +336,32 @@ if ($projectErrors.Count)
     {
     Write-Host -ForegroundColor Red "$($projectErrors.Count) error(s) found in the book project. Please fix these and try again."
     exit 1
+    }
+
+# ensure LaTeX packages that the print templates use are installed
+$configLines = Get-Content -LiteralPath "$bookDir/config.yml"
+if ((Get-ConfigValue $configLines 'build-print').Value -ne 'false' -and (Get-Command kpsewhich -ErrorAction SilentlyContinue))
+    {
+    $requiredPackages = @(Get-RequiredLatexPackages $configLines)
+    $foundStyFiles = @(& kpsewhich @($requiredPackages.Sty) 2>$null | ForEach-Object { [IO.Path]::GetFileName($_) })
+    $missingPackages = @($requiredPackages | Where-Object { $foundStyFiles -notcontains $_.Sty })
+    if ($missingPackages.Count)
+        {
+        $missingList = ($missingPackages.Sty) -join ', '
+        if ((& xelatex --version | Select-Object -First 1) -match 'MiKTeX')
+            {
+            # MiKTeX can install missing packages during the build (depending on its settings), so this isn't an error
+            Write-Warning "LaTeX package(s) not installed: $missingList. If MiKTeX isn't set to install missing packages automatically, install these with MiKTeX Console."
+            }
+        else
+            {
+            Write-Host -ForegroundColor Red "LaTeX package(s) needed for the print PDF aren't installed: $missingList."
+            Write-Host -ForegroundColor Red "Install them with:"
+            Write-Host -ForegroundColor Red "  tlmgr install $((@($missingPackages.TlPackage) | Select-Object -Unique) -join ' ')"
+            Write-Host -ForegroundColor Red "(or set 'build-print: false' in config.yml to skip the print PDF)"
+            exit 1
+            }
+        }
     }
 
 # clean up any output from previous run and create a fresh output folder

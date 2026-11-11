@@ -117,7 +117,11 @@ If a build fails, its "build" subfolder is kept for troubleshooting. It contains
 
 Any errors or warnings from Pandoc (including LaTeX errors and characters missing from a font) are saved to `Fiction-Publisher-Output/<book> Build Errors.log`.
 
-Before building, the script checks that **Pandoc** and **XeLaTeX** are available and that the book project is valid.
+Before building, the script checks that:
+
+- **Pandoc** and **XeLaTeX** are available
+- LaTeX packages needed for the print PDF are installed
+- Book project is valid
 
 ### Try the Example
 The "Example" folder is a short sample book with deliberate formatting mistakes.
@@ -333,6 +337,11 @@ Fiction Publisher needs the following tools to be installed in order to work:
 
 ### LaTeX / TexLive / MiKTeX
 [LaTeX](https://www.latex-project.org/) - typesetting software that can output PDF files.
+
+The print templates use a number of LaTeX packages that a minimal install (e.g., TinyTeX) may not include.
+Before building PDF, the script checks that the packages your book needs are installed.
+With TeX Live (including MacTeX and TinyTeX), it stops and shows the `tlmgr install` command for any that are missing.
+With MiKTeX, it shows a warning instead, since MiKTeX can install missing packages during the build.
 
 ### PowerShell 7
 [PowerShell 7](https://github.com/PowerShell/PowerShell) (`pwsh`) - runs the build scripts. On macOS use `brew install --cask powershell`; on Linux install it with your package manager (refer to the [install docs](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-linux)). Verify with `pwsh --version`.
