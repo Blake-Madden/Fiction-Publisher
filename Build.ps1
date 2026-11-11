@@ -452,13 +452,13 @@ foreach ($file in $mdFiles)
     Test-FormatIssue -Pattern '((?<![.])[.]{2}(?![.])|[.]{5,}|[,]{2,}|[!]{2,}|[?]{2,})' `
                      -Message "repeated punctuation (`"{0}`"). Ellipses should be three periods; otherwise, consider using a single punctuation mark."
     # hyphen/en dash/em dash checks
-    Test-FormatIssue -Pattern '[-]{2,}' `
-                     -Message "multiple dashes found. Consider changing these into en-dashes or em-dashes to make your intention explicit."
+    # (en and em dashes can be typed as "--" and "---", which pandoc converts, or as the actual characters)
     Test-FormatIssue -Pattern "(\w+[ ]+-[ ]+\w+|\w+[ ]+-[`"$q2])" `
                      -Message "hyphen surrounded by spaces (`"{0}`"). Did you intend to use an em dash?"
-    Test-FormatIssue -Pattern "[$endash][`"$q2]" `
+    Test-FormatIssue -Pattern "([$endash]|(?<!-)--)[`"$q2]" `
                      -Message "en dash ending a quote. Consider changing this to an em dash."
-    Test-FormatIssue -Pattern "([\w]+[$endash][\w]+)" `
+    # (only letters on both sides of the dash, since an en dash is correct in ranges, e.g., "10--20" or "1990s--2000s")
+    Test-FormatIssue -Pattern "(\w*[^\W\d_]([$endash]|--)[^\W\d_]\w*)" `
                      -Message "en dash between words (`"{0}`"). Did you intend to use a hyphen or an em dash?"
     Test-FormatIssue -Pattern '([0-9]+[-][0-9]+)' `
                      -Message "hyphen between numeric range (`"{0}`"). Did you intend to use an en dash?"
@@ -691,7 +691,8 @@ If ($buildPrint -ne "false")
           }
 
         # CriticMarkup
-        $content = $content -replace '({--)([^-]*)(--})', '\st{$2}' # deletion
+        # (deleted text can contain dashes, so match up to the first closing "--}")
+        $content = $content -replace '({--)([\s\S]*?)(--})', '\st{$2}' # deletion
         $content = $content -replace '({[+]{2})([^+]*)([+]{2}})', '\underline{$2}' # addition
         $content = $content -replace '({>>)([^<]*)(<<})', '\marginpar{$2}' # comment
         $content = $content -replace '({==)([^=]*)(==})', '\hl{$2}' # highlight
@@ -729,7 +730,7 @@ If ($buildEpub -ne "false")
                                      '$1<span class="drop-caps">$2</span><span class="small-caps">$3</span>'
 
         # CriticMarkup
-        $content = $content -replace '({--)([^-]*)(--})', '<del>$2</del>' # deletion
+        $content = $content -replace '({--)([\s\S]*?)(--})', '<del>$2</del>' # deletion
         $content = $content -replace '({[+]{2})([^+]*)([+]{2}})', '<ins>$2</ins>' # addition
         $content = $content -replace '({>>)([^<]*)(<<})', '<aside><mark>$2</mark></aside>' # comment
         $content = $content -replace '({==)([^=]*)(==})', '<mark>$2</mark>' # highlight
