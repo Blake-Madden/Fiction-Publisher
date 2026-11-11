@@ -184,6 +184,15 @@ function Test-BookProject
         {
         $issues.Add([pscustomobject]@{ File = $configPath; Line = $cover.Line; Severity = 'error'; Message = "cover-image '$($cover.Value)' not found in '$bookPath'." })
         }
+    # an empty cover-image is read by pandoc and errors on empty paths
+    if ($buildEpub -and -not $cover)
+        {
+        $emptyCoverLine = [array]::FindIndex([string[]]$lines,[Predicate[string]] { param($line) $line -match '^cover-image:[ ]*(""|'''')?[ ]*$' })
+        if ($emptyCoverLine -ge 0)
+            {
+            $issues.Add([pscustomobject]@{ File = $configPath; Line = $emptyCoverLine + 1; Severity = 'error'; Message = "cover-image is empty. Enter the path to the cover image." })
+            }
+        }
 
     # fonts (only validated if specified as a font file; otherwise, it is a font name installed on the system)
     if ($buildPrint)
