@@ -224,7 +224,8 @@ function Test-BookProject
         {
         $issues.Add([pscustomobject]@{ File = $configPath; Line = If ($chapterHeading) { $chapterHeading.Line } Else { 1 }; Severity = 'error'; Message = "chapter-heading template '$chapterHeadingName.tex' not found in 'Pandoc/templates/chapter-heading'." })
         }
-    else
+    # chapter heading isn't used with fancy-chapter
+    elseif (-not (Get-ConfigValue $lines 'fancy-chapter').Value)
         {
         $chapterHeadingFonts = @{ 'romance-cursive' = 'Miama.otf'; scifi = 'Orbitron-Bold.ttf' }
         if ($buildPrint -and $chapterHeadingFonts.ContainsKey($chapterHeadingName) -and -not [IO.File]::Exists("$PSScriptRoot/Pandoc/fonts/$($chapterHeadingFonts[$chapterHeadingName])"))
