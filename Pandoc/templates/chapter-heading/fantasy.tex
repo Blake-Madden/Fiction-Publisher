@@ -1,0 +1,14 @@
+%%%%%%%%%%%%%%%%%%
+%% This part says to style the titles for "chapters"
+% \titleformat{\chapter}[display]
+
+%% Calligraphic font (TeX Gyre Chorus)
+\newfontfamily\chapterheaderfont{texgyrechorus-mediumitalic.otf}
+\def\chapterheaderfontname{TeX Gyre Chorus}
+
+%% Roman numeral between flourishes, with the title below
+\titleformat{\chapter}[display]
+  {\filcenter}%
+  {\Huge\adfflourishleftdouble\hspace{3mm}{\chapterheaderfont\Roman{chapter}}\hspace{3mm}\adfflourishrightdouble}%
+  {3mm}%
+  {\huge\chapterheadingfont}

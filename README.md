@@ -42,6 +42,7 @@ Refer [here](#your-book-structure) for the recommended file structure for your b
   - [X] `blockletter`
   - [X] `classic`
   - [X] `minimal`
+  - [X] `fantasy`
   - [X] Or you can select styles from the [fncychap](https://www.ctan.org/pkg/fncychap) LaTeX package
 - [X] Drop cap styles (PDF only, ePub uses a simple default format)
   - [X] `default` (same font as the body text)
@@ -264,7 +265,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 - **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only).
   Styles include `Sonny`, `Lenny`, `Glenn`, `Conny`, `Rejne`, `Bjarne`, and `Bjornstrup`
-- **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive`, `scifi`, `oldwest`, `blockletter`, `classic`, `minimal`).
+- **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive`, `scifi`, `oldwest`, `blockletter`, `classic`, `minimal`, `fantasy`).
   Note that using **fancy-chapter** will override this
 - **chapter-name**: The word used for "Chapter" (default is `Chapter`), for example `Kapitel` or `Part`.
   PDF output uses it in chapter headings and running headers.
@@ -348,7 +349,7 @@ The following fonts are included, licensed under the [SIL Open Font License](htt
 - [Miama Nueva](https://ctan.org/pkg/miama): used by the `romance-cursive` chapter heading style
 
 The following font is included, licensed under the [GUST Font License](http://www.gust.org.pl/fonts/licenses/GUST-FONT-LICENSE.txt):
-- [TeX Gyre Chorus](http://www.gust.org.pl/projects/e-foundry/tex-gyre): used by the `romance` drop cap style
+- [TeX Gyre Chorus](http://www.gust.org.pl/projects/e-foundry/tex-gyre): used by the `romance` drop cap style and `fantasy` chapter heading style
 
 ## Your Book Structure
 The following is the folder structure that your book projects should be in (i.e., [Manuskript](https://github.com/olivierkes/manuskript) format):
