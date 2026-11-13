@@ -324,6 +324,8 @@ function Get-RequiredLatexPackages
         Romantik = [pscustomobject]@{ Sty = 'Romantik.fd'; TlPackage = 'initials' }
         calligra = [pscustomobject]@{ Sty = 'callig15.mf'; TlPackage = 'calligra' }
         }
+    # babel is loaded with a template variable, so it's skipped above
+    $packages += 'babel'
     return $packages | Select-Object -Unique | ForEach-Object {
         [pscustomobject]@{ Sty = "$_.sty"; TlPackage = If ($tlPackageNames.ContainsKey($_)) { $tlPackageNames[$_] } Else { $_ } }
         if ($extraFiles.ContainsKey($_))
@@ -817,6 +819,8 @@ If ($buildEpub -ne "false")
     {
     Write-Output "Formatting for epub..."
     $epubChapterNumber = 0
+    $chapterName = Get-ConfigValue (Get-Content -LiteralPath "$bookDir/config.yml") 'chapter-name'
+    $chapterName = If ($chapterName) { $chapterName.Value } Else { 'Chapter' }
     foreach ($file in $epubMdFiles)
         {
         $content = [IO.File]::ReadAllText($file)
@@ -834,7 +838,7 @@ If ($buildEpub -ne "false")
                 { $epubChapterNumber++ }
             if ((-not $isUnnumberedEpubChapter) -and ($firstNonEmptyLine -match '^#[ \t]*(\{[^}]*\})?[ \t]*$'))
                 {
-                $chapterLabel = "Chapter $epubChapterNumber"
+                $chapterLabel = "$chapterName $epubChapterNumber"
                 $emptyHeadingRegex = [regex]::new('^(\s*)#[ \t]*(\{[^}]*\})?[ \t]*(?=\r?$)', [Text.RegularExpressions.RegexOptions]::Multiline)
                 $content = $emptyHeadingRegex.Replace($content, ('$1# ' + $chapterLabel), 1)
                 }

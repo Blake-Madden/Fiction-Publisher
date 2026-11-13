@@ -178,7 +178,8 @@ The following can be specified in a book project's "config.yml" file (which shou
 ### Book Info
 
 - **type**: Genre of your book
-- **lang**: A string value in BCP 47 format: http://tools.ietf.org/html/bcp47 (e.g., en-US)
+- **lang**: A string value in BCP 47 format: http://tools.ietf.org/html/bcp47 (e.g., en-US).
+  For languages other than English, install that language's TeX Live packages (e.g., `tlmgr install babel-french hyphen-french`)
 - **date**: YYYY-MM-DD
 - **year**: YYYY
 
@@ -265,6 +266,10 @@ The following can be specified in a book project's "config.yml" file (which shou
   Styles include `Sonny`, `Lenny`, `Glenn`, `Conny`, `Rejne`, `Bjarne`, and `Bjornstrup`
 - **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive`, `scifi`, `oldwest`, `blockletter`, `classic`, `minimal`).
   Note that using **fancy-chapter** will override this
+- **chapter-name**: The word used for "Chapter" (default is `Chapter`), for example `Kapitel` or `Part`.
+  PDF output uses it in chapter headings and running headers.
+  ePub output uses it for chapters with no title.
+  Spelled-out numbers follow **lang**.
 
 - **unnumbered-chapters**: Semicolon-separated list of chapter folder names (without the number prefix) that are unnumbered chapters, such as a prologue (default is `Prologue; Epilogue`).
   Names are case-insensitive, and underscores in folder names match spaces.

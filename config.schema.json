@@ -165,6 +165,7 @@
                 { "type": ["string", "null"] }
             ]
         },
+        "chapter-name": { "$ref": "#/definitions/text", "description": "The word used for \"Chapter\" in chapter headings, running headers, and the ePub labels of chapters with no title (e.g., Kapitel). Default is Chapter." },
         "drop-cap-style": {
             "type": ["string", "null"],
             "description": "Drop cap style for the first letter of each chapter (PDF only).",

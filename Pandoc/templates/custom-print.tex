@@ -50,8 +50,13 @@
 
 \setlength{\LTpost}{0pt}
 
-%% Set language and hyphenation rules
-\usepackage[english]{babel}
+%% Set language and hyphenation rules from lang (e.g., fr-CA is canadien)
+\usepackage[$if(babel-lang)$$babel-lang$$else$english$endif$]{babel}
+
+%% The word used for "Chapter" in chapter headings and running headers
+$if(chapter-name)$
+\setlocalecaption{\languagename}{chapter}{$chapter-name$}
+$endif$
 
 %% Explicit list of word that not be split across linebreaks (or showing how they should be hyphenated with split across lines)
 \hyphenation{$no-hyphenate-list$}
@@ -326,6 +331,8 @@ $endif$
 
 %% Converts number to string
 \usepackage{fmtcount}
+% load the language's number words before the first chapter heading, since loading them inside a heading breaks its line
+\AtBeginDocument{\sbox0{\Numberstringnum{1}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
