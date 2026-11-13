@@ -541,7 +541,8 @@ $endif$
 \makeatletter
 \pagestyle{fancy}
 %\renewcommand{\chaptermark}[1]{\markboth{#1}{}} % This removes the 'Chapter x' from the header
-\renewcommand{\chaptermark}[1]{\markboth {\@chapapp\ \thechapter\ --\ {#1}}{}}
+% Chapter with no title shows only 'Chapter N', without a trailing ' -- '
+\renewcommand{\chaptermark}[1]{\markboth{\if\relax\detokenize{#1}\relax\@chapapp\ \thechapter\else\@chapapp\ \thechapter\ --\ {#1}\fi}{}}
 
 \fancyfoot[C]{} % remove numbered footers
 \fancyhead[RO,LE]{\primaryfont\bfseries \thepage} % add page numbers to the header

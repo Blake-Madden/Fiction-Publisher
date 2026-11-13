@@ -260,6 +260,12 @@ The following can be specified in a book project's "config.yml" file (which shou
   Names are case-insensitive, and underscores in folder names match spaces.
   Setting this replaces the defaults, so include `Prologue` and `Epilogue` if you still want them (e.g., `Prologue; Interlude; Epilogue`).
 
+- **Chapter with no title**: A chapter whose heading should show only "Chapter N" (no separate title) can be created by:
+  - naming its folder with only a number (e.g., `02`)
+  - naming with a trailing hyphen (e.g., `02-`)
+  - or by writing an empty top-level heading (`# `) in its first scene
+  The print PDF shows "Chapter N" via the chapter label, and the epub shows "Chapter N" as the heading and in the table of contents.
+
 - **drop-cap-style**: The drop cap style to use for first letter at the start of each chapter (`default`, `romance`, `blockletter`, `scifi`, `oldwest`, `none`)
 
 - **scene-separator-latex**: LaTeX code to replace `***` sequences between scenes (used for PDF output)
@@ -294,6 +300,7 @@ A book folder should have the following:
 - A "config.yml" file with [build settings](#metadata-options).
 - A subfolder named "outline" which contains the chapters.
   - In the "outline" folder, there should be a subfolder for each chapter, prefixed with a 2-digit number and hyphen. (This will inform the build script about how to order the chapters.)
+    A folder whose name is only a number (e.g., `02`) or a number and hyphen (e.g., `02-`) creates a chapter with no title (see **Chapter with no title** above).
     - A chapter folder named "Prologue" or "Epilogue" (e.g., "00-Prologue") is an unnumbered chapter.
       Its title appears as is (with no "Chapter N" label) and in the TOC, and it isn't counted in the chapter numbering.
       Other names (e.g., "Interlude" or names in another language) can be set with **unnumbered-chapters** in "config.yml".

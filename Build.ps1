@@ -434,11 +434,14 @@ foreach ($file in $mdFiles)
 
     # chapter (folder) names should begin with number and hyphen prefix to control order, so strip that off
     $ChapterName = $fileInfo.Directory.Name -replace('^[0-9]*-','') -replace('[_]', ' ')
+    # a folder that is only a number (e.g., "01") has no title, so treat it as title-less
+    if ($fileInfo.Directory.Name -match '^[0-9]+$')
+        { $ChapterName = '' }
     $isFirstScene = $fileInfo.BaseName -match '^[0].*'
 
     # if missing top-level header and file is the first scene in the chapter (i.e., filename starts with zero),
     # then add a chapter heading based on the chapter folder name
-    if (-not ($content -match '^\s*#[ \w]+') -and $isFirstScene)
+    if (-not ($content -match '^\s*#(\s|$)') -and $isFirstScene)
         {
         $content = "# $ChapterName" + [Environment]::NewLine + $content
         }
@@ -804,9 +807,29 @@ If ($buildPrint -ne "false")
 If ($buildEpub -ne "false")
     {
     Write-Output "Formatting for epub..."
+    $epubChapterNumber = 0
     foreach ($file in $epubMdFiles)
         {
         $content = [IO.File]::ReadAllText($file)
+
+        # A chapter with no title (e.g., "# " or folder named "01-") should
+        # still show a heading in the epub, so inject "Chapter N" here. (Print uses the
+        # LaTeX "Chapter N" label instead, so its heading is left empty.)
+        $fileInfo = New-Object System.IO.FileInfo($file)
+        $firstNonEmptyLine = ($content -split '\r\n|\r|\n' | Where-Object { $_.Trim().Length -gt 0 } | Select-Object -First 1)
+        if ($firstNonEmptyLine -match '^#(\s|$)')
+            {
+            $chapterFolderName = $fileInfo.Directory.Name -replace '^[0-9]*-','' -replace '_',' '
+            $isUnnumberedEpubChapter = ($unnumberedChapters -contains $chapterFolderName) -or ($firstNonEmptyLine -match '\{-\}')
+            if (-not $isUnnumberedEpubChapter)
+                { $epubChapterNumber++ }
+            if ((-not $isUnnumberedEpubChapter) -and ($firstNonEmptyLine -match '^#[ \t]*(\{[^}]*\})?[ \t]*$'))
+                {
+                $chapterLabel = "Chapter $epubChapterNumber"
+                $emptyHeadingRegex = [regex]::new('^(\s*)#[ \t]*(\{[^}]*\})?[ \t]*(?=\r?$)', [Text.RegularExpressions.RegexOptions]::Multiline)
+                $content = $emptyHeadingRegex.Replace($content, ('$1# ' + $chapterLabel), 1)
+                }
+            }
 
         # replace *** with scene separator (e.g., flourishes)
         $sceneSeparator = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^scene-separator-html:[ ]*(.*)' | % {($_.matches.groups[1].Value) }
