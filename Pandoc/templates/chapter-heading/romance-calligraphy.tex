@@ -7,4 +7,5 @@
 \newcommand{\chapterheaderfont}{\hspace{-.5 mm}\calligra}
 \def\chapterheaderfontname{Calligra}
 
-\titleformat{\chapter}[display]{\bfseries \filcenter}{\chapterheaderfont\Large\adforn{60}\hspace{.5 mm}Chapter \Numberstringnum{\thechapter}\hspace{3 mm}\adforn{32}}{0.5mm}{\chapterheadingfont \huge}
+% \bfseries is only on the title, since Calligra has no bold
+\titleformat{\chapter}[display]{\filcenter}{\chapterheaderfont\Large\adforn{60}\hspace{.5 mm}\chaptertitlename\ \Numberstringnum{\thechapter}\hspace{3 mm}\adforn{32}}{0.5mm}{\bfseries\chapterheadingfont \huge}

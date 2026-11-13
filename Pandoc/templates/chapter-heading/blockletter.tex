@@ -8,8 +8,11 @@
 \def\chapterheaderfontname{Romantik}
 
 %% "Chapter Seven" with an illuminated "C", like the first letter of a manuscript page
+%% (the first letter of the chapter name is split off for the decorative initial)
+\usepackage{xstring}
 \titleformat{\chapter}[display]
   {\filcenter}%
-  {{\chapterheaderfont\fontsize{48}{48}\selectfont C}\hspace{1.5mm}{\LARGE\chapterheadingfont\scshape hapter \Numberstringnum{\thechapter}}}%
+  {\StrSplit{\chaptertitlename}{1}{\chapterinitial}{\chapternamerest}%
+   {\chapterheaderfont\fontsize{48}{48}\selectfont\chapterinitial}\hspace{1.5mm}{\LARGE\chapterheadingfont\scshape\chapternamerest\ \Numberstringnum{\thechapter}}}%
   {4mm}%
   {\chapterheadingfont\huge}
