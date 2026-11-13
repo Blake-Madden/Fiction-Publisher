@@ -12,7 +12,7 @@ Pandoc/fonts/*
 !Pandoc/fonts/ChunkFive-*.ttf
 !Pandoc/fonts/*-OFL.txt
 !Pandoc/fonts/texgyrechorus-*.otf
-!Pandoc/fonts/Miama.otf
+!Pandoc/fonts/miama.otf
 !Pandoc/fonts/TeX Gyre README.txt
 .vscode/*
 !.vscode/tasks.json
