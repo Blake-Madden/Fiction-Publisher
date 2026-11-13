@@ -4,7 +4,8 @@
 - [Features](#features)
 - [Building your Books](#building-your-books)
 - [Metadata Options](#metadata-options)
-- [Project Structure](#project-structure)
+- [Fiction Publisher Structure](#fiction-publisher-structure)
+- [Your Book Structure](#your-book-structure)
 - [Requirements](#requirements)
 
 
@@ -12,9 +13,9 @@
 **Fiction Publisher** is a fork of [Open Publisher](https://github.com/chrisanthropic/Open-Publisher), redesigned to work with [Manuskript](https://github.com/olivierkes/manuskript)-structured projects.
 It is a [PowerShell](https://github.com/PowerShell/PowerShell) script that wraps [Pandoc](https://github.com/jgm/pandoc) and LaTeX and uses a set of custom Pandoc templates (created with a focus on fiction).
 
-Write your manuscript in markdown, configure a Pandoc [metadata](#Metadata-Options) file, run a build script, and receive some beautifully formatted ePub (including an Amazon KDP-ready ePub) and print-ready PDF books.
+Write your manuscript in markdown, configure a Pandoc [metadata](#metadata-options) file, run a build script, and receive some beautifully formatted ePub (including an Amazon KDP-ready ePub) and print-ready PDF books.
 
-Refer [here](#project-structure) for the recommended file structure for your book.
+Refer [here](#your-book-structure) for the recommended file structure for your book.
 
 ## Features
 
@@ -27,7 +28,7 @@ Refer [here](#project-structure) for the recommended file structure for your boo
 #### Input formats
 - [X] Supports Markdown files within [Manuskript](https://github.com/olivierkes/manuskript) folder structure
 
-#### Configurable components for output (PDF and epub)
+#### Configurable components for output (PDF and ePub)
 - [X] Copyright page templates
   - [X] `creative-commons`
   - [X] `commercial`
@@ -38,7 +39,7 @@ Refer [here](#project-structure) for the recommended file structure for your boo
   - [X] `romance-cursive`
   - [X] `scifi`
   - [X] Or you can select styles from the [fncychap](https://www.ctan.org/pkg/fncychap) LaTeX package
-- [X] Drop cap styles (PDF only, epub uses a simple default format)
+- [X] Drop cap styles (PDF only, ePub uses a simple default format)
   - [X] `default` (same font as the body text)
   - [X] `romance`
   - [X] `blockletter`
@@ -51,7 +52,7 @@ Refer [here](#project-structure) for the recommended file structure for your boo
 - [X] Author biography page template
 - [X] Customizable fonts for the main text, author name, and title
 
-#### Adds formatting to output (PDF and epub)
+#### Adds formatting to output (PDF and ePub)
 - [X] Adds header to start of chapters if missing (based on parent folder name)
 - [X] Formats start of chapter with drop cap and small caps
 - [X] Can convert `***` separators between scene breaks/POV changes with custom code (e.g., fleurons)
@@ -91,12 +92,12 @@ Every occurrence of an issue is reported, along with its file and line number.
 ## Building your Books
 
 ### Set Up a Book Project
-- Keep your project wherever you like. Refer [here](#project-structure) for a description of how your book project should be organized.
+- Keep your project wherever you like. Refer [here](#your-book-structure) for a description of how your book project should be organized.
 - Run "Config.ps1" on your book's folder:
 
       pwsh -File Config.ps1 -BookFolder /path/to/your/book
 
-  This adds a skeleton "config.yml" (if the book doesn't already have one) and a ".vscode/tasks.json" for building the book from VS Codium.
+  This adds a skeleton "config.yml" (if the book doesn't already have one) and a ".vscode/tasks.json" for building the book from VS Codium / VS Code.
   The "tasks.json" is replaced each time "Config.ps1" is run, so don't customize it.
   If the book already has its own "tasks.json", it is left as is.
 - Copy any custom fonts that you wish to use into the "Pandoc/fonts" folder.
@@ -114,6 +115,8 @@ The finished files are written to a "Fiction-Publisher-Output" folder inside you
 > **Note:** Each build deletes and recreates the "Fiction-Publisher-Output" folder, so don't keep anything else in it.
 (If a folder with that name already exists but wasn't created by a build, the build stops rather than deleting it.)
 If a build fails, its "build" subfolder is kept for troubleshooting. It contains the generated LaTeX pages and the processed markdown.
+
+Any formatting issues found in your source files are saved to `Fiction-Publisher-Output/<book> Format Warnings.log`.
 
 Any errors or warnings from Pandoc (including LaTeX errors and characters missing from a font) are saved to `Fiction-Publisher-Output/<book> Build Errors.log`.
 
@@ -137,6 +140,7 @@ Configure it first (this adds its VS Codium/VS Code build tasks), then build it 
 - Run the **Build Book** task (`Ctrl+Shift+B`, or `Cmd+Shift+B` on macOS): this will build the output and display any errors or formatting warnings.
   Formatting warnings for your source files are also listed in the Problems panel (with file and line number).
   Clicking a warning opens the file at that line.
+- Run the **Open Format Warnings Log** task to open the book's "Format Warnings.log".
 
 These tasks refer to "Build.ps1" by its full path, so if you move or update the "Fiction-Publisher" folder, run "Config.ps1" on the book again to update them.
 
@@ -151,16 +155,16 @@ The following can be specified in a book project's "config.yml" file (which shou
 ### Title & Author
 
 - **title**: Title of your book
-- **title-latex**: Latex formatted title (will override "title" value on the title and half-title pages of PDF output)
+- **title-latex**: LaTeX-formatted title (will override "title" value on the title and half-title pages of PDF output)
   - A `raggedrighttitle` environment is available for multi-line titles to make them ragged right. It takes a parameter specifying the width of the left and right margins.
-- **title-page-top-margin**: How much space should be above the title on the title page (default is 4cm). This is useful if you are needing to add illustrator information to the title page and need a smaller top margin to make it all fit on one page
+- **title-page-top-margin**: How much space should be above the title on the title page (default is 4cm). This is useful if you need to add illustrator information to the title page and need a smaller top margin to make it all fit on one page
 - **main-font**: The main body font for PDF output (can be a TTF/OTF filename in the "Pandoc/fonts" folder or font name). Default is Crimson Text
 - **main-font-bold**, **main-font-italic**, **main-font-bold-italic**: The bold, italic, and bold italic variants of **main-font** (TTF/OTF filenames in the "Pandoc/fonts" folder or font names).
   These are needed when **main-font** is a font file; an installed font name will find its variants automatically
-- **title-font** : The font for the book title on the title and half-title pages (can be a TTF/OTF filename in the "Pandoc/fonts" folder or font name)
+- **title-font**: The font for the book title on the title and half-title pages (can be a TTF/OTF filename in the "Pandoc/fonts" folder or font name)
 - **title-font-pointsize**: Font size of title in PDF output (default is 50)
 - **subtitle**: Optional subtitle
-- **subtitle-latex**: LaTeX formatted subtitle (will override "subtitle" value on the title page of PDF output)
+- **subtitle-latex**: LaTeX-formatted subtitle (will override "subtitle" value on the title page of PDF output)
 - **author**: Author name
 - **author-font**: The font for the author's name on the title page (can be a TTF/OTF filename in the "Pandoc/fonts" folder or font name)
 - **author-by-header**: The "By" label that appears above the author on the title page (default is blank)
@@ -180,11 +184,11 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 ### Cover
 
-- **cover-image**: The path to the EPUB cover image, relative to the book's folder (e.g., `images/cover.jpg` for "MyBook/images/cover.jpg")
+- **cover-image**: The path to the ePub cover image, relative to the book's folder (e.g., `images/cover.jpg` for "MyBook/images/cover.jpg")
 
 ### Copyright Page
 
-- **copyright-page**: Which copyright page template to use. Templates to select from are available in the "Pandoc\templates\copyright" folder (e.g., `creative-commons` and `commercial`)
+- **copyright-page**: Which copyright page template to use. Templates to select from are available in the "Pandoc/templates/copyright" folder (e.g., `creative-commons` and `commercial`)
 
 - **contributors**:
   - **designer**: Who designed your book/cover
@@ -199,10 +203,10 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 - **paperback-isbn-13**: Optional 13 digit ISBN of your paperback book
 - **hardcover-isbn-13**: Optional 13 digit ISBN of your hardcover book
-- **epub-isbn-13**: Optional 13 digit ISBN of your epub book
+- **epub-isbn-13**: Optional 13 digit ISBN of your ePub book
 - **paperback-isbn-10**: Optional 10 digit ISBN of your paperback book
 - **hardcover-isbn-10**: Optional 10 digit ISBN of your hardcover book
-- **epub-isbn-10**: Optional 10 digit ISBN of your epub book
+- **epub-isbn-10**: Optional 10 digit ISBN of your ePub book
 - **first-paperback-date**: Publication date of first paperback edition
 - **lcc-info-latex**: LaTeX-formatted Library of Congress Cataloging-in-Publication Data (used on PDF copyright page)
 - **lcc-info-html**: HTML-formatted Library of Congress Cataloging-in-Publication Data (used on ePub copyright page)
@@ -223,7 +227,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 ### Series Page
 
 - **series-book1**: 
-    - **title**: Optional books to include on the title page
+    - **title**: Optional books to include on the series page
     - **title-latex**: LaTeX-formatted title for PDF output (will override **title**)
     - **subtitle**: Subtitle of book
     - **subtitle-latex**: LaTeX-formatted subtitle of book (will override **subtitle**)
@@ -264,7 +268,7 @@ The following can be specified in a book project's "config.yml" file (which shou
   - naming its folder with only a number (e.g., `02`)
   - naming with a trailing hyphen (e.g., `02-`)
   - or by writing an empty top-level heading (`# `) in its first scene
-  The print PDF shows "Chapter N" via the chapter label, and the epub shows "Chapter N" as the heading and in the table of contents.
+  The print PDF shows "Chapter N" via the chapter label, and the ePub shows "Chapter N" as the heading and in the table of contents.
 
 - **drop-cap-style**: The drop cap style to use for first letter at the start of each chapter (`default`, `romance`, `blockletter`, `scifi`, `oldwest`, `none`)
 
@@ -285,15 +289,60 @@ The following can be specified in a book project's "config.yml" file (which shou
 ### Build Options
 
 - **build-draft**: `false` to not build a draft copy (`true` by default)
-- **build-epub**: `false` to not build an EPub file (`true` by default)
+- **build-epub**: `false` to not build an ePub file (`true` by default)
 - **build-amazon-epub**: `false` to not build the Amazon KDP ePub, `<book>-amazon.epub` (`true` by default)
 - **build-print**: `false` to not build a PDF file (`true` by default)
 
-## Project Structure
-The following is the folder structure for **Fiction Publisher** as well as the structure your book projects should be in:
+## Fiction Publisher Structure
+The following folders in "Fiction-Publisher" hold the resources that the build uses:
 
-### Your Book Folder
-This folder (kept outside of "Fiction-Publisher" and passed to the scripts with `-BookFolder`) holds your book project (preferably in [Manuskript](https://github.com/olivierkes/manuskript) format).
+![Fiction Publisher folder structure](docs/fiction-publisher-structure.svg)
+
+### Pandoc
+This directory holds the stylesheet, templates, and fonts used by Pandoc.
+
+#### Pandoc/css
+This is the stylesheet used when creating ePub and Amazon ePub files.
+
+#### Pandoc/templates
+This folder contains the custom templates Fiction-Publisher uses when converting files with Pandoc.
+The main templates are "custom-print.tex" (print PDF), "custom-epub.html" (ePub), and "draft.docx" (the reference document for the Word draft).
+
+##### Pandoc/templates/biography
+This folder contains the author biography page templates, which display the `author-bio` field from your **config.yml** file.
+
+##### Pandoc/templates/chapter-heading
+This folder contains the custom chapter heading templates (PDF only).
+You can select which template to use using the `chapter-heading` field in your **config.yml** file.
+
+##### Pandoc/templates/colophon
+This folder contains the colophon page template (PDF only), which is included when the `colophon` field in your **config.yml** file is `true`.
+
+##### Pandoc/templates/copyright
+This folder contains the custom copyright templates. You can select which template to use using the `copyright-page` field in your **config.yml** file.
+
+##### Pandoc/templates/half-titlepage
+This folder contains the half-title page template (PDF only).
+
+##### Pandoc/templates/seriespage
+This folder contains the series page templates (including the Amazon KDP version), which list the `series-book` entries from your **config.yml** file.
+
+#### Pandoc/fonts
+This folder contains any font files (TTF, OTF) you would like to use in your PDF output.
+
+The following fonts are included, licensed under the [SIL Open Font License](https://openfontlicense.org) (see the `*-OFL.txt` files):
+- [Crimson Text](https://github.com/googlefonts/Crimson): the default main font
+- [Orbitron](https://github.com/theleagueof/orbitron): used by the `scifi` drop cap and chapter heading styles
+- [Chunk Five](https://github.com/theleagueof/chunk): used by the `oldwest` drop cap style
+- [Miama Nueva](https://ctan.org/pkg/miama): used by the `romance-cursive` chapter heading style
+
+The following font is included, licensed under the [GUST Font License](http://www.gust.org.pl/fonts/licenses/GUST-FONT-LICENSE.txt):
+- [TeX Gyre Chorus](http://www.gust.org.pl/projects/e-foundry/tex-gyre): used by the `romance` drop cap style
+
+## Your Book Structure
+The following is the folder structure that your book projects should be in (i.e., [Manuskript](https://github.com/olivierkes/manuskript) format):
+
+![Book folder structure](docs/book-structure.svg)
 
 A book folder should have the following:
 
@@ -304,60 +353,40 @@ A book folder should have the following:
     - A chapter folder named "Prologue" or "Epilogue" (e.g., "00-Prologue") is an unnumbered chapter.
       Its title appears as is (with no "Chapter N" label) and in the TOC, and it isn't counted in the chapter numbering.
       Other names (e.g., "Interlude" or names in another language) can be set with **unnumbered-chapters** in "config.yml".
-      Any other chapter can be made unnumbered by adding `{-}` to the end of its heading (e.g., `# Prologue {-}`).
+      Any other chapter can be made unnumbered by adding `{-}` to the end of its heading (e.g., `# Interlude {-}`).
     - In each chapter folder, there should be a separate Markdown file for each scene. (A numeric prefix on these files will inform the build script of their order.) It is recommended to add a `***` at the end of each Markdown file (except for the last one) in a chapter if you wish to have scene separators added.
 
-#### Fiction-Publisher-Output
-This folder (created inside your book folder by "Build.ps1") holds your finished book in each format you've built, along with any format warnings log.
-
-### Pandoc
-This directory holds stuff that Pandoc needs.
-
-#### Pandoc/css
-This is the stylesheet used when creating epub and Amazon epub files.
-
-#### Pandoc/templates
-This folder contains the custom templates Fiction-Publisher uses when converting files with Pandoc.
-
-##### Pandoc/templates/bibliography
-This folder contains the custom bibliography templates.
-
-##### Pandoc/templates/biography
-This folder contains the custom biography templates.
-
-##### Pandoc/templates/copyright
-This folder contains the custom copyright templates. You can select which template to use using the `copyright-page` field in your **config.yml** file.
-
-#### Pandoc/fonts
-This folder contains any font files (TTF, OTF) you would like to use in your PDF output.
-
-The following fonts are included, all licensed under the [SIL Open Font License](https://openfontlicense.org) (see the `*-OFL.txt` files):
-- [Crimson Text](https://github.com/googlefonts/Crimson): the default main font
-- [Orbitron](https://github.com/theleagueof/orbitron): used by the `scifi` drop cap and chapter heading styles
-- [Chunk Five](https://github.com/theleagueof/chunk): used by the `oldwest` drop cap style
+### Fiction-Publisher-Output
+This folder holds your finished book in each format you've built, along with any "Format Warnings" and "Build Errors" logs (refer to [Build Your Book](#build-your-book) for details).
 
 ## Requirements
-Fiction Publisher needs the following tools to be installed in order to work:
+**Fiction Publisher** needs the following tools to be installed in order to work:
 
 ### Pandoc
-[Pandoc](http://pandoc.org/) - converts _from_ many file formats _to_ many other file formats. For our purposes, it converts our markdown files to epub and pdf.
+[Pandoc](http://pandoc.org/) - converts _from_ many file formats _to_ many other file formats.
+For our purposes, it converts our markdown files to ePub, PDF, and Word.
 
 ### LaTeX / TexLive / MiKTeX
 [LaTeX](https://www.latex-project.org/) - typesetting software that can output PDF files.
 
-The print templates use a number of LaTeX packages that a minimal install (e.g., TinyTeX) may not include.
+The print templates use a number of LaTeX packages that a minimal install (e.g., **TinyTeX**) may not include.
 Before building PDF, the script checks that the packages your book needs are installed.
 With TeX Live (including MacTeX and TinyTeX), it stops and shows the `tlmgr install` command for any that are missing.
 With MiKTeX, it shows a warning instead, since MiKTeX can install missing packages during the build.
 
 ### PowerShell 7
-[PowerShell 7](https://github.com/PowerShell/PowerShell) (`pwsh`) - runs the build scripts. On macOS use `brew install --cask powershell`; on Linux install it with your package manager (refer to the [install docs](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-linux)). Verify with `pwsh --version`.
+[PowerShell 7](https://github.com/PowerShell/PowerShell) (`pwsh`) - runs the build scripts.
+On macOS use `brew install --cask powershell`.
+On Linux install it with your package manager (refer to the [install docs](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-linux)).
+Verify with `pwsh --version`.
 
 ### EPUBCheck (optional)
-[EPUBCheck](https://www.w3.org/publishing/epubcheck/) - if installed (`epubcheck` on the PATH), the build will validate the generated ePub files and report any problems. If it isn't installed, this check is skipped.
+[EPUBCheck](https://www.w3.org/publishing/epubcheck/) - if installed (`epubcheck` on the PATH), the build will validate the generated ePub files and report any problems.
+If it isn't installed, this check is skipped.
 
 ### Ghostscript (optional)
-[Ghostscript](https://ghostscript.com/) - if installed (`gs` on Linux/macOS, `gswin64c` on Windows), the build will check the print PDF for an odd page count and fonts that are not embedded. If it isn't installed, these checks are skipped.
+[Ghostscript](https://ghostscript.com/) - if installed (`gs` on Linux/macOS, `gswin64c` on Windows), the build will check the print PDF for an odd page count and fonts that are not embedded.
+If it isn't installed, these checks are skipped.
 
 ### Fiction Publisher
 Git clone the [Fiction Publisher](https://github.com/Blake-Madden/Fiction-Publisher) repo.

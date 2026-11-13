@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="760" viewBox="0 0 820 760" role="img" aria-labelledby="title desc">
+  <title id="title">Fiction Publisher folder structure</title>
+  <desc id="desc">The layout of the Fiction-Publisher folder: VS Code tasks, docs, the Example book, and the Pandoc folder with its css, fonts, and templates subfolders, plus the Build.ps1 and Config.ps1 scripts and the config.yml schema.</desc>
+  <style>
+    .bg { fill: #ffffff; stroke: #d0d7de; }
+    .line { stroke: #8c959f; stroke-width: 1.5; fill: none; }
+    .folder { fill: #f2c55c; stroke: #b8860b; stroke-width: 1; }
+    .file { fill: #ffffff; stroke: #57606a; stroke-width: 1; }
+    .name { font: 14px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #1f2328; }
+    .note { font: 13px -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: #57606a; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0d1117; stroke: #30363d; }
+      .line { stroke: #6e7681; }
+      .folder { fill: #c9a227; stroke: #e3b341; }
+      .file { fill: #161b22; stroke: #8b949e; }
+      .name { fill: #e6edf3; }
+      .note { fill: #8b949e; }
+    }
+  </style>
+
+  <rect class="bg" x="0.5" y="0.5" width="819" height="759" rx="8"/>
+
+  <!-- tree connectors -->
+  <path class="line" d="M32 56 V720 M32 80 H49 M32 112 H49 M32 144 H49 M32 176 H49 M32 656 H49 M32 688 H49 M32 720 H49"/>
+  <path class="line" d="M60 184 V336 M60 208 H77 M60 272 H77 M60 336 H77"/>
+  <path class="line" d="M88 216 V240 H105"/>
+  <path class="line" d="M88 280 V304 H105"/>
+  <path class="line" d="M88 344 V624 M88 368 H105 M88 400 H105 M88 432 H105 M88 464 H105 M88 496 H105 M88 528 H105 M88 560 H105 M88 592 H105 M88 624 H105"/>
+
+  <!-- icons -->
+  <defs>
+    <path id="folder" d="M0 -6 h6 l2 2 h8 v10 h-16 z"/>
+    <path id="file" d="M2 -8 h8 l4 4 v12 h-12 z M10 -8 v4 h4"/>
+  </defs>
+  <use href="#folder" class="folder" x="24" y="48"/>
+  <use href="#folder" class="folder" x="52" y="80"/>
+  <use href="#folder" class="folder" x="52" y="112"/>
+  <use href="#folder" class="folder" x="52" y="144"/>
+  <use href="#folder" class="folder" x="52" y="176"/>
+  <use href="#folder" class="folder" x="80" y="208"/>
+  <use href="#file" class="file" x="108" y="240"/>
+  <use href="#folder" class="folder" x="80" y="272"/>
+  <use href="#file" class="file" x="108" y="304"/>
+  <use href="#folder" class="folder" x="80" y="336"/>
+  <use href="#folder" class="folder" x="108" y="368"/>
+  <use href="#folder" class="folder" x="108" y="400"/>
+  <use href="#folder" class="folder" x="108" y="432"/>
+  <use href="#folder" class="folder" x="108" y="464"/>
+  <use href="#folder" class="folder" x="108" y="496"/>
+  <use href="#folder" class="folder" x="108" y="528"/>
+  <use href="#file" class="file" x="108" y="560"/>
+  <use href="#file" class="file" x="108" y="592"/>
+  <use href="#file" class="file" x="108" y="624"/>
+  <use href="#file" class="file" x="52" y="656"/>
+  <use href="#file" class="file" x="52" y="688"/>
+  <use href="#file" class="file" x="52" y="720"/>
+
+  <!-- names -->
+  <text class="name" x="48" y="53" font-weight="bold">Fiction-Publisher/</text>
+  <text class="name" x="76" y="85">.vscode/</text>
+  <text class="name" x="76" y="117">docs/</text>
+  <text class="name" x="76" y="149">Example/</text>
+  <text class="name" x="76" y="181">Pandoc/</text>
+  <text class="name" x="104" y="213">css/</text>
+  <text class="name" x="132" y="245">style.css</text>
+  <text class="name" x="104" y="277">fonts/</text>
+  <text class="name" x="132" y="309">*.ttf, *.otf</text>
+  <text class="name" x="104" y="341">templates/</text>
+  <text class="name" x="132" y="373">biography/</text>
+  <text class="name" x="132" y="405">chapter-heading/</text>
+  <text class="name" x="132" y="437">colophon/</text>
+  <text class="name" x="132" y="469">copyright/</text>
+  <text class="name" x="132" y="501">half-titlepage/</text>
+  <text class="name" x="132" y="533">seriespage/</text>
+  <text class="name" x="132" y="565">custom-epub.html</text>
+  <text class="name" x="132" y="597">custom-print.tex</text>
+  <text class="name" x="132" y="629">draft.docx</text>
+  <text class="name" x="76" y="661">Build.ps1</text>
+  <text class="name" x="76" y="693">Config.ps1</text>
+  <text class="name" x="76" y="725">config.schema.json</text>
+
+  <!-- notes -->
+  <text class="note" x="330" y="53">This repository (clone it anywhere)</text>
+  <text class="note" x="330" y="85">VS Codium / VS Code tasks (Build Book, Configure Book)</text>
+  <text class="note" x="330" y="117">Images for this README</text>
+  <text class="note" x="330" y="149">Sample book with deliberate formatting mistakes</text>
+  <text class="note" x="330" y="181">Resources used by Pandoc and LaTeX</text>
+  <text class="note" x="330" y="213">Stylesheet for the ePub and Amazon ePub</text>
+  <text class="note" x="330" y="277">Bundled fonts; copy your own fonts here</text>
+  <text class="note" x="330" y="309">Font files, with *-OFL.txt license files</text>
+  <text class="note" x="330" y="341">Custom Pandoc templates</text>
+  <text class="note" x="330" y="373">Author biography page</text>
+  <text class="note" x="330" y="405">Styles for chapter-heading</text>
+  <text class="note" x="330" y="437">Colophon page (print only)</text>
+  <text class="note" x="330" y="469">Templates for copyright-page</text>
+  <text class="note" x="330" y="501">Half-title page (print only)</text>
+  <text class="note" x="330" y="533">Series pages, including the Amazon version</text>
+  <text class="note" x="330" y="565">ePub template</text>
+  <text class="note" x="330" y="597">Print PDF template</text>
+  <text class="note" x="330" y="629">Reference document for the Word draft</text>
+  <text class="note" x="330" y="661">Builds a book</text>
+  <text class="note" x="330" y="693">Sets up a book's config.yml and VS Code tasks</text>
+  <text class="note" x="330" y="725">Autocompletion and validation for config.yml</text>
+</svg>
