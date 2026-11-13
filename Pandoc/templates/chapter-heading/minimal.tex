@@ -1,0 +1,14 @@
+%%%%%%%%%%%%%%%%%%
+%% This part says to style the titles for "chapters"
+% \titleformat{\chapter}[display]
+
+% just used in colophon
+\let\chapterheaderfont\primaryfont
+\let\chapterheaderfontname\primaryfontname
+
+%% A very large bold chapter number on the left, with the title in letterspaced small caps underneath
+\titleformat{\chapter}[display]
+  {\raggedright\chapterheadingfont}%
+  {\fontsize{80}{80}\selectfont\bfseries\thechapter}%
+  {4mm}%
+  {\Large\scshape\addfontfeatures{LetterSpace=4}}

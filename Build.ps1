@@ -320,7 +320,10 @@ function Get-RequiredLatexPackages
     $tlPackageNames = @{ Romantik = 'cfr-initials'; calligra = 'fundus-calligra'; longtable = 'tools' }
     # files that a package needs from a different TeX Live package
     # (e.g., Romantik.sty is only a wrapper, the font itself comes from initials)
-    $extraFiles = @{ Romantik = [pscustomobject]@{ Sty = 'Romantik.fd'; TlPackage = 'initials' } }
+    $extraFiles = @{
+        Romantik = [pscustomobject]@{ Sty = 'Romantik.fd'; TlPackage = 'initials' }
+        calligra = [pscustomobject]@{ Sty = 'callig15.mf'; TlPackage = 'calligra' }
+        }
     return $packages | Select-Object -Unique | ForEach-Object {
         [pscustomobject]@{ Sty = "$_.sty"; TlPackage = If ($tlPackageNames.ContainsKey($_)) { $tlPackageNames[$_] } Else { $_ } }
         if ($extraFiles.ContainsKey($_))

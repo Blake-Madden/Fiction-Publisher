@@ -1,0 +1,14 @@
+%%%%%%%%%%%%%%%%%%
+%% This part says to style the titles for "chapters"
+% \titleformat{\chapter}[display]
+
+% just used in colophon
+\let\chapterheaderfont\primaryfont
+\let\chapterheaderfontname\primaryfontname
+
+%% "Chapter One" in small caps, a short thin rule, and the title in italics
+\titleformat{\chapter}[display]
+  {\filcenter\chapterheadingfont}%
+  {\Large\scshape\chaptertitlename\ \Numberstringnum{\thechapter}}%
+  {3mm}%
+  {\rule{2cm}{0.4pt}\endgraf\vspace{5mm}\itshape\huge}% (\endgraf, since titlesec doesn't allow \par here)
