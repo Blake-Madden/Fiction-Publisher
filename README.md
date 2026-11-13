@@ -38,6 +38,7 @@ Refer [here](#your-book-structure) for the recommended file structure for your b
   - [X] `romance-calligraphy`
   - [X] `romance-cursive`
   - [X] `scifi`
+  - [X] `oldwest`
   - [X] Or you can select styles from the [fncychap](https://www.ctan.org/pkg/fncychap) LaTeX package
 - [X] Drop cap styles (PDF only, ePub uses a simple default format)
   - [X] `default` (same font as the body text)
@@ -257,8 +258,10 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **inner-margin**: The inner/gutter margin in the print output
 - **outer-margin**: The outer margin in the print output
 
-- **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only). Styles include `Sonny`, `Lenny`, `Glenn`, `Conny`, `Rejne`, `Bjarne`, and `Bjornstrup`
-- **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive`, `scifi`). Note that using **fancy-chapter** will override this
+- **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only).
+  Styles include `Sonny`, `Lenny`, `Glenn`, `Conny`, `Rejne`, `Bjarne`, and `Bjornstrup`
+- **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive`, `scifi`, `oldwest`).
+  Note that using **fancy-chapter** will override this
 
 - **unnumbered-chapters**: Semicolon-separated list of chapter folder names (without the number prefix) that are unnumbered chapters, such as a prologue (default is `Prologue; Epilogue`).
   Names are case-insensitive, and underscores in folder names match spaces.
@@ -333,7 +336,7 @@ This folder contains any font files (TTF, OTF) you would like to use in your PDF
 The following fonts are included, licensed under the [SIL Open Font License](https://openfontlicense.org) (see the `*-OFL.txt` files):
 - [Crimson Text](https://github.com/googlefonts/Crimson): the default main font
 - [Orbitron](https://github.com/theleagueof/orbitron): used by the `scifi` drop cap and chapter heading styles
-- [Chunk Five](https://github.com/theleagueof/chunk): used by the `oldwest` drop cap style
+- [Chunk Five](https://github.com/theleagueof/chunk): used by the `oldwest` drop cap and chapter heading styles
 - [Miama Nueva](https://ctan.org/pkg/miama): used by the `romance-cursive` chapter heading style
 
 The following font is included, licensed under the [GUST Font License](http://www.gust.org.pl/fonts/licenses/GUST-FONT-LICENSE.txt):

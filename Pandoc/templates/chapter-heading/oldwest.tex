@@ -1,0 +1,16 @@
+%%%%%%%%%%%%%%%%%%
+%% This part says to style the titles for "chapters"
+% \titleformat{\chapter}[display]
+
+%% Old Western slab font
+\newfontfamily\chapterheaderfont{ChunkFive-Regular.ttf}
+\def\chapterheaderfontname{ChunkFive}
+
+%% "★ CHAPTER SEVEN ★", then the title between double rules (like a wanted poster).
+%% The rules are in the before/after code (not the label) so that unnumbered chapters get them too.
+\titleformat{\chapter}[display]
+  {\filcenter}%
+  {\chapterheaderfont\Large{\small\faStar}\hspace{2mm}\MakeUppercase{\chaptertitlename}\hspace{1ex}\NUMBERstringnum{\thechapter}\hspace{2mm}{\small\faStar}}%
+  {3mm}%
+  {\titlerule[0.8pt]\vspace{0.8mm}\titlerule[0.3pt]\vspace{4mm}\chapterheadingfont\huge}%
+  [{\vspace{2mm}\titlerule[0.3pt]\vspace{0.8mm}\titlerule[0.8pt]}]

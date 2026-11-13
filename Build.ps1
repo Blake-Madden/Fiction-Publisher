@@ -227,7 +227,7 @@ function Test-BookProject
     # chapter heading isn't used with fancy-chapter
     elseif (-not (Get-ConfigValue $lines 'fancy-chapter').Value)
         {
-        $chapterHeadingFonts = @{ 'romance-cursive' = 'miama.otf'; scifi = 'Orbitron-Bold.ttf' }
+        $chapterHeadingFonts = @{ 'romance-cursive' = 'miama.otf'; scifi = 'Orbitron-Bold.ttf'; oldwest = 'ChunkFive-Regular.ttf' }
         if ($buildPrint -and $chapterHeadingFonts.ContainsKey($chapterHeadingName) -and -not [IO.File]::Exists("$PSScriptRoot/Pandoc/fonts/$($chapterHeadingFonts[$chapterHeadingName])"))
             {
             $issues.Add([pscustomobject]@{ File = $configPath; Line = $chapterHeading.Line; Severity = 'error'; Message = "chapter-heading '$chapterHeadingName' requires '$($chapterHeadingFonts[$chapterHeadingName])' in 'Pandoc/fonts'." })

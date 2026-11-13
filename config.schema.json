@@ -161,7 +161,7 @@
         "chapter-heading": {
             "description": "Custom chapter heading theme (from Pandoc/templates/chapter-heading). Default is default.",
             "anyOf": [
-                { "enum": ["default", "romance-calligraphy", "romance-cursive", "scifi"] },
+                { "enum": ["default", "romance-calligraphy", "romance-cursive", "scifi", "oldwest"] },
                 { "type": ["string", "null"] }
             ]
         },
