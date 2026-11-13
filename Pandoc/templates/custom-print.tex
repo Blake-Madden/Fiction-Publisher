@@ -255,16 +255,17 @@ $if(drop-cap-style)$
 
 $endif$
 
-%% Set Main Fonts (Crimson Text, unless main-font is specified)
+%% Set Main Fonts (Cochineal, unless main-font is specified)
 $if(main-font)$
 \def\primaryfontfile{$main-font$}
 \def\primaryfontfeatures{$if(main-font-bold)$BoldFont = $main-font-bold$,$endif$$if(main-font-italic)$ItalicFont = $main-font-italic$,$endif$$if(main-font-bold-italic)$BoldItalicFont = $main-font-bold-italic$$endif$}
 \StrDel{$main-font$}{.ttf}[\primaryfontname]
 \StrDel{\primaryfontname}{.otf}[\primaryfontname]
 $else$
-\def\primaryfontfile{CrimsonText-Regular.ttf}
-\def\primaryfontfeatures{BoldFont = CrimsonText-Bold.ttf, ItalicFont = CrimsonText-Italic.ttf, BoldItalicFont = CrimsonText-BoldItalic.ttf}
-\def\primaryfontname{Crimson Text}
+% Cochineal is an extended version of Crimson with true small caps
+\def\primaryfontfile{Cochineal-Roman.otf}
+\def\primaryfontfeatures{BoldFont = Cochineal-Bold.otf, ItalicFont = Cochineal-Italic.otf, BoldItalicFont = Cochineal-BoldItalic.otf}
+\def\primaryfontname{Cochineal}
 $endif$
 
 % Runs a fontspec command (e.g., \setmainfont) with the primary font and its bold/italic variants

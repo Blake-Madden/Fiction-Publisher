@@ -39,7 +39,7 @@
         "title": { "$ref": "#/definitions/text", "description": "Title of your book." },
         "title-latex": { "$ref": "#/definitions/text", "description": "LaTeX-formatted title (overrides title on the title and half-title pages of PDF output). A raggedrighttitle environment is available for multi-line titles." },
         "title-page-top-margin": { "$ref": "#/definitions/length", "description": "Space above the title on the title page (default is 4cm)." },
-        "main-font": { "$ref": "#/definitions/text", "description": "Main body font for PDF output (a TTF/OTF filename in Pandoc/fonts, or a font name). Default is Crimson Text." },
+        "main-font": { "$ref": "#/definitions/text", "description": "Main body font for PDF output (a TTF/OTF filename in Pandoc/fonts, or a font name). Default is Cochineal." },
         "main-font-bold": { "$ref": "#/definitions/text", "description": "Bold variant of main-font (a TTF/OTF filename in Pandoc/fonts, or a font name). Needed when main-font is a font file." },
         "main-font-italic": { "$ref": "#/definitions/text", "description": "Italic variant of main-font (a TTF/OTF filename in Pandoc/fonts, or a font name). Needed when main-font is a font file." },
         "main-font-bold-italic": { "$ref": "#/definitions/text", "description": "Bold italic variant of main-font (a TTF/OTF filename in Pandoc/fonts, or a font name). Needed when main-font is a font file." },

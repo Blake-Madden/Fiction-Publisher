@@ -1,8 +1,11 @@
-Copyright 2010 The Crimson Text Project Authors (https://github.com/googlefonts/Crimson)
+Copyright (c) 2010-2014 Sebastian Kosch, with Reserved Font Name Crimson.
+
+Copyright (c) 2016--2021, Michael Sharpe (msharpe@ucsd.edu),
+with Reserved Font Name Cochineal.
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
-https://openfontlicense.org
+http://scripts.sil.org/OFL
 
 
 -----------------------------------------------------------
