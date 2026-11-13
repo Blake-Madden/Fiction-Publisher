@@ -266,7 +266,7 @@ function Test-BookProject
     return $issues
     }
 
-# Returns the LaTeX packages (.sty files) that the print templates load for this book, along with
+# Returns the LaTeX packages (.sty files, plus any other files they need) that the print templates load for this book, along with
 # the TeX Live package that provides each one. The templates are read (rather than keeping a separate list)
 # so that this stays up to date when a package is added to them.
 function Get-RequiredLatexPackages
@@ -318,8 +318,14 @@ function Get-RequiredLatexPackages
 
     # TeX Live packages that are named differently from their .sty file
     $tlPackageNames = @{ Romantik = 'cfr-initials'; calligra = 'fundus-calligra'; longtable = 'tools' }
+    # files that a package needs from a different TeX Live package
+    # (e.g., Romantik.sty is only a wrapper, the font itself comes from initials)
+    $extraFiles = @{ Romantik = [pscustomobject]@{ Sty = 'Romantik.fd'; TlPackage = 'initials' } }
     return $packages | Select-Object -Unique | ForEach-Object {
-        [pscustomobject]@{ Sty = "$_.sty"; TlPackage = If ($tlPackageNames.ContainsKey($_)) { $tlPackageNames[$_] } Else { $_ } } }
+        [pscustomobject]@{ Sty = "$_.sty"; TlPackage = If ($tlPackageNames.ContainsKey($_)) { $tlPackageNames[$_] } Else { $_ } }
+        if ($extraFiles.ContainsKey($_))
+            { $extraFiles[$_] }
+        }
     }
 
 # make sure the required tools are available before touching anything (e.g., previous output)

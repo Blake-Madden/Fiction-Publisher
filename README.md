@@ -39,6 +39,7 @@ Refer [here](#your-book-structure) for the recommended file structure for your b
   - [X] `romance-cursive`
   - [X] `scifi`
   - [X] `oldwest`
+  - [X] `blockletter`
   - [X] Or you can select styles from the [fncychap](https://www.ctan.org/pkg/fncychap) LaTeX package
 - [X] Drop cap styles (PDF only, ePub uses a simple default format)
   - [X] `default` (same font as the body text)
@@ -260,7 +261,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 - **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only).
   Styles include `Sonny`, `Lenny`, `Glenn`, `Conny`, `Rejne`, `Bjarne`, and `Bjornstrup`
-- **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive`, `scifi`, `oldwest`).
+- **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive`, `scifi`, `oldwest`, `blockletter`).
   Note that using **fancy-chapter** will override this
 
 - **unnumbered-chapters**: Semicolon-separated list of chapter folder names (without the number prefix) that are unnumbered chapters, such as a prologue (default is `Prologue; Epilogue`).
