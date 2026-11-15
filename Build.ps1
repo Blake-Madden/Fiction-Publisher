@@ -90,7 +90,13 @@ function Invoke-Pandoc
         {
         $outputIndex = [Array]::IndexOf($args, '-o')
         $target = If ($outputIndex -ge 0 -and $outputIndex + 1 -lt $args.Count) { Split-Path -Leaf $args[$outputIndex + 1] } Else { 'pandoc' }
-        @("== $target ==") + $messages + @('') | Out-File -Append -LiteralPath $buildLog
+        # xdvipdfmx (the PDF output driver) always prints "stdin -> ... bytes written" progress lines.
+        # These aren't warnings, so drop them to avoid a false-positive "pandoc reported warnings" message.
+        $realMessages = @($messages | Where-Object { $_ -notmatch '^stdin ->' -and $_ -notmatch '^\d+\s+bytes written$' -and $_ -notmatch '^(\[\d+\]\s*)+$' })
+        if ($realMessages.Count)
+            {
+            @("== $target ==") + $realMessages + @('') | Out-File -Append -LiteralPath $buildLog
+            }
         }
     if ($exitCode -ne 0)
         {
