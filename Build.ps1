@@ -816,12 +816,16 @@ foreach ($backmatterPage in @('afterword', 'acknowledgments', 'reading-group-gui
     # (pandoc writes an opening double quote as `` in LaTeX, so that is removed like a quotation mark)
     $latex = [IO.File]::ReadAllText("$buildDir/$backmatterPage.tex")
     $latex = Add-PrintDropCap $latex $dropCapStyle '(%%dropcap\r?\n)(?:``?)?'
+    # Acknowledgments template marks where its small-caps lead-in goes (the first four words)
+    $leadIn = "([\w'$sq2]+(?:[ \r\n]+[\w'$sq2]+){0,3})"
+    $latex = $latex -replace "(%%leadin\r?\n)$leadIn", '$1\textsc{\addfontfeature{LetterSpace=5}$2}'
     # Reading group guide styles the list numbers and spacing
     if ($backmatterPage -eq 'reading-group-guide')
         { $latex = $latex -replace '\\def\\labelenumi\{(.+)\}', '\def\labelenumi{\guidenumber{$1}}\guidelist' }
     [void] [IO.File]::WriteAllText("$buildDir/$backmatterPage.tex", $latex)
 
     $markdown = [IO.File]::ReadAllText("$buildDir/$backmatterPage.md")
+    $markdown = $markdown -replace "(<!--leadin-->[\r\n]+)$leadIn", '$1<span class="small-caps">$2</span>'
     [void] [IO.File]::WriteAllText("$buildDir/$backmatterPage.md", (Add-EpubDropCap $markdown '(<!--dropcap-->[\r\n]+)'))
     }
 
