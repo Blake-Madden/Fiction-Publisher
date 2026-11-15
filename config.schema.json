@@ -171,6 +171,11 @@
             "description": "Drop cap style for the first letter of each chapter (PDF only).",
             "enum": ["default", "romance", "blockletter", "scifi", "oldwest", "none", null]
         },
+        "page-number-position": {
+            "type": ["string", "null"],
+            "description": "Where page numbers appear (PDF only). Default is header.",
+            "enum": ["header", "bottom-center", "bottom-outer", null]
+        },
         "drop-cap-color": { "$ref": "#/definitions/text", "description": "Color of the drop cap, as a basic or named xcolor color (PDF only). Default is black." },
         "scene-separator-latex": { "$ref": "#/definitions/text", "description": "LaTeX code to replace *** between scenes (PDF output)." },
         "scene-separator-html": { "$ref": "#/definitions/text", "description": "HTML code to replace *** between scenes (ePub output)." },

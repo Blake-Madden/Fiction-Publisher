@@ -170,10 +170,17 @@ $endfor$
 %% Prevent headers from appearing on empty pages
 \usepackage{emptypage}
 
-%% Remove header/footer from the first page of every chapter
-\fancypagestyle{plain}{ 
+%% Page number placement (header, bottom-center, or bottom-outer)
+\def\pagenumberposition{$if(page-number-position)$$page-number-position$$else$header$endif$}
+\def\bottomcenter{bottom-center}
+\def\bottomouter{bottom-outer}
+
+%% Remove the header from the first page of every chapter (bottom page numbers are kept)
+\fancypagestyle{plain}{
 \fancyhf{} %remove/clear header/footer content
 \renewcommand{\headrulewidth}{0.0pt} %remove black line/"rule" from header
+\ifx\pagenumberposition\bottomcenter \fancyfoot[C]{\primaryfont \thepage}\fi
+\ifx\pagenumberposition\bottomouter \fancyfoot[RO,LE]{\primaryfont \thepage}\fi
 }
 
 %% Set the header height in: in, mm, cm, pt
@@ -571,8 +578,14 @@ $endif$
 % Chapter with no title shows only 'Chapter N', without a trailing ' -- '
 \renewcommand{\chaptermark}[1]{\markboth{\if\relax\detokenize{#1}\relax\@chapapp\ \thechapter\else\@chapapp\ \thechapter\ --\ {#1}\fi}{}}
 
-\fancyfoot[C]{} % remove numbered footers
-\fancyhead[RO,LE]{\primaryfont\bfseries \thepage} % add page numbers to the header
+\fancyhf{} % clear default header/footer content
+\ifx\pagenumberposition\bottomcenter
+  \fancyfoot[C]{\primaryfont \thepage}
+\else\ifx\pagenumberposition\bottomouter
+  \fancyfoot[RO,LE]{\primaryfont \thepage}
+\else
+  \fancyhead[RO,LE]{\primaryfont\bfseries \thepage} % add page numbers to the header
+\fi\fi
 \fancyhead[LO]{\primaryfont\bfseries \textsc \leftmark} % add subtitle to header
 \fancyhead[RE]{\primaryfont\bfseries \textsc \@title}
 \renewcommand{\headrulewidth}{0.0pt} 

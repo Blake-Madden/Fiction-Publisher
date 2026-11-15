@@ -255,6 +255,13 @@ function Test-BookProject
             }
         }
 
+    # page number placement
+    $pageNumberPosition = Get-ConfigValue $lines 'page-number-position'
+    if ($buildPrint -and $pageNumberPosition -and $pageNumberPosition.Value -notin 'header', 'bottom-center', 'bottom-outer')
+        {
+        $issues.Add([pscustomobject]@{ File = $configPath; Line = $pageNumberPosition.Line; Severity = 'warning'; Message = "page-number-position '$($pageNumberPosition.Value)' is not recognized (page numbers will be placed in the header)." })
+        }
+
     # ISBNs
     foreach ($format in 'paperback', 'hardcover', 'epub')
         {
