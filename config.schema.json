@@ -166,6 +166,7 @@
             ]
         },
         "chapter-name": { "$ref": "#/definitions/text", "description": "The word used for \"Chapter\" in chapter headings, running headers, and the ePub labels of chapters with no title (e.g., Kapitel). Default is Chapter." },
+        "chapter-number-words": { "type": ["boolean", "null"], "description": "Spell out chapter numbers in PDF headings and running headers (e.g., Chapter One). Default is false." },
         "drop-cap-style": {
             "type": ["string", "null"],
             "description": "Drop cap style for the first letter of each chapter (PDF only).",

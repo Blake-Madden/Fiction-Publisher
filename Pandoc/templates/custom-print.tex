@@ -349,6 +349,12 @@ $endif$
 % load the language's number words before the first chapter heading, since loading them inside a heading breaks its line
 \AtBeginDocument{\sbox0{\Numberstringnum{1}}}
 
+%% Chapter numbers in words ("Chapter One") or digits
+\newif\ifchapternumberwords
+$if(chapter-number-words)$\chapternumberwordstrue$endif$
+\newcommand{\chapternumber}{\ifchapternumberwords\Numberstringnum{\thechapter}\else\thechapter\fi}
+\newcommand{\CHAPTERNUMBER}{\ifchapternumberwords\NUMBERstringnum{\thechapter}\else\thechapter\fi}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%% TITLE SETTINGS
@@ -576,7 +582,7 @@ $endif$
 \pagestyle{fancy}
 %\renewcommand{\chaptermark}[1]{\markboth{#1}{}} % This removes the 'Chapter x' from the header
 % Chapter with no title shows only 'Chapter N', without a trailing ' -- '
-\renewcommand{\chaptermark}[1]{\markboth{\if\relax\detokenize{#1}\relax\@chapapp\ \thechapter\else\@chapapp\ \thechapter\ --\ {#1}\fi}{}}
+\renewcommand{\chaptermark}[1]{\markboth{\if\relax\detokenize{#1}\relax\@chapapp\ \chapternumber\else\@chapapp\ \chapternumber\ --\ {#1}\fi}{}}
 
 \fancyhf{} % clear default header/footer content
 \ifx\pagenumberposition\bottomcenter

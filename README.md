@@ -280,6 +280,7 @@ The following can be specified in a book project's "config.yml" file (which shou
   PDF output uses it in chapter headings and running headers.
   ePub output uses it for chapters with no title.
   Spelled-out numbers follow **lang**.
+- **chapter-number-words**: Set to `true` to spell out chapter numbers in PDF headings and running headers (e.g., "Chapter One"). Default is `false`.
 
 - **unnumbered-chapters**: Semicolon-separated list of chapter folder names (without the number prefix) that are unnumbered chapters, such as a prologue (default is `Prologue; Epilogue`).
   Names are case-insensitive, and underscores in folder names match spaces.
