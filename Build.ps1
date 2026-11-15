@@ -107,6 +107,45 @@ function Invoke-Pandoc
         }
     }
 
+# Adds a LaTeX drop cap to the first word after '$Prefix' (a regex with one group, by default a top-level heading).
+# Note that a leading quotation mark at start of paragraph will be removed, per Chicago Manual of Style.
+function Add-PrintDropCap
+    {
+    param([string]$Content, [string]$Style, [string]$Prefix = '(^[\s]*#[^\r\n]+[\r\n]+)')
+    $quote = "[$sq1'`"$q1$gm1 ]?"
+
+    # romance style is oblique, so need some special commands for certain letters to look nice
+    if ($Style -eq 'romance')
+        {
+        $Content = $Content -replace "$Prefix$quote([ACEIKLMRSTUXZ$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
+                            '$1\lettrine{$2}{$3}'
+
+        # 'G' has a lengthy descender with the font that we use for romance
+        $Content = $Content -replace "$Prefix$quote([G])([\w'$sq2]*[\s,])",
+                            '$1\lettrine[findent=.5em, nindent=0em, depth=1]{$2}{$3}'
+
+        $Content = $Content -replace "$Prefix$quote([BH])([\w'$sq2]*[\s,])",
+                            '$1\lettrine[findent=.5em, nindent=0em]{$2}{$3}'
+
+        $Content = $Content -replace "$Prefix$quote([DFJNOPQVWY])([\w'$sq2]*[\s,])",
+                            '$1\lettrine[findent=.5em, nindent=-.5em]{$2}{$3}'
+        }
+    elseif ($Style -ne 'none')
+        {
+        $Content = $Content -replace "$Prefix$quote([A-Z$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
+                            '$1\lettrine{$2}{$3}'
+        }
+    return $Content
+    }
+
+# Adds an HTML drop cap and small caps to the first word after '$Prefix' (a regex with one group, by default a top-level heading).
+function Add-EpubDropCap
+    {
+    param([string]$Content, [string]$Prefix = '(^[\s]*#[^\r\n]+[\r\n]+)')
+    return $Content -replace "$Prefix([$sq1'`"$q1$gm1 ]?[A-Z$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
+                             '$1<span class="drop-caps">$2</span><span class="small-caps">$3</span>'
+    }
+
 # Prints a warning in the "<path>(<line>): warning: <message>" format that the
 # "Build Book" task's problem matcher recognizes, so that it appears in VS Code's Problems pane.
 # (A plain Write-Warning renders as "WARNING: ..." with no file or line, which the matcher can't parse.)
@@ -753,7 +792,7 @@ Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$bu
        --template="$PSScriptRoot/Pandoc/templates/chapter-heading/$chapterHeading.tex" "$buildDir/dummy.txt"
 
 # Create the author biography file to insert into the print
-# TODO: need to be able to exclude this from hardcover editions via metadata
+# TODO: need to be able to exclude this from hardcover editions via metadata because there they go on the dustjacket
 Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/bio.tex" -t latex `
        --template="$PSScriptRoot/Pandoc/templates/biography/bio.tex" "$buildDir/dummy.txt"
 
@@ -761,6 +800,29 @@ Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$bu
 Invoke-Pandoc --metadata-file "$bookDir/config.yml" -o "$buildDir/bio.md" `
        --template="$PSScriptRoot/Pandoc/templates/biography/bio.md" `
        "$buildDir/dummy.txt"
+
+# Create the backmatter pages for print and epub
+$dropCapStyle = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^drop-cap-style:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
+foreach ($backmatterPage in @('afterword', 'acknowledgments', 'reading-group-guide', 'excerpt'))
+    {
+    Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/$backmatterPage.tex" -t latex `
+           --template="$PSScriptRoot/Pandoc/templates/backmatter/$backmatterPage.tex" "$buildDir/dummy.txt"
+    # Not wrapped, so that a long heading stays on one line with its attributes
+    Invoke-Pandoc --wrap=none --metadata-file "$bookDir/config.yml" -o "$buildDir/$backmatterPage.md" `
+           --template="$PSScriptRoot/Pandoc/templates/backmatter/$backmatterPage.md" "$buildDir/dummy.txt"
+
+    # Afterword and excerpt templates mark where a drop cap goes
+    # (pandoc writes an opening double quote as `` in LaTeX, so that is removed like a quotation mark)
+    $latex = [IO.File]::ReadAllText("$buildDir/$backmatterPage.tex")
+    $latex = Add-PrintDropCap $latex $dropCapStyle '(%%dropcap\r?\n)(?:``?)?'
+    # Reading group guide styles the list numbers and spacing
+    if ($backmatterPage -eq 'reading-group-guide')
+        { $latex = $latex -replace '\\def\\labelenumi\{(.+)\}', '\def\labelenumi{\guidenumber{$1}}\guidelist' }
+    [void] [IO.File]::WriteAllText("$buildDir/$backmatterPage.tex", $latex)
+
+    $markdown = [IO.File]::ReadAllText("$buildDir/$backmatterPage.md")
+    [void] [IO.File]::WriteAllText("$buildDir/$backmatterPage.md", (Add-EpubDropCap $markdown '(<!--dropcap-->[\r\n]+)'))
+    }
 
 # format for print (i.e., LaTeX) conversion
 If ($buildPrint -ne "false")
@@ -781,32 +843,7 @@ If ($buildPrint -ne "false")
             }
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
-        # Note that a leading quotation mark at start of paragraph will be removed, per Chicago Manual of Style
-        $dropCapStyle = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^drop-cap-style:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
-
-        # romance style is oblique, so need some special commands for certain letters to look nice
-        if ($dropCapStyle -eq 'romance')
-          {
-          $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([ACEIKLMRSTUXZ$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
-                              '$1\lettrine{$2}{$3}'
-
-          # 'G' has a lengthy descender with the font that we use for romance
-          $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([G])([\w'$sq2]*[\s,])",
-                              '$1\lettrine[findent=.5em, nindent=0em, depth=1]{$2}{$3}'
-
-          $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([BH])([\w'$sq2]*[\s,])",
-                              '$1\lettrine[findent=.5em, nindent=0em]{$2}{$3}'
-
-          $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([DFJNOPQVWY])([\w'$sq2]*[\s,])",
-                              '$1\lettrine[findent=.5em, nindent=-.5em]{$2}{$3}'
-          }
-        elseif ($dropCapStyle -eq 'none')
-          {} # noop
-        else
-          {
-          $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)[$sq1'`"$q1$gm1 ]?([A-Z$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
-                              '$1\lettrine{$2}{$3}'
-          }
+        $content = Add-PrintDropCap $content $dropCapStyle
 
         # CriticMarkup
         # (deleted text can contain dashes, so match up to the first closing "--}")
@@ -866,8 +903,7 @@ If ($buildEpub -ne "false")
             }
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
-        $content = $content -replace "(^[\s]*#[^\r\n]+[\r\n]+)([$sq1'`"$q1$gm1 ]?[A-Z$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
-                                     '$1<span class="drop-caps">$2</span><span class="small-caps">$3</span>'
+        $content = Add-EpubDropCap $content
 
         # CriticMarkup
         $content = $content -replace '({--)([\s\S]*?)(--})', '<del>$2</del>' # deletion
@@ -895,7 +931,8 @@ If ($buildEpub -ne "false")
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName.epub" `
            "$buildDir/copyright.md" $includeSeriesPageEpub `
            $epubMdFiles `
-           "$buildDir/bio.md"
+           "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
+           "$buildDir/bio.md" "$buildDir/excerpt.md"
     }
 
 # Amazon (KDP) epub; same as the standard epub, except for the Amazon-specific series page
@@ -909,7 +946,8 @@ If ($buildEpub -ne "false" -and $buildAmazonEpub -ne "false")
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName-amazon.epub" `
            "$buildDir/copyright.md" $includeSeriesPageAmazonEpub `
            $epubMdFiles `
-           "$buildDir/bio.md"
+           "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
+           "$buildDir/bio.md" "$buildDir/excerpt.md"
     }
 
 # Optional epub validation

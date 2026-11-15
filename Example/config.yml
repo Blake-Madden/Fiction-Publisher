@@ -10,6 +10,25 @@ year: 2026
 rights: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 dedication: Dedicated to everyone who has ever started a story with the weather.
 toc: false
+afterword: |
+  Every writer is told never to open a story with the weather. This one does anyway, because some nights the weather is the story.
+
+  The harbor house is imaginary, but the storm is not. Anyone who has lain awake listening to a gale worry at the shutters will know it well.
+acknowledgments: |
+  Thanks to everyone who read the early drafts by candlelight, to the editor who let the first line stand, and to the storm, which arrived on schedule.
+reading-group-guide: |
+  1. Why does Mabel hear the knocking when Harold does not?
+  2. What does the *Gazette* represent to Harold?
+  3. Is the voice at the door a threat, a warning, or something else?
+  4. Why might the story end at morning rather than at the door?
+author-bio: |
+  A. N. Author writes stories that begin with the weather. They live by the sea, where the storms are frequent and the shutters are loud.
+excerpt-title: A Bright and Sunny Morning
+excerpt: |
+  The storm had gone, and the harbor was so still that Mabel could see the masts of the fishing boats twice: once in the air, and once in the water.
+
+  She found the footprints on the porch an hour later. They led up to the door, and they did not lead away.
+excerpt-note: Coming Soon
 emphasis-check: Gazette
 identifier:
     - scheme: UUID

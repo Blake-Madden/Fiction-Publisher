@@ -1,0 +1,17 @@
+$if(reading-group-guide)$
+\backmattertitle{Reading Group Guide}
+\label{reading-group-guide}
+
+{\centering\itshape Questions and Topics for Discussion\par}
+\vspace{18pt}
+
+\begingroup
+% the build wraps the list numbers in \guidenumber and adds \guidelist to the list
+\newcommand{\guidenumber}[1]{{\bfseries #1}}
+\newcommand{\guidelist}{\setlength{\itemsep}{10pt}\setlength{\parskip}{0pt}}
+\let\tightlist\relax
+$reading-group-guide$
+
+\backmatterend
+\endgroup
+$endif$

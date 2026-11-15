@@ -1,0 +1,22 @@
+$if(excerpt)$
+$if(excerpt-title)$
+\backmatterpreviewtitle{A Preview of}{$excerpt-title$}
+$else$
+\backmattertitle{Excerpt}
+$endif$
+\label{excerpt}
+
+\begingroup
+\setlength{\parindent}{1.5em}
+% the build adds a drop cap to the paragraph after the marker below
+\noindent
+%%dropcap
+$excerpt$
+
+\backmatterend
+$if(excerpt-note)$
+\vspace{6pt}
+{\centering\itshape $excerpt-note$\par}
+$endif$
+\endgroup
+$endif$

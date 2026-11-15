@@ -60,6 +60,7 @@ Refer [here](#your-book-structure) for the recommended file structure for your b
 - [X] Series page template
 - [X] Colophon page template (PDF only, details typesetting information)
 - [X] Author biography page template
+- [X] Afterword, acknowledgments, reading group guide, and excerpt page templates
 - [X] Customizable fonts for the main text, author name, and title
 
 #### Adds formatting to output (PDF and ePub)
@@ -261,8 +262,19 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 - **colophon**: Whether to include a colophon page (detailing typesetting information) in the print output
 
-### Author Bio
+### Backmatter
+These pages follow the story in this order. A page is left out if its value isn't set.
+Values are Markdown, so use a YAML block (`|`) for multiple paragraphs.
+
+- **afterword**: Afterword, which opens with a drop cap and is signed by the author
+- **acknowledgments**: Acknowledgments
+- **reading-group-guide**: Discussion questions, written as a numbered list
 - **author-bio**: Author biography
+- **excerpt**: Opening of your next book, which starts with a drop cap
+- **excerpt-title**: Title of the book that the excerpt is from
+- **excerpt-note**: Line shown after the excerpt (e.g., `Coming Soon`)
+
+The colophon is the last page of the print output.
 
 ### Page Formatting
 - **paper-height**: The height of the paper for print output (the default papersize is 6x9 inches)
@@ -334,6 +346,9 @@ This is the stylesheet used when creating ePub and Amazon ePub files.
 #### Pandoc/templates
 This folder contains the custom templates Fiction-Publisher uses when converting files with Pandoc.
 The main templates are "custom-print.tex" (print PDF), "custom-epub.html" (ePub), and "draft.docx" (the reference document for the Word draft).
+
+##### Pandoc/templates/backmatter
+This folder contains the afterword, acknowledgments, reading group guide, and excerpt page templates, which display those fields from your **config.yml** file.
 
 ##### Pandoc/templates/biography
 This folder contains the author biography page templates, which display the `author-bio` field from your **config.yml** file.

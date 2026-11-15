@@ -146,6 +146,12 @@
         "colophon": { "$ref": "#/definitions/switch", "description": "Whether to include a colophon page (typesetting information) in the print output." },
 
         "author-bio": { "$ref": "#/definitions/text", "description": "Author biography." },
+        "afterword": { "$ref": "#/definitions/text", "description": "Afterword text (Markdown)." },
+        "acknowledgments": { "$ref": "#/definitions/text", "description": "Acknowledgments text (Markdown)." },
+        "reading-group-guide": { "$ref": "#/definitions/text", "description": "Reading group discussion questions, as a numbered Markdown list." },
+        "excerpt": { "$ref": "#/definitions/text", "description": "Excerpt from the next book (Markdown)." },
+        "excerpt-title": { "$ref": "#/definitions/text", "description": "Title of the book that the excerpt is from." },
+        "excerpt-note": { "$ref": "#/definitions/text", "description": "Closing line after the excerpt, such as \"Coming Soon\"." },
 
         "paper-height": { "$ref": "#/definitions/length", "description": "Paper height for print output (default paper size is 6x9 inches)." },
         "paper-width": { "$ref": "#/definitions/length", "description": "Paper width for print output." },

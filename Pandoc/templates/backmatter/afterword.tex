@@ -1,0 +1,17 @@
+$if(afterword)$
+\backmattertitle{Afterword}
+\label{afterword}
+
+\begingroup
+\setlength{\parindent}{1.5em}
+% the build adds a drop cap to the paragraph after the marker below
+\noindent
+%%dropcap
+$afterword$
+
+\vspace{12pt}
+\begin{flushright}
+\itshape --- $for(author)$$author$$sep$, $endfor$
+\end{flushright}
+\endgroup
+$endif$

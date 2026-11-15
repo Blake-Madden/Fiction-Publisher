@@ -630,14 +630,50 @@ $endif$
 % Don't indent new paragraphs
 \setlength{\parindent}{0mm}
 
+% Ornament rule under a backmatter page title
+\newcommand{\backmatterornament}{%
+  {\centering\rule[0.5ex]{2cm}{0.4pt}\hspace{0.8em}{\large\adforn{21}}\hspace{0.8em}\rule[0.5ex]{2cm}{0.4pt}\par}%
+  \vspace{20pt}}
+
+% Ornament that closes a backmatter page
+\newcommand{\backmatterend}{\par\vspace{18pt}{\centering\large\adforn{36}\par}}
+
+% Backmatter page title: letter-spaced capitals with an ornament rule beneath
+\newcommand{\backmattertitle}[1]{%
+  \vspace*{120pt}%
+  {\centering\chapterheadingfont\bfseries\Large\addfontfeature{LetterSpace=10}\MakeTextUppercase{#1}\par}%
+  \vspace{12pt}%
+  \backmatterornament}
+
+% Backmatter title for a book preview: small-caps kicker above the book's title
+\newcommand{\backmatterpreviewtitle}[2]{%
+  \vspace*{100pt}%
+  {\centering{\primaryfont\scshape\addfontfeature{LetterSpace=8}\MakeTextLowercase{#1}}\par
+   \vspace{10pt}%
+   {\titlefont\huge #2}\par}%
+  \vspace{12pt}%
+  \backmatterornament}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Create the colophon
+%% Create the afterword, acknowledgments, and reading group guide
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-$if(colophon)$
-\input{colophon.tex}
+$if(afterword)$
+\input{afterword.tex}
+
+\clearpage{\thispagestyle{empty}\cleardoublepage}
+$endif$
+
+$if(acknowledgments)$
+\input{acknowledgments.tex}
+
+\clearpage{\thispagestyle{empty}\cleardoublepage}
+$endif$
+
+$if(reading-group-guide)$
+\input{reading-group-guide.tex}
 
 \clearpage{\thispagestyle{empty}\cleardoublepage}
 $endif$
@@ -648,9 +684,35 @@ $endif$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+$if(author-bio)$
 \input{bio.tex}
 
+\clearpage{\thispagestyle{empty}\cleardoublepage}
+$endif$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create the excerpt of the next book
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+$if(excerpt)$
+\input{excerpt.tex}
+
+\clearpage{\thispagestyle{empty}\cleardoublepage}
+$endif$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create the colophon (last page of the book)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+$if(colophon)$
+\input{colophon.tex}
+
 \clearpage
+$endif$
 
 % Include any additional content from the metadata
 $include-after$
