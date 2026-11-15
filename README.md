@@ -292,6 +292,7 @@ The following can be specified in a book project's "config.yml" file (which shou
   The print PDF shows "Chapter N" via the chapter label, and the ePub shows "Chapter N" as the heading and in the table of contents.
 
 - **drop-cap-style**: The drop cap style to use for first letter at the start of each chapter (`default`, `romance`, `blockletter`, `scifi`, `oldwest`, `none`)
+- **drop-cap-color**: The color of the drop cap, such as `LightGray` or `MidnightBlue`. Named colors from `xcolor`'s `dvipsnames`/`svgnames` sets are supported. Default is `black`.
 
 - **scene-separator-latex**: LaTeX code to replace `***` sequences between scenes (used for PDF output)
 - **scene-separator-html**: HTML code to replace `***` sequences between scenes (used for ePub output)
