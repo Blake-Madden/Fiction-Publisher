@@ -149,6 +149,7 @@
         "afterword": { "$ref": "#/definitions/text", "description": "Afterword text (Markdown)." },
         "acknowledgments": { "$ref": "#/definitions/text", "description": "Acknowledgments text (Markdown)." },
         "reading-group-guide": { "$ref": "#/definitions/text", "description": "Reading group discussion questions, as a numbered Markdown list." },
+        "reading-group-intro": { "$ref": "#/definitions/text", "description": "Introduction shown above the reading group questions (Markdown)." },
         "excerpt": { "$ref": "#/definitions/text", "description": "Excerpt from the next book (Markdown)." },
         "excerpt-title": { "$ref": "#/definitions/text", "description": "Title of the book that the excerpt is from." },
         "excerpt-note": { "$ref": "#/definitions/text", "description": "Closing line after the excerpt, such as \"Coming Soon\"." },

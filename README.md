@@ -269,6 +269,7 @@ Values are Markdown, so use a YAML block (`|`) for multiple paragraphs.
 - **afterword**: Afterword, which opens with a drop cap and is signed by the author
 - **acknowledgments**: Acknowledgments
 - **reading-group-guide**: Discussion questions, written as a numbered list
+- **reading-group-intro**: Introduction shown above the questions
 - **author-bio**: Author biography
 - **excerpt**: Opening of your next book, which starts with a drop cap
 - **excerpt-title**: Title of the book that the excerpt is from
