@@ -1,15 +1,13 @@
 $if(afterword)$
-# Afterword {#afterword .backmatter}
-
-::: bm-ornament
-❦
-:::
+# Afterword {#afterword .backmatter .letter}
 
 <!--dropcap-->
 
 $afterword$
 
 ::: signoff
-— $for(author)$$author$$sep$, $endfor$
+❧
+
+$for(author)$$author$$sep$, $endfor$
 :::
 $endif$

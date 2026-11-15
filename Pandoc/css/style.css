@@ -69,7 +69,10 @@ table {margin-left: auto; margin-right: auto; margin-top: 10px;}
 .kicker { display: block; font-size: 0.55em; font-weight: normal; letter-spacing: 0.15em; margin-bottom: 0.5em; }
 .bm-ornament p { text-align: center; text-indent: 0; margin: 0.75em 0 1.25em 0; }
 .bm-subtitle p { text-align: center; text-indent: 0; margin-top: 0.5em; }
-.signoff p { text-align: right; text-indent: 0; font-style: italic; margin-top: 1em; }
+.letter h1, h1.letter { text-align: left; }
+.letter h1::after, h1.letter::after { content: ""; display: block; width: 4em; border-bottom: 3px solid; margin-top: 0.3em; }
+.signoff p { text-align: right; text-indent: 0; font-variant: small-caps; letter-spacing: 0.08em; margin: 0; }
+.signoff p:first-child { font-size: 1.5em; margin-top: 1em; }
 .acknowledgments { font-size: 0.9em; line-height: 1.4; }
 .guide ol { padding-left: 2em; }
 .guide li { margin-bottom: 0.75em; }

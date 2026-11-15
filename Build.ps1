@@ -375,6 +375,7 @@ function Get-RequiredLatexPackages
     $extraFiles = @{
         Romantik = [pscustomobject]@{ Sty = 'Romantik.fd'; TlPackage = 'initials' }
         calligra = [pscustomobject]@{ Sty = 'callig15.mf'; TlPackage = 'calligra' }
+        pgfornament = [pscustomobject]@{ Sty = 'pgfopts.sty'; TlPackage = 'pgfopts' }
         }
     # babel is loaded with a template variable, so it's skipped above
     $packages += 'babel'

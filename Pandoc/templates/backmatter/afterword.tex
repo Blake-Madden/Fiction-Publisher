@@ -1,5 +1,5 @@
 $if(afterword)$
-\backmattertitle{Afterword}
+\backmatterlefttitle{Afterword}
 \label{afterword}
 
 \begingroup
@@ -9,9 +9,11 @@ $if(afterword)$
 %%dropcap
 $afterword$
 
-\vspace{12pt}
+\vspace{24pt}
 \begin{flushright}
-\itshape --- $for(author)$$author$$sep$, $endfor$
+\pgfornament[width=3cm]{75}\par
+\vspace{6pt}
+{\scshape\addfontfeature{LetterSpace=6}\MakeTextLowercase{$for(author)$$author$$sep$, $endfor$}}
 \end{flushright}
 \endgroup
 $endif$

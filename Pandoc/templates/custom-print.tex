@@ -222,6 +222,9 @@ $endfor$
 \usepackage{tikz}
 \usetikzlibrary{backgrounds,calc,decorations.pathmorphing}
 
+%% Vector ornaments for the backmatter pages
+\usepackage{pgfornament}
+
 %% Add support for strikethrough (\st{} command)
 \usepackage{soul}
 
@@ -644,6 +647,14 @@ $endif$
   {\centering\chapterheadingfont\bfseries\Large\addfontfeature{LetterSpace=10}\MakeTextUppercase{#1}\par}%
   \vspace{12pt}%
   \backmatterornament}
+
+% Backmatter title set flush left over a heavy short rule, like a letter's heading
+\newcommand{\backmatterlefttitle}[1]{%
+  \vspace*{100pt}%
+  {\raggedright\chapterheadingfont\bfseries\LARGE\addfontfeature{LetterSpace=8}\MakeTextUppercase{#1}\par}%
+  \vspace{8pt}%
+  {\raggedright\rule{4em}{3pt}\par}%
+  \vspace{36pt}}
 
 % Backmatter title for a book preview: small-caps kicker above the book's title
 \newcommand{\backmatterpreviewtitle}[2]{%
