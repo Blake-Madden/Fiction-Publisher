@@ -166,7 +166,11 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 - **title**: Title of your book
 - **title-latex**: LaTeX-formatted title (will override "title" value on the title and half-title pages of PDF output)
+  - The value is inserted as raw LaTeX, so you have full control over formatting (color, italics, small caps, line breaks, etc.). The configured title font and `title-font-pointsize` are still applied around it.
   - A `raggedrighttitle` environment is available for multi-line titles to make them ragged right. It takes a parameter specifying the width of the left and right margins.
+  - Quote the value in `config.yml` (single quotes are safest) so backslashes and special characters (`&`, `\\`, `%`, etc.) survive YAML parsing.
+  - Named colors (e.g., `MidnightBlue`, `ForestGreen`) are available via `xcolor`'s `dvipsnames`/`svgnames` sets; basic colors (`red`, `blue`, ...) always work.
+  - For the subtitle, **subtitle-latex** works the same way (raw LaTeX, no wrapper).
 - **title-page-top-margin**: How much space should be above the title on the title page (default is 4cm). This is useful if you need to add illustrator information to the title page and need a smaller top margin to make it all fit on one page
 - **main-font**: The main body font for PDF output (can be a TTF/OTF filename in the "Pandoc/fonts" folder or font name). Default is Cochineal
 - **main-font-bold**, **main-font-italic**, **main-font-bold-italic**: The bold, italic, and bold italic variants of **main-font** (TTF/OTF filenames in the "Pandoc/fonts" folder or font names).
