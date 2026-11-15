@@ -1,0 +1,29 @@
+%%%%%%%%%%%%%%%%%%
+%% This part says to style the titles for "chapters"
+% \titleformat{\chapter}[display]
+
+% just used in colophon
+\let\chapterheaderfont\primaryfont
+\let\chapterheaderfontname\primaryfontname
+
+%% "Side-by-side": chapter number on the left, title on the right, vertical rule between
+
+%% Only draws the divider when there's a title to divide from
+\newcommand\sidebysidetitle[1]{%
+  \if\relax\detokenize{#1}\relax\else
+    \hfill\rule[-0.25em]{0.4pt}{1.8em}\hfill#1%
+  \fi}
+
+%% Numbered chapters: number, then divider and title (if any)
+\titleformat{\chapter}[block]
+  {\Huge\bfseries}%
+  {\thechapter}%
+  {0pt}%
+  {\sidebysidetitle}
+
+%% Unnumbered chapters (e.g., prologue): centered title only, no divider
+\titleformat{name=\chapter,numberless}[block]
+  {\filcenter\Huge\bfseries}%
+  {}%
+  {0pt}%
+  {}

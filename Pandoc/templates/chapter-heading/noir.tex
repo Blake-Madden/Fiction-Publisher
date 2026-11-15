@@ -1,0 +1,14 @@
+%%%%%%%%%%%%%%%%%%
+%% This part says to style the titles for "chapters"
+% \titleformat{\chapter}[display]
+
+% just used in colophon
+\let\chapterheaderfont\primaryfont
+\let\chapterheaderfontname\primaryfontname
+
+%% "Noir": typewriter/manuscript look -- monospaced, centered, plain
+\titleformat{\chapter}[display]
+  {\ttfamily\filcenter}%
+  {\Large \MakeUppercase{\chaptertitlename}\ \thechapter}%
+  {4mm}%
+  {\huge}

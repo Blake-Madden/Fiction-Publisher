@@ -1,0 +1,14 @@
+%%%%%%%%%%%%%%%%%%
+%% This part says to style the titles for "chapters"
+% \titleformat{\chapter}[display]
+
+% just used in colophon
+\let\chapterheaderfont\primaryfont
+\let\chapterheaderfontname\primaryfontname
+
+%% "Watermark": a huge, very light chapter number behind/above the title
+\titleformat{\chapter}[display]
+  {\filcenter}%
+  {\fontsize{130}{130}\selectfont\color{black!15}\thechapter}%
+  {-2.6cm}%
+  {\huge\chapterheadingfont}

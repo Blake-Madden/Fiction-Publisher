@@ -43,6 +43,11 @@ Refer [here](#your-book-structure) for the recommended file structure for your b
   - [X] `classic`
   - [X] `minimal`
   - [X] `fantasy`
+  - [X] `noir`
+  - [X] `watermark`
+  - [X] `art-deco`
+  - [X] `side-by-side`
+  - [X] `marker`
   - [X] Or you can select styles from the [fncychap](https://www.ctan.org/pkg/fncychap) LaTeX package
 - [X] Drop cap styles (PDF only, ePub uses a simple default format)
   - [X] `default` (same font as the body text)

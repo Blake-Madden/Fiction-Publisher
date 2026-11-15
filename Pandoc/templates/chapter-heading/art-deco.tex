@@ -1,0 +1,14 @@
+%%%%%%%%%%%%%%%%%%
+%% This part says to style the titles for "chapters"
+% \titleformat{\chapter}[display]
+
+% just used in colophon
+\let\chapterheaderfont\primaryfont
+\let\chapterheaderfontname\primaryfontname
+
+%% "Art Deco": letterspaced small caps with thin horizontal rules
+\titleformat{\chapter}[display]
+  {\filcenter\chapterheadingfont}%
+  {\Large\scshape\addfontfeatures{LetterSpace=8}\chaptertitlename\ \Numberstringnum{\thechapter}}%
+  {2mm}%
+  {\rule{0.6\textwidth}{0.4pt}\endgraf\vspace{4mm}\Huge\scshape\addfontfeatures{LetterSpace=6}}

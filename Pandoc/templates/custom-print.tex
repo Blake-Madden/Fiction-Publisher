@@ -211,6 +211,10 @@ $endfor$
 %% Color macros for fonts
 \usepackage{xcolor}
 
+%% TikZ (for hand-drawn marker highlights and ornaments)
+\usepackage{tikz}
+\usetikzlibrary{backgrounds,calc,decorations.pathmorphing}
+
 %% Add support for strikethrough (\st{} command)
 \usepackage{soul}
 
@@ -342,6 +346,17 @@ $endif$
 %% Needed for styling chapter title headings
 \usepackage{titlesec}
 \usepackage{fp}
+
+%% Hand-drawn "marker" highlight: a single-line highlight with wavy, marker-like edges
+\newcommand{\marker}[1]{%
+  \if\relax\detokenize{#1}\relax\else
+  \tikz[baseline=(X.base)]{%
+    \node[inner sep=2pt, outer sep=0pt] (X) {#1};%
+    \begin{scope}[on background layer]%
+      \fill[yellow!80, decorate, decoration={random steps, segment length=4pt, amplitude=1.2pt}]%
+        ([xshift=-2pt,yshift=-2pt]X.south west) rectangle ([xshift=2pt]$$(X.north east)!0.40!(X.south east)$$);%
+    \end{scope}}%
+  \fi}
 
 % justification
 \usepackage{ragged2e}
