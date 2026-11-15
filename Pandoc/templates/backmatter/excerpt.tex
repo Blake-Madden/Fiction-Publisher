@@ -1,10 +1,20 @@
 $if(excerpt)$
 $if(excerpt-title)$
-\backmatterpreviewtitle{A Preview of}{$excerpt-title$}
+% teaser page for the next book, with the excerpt starting on the next right-hand page
+\backmatterteaser{A Preview of}{$excerpt-title$}{$for(author)$$author$$sep$, $endfor$}
+\label{excerpt}
+$if(excerpt-note)$
+\vspace{30pt}
+{\centering\itshape $excerpt-note$\par}
+$endif$
+\vspace*{\stretch{1.5}}
+\clearpage{\thispagestyle{empty}\cleardoublepage}
+
+\backmattertitle{$excerpt-title$}
 $else$
 \backmattertitle{Excerpt}
-$endif$
 \label{excerpt}
+$endif$
 
 \begingroup
 \setlength{\parindent}{1.5em}
@@ -13,10 +23,9 @@ $endif$
 %%dropcap
 $excerpt$
 
-\backmatterend
-$if(excerpt-note)$
-\vspace{6pt}
-{\centering\itshape $excerpt-note$\par}
-$endif$
+\vspace{24pt}
+{\centering\backmatterflourish\par
+\vspace{8pt}
+\itshape To be continued\ldots\par}
 \endgroup
 $endif$

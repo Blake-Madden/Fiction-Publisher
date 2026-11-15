@@ -656,14 +656,21 @@ $endif$
   {\raggedright\rule{4em}{3pt}\par}%
   \vspace{36pt}}
 
-% Backmatter title for a book preview: small-caps kicker above the book's title
-\newcommand{\backmatterpreviewtitle}[2]{%
-  \vspace*{100pt}%
+% Flourish that closes the acknowledgments and excerpt (a pgfornament number, or none)
+\def\backmatterflourishnumber{$if(backmatter-flourish)$$backmatter-flourish$$else$88$endif$}
+\def\flourishnone{none}
+\newcommand{\backmatterflourish}{\ifx\backmatterflourishnumber\flourishnone\else\pgfornament[width=4cm]{\backmatterflourishnumber}\fi}
+
+% Teaser page for a book preview: small-caps kicker, the book's title, and its author, centered on the page
+\newcommand{\backmatterteaser}[3]{%
+  \vspace*{\stretch{1}}%
   {\centering{\primaryfont\scshape\addfontfeature{LetterSpace=8}\MakeTextLowercase{#1}}\par
-   \vspace{10pt}%
-   {\titlefont\huge #2}\par}%
-  \vspace{12pt}%
-  \backmatterornament}
+   \vspace{16pt}%
+   {\titlefont\Huge #2}\par
+   \vspace{16pt}%
+   \pgfornament[width=3.5cm]{81}\par
+   \vspace{12pt}%
+   {\scshape\addfontfeature{LetterSpace=5}\MakeTextLowercase{#3}}\par}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%

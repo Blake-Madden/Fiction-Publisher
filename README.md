@@ -273,7 +273,8 @@ Values are Markdown, so use a YAML block (`|`) for multiple paragraphs.
 - **author-bio**: Author biography
 - **excerpt**: Opening of your next book, which starts with a drop cap
 - **excerpt-title**: Title of the book that the excerpt is from
-- **excerpt-note**: Line shown after the excerpt (e.g., `Coming Soon`)
+- **excerpt-note**: Line shown under the excerpt's title (e.g., `Coming Soon`)
+- **backmatter-flourish**: Number of the [pgfornament](https://ctan.org/pkg/pgfornament) ornament that closes the acknowledgments and excerpt, or `none` to leave it out. Default is `88`.
 
 The colophon is the last page of the print output.
 
