@@ -234,6 +234,11 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 - **dedication**: Optional dedication
 
+### Epigraph Page
+
+- **epigraph**: Optional quote shown on a page before the first chapter
+- **epigraph-source**: Who or what the epigraph is from
+
 ### Table of Contents
 
 - **toc**: Whether to include a table of contents in the print output (`true` or `false`)

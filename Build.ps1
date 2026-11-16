@@ -802,6 +802,10 @@ Invoke-Pandoc --metadata-file "$bookDir/config.yml" -o "$buildDir/bio.md" `
        --template="$PSScriptRoot/Pandoc/templates/biography/bio.md" `
        "$buildDir/dummy.txt"
 
+# Create the epigraph page for the epub (print builds it in its main template)
+Invoke-Pandoc --wrap=none --metadata-file "$bookDir/config.yml" -o "$buildDir/epigraph.md" `
+       --template="$PSScriptRoot/Pandoc/templates/epigraph/epigraph.md" "$buildDir/dummy.txt"
+
 # Create the backmatter pages for print and epub
 $dropCapStyle = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^drop-cap-style:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
 foreach ($backmatterPage in @('afterword', 'acknowledgments', 'reading-group-guide', 'excerpt'))
@@ -934,7 +938,7 @@ If ($buildEpub -ne "false")
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName.epub" `
-           "$buildDir/copyright.md" $includeSeriesPageEpub `
+           "$buildDir/copyright.md" $includeSeriesPageEpub "$buildDir/epigraph.md" `
            $epubMdFiles `
            "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"
@@ -949,7 +953,7 @@ If ($buildEpub -ne "false" -and $buildAmazonEpub -ne "false")
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName-amazon.epub" `
-           "$buildDir/copyright.md" $includeSeriesPageAmazonEpub `
+           "$buildDir/copyright.md" $includeSeriesPageAmazonEpub "$buildDir/epigraph.md" `
            $epubMdFiles `
            "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"

@@ -550,6 +550,32 @@ $endif$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create an epigraph page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+$if(epigraph)$
+    \pagestyle{empty}
+    \vspace*{\stretch{1}}
+    \begin{center}
+    \begin{minipage}{0.7\textwidth}
+      \setlength{\parindent}{0pt}
+      \setlength{\parskip}{6pt}
+      % a large opening quote hangs in the margin beside the first line, its top level with the capitals
+      \setbox0=\hbox{{\normalfont\fontsize{48pt}{48pt}\selectfont\color{black!60}“}}%
+      \makebox[0pt][r]{\smash{\raisebox{\dimexpr\fontcharht\font`T-\ht0\relax}{\copy0}}\hspace{3pt}}%
+      {\itshape $epigraph$\par}
+    $if(epigraph-source)$
+      \vspace{8pt}
+      {\raggedleft\textemdash\,\textsc{$epigraph-source$}\par}
+    $endif$
+    \end{minipage}
+    \end{center}
+    \vspace*{\stretch{2}}
+    \clearpage
+$endif$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Create a table of contents
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
