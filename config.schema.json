@@ -128,6 +128,7 @@
 
         "epigraph": { "$ref": "#/definitions/text", "description": "Optional quote shown on a page before the first chapter." },
         "epigraph-source": { "$ref": "#/definitions/text", "description": "Who or what the epigraph is from." },
+        "epigraph-quote": { "$ref": "#/definitions/switch", "description": "false to hide the large opening quote mark beside the epigraph (default is true)." },
 
         "toc": { "$ref": "#/definitions/switch", "description": "Whether to include a table of contents in the print output." },
         "toc-title": { "$ref": "#/definitions/text", "description": "Header text for the table of contents." },
@@ -153,6 +154,15 @@
         "acknowledgments": { "$ref": "#/definitions/text", "description": "Acknowledgments text (Markdown)." },
         "reading-group-guide": { "$ref": "#/definitions/text", "description": "Reading group discussion questions, as a numbered Markdown list." },
         "reading-group-intro": { "$ref": "#/definitions/text", "description": "Introduction shown above the reading group questions (Markdown)." },
+        "afterword-flourish": {
+            "description": "pgfornament number of the flourish above the afterword's sign-off, or none to leave it out (PDF only). Default is 75.",
+            "anyOf": [
+                { "type": "integer", "minimum": 1, "maximum": 196 },
+                { "const": "none" },
+                { "type": "null" }
+            ],
+            "examples": [75, "none"]
+        },
         "excerpt": { "$ref": "#/definitions/text", "description": "Excerpt from the next book (Markdown)." },
         "excerpt-title": { "$ref": "#/definitions/text", "description": "Title of the book that the excerpt is from." },
         "backmatter-flourish": {

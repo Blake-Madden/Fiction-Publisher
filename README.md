@@ -238,6 +238,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 - **epigraph**: Optional quote shown on a page before the first chapter
 - **epigraph-source**: Who or what the epigraph is from
+- **epigraph-quote**: `false` to hide the large opening quote mark. Default is `true`.
 
 ### Table of Contents
 
@@ -279,6 +280,7 @@ Values are Markdown, so use a YAML block (`|`) for multiple paragraphs.
 - **excerpt**: Opening of your next book, which starts with a drop cap
 - **excerpt-title**: Title of the book that the excerpt is from
 - **excerpt-note**: Line shown under the excerpt's title (e.g., `Coming Soon`)
+- **afterword-flourish**: Number of the [pgfornament](https://ctan.org/pkg/pgfornament) ornament above the afterword's sign-off, or `none` to leave it out. Default is `75`.
 - **backmatter-flourish**: Number of the [pgfornament](https://ctan.org/pkg/pgfornament) ornament that closes the acknowledgments and excerpt, or `none` to leave it out. Default is `88`.
 
 The colophon is the last page of the print output.

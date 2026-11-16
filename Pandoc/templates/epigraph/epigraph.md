@@ -1,7 +1,7 @@
 $if(epigraph)$
 # {.unlisted epub:type=epigraph}
 
-:::: epigraph
+:::: {.epigraph quote="$epigraph-quote$"}
 $epigraph$
 
 $if(epigraph-source)$

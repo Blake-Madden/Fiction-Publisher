@@ -580,8 +580,11 @@ $if(epigraph)$
       \setlength{\parindent}{0pt}
       \setlength{\parskip}{6pt}
       % a large opening quote hangs in the margin beside the first line, its top level with the capitals
+      \def\epigraphquote{$epigraph-quote$}\def\epigraphnoquote{false}%
+      \ifx\epigraphquote\epigraphnoquote\else
       \setbox0=\hbox{{\normalfont\fontsize{48pt}{48pt}\selectfont\color{black!60}“}}%
       \makebox[0pt][r]{\smash{\raisebox{\dimexpr\fontcharht\font`T-\ht0\relax}{\copy0}}\hspace{3pt}}%
+      \fi
       {\itshape $epigraph$\par}
     $if(epigraph-source)$
       \vspace{8pt}
@@ -705,6 +708,10 @@ $endif$
 \def\backmatterflourishnumber{$if(backmatter-flourish)$$backmatter-flourish$$else$88$endif$}
 \def\flourishnone{none}
 \newcommand{\backmatterflourish}{\ifx\backmatterflourishnumber\flourishnone\else\pgfornament[width=4cm]{\backmatterflourishnumber}\fi}
+
+% Flourish above the afterword's sign-off (a pgfornament number, or none)
+\def\afterwordflourishnumber{$if(afterword-flourish)$$afterword-flourish$$else$75$endif$}
+\newcommand{\afterwordflourish}{\ifx\afterwordflourishnumber\flourishnone\else\pgfornament[width=3cm]{\afterwordflourishnumber}\par\vspace{6pt}\fi}
 
 % Teaser page for a book preview: small-caps kicker, the book's title, and its author, centered on the page
 \newcommand{\backmatterteaser}[3]{%
