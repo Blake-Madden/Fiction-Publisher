@@ -18,6 +18,9 @@ h1, h2, h3, h4, h6 { text-align: center; }
 
 h5 { text-align: center; font-weight: normal; font-size: medium; }
 
+/* Part pages start lower, with "Part I" shown above the title */
+h1.part { margin-top: 30%; }
+
 /* Add a top margin for good spacing */
 .top-margin { padding-top: 3em; }
 
@@ -64,6 +67,12 @@ table {margin-left: auto; margin-right: auto; margin-top: 10px;}
   text-align: center;
   }
 
+/* Epigraph page, with a large opening quote hanging beside the first line */
+.epigraph { margin: 25% 10% 0 15%; position: relative; }
+.epigraph > p:first-child::before { content: "\201C"; position: absolute; left: -0.6em; top: -0.2em; font-size: 4em; line-height: 1; font-style: normal; color: #999; }
+.epigraph p { font-style: italic; text-align: left; text-indent: 0; }
+.epigraph-source p { font-style: normal; font-variant: small-caps; text-align: right; margin-top: 1em; }
+
 /* Backmatter pages (afterword, acknowledgments, reading group guide, excerpt) */
 .backmatter h1, h1.backmatter { font-variant: small-caps; letter-spacing: 0.1em; padding-top: 2em; }
 .kicker { display: block; font-size: 0.55em; font-weight: normal; letter-spacing: 0.15em; margin-bottom: 0.5em; }
@@ -75,10 +84,6 @@ table {margin-left: auto; margin-right: auto; margin-top: 10px;}
 .signoff p { text-align: right; text-indent: 0; font-variant: small-caps; letter-spacing: 0.08em; margin: 0; }
 .signoff p:first-child { font-size: 1.5em; margin-top: 1em; }
 .acknowledgments { font-size: 0.9em; line-height: 1.4; }
-.epigraph { margin: 25% 10% 0 15%; position: relative; }
-.epigraph > p:first-child::before { content: "\201C"; position: absolute; left: -0.6em; top: -0.2em; font-size: 4em; line-height: 1; font-style: normal; color: #999; }
-.epigraph p { font-style: italic; text-align: left; text-indent: 0; }
-.epigraph-source p { font-style: normal; font-variant: small-caps; text-align: right; margin-top: 1em; }
 .guide-intro p { font-style: italic; }
 .guide-heading { display: inline-block; font-variant: small-caps; letter-spacing: 0.08em; border-top: 1px solid; border-bottom: 1px solid; padding: 0.3em 1em; margin-bottom: 1em; }
 .guide ol { list-style: none; counter-reset: guide; padding-left: 2.5em; }

@@ -58,6 +58,11 @@ $if(chapter-name)$
 \setlocalecaption{\languagename}{chapter}{$chapter-name$}
 $endif$
 
+%% The word used for "Part" on part pages
+$if(part-name)$
+\setlocalecaption{\languagename}{part}{$part-name$}
+$endif$
+
 %% Explicit list of word that not be split across linebreaks (or showing how they should be hyphenated with split across lines)
 \hyphenation{$no-hyphenate-list$}
 
@@ -357,6 +362,8 @@ $endif$
 $if(chapter-number-words)$\chapternumberwordstrue$endif$
 \newcommand{\chapternumber}{\ifchapternumberwords\Numberstringnum{\thechapter}\else\thechapter\fi}
 \newcommand{\CHAPTERNUMBER}{\ifchapternumberwords\NUMBERstringnum{\thechapter}\else\thechapter\fi}
+%% Part numbers follow the same choice, but use Roman numerals instead of digits
+\newcommand{\partnumber}{\ifchapternumberwords\Numberstringnum{\arabic{part}}\else\Roman{part}\fi}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -409,11 +416,23 @@ $endif$
 \let\fp@chapter\chapter
 \renewcommand{\chapter}{\@ifstar{\fp@starchapter}{\fp@chapter}}
 \newcommand{\fp@starchapter}[1]{\fp@chapter*{#1}\markboth{#1}{}}
+
+%% Part pages for every chapter heading theme: "Part One" in spaced small caps, a short rule, and the part's title
+\newcommand{\fp@parttitle}[1]{\if\relax\detokenize{#1}\relax\else\rule{2cm}{0.4pt}\endgraf\vspace{6mm}\Huge #1\fi}
+\titleformat{\part}[display]
+  {\filcenter\chapterheadingfont}%
+  {\Large\scshape\addfontfeature{LetterSpace=8}\partname\ \partnumber}%
+  {6mm}%
+  {\fp@parttitle}
+\assignpagestyle{\part}{empty}
 \makeatother
 
 % Set spacing between chapters in TOC to be closer
 \usepackage[titles]{tocloft}
 \setlength{\cftbeforechapskip}{2pt}
+\renewcommand{\cftpartfont}{\normalfont\scshape}
+\renewcommand{\cftpartpagefont}{\normalfont}
+\setlength{\cftbeforepartskip}{12pt}
 
 % Add spacing for the chapter title that appears on the first page of each chapter
 %%%%%%%%%%%%%%%%%%%

@@ -146,6 +146,23 @@ function Add-EpubDropCap
                              '$1<span class="drop-caps">$2</span><span class="small-caps">$3</span>'
     }
 
+# Returns a number as a Roman numeral
+function ConvertTo-Roman
+    {
+    param([int]$Number)
+    $roman = ''
+    foreach ($numeral in @(@(1000, 'M'), @(900, 'CM'), @(500, 'D'), @(400, 'CD'), @(100, 'C'), @(90, 'XC'),
+                           @(50, 'L'), @(40, 'XL'), @(10, 'X'), @(9, 'IX'), @(5, 'V'), @(4, 'IV'), @(1, 'I')))
+        {
+        while ($Number -ge $numeral[0])
+            {
+            $roman += $numeral[1]
+            $Number -= $numeral[0]
+            }
+        }
+    return $roman
+    }
+
 # Prints a warning in the "<path>(<line>): warning: <message>" format that the
 # "Build Book" task's problem matcher recognizes, so that it appears in VS Code's Problems pane.
 # (A plain Write-Warning renders as "WARNING: ..." with no file or line, which the matcher can't parse.)
@@ -706,6 +723,22 @@ if ($WarningList.Count)
     $warningLines | ForEach-Object { Write-Output $_ }
     }
 
+# A top-level outline folder that holds chapter folders is a part, so a part heading file is added to the start of it.
+# This is done after the review, so that a title from a folder name doesn't raise warnings.
+# ("!" sorts before the number prefixes of the chapter folders.)
+foreach ($partFolder in [IO.Directory]::GetDirectories("$buildDir/outline"))
+    {
+    $chapterFolders = @([IO.Directory]::GetDirectories($partFolder) |
+        Where-Object { [IO.Directory]::GetFiles($_, "*.md", [IO.SearchOption]::AllDirectories).Count -gt 0 })
+    if ($chapterFolders.Count -gt 0)
+        {
+        $partFolderName = Split-Path -Leaf $partFolder
+        $partTitle = If ($partFolderName -match '^[0-9]+$') { '' } Else { $partFolderName -replace '^[0-9]*-','' -replace '_',' ' }
+        [IO.File]::WriteAllText("$partFolder/!part.md", "# $partTitle {.part}" + [Environment]::NewLine)
+        }
+    }
+$mdFiles = Get-MarkdownFiles "$buildDir/outline"
+
 # source markdown files are cleaned up and reviewed, now copy to different folders to pre-process for the different output formats
 Copy-Item -LiteralPath "$buildDir/outline/" -Destination "$buildDir/epub/" -Recurse -Force
 $epubMdFiles = Get-MarkdownFiles "$buildDir/epub"
@@ -843,6 +876,14 @@ If ($buildPrint -ne "false")
 
         $content = [IO.File]::ReadAllText($file)
 
+        # a part heading becomes a LaTeX part page
+        if ($fileInfo.Name -eq '!part.md')
+            {
+            $content = $content -replace '^\s*#[ ]*(.*?)[ ]*\{\.part\}', '\part{$1}'
+            [void] [IO.File]::WriteAllText($file, $content)
+            continue
+            }
+
         # replace *** with scene separator (e.g., flourishes)
         $sceneSeparator = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^scene-separator-latex:[ ]*(.*)' | % {($_.matches.groups[1].Value) }
         if ($sceneSeparator.Length -gt 0)
@@ -880,14 +921,27 @@ If ($buildEpub -ne "false")
     $epubChapterNumber = 0
     $chapterName = Get-ConfigValue (Get-Content -LiteralPath "$bookDir/config.yml") 'chapter-name'
     $chapterName = If ($chapterName) { $chapterName.Value } Else { 'Chapter' }
+    $partNumber = 0
+    $partName = Get-ConfigValue (Get-Content -LiteralPath "$bookDir/config.yml") 'part-name'
+    $partName = If ($partName) { $partName.Value } Else { 'Part' }
     foreach ($file in $epubMdFiles)
         {
         $content = [IO.File]::ReadAllText($file)
+        $fileInfo = New-Object System.IO.FileInfo($file)
+
+        # a part heading shows "Part I" above the part's title, and isn't counted as a chapter
+        if ($fileInfo.Name -eq '!part.md')
+            {
+            $partNumber++
+            $partLabel = "$partName $(ConvertTo-Roman $partNumber)"
+            $content = $content -replace '^\s*#[ ]*(.*?)[ ]*\{\.part\}', "# [$partLabel]{.kicker} `$1 {.part epub:type=part}"
+            [void] [IO.File]::WriteAllText($file, $content)
+            continue
+            }
 
         # A chapter with no title (e.g., "# " or folder named "01-") should
         # still show a heading in the epub, so inject "Chapter N" here. (Print uses the
         # LaTeX "Chapter N" label instead, so its heading is left empty.)
-        $fileInfo = New-Object System.IO.FileInfo($file)
         $firstNonEmptyLine = ($content -split '\r\n|\r|\n' | Where-Object { $_.Trim().Length -gt 0 } | Select-Object -First 1)
         if ($firstNonEmptyLine -match '^#(\s|$)')
             {

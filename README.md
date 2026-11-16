@@ -300,6 +300,8 @@ The colophon is the last page of the print output.
   ePub output uses it for chapters with no title.
   Spelled-out numbers follow **lang**.
 - **chapter-number-words**: Set to `true` to spell out chapter numbers in PDF headings and running headers (e.g., "Chapter One"). Default is `false`.
+- **part-name**: The word used for "Part" on part pages (default is `Part`), for example `Teil`.
+  PDF part numbers are spelled out when **chapter-number-words** is `true` and Roman numerals otherwise. ePub part numbers are Roman numerals.
 
 - **unnumbered-chapters**: Semicolon-separated list of chapter folder names (without the number prefix) that are unnumbered chapters, such as a prologue (default is `Prologue; Epilogue`).
   Names are case-insensitive, and underscores in folder names match spaces.
@@ -404,6 +406,8 @@ A book folder should have the following:
       Other names (e.g., "Interlude" or names in another language) can be set with **unnumbered-chapters** in "config.yml".
       Any other chapter can be made unnumbered by adding `{-}` to the end of its heading (e.g., `# Interlude {-}`).
     - In each chapter folder, there should be a separate Markdown file for each scene. (A numeric prefix on these files will inform the build script of their order.) It is recommended to add a `***` at the end of each Markdown file (except for the last one) in a chapter if you wish to have scene separators added.
+  - To divide the book into parts, put chapter folders inside a numbered part folder, such as `01-The_Storm/01-A_Dark_and_Stormy_Night/0-Scene.md`.
+    Each part opens with a "Part I" page showing the folder's title.
 
 ### Fiction-Publisher-Output
 This folder holds your finished book in each format you've built, along with any "Format Warnings" and "Build Errors" logs (refer to [Build Your Book](#build-your-book) for details).
