@@ -360,7 +360,7 @@ function Get-RequiredLatexPackages
                 }
             foreach ($match in [regex]::Matches($line, '\\usepackage(\[[^\]]*\])?\{([^}]+)\}'))
                 {
-                # (a package loaded with a template variable, like fncychap, is handled above)
+                # a package loaded with a template variable, like fncychap, is handled above
                 if ($match.Value -match '\$')
                     { continue }
                 $packages += $match.Groups[2].Value.Split(',') | % { $_.Trim() } | Where-Object { $_ }
@@ -574,7 +574,7 @@ foreach ($file in $mdFiles)
                      -Message "period used at end of dialogue (`"{0}`"). Did you intend to use a comma?"
     Test-FormatIssue -Pattern "(\w+[`"$q2] (\w+[.] )?[\w-]+ ($speechVerbs)\b)" `
                      -Message "dialogue followed by a speech tag has no punctuation before the closing quote (`"{0}`"). Did you intend to use a comma?"
-    # ("I" and names are capitalized anyway, so only the other pronouns are checked)
+    # "I" and names are capitalized anyway, so only the other pronouns are checked
     Test-FormatIssue -Pattern "(\w+[,?!][`"$q2] (He|She|They|We|You|It) ($speechVerbs|asked)\b)" -CaseSensitive `
                      -Message "dialogue tag starts with a capital letter (`"{0}`"). The pronoun should be lowercase because the tag continues the sentence."
     # italics issues
@@ -586,7 +586,7 @@ foreach ($file in $mdFiles)
     # space issues
     Test-FormatIssue -Pattern '[ ]{2,}[^\r\n]' `
                      -Message "multiple spaces between words/sentences found. Consider changing these into single spaces."
-    # (a space before an ellipsis is allowed)
+    # a space before an ellipsis is allowed
     Test-FormatIssue -Pattern '(\w+[ ]+[,;:?!]|\w+[ ]+[.](?![.]))' `
                      -Message "space before punctuation (`"{0}`"). Consider removing the space."
     # (words must be at least two letters, so that numbers like "1,000" and abbreviations like "e.g." and "U.S." are allowed;
@@ -606,7 +606,7 @@ foreach ($file in $mdFiles)
     # ellipses checks
     Test-FormatIssue -Pattern "[$ellipsis]+" `
                      -Message "Unicode ellipses ($ellipsis) found. Consider changing these into three periods (...)."
-    # (four periods are allowed, as that is an ellipsis at the end of a sentence)
+    # four periods are allowed, as that is an ellipsis at the end of a sentence
     Test-FormatIssue -Pattern '((?<![.])[.]{2}(?![.])|[.]{5,}|[,]{2,}|[!]{2,}|[?]{2,})' `
                      -Message "repeated punctuation (`"{0}`"). Ellipses should be three periods; otherwise, consider using a single punctuation mark."
     # hyphen/en dash/em dash checks
@@ -615,7 +615,7 @@ foreach ($file in $mdFiles)
                      -Message "hyphen surrounded by spaces (`"{0}`"). Did you intend to use an em dash?"
     Test-FormatIssue -Pattern "([$endash]|(?<!-)--)[`"$q2]" `
                      -Message "en dash ending a quote. Consider changing this to an em dash."
-    # (only letters on both sides of the dash, since an en dash is correct in ranges, e.g., "10--20" or "1990s--2000s")
+    # only letters on both sides of the dash, since an en dash is correct in ranges, e.g., "10--20" or "1990s--2000s"
     Test-FormatIssue -Pattern "(\w*[^\W\d_]([$endash]|--)[^\W\d_]\w*)" `
                      -Message "en dash between words (`"{0}`"). Did you intend to use a hyphen or an em dash?"
     Test-FormatIssue -Pattern '([0-9]+[-][0-9]+)' `

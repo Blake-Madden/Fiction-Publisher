@@ -33,7 +33,7 @@ $schemaPath = [IO.Path]::GetRelativePath($bookDir, "$PSScriptRoot/config.schema.
 $schemaLine = $null
 if ([IO.Path]::IsPathRooted($schemaPath))
   {
-  # (e.g., on a different drive)
+  # an absolute path means the book is on a different drive
   Write-Warning "The book isn't on the same drive as Fiction-Publisher, so config.yml can't refer to its schema with a relative path. Autocompletion for config.yml won't be available."
   }
 else
