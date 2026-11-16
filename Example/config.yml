@@ -1,6 +1,7 @@
 ---
 # yaml-language-server: $schema=../config.schema.json
 title: A Dark and Stormy Night
+title-latex: '\bfseries\scshape\color{black!55}A \textcolor{MidnightBlue}{Dark} and Stormy Night'
 subtitle: An Example Book
 author: A. N. Author
 type: Gothic
