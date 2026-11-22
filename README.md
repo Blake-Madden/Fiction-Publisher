@@ -144,6 +144,10 @@ Configure it first (this adds its VS Codium/VS Code build tasks), then build it 
     pwsh -File Config.ps1 -BookFolder Example
     pwsh -File Build.ps1 -BookFolder Example
 
+The print PDF looks like this (blank pages not shown):
+
+![Pages of the example book](docs/example-pages.png)
+
 ### Using VS Codium / VS Code
 
 - Run "Config.ps1" on your book's folder like normal.
@@ -295,8 +299,11 @@ The colophon is the last page of the print output.
 
 - **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only).
   Styles include `Sonny`, `Lenny`, `Glenn`, `Conny`, `Rejne`, `Bjarne`, and `Bjornstrup`
-- **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive`, `scifi`, `oldwest`, `blockletter`, `classic`, `minimal`, `fantasy`).
+- **chapter-heading**: The name of the custom chapter heading theme to use (`default`, `romance-calligraphy`, `romance-cursive`, `scifi`, `oldwest`, `blockletter`, `classic`, `minimal`, `fantasy`, `noir`, `watermark`, `art-deco`, `side-by-side`, `marker`).
   Note that using **fancy-chapter** will override this
+
+  ![Chapter heading styles](docs/chapter-headings.png)
+
 - **chapter-name**: The word used for "Chapter" (default is `Chapter`), for example `Kapitel` or `Part`.
   PDF output uses it in chapter headings and running headers.
   ePub output uses it for chapters with no title.
