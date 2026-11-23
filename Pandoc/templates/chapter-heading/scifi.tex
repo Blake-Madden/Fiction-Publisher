@@ -5,11 +5,18 @@
 \newfontfamily\chapterheaderfont{Orbitron-Bold.ttf}
 \def\chapterheaderfontname{Orbitron Bold}
 
+%% Sci-fi display number: pad single digits with a leading zero (e.g., 01, 02).
+%% Falls back to words when chapter-number-words is enabled.
+\newcommand{\scifichapternumber}{%
+  \ifchapternumberwords\NUMBERstringnum{\thechapter}\else%
+    \ifnum\value{chapter}<10 0\fi\thechapter%
+  \fi}
+
 %% https://tex.stackexchange.com/questions/94729/how-to-customize-chapter-heading-style
 \titleformat{\chapter}[display]
   {\huge \color{black}}%
   {\flushright\Large %
    \chapterheaderfont\MakeUppercase{\chaptertitlename}\hspace{1ex}%
-   {\color{lightgray}\fontsize{60}{60}\selectfont\CHAPTERNUMBER}}%
+   {\color{lightgray}\fontsize{60}{60}\selectfont\scifichapternumber}}%
   {10 pt}%
   {\chapterheadingfont\huge}%
