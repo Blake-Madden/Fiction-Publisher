@@ -114,6 +114,33 @@ else
     { Write-Error "Unable to create file. $($_.Exception.Message)" }
   }
 
+# create a starter outline (prologue + first chapter) if the book has none
+$outlinePath = "$bookDir/outline"
+$outlineHasScenes = $false
+if (Test-Path -LiteralPath $outlinePath -PathType Container)
+    {
+    $outlineHasScenes = [bool](Get-ChildItem -LiteralPath $outlinePath -Recurse -Filter '*.md' -File -ErrorAction SilentlyContinue | Select-Object -First 1)
+    }
+if (-not $outlineHasScenes)
+    {
+    try
+        {
+        foreach ($starter in @('00-Prologue', '01-Chapter_One'))
+            {
+            $chapterFolder = "$outlinePath/$starter"
+            [void] [IO.Directory]::CreateDirectory($chapterFolder)
+            $sceneFile = "$chapterFolder/00-Scene.md"
+            if (-not (Test-Path -LiteralPath $sceneFile -PathType Leaf))
+                {
+                Set-Content -Encoding UTF8 -LiteralPath $sceneFile -Value ""
+                Write-Output "Created '$sceneFile'."
+                }
+            }
+        }
+    catch
+        { Write-Error "Unable to create outline folder. $($_.Exception.Message)" }
+    }
+
 # create VS Codium/VS Code tasks for building the book from its own folder
 # (points to the scripts in this copy of Fiction-Publisher and is replaced each time to stay up to date.
 #  A tasks file without our problem matcher's owner is the user's own, so it is left alone.)

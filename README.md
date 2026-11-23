@@ -414,8 +414,8 @@ A book folder should have the following:
       Its title appears as is (with no "Chapter N" label) and in the TOC, and it isn't counted in the chapter numbering.
       Other names (e.g., "Interlude" or names in another language) can be set with **unnumbered-chapters** in "config.yml".
       Any other chapter can be made unnumbered by adding `{-}` to the end of its heading (e.g., `# Interlude {-}`).
-    - In each chapter folder, there should be a separate Markdown file for each scene. (A numeric prefix on these files will inform the build script of their order.) It is recommended to add a `***` at the end of each Markdown file (except for the last one) in a chapter if you wish to have scene separators added.
-  - To divide the book into parts, put chapter folders inside a numbered part folder, such as `01-The_Storm/01-A_Dark_and_Stormy_Night/0-Scene.md`.
+    - In each chapter folder, there should be a separate Markdown file for each scene. (A numeric prefix on these files will inform the build script of their order; pad with leading zeros, e.g. 00-, 01-, since sorting is lexicographic.) It is recommended to add a `***` at the end of each Markdown file (except for the last one) in a chapter if you wish to have scene separators added.
+  - To divide the book into parts, put chapter folders inside a numbered part folder, such as `01-The_Storm/01-A_Dark_and_Stormy_Night/00-Scene.md`.
     Each part opens with a "Part I" page showing the folder's title.
 
 ### Fiction-Publisher-Output
