@@ -47,6 +47,9 @@ table {margin-left: auto; margin-right: auto; margin-top: 10px;}
 /* Class for small capping text in a paragraph, such as a lead line */
 .small-caps{ font-variant: small-caps; }
 
+/* Placeholder text (e.g., [[TK]]) that should be filled in before publishing */
+.placeholder { color: red; text-transform: uppercase; }
+
 .center-image
   {
   display: block;

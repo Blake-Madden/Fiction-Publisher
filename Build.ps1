@@ -649,6 +649,9 @@ foreach ($file in $mdFiles)
         Test-FormatIssue -Pattern ([regex]::Escape([string]$character.Key)) `
                          -Message ("{0} (U+{1:X4}) found. This is usually pasted in from a word processor or web page; consider removing it (or replacing it with a regular space)." -f $character.Value, [int]$character.Key)
         }
+    # placeholder text (e.g., "[[TK]]") that should be filled in before publishing
+    Test-FormatIssue -Pattern '\[\[(.*?)\]\]' `
+                     -Message "placeholder text found (`"{0}`"). Replace it before publishing."
     # stray period or comma around ? or !
     Test-FormatIssue -Pattern '([.,][?!]|[?!][.,]|[,][.])' `
                      -Message "stray period or comma found (`"{0}`")."
@@ -711,6 +714,17 @@ foreach ($file in $mdFiles)
         }
     }
 
+# Scan config.yml for placeholder text as well (e.g., in backmatter fields)
+$configDisplayPath = "$bookDir/config.yml" -replace '\\', '/'
+$configLines = [IO.File]::ReadAllLines("$bookDir/config.yml")
+for ($i = 0; $i -lt $configLines.Count; $i++)
+    {
+    if ($configLines[$i] -match '\[\[(.*?)\]\]')
+        {
+        $WarningList.Add([pscustomobject]@{ File = $configDisplayPath; Line = $i + 1; Message = "placeholder text found (`"$($Matches[0])`"). Replace it before publishing." })
+        }
+    }
+
 # Write out any formatting warnings
 # (formatted as "<path>(<line>): warning: <message>", which editors can use to link back to the source)
 if ($WarningList.Count)
@@ -736,6 +750,57 @@ foreach ($partFolder in [IO.Directory]::GetDirectories("$buildDir/outline"))
         }
     }
 $mdFiles = Get-MarkdownFiles "$buildDir/outline"
+
+# wraps [[...]] placeholders in red uppercase, escaping LaTeX special characters in the text
+function ConvertTo-LatexPlaceholder {
+    param([string]$Text)
+    return [regex]::Replace($Text, '\[\[(.*?)\]\]', {
+        param($m)
+        $inner = [regex]::Replace($m.Groups[1].Value, '[\\{}$&#^_%~]', {
+            param($c)
+            switch ($c.Value) {
+                '\' { '\textbackslash{}' }
+                '^' { '\textasciicircum{}' }
+                '~' { '\textasciitilde{}' }
+                default { '\' + $c.Value }
+            }
+        })
+        '\textcolor{red}{\MakeUppercase{' + $inner + '}}'
+    })
+}
+
+# Create format-specific copies of config.yml with placeholder syntax transformed,
+# so that placeholders in metadata fields (e.g., title) are converted for each output format.
+# Inline values containing placeholders are rewritten as YAML double-quoted strings with
+# proper escaping; other lines (including block scalars) are left untouched.
+function Convert-ConfigPlaceholders {
+    param([string]$Text, [string]$Format)
+    $result = New-Object System.Collections.Generic.List[string]
+    foreach ($line in ($Text -split "\r?\n")) {
+        if ($line -match '^(\s*[\w-]+:\s*)(.*)$') {
+            $prefix = $Matches[1]
+            $value = $Matches[2]
+            if ($value -match '\[\[(.*?)\]\]') {
+                $inner = $value.Trim()
+                if ($inner.StartsWith('"') -and $inner.EndsWith('"')) { $inner = $inner.Substring(1, $inner.Length - 2) }
+                elseif ($inner.StartsWith("'") -and $inner.EndsWith("'")) { $inner = $inner.Substring(1, $inner.Length - 2) }
+                if ($Format -eq 'print') {
+                    $transformed = ConvertTo-LatexPlaceholder $inner
+                } else {
+                    $transformed = $inner -replace '\[\[(.*?)\]\]', '<span class=''placeholder''>$1</span>'
+                }
+                $escaped = $transformed -replace '\\', '\\'
+                $result.Add("$prefix`"$escaped`"")
+                continue
+            }
+        }
+        $result.Add($line)
+    }
+    return ($result -join "`n")
+}
+$configSource = [IO.File]::ReadAllText("$bookDir/config.yml")
+[IO.File]::WriteAllText("$buildDir/config-print.yml", (Convert-ConfigPlaceholders $configSource 'print'))
+[IO.File]::WriteAllText("$buildDir/config-epub.yml", (Convert-ConfigPlaceholders $configSource 'epub'))
 
 # source markdown files are cleaned up and reviewed, now copy to different folders to pre-process for the different output formats
 Copy-Item -LiteralPath "$buildDir/outline/" -Destination "$buildDir/epub/" -Recurse -Force
@@ -780,13 +845,13 @@ $includeSeriesPageAmazonEpub = Get-Content -LiteralPath "$bookDir/config.yml" | 
 $includeSeriesPageAmazonEpub = If ($includeSeriesPageAmazonEpub.Matches.Count -gt 0) { @("$buildDir/amazon-seriespage.md") } Else { @() }
 
 # build epub and print series pages (although they may not be included)
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/seriespage.md" `
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/seriespage.md" `
        --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.md" "$buildDir/dummy.txt"
 
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/amazon-seriespage.md" `
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/amazon-seriespage.md" `
        --template="$PSScriptRoot/Pandoc/templates/seriespage/amazon-seriespage.md" "$buildDir/dummy.txt"
 
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/seriespage.tex" -t latex `
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/seriespage.tex" -t latex `
        --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.tex" "$buildDir/dummy.txt"
 
 # Select the copyright page template (can be customized by "copyright-page" line in metadata file)
@@ -795,24 +860,24 @@ $copyrightPage = If ($copyrightPage.Length -gt 0) { $copyrightPage } Else { "cre
 
 # Create the latex copyright file to insert into the print documents.
 # Note that we are simply using the copyright template and expanding the variables from our config.yml into it.
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/copyright.tex" -t latex `
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/copyright.tex" -t latex `
        --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.tex" "$buildDir/dummy.txt"
 
 # Create the copyright file to insert into the epub documents.
 # Also, note that we are simply using the copyright template and expanding the variables from our config.yml into it.
-Invoke-Pandoc --metadata-file "$bookDir/config.yml" -o "$buildDir/copyright.md" `
+Invoke-Pandoc --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/copyright.md" `
        --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.md" `
        "$buildDir/dummy.txt"
 Copy-Item -Path "$PSScriptRoot/Pandoc/templates/copyright/ccbynasa.png" -Destination "$buildDir/ccbynasa.png"
 
 # Create the latex half titlepage
 # half titlepage doesn't really make sense because e-readers force the main title page to the front
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/half-titlepage.tex" -t latex `
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/half-titlepage.tex" -t latex `
        --template="$PSScriptRoot/Pandoc/templates/half-titlepage/half-titlepage.tex" "$buildDir/dummy.txt"
 
 # Create the latex colophon page
 # ePub doesn't use typesetting, so not built for those
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/colophon.tex" -t latex `
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/colophon.tex" -t latex `
        --template="$PSScriptRoot/Pandoc/templates/colophon/default.tex" "$buildDir/dummy.txt"
 
 # Create the latex chapter heading file to insert into the print documents.
@@ -820,31 +885,31 @@ Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$bu
 # Select the chapter heading template (can be customized by "chapter-heading" line in metadata file)
 $chapterHeading = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^chapter-heading:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
 $chapterHeading = If ($chapterHeading.Length -gt 0) { $chapterHeading } Else { "default" }
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/chapter-heading.tex" -t latex `
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/chapter-heading.tex" -t latex `
        --template="$PSScriptRoot/Pandoc/templates/chapter-heading/$chapterHeading.tex" "$buildDir/dummy.txt"
 
 # Create the author biography file to insert into the print
 # TODO: need to be able to exclude this from hardcover editions via metadata because there they go on the dustjacket
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/bio.tex" -t latex `
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/bio.tex" -t latex `
        --template="$PSScriptRoot/Pandoc/templates/biography/bio.tex" "$buildDir/dummy.txt"
 
 # Create the author biography file to insert into the epub documents
-Invoke-Pandoc --metadata-file "$bookDir/config.yml" -o "$buildDir/bio.md" `
+Invoke-Pandoc --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/bio.md" `
        --template="$PSScriptRoot/Pandoc/templates/biography/bio.md" `
        "$buildDir/dummy.txt"
 
 # Create the epigraph page for the epub (print builds it in its main template)
-Invoke-Pandoc --wrap=none --metadata-file "$bookDir/config.yml" -o "$buildDir/epigraph.md" `
+Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/epigraph.md" `
        --template="$PSScriptRoot/Pandoc/templates/epigraph/epigraph.md" "$buildDir/dummy.txt"
 
 # Create the backmatter pages for print and epub
 $dropCapStyle = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^drop-cap-style:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
 foreach ($backmatterPage in @('afterword', 'acknowledgments', 'reading-group-guide', 'excerpt'))
     {
-    Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$bookDir/config.yml" -o "$buildDir/$backmatterPage.tex" -t latex `
+    Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/$backmatterPage.tex" -t latex `
            --template="$PSScriptRoot/Pandoc/templates/backmatter/$backmatterPage.tex" "$buildDir/dummy.txt"
     # Not wrapped, so that a long heading stays on one line with its attributes
-    Invoke-Pandoc --wrap=none --metadata-file "$bookDir/config.yml" -o "$buildDir/$backmatterPage.md" `
+    Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/$backmatterPage.md" `
            --template="$PSScriptRoot/Pandoc/templates/backmatter/$backmatterPage.md" "$buildDir/dummy.txt"
 
     # Afterword and excerpt templates mark where a drop cap goes
@@ -900,7 +965,9 @@ If ($buildPrint -ne "false")
         $content = $content -replace '({>>)([^<]*)(<<})', '\marginpar{$2}' # comment
         $content = $content -replace '({==)([^=]*)(==})', '\hl{$2}' # highlight
         $content = $content -replace '({~~)([^~]*)(~>)([^}]*)(~~})', '\st{$2}\underline{$4}' # change
-    
+        # placeholder text: render in red so it stands out in the print output
+        $content = ConvertTo-LatexPlaceholder $content
+
         # files that don't start with zero should be new scenes in a chapter, so unindent their first paragraph
         if ($fileInfo.BaseName -match '^[^0].*')
             {
@@ -909,6 +976,14 @@ If ($buildPrint -ne "false")
             }
 
         [void] [IO.File]::WriteAllText($file, $content)
+        }
+
+    # transform placeholders in any generated LaTeX files (copyright, bio, series page, backmatter, etc.)
+    foreach ($texFile in [IO.Directory]::GetFiles($buildDir, "*.tex", [IO.SearchOption]::AllDirectories))
+        {
+        $texContent = [IO.File]::ReadAllText($texFile)
+        $texContent = ConvertTo-LatexPlaceholder $texContent
+        [void] [IO.File]::WriteAllText($texFile, $texContent)
         }
     }
 
@@ -972,8 +1047,18 @@ If ($buildEpub -ne "false")
         $content = $content -replace '({>>)([^<]*)(<<})', '<aside><mark>$2</mark></aside>' # comment
         $content = $content -replace '({==)([^=]*)(==})', '<mark>$2</mark>' # highlight
         $content = $content -replace '({~~)([^~]*)(~>)([^}]*)(~~})', '<del>$2</del><ins>$4</ins>' # change
+        # placeholder text: render in a distinct color so it stands out in the ePub output
+        $content = $content -replace '\[\[(.*?)\]\]', '<span class="placeholder">$1</span>'
 
         [void] [IO.File]::WriteAllText($file, $content)
+        }
+
+    # transform placeholders in any generated markdown files (copyright, bio, series page, backmatter, epigraph, etc.)
+    foreach ($mdFile in [IO.Directory]::GetFiles($buildDir, "*.md"))
+        {
+        $mdContent = [IO.File]::ReadAllText($mdFile)
+        $mdContent = $mdContent -replace '\[\[(.*?)\]\]', '<span class="placeholder">$1</span>'
+        [void] [IO.File]::WriteAllText($mdFile, $mdContent)
         }
     }
 
@@ -985,7 +1070,7 @@ Set-Location -LiteralPath "$buildDir/"
 If ($buildEpub -ne "false")
    {
     Write-Output "Building for e-pub..."
-    Invoke-Pandoc --top-level-division=chapter --metadata-file "$bookDir/config.yml" `
+    Invoke-Pandoc --top-level-division=chapter --metadata-file "$buildDir/config-epub.yml" `
            $includeToc --toc-depth=1 `
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
@@ -1000,7 +1085,7 @@ If ($buildEpub -ne "false")
 If ($buildEpub -ne "false" -and $buildAmazonEpub -ne "false")
    {
     Write-Output "Building epub for Amazon KDP..."
-    Invoke-Pandoc --top-level-division=chapter --metadata-file "$bookDir/config.yml" `
+    Invoke-Pandoc --top-level-division=chapter --metadata-file "$buildDir/config-epub.yml" `
            $includeToc --toc-depth=1 `
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
@@ -1038,7 +1123,7 @@ If ($buildPrint -ne "false")
     {
     Write-Output "Building for print..."
     Invoke-Pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.tex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
-           --metadata-file "$bookDir/config.yml" `
+           --metadata-file "$buildDir/config-print.yml" `
            -f markdown+smart $mdFiles -o "$outputDir/$bookName-print.pdf"
 
     # Optional print checks (requires Ghostscript, skipped if not installed)
