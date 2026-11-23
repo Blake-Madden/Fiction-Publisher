@@ -63,8 +63,9 @@ $if(part-name)$
 \setlocalecaption{\languagename}{part}{$part-name$}
 $endif$
 
-%% Explicit list of word that not be split across linebreaks (or showing how they should be hyphenated with split across lines)
-\hyphenation{$no-hyphenate-list$}
+%% Hyphenation exceptions: words that should not be split across lines, or with explicit break points
+%% (no-hyphenate-list is kept for backward compatibility)
+\hyphenation{$no-hyphenate-list$ $hyphenation-exceptions$}
 
 %% Set encoding
 %\usepackage[utf8]{inputenc}

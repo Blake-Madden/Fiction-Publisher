@@ -331,7 +331,7 @@ The colophon is the last page of the print output.
 - **scene-separator-latex**: LaTeX code to replace `***` sequences between scenes (used for PDF output)
 - **scene-separator-html**: HTML code to replace `***` sequences between scenes (used for ePub output)
 
-- **no-hyphenate-list**: Space-separated list of words that explicitly show how words should be hyphenated when split across lines; useful for listing (non-hyphenated) names of characters whose names should not be split between lines
+- **hyphenation-exceptions**: Space-separated list of hyphenation exceptions (PDF only). A word without internal hyphens (e.g., `McKinley`) is never split across a line. A word with hyphens (e.g., `man-u-script`) marks allowed break points. Useful for character names. The older `no-hyphenate-list` key still works as an alias.
 
 ### Extra
 

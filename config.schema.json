@@ -210,7 +210,8 @@
         "drop-cap-color": { "$ref": "#/definitions/text", "description": "Color of the drop cap, as a basic or named xcolor color (PDF only). Default is black." },
         "scene-separator-latex": { "$ref": "#/definitions/text", "description": "LaTeX code to replace *** between scenes (PDF output)." },
         "scene-separator-html": { "$ref": "#/definitions/text", "description": "HTML code to replace *** between scenes (ePub output)." },
-        "no-hyphenate-list": { "$ref": "#/definitions/text", "description": "Space-separated list of words showing how they should be hyphenated (e.g., character names that shouldn't be split)." },
+        "hyphenation-exceptions": { "$ref": "#/definitions/text", "description": "Space-separated list of hyphenation exceptions (PDF only). A word without internal hyphens (e.g., McKinley) is never split across a line. A word with hyphens (e.g., man-u-script) marks allowed break points. Useful for character names." },
+        "no-hyphenate-list": { "$ref": "#/definitions/text", "description": "Deprecated alias for hyphenation-exceptions. Kept for backward compatibility.", "deprecated": true },
 
         "header-includes": {
             "type": ["string", "array", "null"],
