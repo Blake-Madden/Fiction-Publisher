@@ -615,8 +615,6 @@ foreach ($file in $mdFiles)
     # check for possible stray spaces or newlines that cause issues with paragraphs being split or joined incorrectly
     Test-FormatIssue -Pattern '([^ ]+[ ]+)(\r\n|\n|\r)([^ ]+)' `
                      -Message "line followed by spaces, then a single line break found (`"{0}`"). If this is intended to be a new paragraph, it is recommended to change this to a blank line for clarity. If this should be the same paragraph, then remove the newline."
-    Test-FormatIssue -Pattern "[`"`']+" `
-                     -Message "straight single/double quote(s) found. Consider converting these into smart quotes to make your intention explicit."
     # quotation issues
     Test-FormatIssue -Pattern "(\w+[^,.][`"$q2][,.])" `
                      -Message "comma or period outside of quote (`"{0}`"). Should be on the inside."

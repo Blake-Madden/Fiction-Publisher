@@ -74,7 +74,6 @@ Refer [here](#your-book-structure) for the recommended file structure for your b
 Every occurrence of an issue is reported, along with its file and line number.
 
 - [X] Checks for paragraphs not separated by blank lines (this is recommended over ending lines with double spaces because it makes the intention clearer and avoids possible errors)
-- [X] Checks for straight quotes (smart quotes should be included in source markdown to avoid ambiguity)
 - [X] Checks for a hyphen surrounded by spaces (e.g., "word - word"), which was probably intended to be an em dash
 - [X] Checks for correct ordering of closing quotation marks and commas/periods
 - [X] Checks for Unicode ellipsis (should be three periods, "...")
