@@ -632,10 +632,15 @@ $if(epigraph)$
       \setlength{\parindent}{0pt}
       \setlength{\parskip}{6pt}
       % a large opening quote hangs in the margin beside the first line, its top level with the capitals
+      % (or, for a low mark like German „, sitting on the first line's baseline)
       \def\epigraphquote{$epigraph-quote$}\def\epigraphnoquote{false}%
       \ifx\epigraphquote\epigraphnoquote\else
-      \setbox0=\hbox{{\normalfont\fontsize{48pt}{48pt}\selectfont\color{black!60}“}}%
+      \setbox0=\hbox{{\normalfont\fontsize{48pt}{48pt}\selectfont\color{black!60}$quote-mark$}}%
+      $if(quote-open-low)$
+      \makebox[0pt][r]{\smash{\copy0}\hspace{3pt}}%
+      $else$
       \makebox[0pt][r]{\smash{\raisebox{\dimexpr\fontcharht\font`T-\ht0\relax}{\copy0}}\hspace{3pt}}%
+      $endif$
       \fi
       {\itshape $epigraph$\par}
     $if(epigraph-source)$

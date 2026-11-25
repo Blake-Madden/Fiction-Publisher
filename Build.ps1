@@ -927,7 +927,7 @@ Invoke-Pandoc --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/copyrigh
        "$buildDir/dummy.txt"
 Copy-Item -Path "$PSScriptRoot/Pandoc/templates/copyright/ccbynasa.png" -Destination "$buildDir/ccbynasa.png"
 
-# Create the praise page for print and epub, with each quote in the quotation marks of the book's language
+# The quotation marks of the book's language, used on the praise and epigraph pages
 # (pandoc always writes English quotation marks in ePubs, so the marks are added by the build)
 function Get-QuotationMarks
     {
@@ -949,10 +949,17 @@ function Get-QuotationMarks
     return [string][char] 0x201C, [string][char] 0x201D
     }
 $quoteOpen, $quoteClose = Get-QuotationMarks (Get-ConfigValue (Get-Content -LiteralPath "$bookDir/config.yml") 'lang').Value
-# (passed as variables, because metadata values are read as Markdown, which changes the marks)
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -V "praise-open-quote=$quoteOpen" -V "praise-close-quote=$quoteClose" `
+# Passed as variables, because metadata values are read as Markdown, which changes the marks.
+# The epigraph's large mark is the opening mark without its spacing,
+# and a low opening mark, like German „, is placed on the first line's baseline instead of at its top.
+$quoteVariables = @('-V', "quote-open=$quoteOpen", '-V', "quote-close=$quoteClose", '-V', "quote-mark=$($quoteOpen.Trim([char] 0x00A0))")
+if ($quoteOpen -eq [string][char] 0x201E)
+    { $quoteVariables += @('-V', 'quote-open-low=true') }
+
+# Create the praise page for print and epub
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" $quoteVariables `
        -o "$buildDir/praise.tex" -t latex --template="$PSScriptRoot/Pandoc/templates/praise/praise.tex" "$buildDir/dummy.txt"
-Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -V "praise-open-quote=$quoteOpen" -V "praise-close-quote=$quoteClose" `
+Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" $quoteVariables `
        -o "$buildDir/praise.md" --template="$PSScriptRoot/Pandoc/templates/praise/praise.md" "$buildDir/dummy.txt"
 
 # Create the latex half titlepage
@@ -984,7 +991,7 @@ Invoke-Pandoc --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/bio.md" 
        "$buildDir/dummy.txt"
 
 # Create the epigraph page for the epub (print builds it in its main template)
-Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/epigraph.md" `
+Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" $quoteVariables -o "$buildDir/epigraph.md" `
        --template="$PSScriptRoot/Pandoc/templates/epigraph/epigraph.md" "$buildDir/dummy.txt"
 
 # Create the foreword, preface, and backmatter pages for print and epub
@@ -1177,7 +1184,7 @@ If ($buildEpub -ne "false")
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName.epub" `
-           "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageEpub"$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" `
+           "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" `
            $epubMdFiles `
            "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"
@@ -1194,7 +1201,7 @@ If ($buildEpub -ne "false" -and $buildAmazonEpub -ne "false")
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName-amazon.epub" `
-           "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageAmazonEpub"$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" `
+           "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageAmazonEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" `
            $epubMdFiles `
            "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"
@@ -1229,7 +1236,7 @@ If ($buildPrint -ne "false")
     {
     Write-Output "Building for print..."
     Invoke-Pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.tex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
-           --metadata-file "$buildDir/config-print.yml" `
+           --metadata-file "$buildDir/config-print.yml" $quoteVariables `
            -f markdown+smart $mdFiles -o "$outputDir/$bookName-print.pdf"
 
     # Optional print checks (requires Ghostscript, skipped if not installed)

@@ -3,7 +3,7 @@ $if(praise)$
 
 $for(praise)$
 ::: praise-quote
-$praise-open-quote$$praise.quote/chomp$$praise-close-quote$
+$quote-open$$praise.quote/chomp$$quote-close$
 :::
 
 ::: praise-source
