@@ -1,0 +1,19 @@
+$if(preface)$
+\cleardoublepage
+\pagestyle{empty}
+\vspace*{120pt}
+{\centering\chapterheadingfont\bfseries\Large\addfontfeature{LetterSpace=10}\MakeTextUppercase{Preface}\par}
+\vspace{12pt}
+{\centering\rule[0.5ex]{2cm}{0.4pt}\hspace{0.8em}{\large\adforn{21}}\hspace{0.8em}\rule[0.5ex]{2cm}{0.4pt}\par}
+\vspace{20pt}
+\label{preface}
+
+\begingroup
+\primaryfont\normalsize
+\setlength{\parindent}{1.5em}
+% the build adds a drop cap to the paragraph after the marker below
+\noindent
+%%dropcap
+$preface$
+\endgroup
+$endif$

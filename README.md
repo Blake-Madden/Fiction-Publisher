@@ -60,7 +60,7 @@ Refer [here](#your-book-structure) for the recommended file structure for your b
 - [X] Series page template
 - [X] Colophon page template (PDF only, details typesetting information)
 - [X] Author biography page template
-- [X] Foreword page template
+- [X] Foreword and preface page templates
 - [X] Afterword, acknowledgments, reading group guide, and excerpt page templates
 - [X] Customizable fonts for the main text, author name, and title
 
@@ -250,6 +250,10 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **foreword**: Optional foreword, usually written by someone other than the author. It follows the table of contents and opens with a drop cap.
 - **foreword-author**: Who wrote the foreword, shown as its sign-off
 
+### Preface
+
+- **preface**: Optional preface written by the author. It follows the foreword and opens with a drop cap.
+
 ### Table of Contents
 
 - **toc**: Whether to include a table of contents in the print output (`true` or `false`)
@@ -401,6 +405,9 @@ This folder contains the foreword page templates, which display the `foreword` f
 
 ##### Pandoc/templates/half-titlepage
 This folder contains the half-title page template (PDF only).
+
+##### Pandoc/templates/preface
+This folder contains the preface page templates, which display the `preface` field from your **config.yml** file.
 
 ##### Pandoc/templates/seriespage
 This folder contains the series page templates (including the Amazon KDP version), which list the `series-book` entries from your **config.yml** file.

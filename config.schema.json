@@ -132,6 +132,7 @@
 
         "foreword": { "$ref": "#/definitions/text", "description": "Foreword text (Markdown), usually written by someone other than the author." },
         "foreword-author": { "$ref": "#/definitions/text", "description": "Who wrote the foreword, shown as its sign-off." },
+        "preface": { "$ref": "#/definitions/text", "description": "Preface text (Markdown), written by the author." },
 
         "toc": { "$ref": "#/definitions/switch", "description": "Whether to include a table of contents in the print output." },
         "toc-title": { "$ref": "#/definitions/text", "description": "Header text for the table of contents." },
