@@ -735,7 +735,7 @@ $endif$
 \newcommand{\backmatterflourish}{\ifx\backmatterflourishnumber\flourishnone\else\pgfornament[width=4cm]{\backmatterflourishnumber}\fi}
 
 % Flourish above the afterword's sign-off (a pgfornament number, or none)
-\def\afterwordflourishnumber{$if(afterword-flourish)$$afterword-flourish$$else$75$endif$}
+\def\afterwordflourishnumber{$if(afterword-flourish)$$afterword-flourish$$else$none$endif$}
 \newcommand{\afterwordflourish}{\ifx\afterwordflourishnumber\flourishnone\else\pgfornament[width=3cm]{\afterwordflourishnumber}\par\vspace{6pt}\fi}
 
 % Teaser page for a book preview: small-caps kicker, the book's title, and its author, centered on the page

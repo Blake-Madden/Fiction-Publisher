@@ -153,7 +153,7 @@ toc: true
 # ----- Back Matter -----
 # author-bio: |
 # afterword: |
-# afterword-flourish: 75
+# afterword-flourish: none
 # acknowledgments: |
 # reading-group-intro: |
 # reading-group-guide: |
