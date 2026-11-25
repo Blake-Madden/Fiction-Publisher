@@ -60,6 +60,7 @@ Refer [here](#your-book-structure) for the recommended file structure for your b
 - [X] Series page template
 - [X] Colophon page template (PDF only, details typesetting information)
 - [X] Author biography page template
+- [X] Foreword page template
 - [X] Afterword, acknowledgments, reading group guide, and excerpt page templates
 - [X] Customizable fonts for the main text, author name, and title
 
@@ -244,6 +245,11 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **epigraph-source**: Who or what the epigraph is from
 - **epigraph-quote**: `false` to hide the large opening quote mark. Default is `true`.
 
+### Foreword
+
+- **foreword**: Optional foreword, usually written by someone other than the author. It follows the table of contents and opens with a drop cap.
+- **foreword-author**: Who wrote the foreword, shown as its sign-off
+
 ### Table of Contents
 
 - **toc**: Whether to include a table of contents in the print output (`true` or `false`)
@@ -389,6 +395,9 @@ This folder contains the colophon page template (PDF only), which is included wh
 
 ##### Pandoc/templates/copyright
 This folder contains the custom copyright templates. You can select which template to use using the `copyright-page` field in your **config.yml** file.
+
+##### Pandoc/templates/foreword
+This folder contains the foreword page templates, which display the `foreword` field from your **config.yml** file.
 
 ##### Pandoc/templates/half-titlepage
 This folder contains the half-title page template (PDF only).

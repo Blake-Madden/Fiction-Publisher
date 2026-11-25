@@ -959,17 +959,18 @@ Invoke-Pandoc --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/bio.md" 
 Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/epigraph.md" `
        --template="$PSScriptRoot/Pandoc/templates/epigraph/epigraph.md" "$buildDir/dummy.txt"
 
-# Create the backmatter pages for print and epub
+# Create the foreword and backmatter pages for print and epub
 $dropCapStyle = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^drop-cap-style:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
-foreach ($backmatterPage in @('afterword', 'acknowledgments', 'reading-group-guide', 'excerpt'))
+foreach ($pageTemplate in @('foreword/foreword', 'backmatter/afterword', 'backmatter/acknowledgments', 'backmatter/reading-group-guide', 'backmatter/excerpt'))
     {
+    $backmatterPage = Split-Path $pageTemplate -Leaf
     Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/$backmatterPage.tex" -t latex `
-           --template="$PSScriptRoot/Pandoc/templates/backmatter/$backmatterPage.tex" "$buildDir/dummy.txt"
+           --template="$PSScriptRoot/Pandoc/templates/$pageTemplate.tex" "$buildDir/dummy.txt"
     # Not wrapped, so that a long heading stays on one line with its attributes
     Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/$backmatterPage.md" `
-           --template="$PSScriptRoot/Pandoc/templates/backmatter/$backmatterPage.md" "$buildDir/dummy.txt"
+           --template="$PSScriptRoot/Pandoc/templates/$pageTemplate.md" "$buildDir/dummy.txt"
 
-    # Afterword and excerpt templates mark where a drop cap goes
+    # Foreword, afterword, and excerpt templates mark where a drop cap goes
     # (pandoc writes an opening double quote as `` in LaTeX, so that is removed like a quotation mark)
     $latex = [IO.File]::ReadAllText("$buildDir/$backmatterPage.tex")
     $latex = Add-PrintDropCap $latex $dropCapStyle '(%%dropcap\r?\n)(?:``?)?'
@@ -1148,7 +1149,7 @@ If ($buildEpub -ne "false")
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName.epub" `
-           "$buildDir/copyright.md" $includeSeriesPageEpub "$buildDir/epigraph.md" `
+           "$buildDir/copyright.md" $includeSeriesPageEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" `
            $epubMdFiles `
            "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"
@@ -1165,7 +1166,7 @@ If ($buildEpub -ne "false" -and $buildAmazonEpub -ne "false")
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName-amazon.epub" `
-           "$buildDir/copyright.md" $includeSeriesPageAmazonEpub "$buildDir/epigraph.md" `
+           "$buildDir/copyright.md" $includeSeriesPageAmazonEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" `
            $epubMdFiles `
            "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"

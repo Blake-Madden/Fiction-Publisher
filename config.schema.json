@@ -130,6 +130,9 @@
         "epigraph-source": { "$ref": "#/definitions/text", "description": "Who or what the epigraph is from." },
         "epigraph-quote": { "$ref": "#/definitions/switch", "description": "false to hide the large opening quote mark beside the epigraph (default is true)." },
 
+        "foreword": { "$ref": "#/definitions/text", "description": "Foreword text (Markdown), usually written by someone other than the author." },
+        "foreword-author": { "$ref": "#/definitions/text", "description": "Who wrote the foreword, shown as its sign-off." },
+
         "toc": { "$ref": "#/definitions/switch", "description": "Whether to include a table of contents in the print output." },
         "toc-title": { "$ref": "#/definitions/text", "description": "Header text for the table of contents." },
         "toc-depth": {

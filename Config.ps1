@@ -120,6 +120,8 @@ dedication: Dedicated to my readers.
 # epigraph: |
 # epigraph-source:
 # epigraph-quote: true
+# foreword: |
+# foreword-author:
 toc: true
 # toc-title:
 # toc-depth: 0
