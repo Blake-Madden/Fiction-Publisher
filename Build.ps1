@@ -927,6 +927,34 @@ Invoke-Pandoc --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/copyrigh
        "$buildDir/dummy.txt"
 Copy-Item -Path "$PSScriptRoot/Pandoc/templates/copyright/ccbynasa.png" -Destination "$buildDir/ccbynasa.png"
 
+# Create the praise page for print and epub, with each quote in the quotation marks of the book's language
+# (pandoc always writes English quotation marks in ePubs, so the marks are added by the build)
+function Get-QuotationMarks
+    {
+    param([string]$Lang)
+    $nbsp = [char] 0x00A0
+    $guillemets = [string][char] 0x00AB, [string][char] 0x00BB
+    switch -Regex ($Lang)
+        {
+        '^(de-CH|de-LI)(-|$)' { return $guillemets }
+        '^fr(-|$)' { return ($guillemets[0] + $nbsp), ($nbsp + $guillemets[1]) }
+        '^pt-BR(-|$)' { break }
+        '^(de|cs|sk|sl|bg|is|et|lt)(-|$)' { return [string][char] 0x201E, [string][char] 0x201C }
+        '^(pl|ro|hu|hr)(-|$)' { return [string][char] 0x201E, [string][char] 0x201D }
+        '^(es|ca|it|pt|ru|uk|be|el|nb|nn|no)(-|$)' { return $guillemets }
+        '^(sv|fi)(-|$)' { return [string][char] 0x201D, [string][char] 0x201D }
+        '^da(-|$)' { return $guillemets[1], $guillemets[0] }
+        '^ja(-|$)' { return [string][char] 0x300C, [string][char] 0x300D }
+        }
+    return [string][char] 0x201C, [string][char] 0x201D
+    }
+$quoteOpen, $quoteClose = Get-QuotationMarks (Get-ConfigValue (Get-Content -LiteralPath "$bookDir/config.yml") 'lang').Value
+# (passed as variables, because metadata values are read as Markdown, which changes the marks)
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -V "praise-open-quote=$quoteOpen" -V "praise-close-quote=$quoteClose" `
+       -o "$buildDir/praise.tex" -t latex --template="$PSScriptRoot/Pandoc/templates/praise/praise.tex" "$buildDir/dummy.txt"
+Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -V "praise-open-quote=$quoteOpen" -V "praise-close-quote=$quoteClose" `
+       -o "$buildDir/praise.md" --template="$PSScriptRoot/Pandoc/templates/praise/praise.md" "$buildDir/dummy.txt"
+
 # Create the latex half titlepage
 # half titlepage doesn't really make sense because e-readers force the main title page to the front
 Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/half-titlepage.tex" -t latex `
@@ -1149,7 +1177,7 @@ If ($buildEpub -ne "false")
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName.epub" `
-           "$buildDir/copyright.md" $includeSeriesPageEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" `
+           "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageEpub"$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" `
            $epubMdFiles `
            "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"
@@ -1166,7 +1194,7 @@ If ($buildEpub -ne "false" -and $buildAmazonEpub -ne "false")
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName-amazon.epub" `
-           "$buildDir/copyright.md" $includeSeriesPageAmazonEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" `
+           "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageAmazonEpub"$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" `
            $epubMdFiles `
            "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"

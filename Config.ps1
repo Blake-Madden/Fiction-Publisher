@@ -116,6 +116,10 @@ contributors:
       # illustrator:
 
 # ----- Front Matter -----
+# praise:
+#     - quote:
+#       source:
+# praise-title:
 dedication: Dedicated to my readers.
 # epigraph: |
 # epigraph-source:

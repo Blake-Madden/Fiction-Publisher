@@ -124,6 +124,21 @@
         "impression-line-years": { "$ref": "#/definitions/number", "description": "Year part of the printer line (years run right-to-left, usually 2-digit)." },
         "impression-line-printings": { "$ref": "#/definitions/number", "description": "Print-run part of the printer line (numbers run left-to-right)." },
 
+        "praise": {
+            "type": ["array", "null"],
+            "description": "Review quotes for a praise page at the front of the book. Quotation marks are added for you.",
+            "items": {
+                "type": "object",
+                "required": ["quote", "source"],
+                "properties": {
+                    "quote": { "$ref": "#/definitions/text", "description": "The quote (Markdown), without quotation marks." },
+                    "source": { "$ref": "#/definitions/text", "description": "Who said it (Markdown), e.g., Jane Smith, author of *The Long Rain*." }
+                },
+                "additionalProperties": false
+            }
+        },
+        "praise-title": { "$ref": "#/definitions/text", "description": "The praise page's heading. Default is Praise for followed by the title." },
+
         "dedication": { "$ref": "#/definitions/text", "description": "Optional dedication." },
 
         "epigraph": { "$ref": "#/definitions/text", "description": "Optional quote shown on a page before the first chapter." },

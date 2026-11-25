@@ -1,0 +1,21 @@
+$if(praise)$
+\pagestyle{empty}
+\vspace*{36pt}
+{\centering\chapterheadingfont\bfseries\large\addfontfeature{LetterSpace=10}\MakeTextUppercase{$if(praise-title)$$praise-title$$else$Praise for \emph{$title$}$endif$}\par}
+\vspace{30pt}
+
+\begingroup
+\primaryfont\normalsize
+\setlength{\parindent}{0pt}
+% each quote is kept on one page with its source
+$for(praise)$
+\noindent\begin{minipage}{\textwidth}
+\setlength{\parskip}{6pt}
+$praise-open-quote$$praise.quote/chomp$$praise-close-quote$\par
+\vspace{4pt}
+{\raggedleft\textemdash\,\textsc{$praise.source$}\par}
+\end{minipage}
+\par\vspace{20pt plus 8pt}
+$endfor$
+\endgroup
+$endif$

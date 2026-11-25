@@ -60,6 +60,7 @@ Refer [here](#your-book-structure) for the recommended file structure for your b
 - [X] Series page template
 - [X] Colophon page template (PDF only, details typesetting information)
 - [X] Author biography page template
+- [X] Praise page template
 - [X] Foreword and preface page templates
 - [X] Afterword, acknowledgments, reading group guide, and excerpt page templates
 - [X] Customizable fonts for the main text, author name, and title
@@ -234,6 +235,17 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 - **impression-line-years**: The year part of the impression number/printer line (years run right-to-left, and are usually 2-digit)
 - **impression-line-printings**: The print-run part of the impression number/printer line (number run left-to-right)
+
+### Praise Page
+
+- **praise**: Optional list of review quotes, shown on the first page of the book. Each has a `quote` and a `source`. Quotation marks are added in the style of the book's language.
+- **praise-title**: The praise page's heading (default is `Praise for` and the title)
+
+```yaml
+praise:
+    - quote: A storm of a novel. I read it with the lights on.
+      source: Jane Smith, author of *The Long Rain*
+```
 
 ### Dedication Page
 
@@ -416,6 +428,9 @@ This folder contains the foreword page templates, which display the `foreword` f
 
 ##### Pandoc/templates/half-titlepage
 This folder contains the half-title page template (PDF only).
+
+##### Pandoc/templates/praise
+This folder contains the praise page templates, which display the `praise` quotes from your **config.yml** file.
 
 ##### Pandoc/templates/preface
 This folder contains the preface page templates, which display the `preface` field from your **config.yml** file.

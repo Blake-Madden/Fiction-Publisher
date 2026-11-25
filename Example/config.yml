@@ -9,6 +9,13 @@ lang: en-US
 date: 2026-11-08
 year: 2026
 rights: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+praise:
+    - quote: A storm of a novel. I read it with the lights on, and then with the shutters closed.
+      source: Jane Smith, author of *The Long Rain*
+    - quote: Atmospheric, unsettling, and impossible to put down. Bring a coat.
+      source: "*The Weather Review*"
+    - quote: I have never been so afraid of a knock at the door.
+      source: Harold, a neighbor
 dedication: Dedicated to everyone who has ever started a story with the weather.
 epigraph: |
   It was a dark and stormy night; the rain fell in torrents---except at occasional intervals, when it was checked by a violent gust of wind.
