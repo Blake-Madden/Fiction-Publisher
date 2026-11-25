@@ -15,10 +15,6 @@ $else$
 # Excerpt {#excerpt .backmatter}
 $endif$
 
-::: bm-ornament
-❦
-:::
-
 <!--dropcap-->
 
 $excerpt$
