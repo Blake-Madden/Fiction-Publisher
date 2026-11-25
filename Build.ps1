@@ -484,6 +484,9 @@ Write-Output "Copying files..."
 Copy-Item -LiteralPath "$bookDir/outline" -Destination "$buildDir/" -Recurse -Force
 Copy-Item -Path "$PSScriptRoot/Pandoc/fonts/*.ttf" -Destination "$buildDir/" -Recurse -Force
 Copy-Item -Path "$PSScriptRoot/Pandoc/fonts/*.otf" -Destination "$buildDir/" -Recurse -Force
+# artwork, so that it can be referred to as images/... from the scenes and templates
+if ([IO.Directory]::Exists("$bookDir/images"))
+    { Copy-Item -LiteralPath "$bookDir/images" -Destination "$buildDir/" -Recurse -Force }
 
 # get all the chapters and scenes (these should all be prefixed with numbers to control their ordering)
 $mdFiles = Get-MarkdownFiles "$buildDir/outline"
@@ -821,7 +824,8 @@ $buildPrint = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pa
 If ($buildDraft -ne "false")
    {
     Write-Output "Building draft copy..."
-    Invoke-Pandoc --toc "$bookDir/config.yml" --reference-doc "$PSScriptRoot/Pandoc/templates/draft.docx" $mdFiles -o "$outputDir/$bookName DRAFT.docx"
+    # (the draft is built before switching to the build folder, so images/... is looked up there with --resource-path)
+    Invoke-Pandoc --toc --resource-path="$buildDir" "$bookDir/config.yml" --reference-doc "$PSScriptRoot/Pandoc/templates/draft.docx" $mdFiles -o "$outputDir/$bookName DRAFT.docx"
     }
 
 # copy epub cover image to build

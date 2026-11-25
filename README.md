@@ -419,6 +419,8 @@ A book folder should have the following:
     - In each chapter folder, there should be a separate Markdown file for each scene. (A numeric prefix on these files will inform the build script of their order; pad with leading zeros, e.g. 00-, 01-, since sorting is lexicographic.) It is recommended to add a `***` at the end of each Markdown file (except for the last one) in a chapter if you wish to have scene separators added.
   - To divide the book into parts, put chapter folders inside a numbered part folder, such as `01-The_Storm/01-A_Dark_and_Stormy_Night/00-Scene.md`.
     Each part opens with a "Part I" page showing the folder's title.
+- An optional "images" folder for your artwork, such as the cover and maps.
+  It is copied into the build, so refer to its files as `images/...`, for example `cover-image: images/cover.jpg`.
 
 ### Fiction-Publisher-Output
 This folder holds your finished book in each format you've built, along with any "Format Warnings" and "Build Errors" logs (refer to [Build Your Book](#build-your-book) for details).
