@@ -194,6 +194,23 @@ $endfor$
 \ifx\pagenumberposition\bottomouter \fancyfoot[RO,LE]{\primaryfont \thepage}\fi
 }
 
+%% Foreword and preface pages: roman page numbers, with "Foreword" or "Preface" in the header
+\makeatletter
+\fancypagestyle{frontmatter}{
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.0pt}
+\ifx\pagenumberposition\bottomcenter
+  \fancyfoot[C]{\primaryfont \thepage}
+\else\ifx\pagenumberposition\bottomouter
+  \fancyfoot[RO,LE]{\primaryfont \thepage}
+\else
+  \fancyhead[RO,LE]{\primaryfont\bfseries \thepage}
+\fi\fi
+\fancyhead[LO]{\primaryfont\bfseries \textsc \leftmark}
+\fancyhead[RE]{\primaryfont\bfseries \textsc \@title}
+}
+\makeatother
+
 %% Set the header height in: in, mm, cm, pt
 \setlength{\headheight}{0.10in}
 
