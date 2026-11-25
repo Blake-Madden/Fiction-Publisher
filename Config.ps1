@@ -54,60 +54,138 @@ if (Test-Path -LiteralPath "$bookDir/config.yml" -PathType Leaf)
   }
 else
   {
+  # Options users need to fill out are left blank; the rest are commented out, showing their defaults where they have one.
+  $config = @'
+---
+{SCHEMA_LINE}
+# ----- Book -----
+title:
+subtitle:
+author:
+# email:
+website:
+type:
+lang: en-US
+date:
+year:
+identifier:
+    - scheme: UUID
+      text: {GUID}
+
+# ----- Title Page -----
+# title-latex:
+# subtitle-latex:
+# title-page-top-margin: 4cm
+# title-font:
+# title-font-pointsize: 50
+# author-font:
+# author-by-header:
+
+# ----- Fonts -----
+# Each can be a TTF/OTF file in Pandoc/fonts or an installed font name.
+# The bold/italic lines are only needed when main-font is a font file.
+# main-font: Cochineal
+# main-font-bold:
+# main-font-italic:
+# main-font-bold-italic:
+
+# ----- Cover -----
+# cover-image: images/cover.jpg
+
+# ----- Publishing & Copyright -----
+publisher:
+# publisher-address-latex:
+# publisher-address-html:
+# copyright-page: creative-commons
+# rights:
+paperback-isbn-13:
+paperback-isbn-10:
+hardcover-isbn-13:
+hardcover-isbn-10:
+epub-isbn-13:
+epub-isbn-10:
+# first-paperback-date:
+# lcc-info-latex:
+# lcc-info-html:
+# impression-line-years:
+# impression-line-printings:
+contributors:
+    - designer:
+      cover-artist:
+      editor:
+      # illustrator:
+
+# ----- Front Matter -----
+dedication: Dedicated to my readers.
+# epigraph: |
+# epigraph-source:
+# epigraph-quote: true
+toc: true
+# toc-title:
+# toc-depth: 0
+
+# ----- Chapters & Scenes -----
+# chapter-heading: default
+# fancy-chapter:
+# chapter-name: Chapter
+# part-name: Part
+# chapter-number-words: false
+# unnumbered-chapters: Prologue; Epilogue
+# drop-cap-style: default
+# drop-cap-color: black
+# scene-separator-latex:
+# scene-separator-html:
+# hyphenation-exceptions:
+
+# ----- Page Layout -----
+# paper-height: 9in
+# paper-width: 6in
+# top-margin: 30mm
+# bottom-margin: 27mm
+# inner-margin: 22mm
+# outer-margin: 19mm
+# page-number-position: header
+# header-includes:
+
+# ----- Back Matter -----
+# author-bio: |
+# afterword: |
+# afterword-flourish: 75
+# acknowledgments: |
+# reading-group-intro: |
+# reading-group-guide: |
+# excerpt-title:
+# excerpt-note:
+# excerpt: |
+# backmatter-flourish: 88
+# colophon: false
+
+# ----- Series -----
+# Up to 5 books, series-book1 through series-book5. The link is used in the Amazon ePub.
+# series-header: Also Available
+# series-book1:
+#     - title: Any book you've written
+#       link: http://www.amazon.com/dp/XXXXXXXX
+# series-book2:
+#     - title: Another book you've written
+#       link:
+
+# ----- Proofing -----
+# emphasis-check:
+# copyedit: false
+
+# ----- Build -----
+# build-draft: true
+# build-epub: true
+# build-amazon-epub: true
+# build-print: true
+---
+'@
+  $config = $config.Replace('{GUID}', [guid]::NewGuid().ToString())
+  $config = If ($schemaLine) { $config.Replace('{SCHEMA_LINE}', $schemaLine) } Else { $config.Replace("{SCHEMA_LINE}`n", '').Replace("{SCHEMA_LINE}`r`n", '') }
   try
     {
-    Set-Content -Encoding UTF8 -LiteralPath "$bookDir/config.yml" `
-      -Value ("---" + [environment]::NewLine + `
-             $(If ($schemaLine) { $schemaLine + [environment]::NewLine }) + `
-             "title:" + [environment]::NewLine + `
-             "subtitle:" + [environment]::NewLine + `
-             "author:" + [environment]::NewLine + `
-             "website:" + [environment]::NewLine + `
-             "type:" + [environment]::NewLine + `
-             "lang: en-US" + [environment]::NewLine + `
-             "date:" + [environment]::NewLine + `
-             "year:" + [environment]::NewLine + `
-             "# Enter the path to your cover image below." + [environment]::NewLine + `
-             "# cover-image:" + [environment]::NewLine + `
-             "# Fonts for the print PDF. Each can be a TTF/OTF file in Pandoc/fonts or an installed font name." + [environment]::NewLine + `
-             "# The main font is Cochineal unless main-font is specified." + [environment]::NewLine + `
-             "# The bold/italic lines are only needed when main-font is a font file." + [environment]::NewLine + `
-             "# main-font:" + [environment]::NewLine + `
-             "# main-font-bold:" + [environment]::NewLine + `
-             "# main-font-italic:" + [environment]::NewLine + `
-             "# main-font-bold-italic:" + [environment]::NewLine + `
-             "# title-font:" + [environment]::NewLine + `
-             "# author-font:" + [environment]::NewLine + `
-             "publisher:" + [environment]::NewLine + `
-             "paperback-isbn-13:" + [environment]::NewLine + `
-             "paperback-isbn-10:" + [environment]::NewLine + `
-             "hardcover-isbn-13:" + [environment]::NewLine + `
-             "hardcover-isbn-10:" + [environment]::NewLine + `
-             "epub-isbn-13:" + [environment]::NewLine + `
-             "epub-isbn-10:" + [environment]::NewLine + `
-             "dedication: Dedicated to my readers." + [environment]::NewLine + `
-             "toc: true" + [environment]::NewLine + `
-             "top-margin:" + [environment]::NewLine + `
-             "bottom-margin:" + [environment]::NewLine + `
-             "inner-margin:" + [environment]::NewLine + `
-             "outer-margin:" + [environment]::NewLine + `
-             "identifier:" + [environment]::NewLine + `
-             "    - scheme: UUID" + [environment]::NewLine + `
-             "      text: $([guid]::NewGuid())" + [environment]::NewLine + `
-             "contributors:" + [environment]::NewLine + `
-             "    - designer:" + [environment]::NewLine + `
-             "      cover-artist:" + [environment]::NewLine + `
-             "      editor:" + [environment]::NewLine + `
-             "# Your other books to list on a series page (up to 5, series-book1 through series-book5)." + [environment]::NewLine + `
-             "# The link is used in the Amazon ePub. Remove the leading '#' from these lines to use them." + [environment]::NewLine + `
-             "#series-book1:" + [environment]::NewLine + `
-             "#    - title: Any book you've written" + [environment]::NewLine + `
-             "#      link: http://www.amazon.com/dp/XXXXXXXX" + [environment]::NewLine + `
-             "#series-book2:" + [environment]::NewLine + `
-             "#    - title: Another book you've written" + [environment]::NewLine + `
-             "#      link:" + [environment]::NewLine + `
-             "---") `
-      -ErrorAction Stop
+    Set-Content -Encoding UTF8 -LiteralPath "$bookDir/config.yml" -Value $config.TrimEnd() -ErrorAction Stop
     Write-Output "Created '$bookDir/config.yml'."
     }
   catch
