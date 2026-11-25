@@ -127,6 +127,9 @@ toc: true
 # ----- Chapters & Scenes -----
 # chapter-heading: default
 # fancy-chapter:
+# chapter-image: images/chapter.png
+# chapter-image-epub: images/chapter-epub.png
+# chapter-image-width: 1.5in
 # chapter-name: Chapter
 # part-name: Part
 # chapter-number-words: false

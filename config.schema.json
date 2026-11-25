@@ -194,6 +194,9 @@
                 { "type": ["string", "null"] }
             ]
         },
+        "chapter-image": { "$ref": "#/definitions/text", "description": "Path to artwork shown above every chapter heading, relative to the book's folder (e.g., images/chapter.png). Not shown in the PDF when fancy-chapter is used." },
+        "chapter-image-epub": { "$ref": "#/definitions/text", "description": "Path to the ePub's chapter heading artwork, such as a PNG with transparency (e.g., images/chapter-epub.png). Default is chapter-image." },
+        "chapter-image-width": { "$ref": "#/definitions/text", "description": "Width of the chapter heading artwork (e.g., 2in or 50mm). Default is 1.5in." },
         "chapter-name": { "$ref": "#/definitions/text", "description": "The word used for \"Chapter\" in chapter headings, running headers, and the ePub labels of chapters with no title (e.g., Kapitel). Default is Chapter." },
         "part-name": { "$ref": "#/definitions/text", "description": "The word used for \"Part\" on part pages (e.g., Teil). Default is Part." },
         "chapter-number-words": { "type": ["boolean", "null"], "description": "Spell out chapter numbers in PDF headings and running headers (e.g., Chapter One). Default is false." },

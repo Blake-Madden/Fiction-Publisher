@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="820" height="824" viewBox="0 0 820 824" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="888" viewBox="0 0 820 888" role="img" aria-labelledby="title desc">
   <title id="title">Book folder structure</title>
-  <desc id="desc">The folder layout for a Fiction Publisher book: a book folder containing config.yml, an optional images folder, and an outline folder with one subfolder per chapter, each holding numbered scene Markdown files. The .vscode and Fiction-Publisher-Output folders are created by the scripts.</desc>
+  <desc id="desc">The folder layout for a Fiction Publisher book: a book folder containing config.yml, an optional images folder for the cover and chapter heading artwork, and an outline folder with one subfolder per chapter, each holding numbered scene Markdown files. The .vscode and Fiction-Publisher-Output folders are created by the scripts.</desc>
   <style>
     .bg { fill: #ffffff; stroke: #d0d7de; }
     .line { stroke: #8c959f; stroke-width: 1.5; fill: none; }
@@ -23,18 +23,18 @@
     }
   </style>
 
-  <rect class="bg" x="0.5" y="0.5" width="819" height="823" rx="8"/>
+  <rect class="bg" x="0.5" y="0.5" width="819" height="887" rx="8"/>
 
   <!-- tree connectors -->
-  <path class="line" d="M32 56 V560 M32 80 H49 M32 112 H49 M32 176 H49 M32 496 H49 M32 560 H49"/>
-  <path class="line" d="M60 120 V144 H77"/>
-  <path class="line" d="M60 184 V432 M60 208 H77 M60 272 H77 M60 368 H77 M60 432 H77"/>
-  <path class="line" d="M88 216 V240 H105"/>
-  <path class="line" d="M88 280 V336 M88 304 H105 M88 336 H105"/>
-  <path class="line" d="M88 376 V400 H105"/>
+  <path class="line" d="M32 56 V624 M32 80 H49 M32 112 H49 M32 240 H49 M32 560 H49 M32 624 H49"/>
+  <path class="line" d="M60 120 V208 M60 144 H77 M60 176 H77 M60 208 H77"/>
+  <path class="line" d="M60 248 V496 M60 272 H77 M60 336 H77 M60 432 H77 M60 496 H77"/>
+  <path class="line" d="M88 280 V304 H105"/>
+  <path class="line" d="M88 344 V400 M88 368 H105 M88 400 H105"/>
   <path class="line" d="M88 440 V464 H105"/>
-  <path class="line" d="M60 504 V528 H77"/>
-  <path class="line" d="M60 568 V784 M60 592 H77 M60 624 H77 M60 656 H77 M60 688 H77 M60 720 H77 M60 752 H77 M60 784 H77"/>
+  <path class="line" d="M88 504 V528 H105"/>
+  <path class="line" d="M60 568 V592 H77"/>
+  <path class="line" d="M60 632 V848 M60 656 H77 M60 688 H77 M60 720 H77 M60 752 H77 M60 784 H77 M60 816 H77 M60 848 H77"/>
 
   <!-- icons -->
   <defs>
@@ -45,72 +45,79 @@
   <use href="#file" class="file" x="52" y="80"/>
   <use href="#folder" class="folder" x="52" y="112"/>
   <use href="#file" class="file" x="80" y="144"/>
-  <use href="#folder" class="folder" x="52" y="176"/>
-  <use href="#folder" class="folder" x="80" y="208"/>
-  <use href="#file" class="file" x="108" y="240"/>
+  <use href="#file" class="file" x="80" y="176"/>
+  <use href="#file" class="file" x="80" y="208"/>
+  <use href="#folder" class="folder" x="52" y="240"/>
   <use href="#folder" class="folder" x="80" y="272"/>
   <use href="#file" class="file" x="108" y="304"/>
-  <use href="#file" class="file" x="108" y="336"/>
-  <use href="#folder" class="folder" x="80" y="368"/>
+  <use href="#folder" class="folder" x="80" y="336"/>
+  <use href="#file" class="file" x="108" y="368"/>
   <use href="#file" class="file" x="108" y="400"/>
   <use href="#folder" class="folder" x="80" y="432"/>
   <use href="#file" class="file" x="108" y="464"/>
-  <use href="#folder" class="gen" x="52" y="496"/>
-  <use href="#file" class="gen" x="80" y="528"/>
+  <use href="#folder" class="folder" x="80" y="496"/>
+  <use href="#file" class="file" x="108" y="528"/>
   <use href="#folder" class="gen" x="52" y="560"/>
   <use href="#file" class="gen" x="80" y="592"/>
-  <use href="#file" class="gen" x="80" y="624"/>
+  <use href="#folder" class="gen" x="52" y="624"/>
   <use href="#file" class="gen" x="80" y="656"/>
   <use href="#file" class="gen" x="80" y="688"/>
   <use href="#file" class="gen" x="80" y="720"/>
   <use href="#file" class="gen" x="80" y="752"/>
-  <use href="#folder" class="gen" x="80" y="784"/>
+  <use href="#file" class="gen" x="80" y="784"/>
+  <use href="#file" class="gen" x="80" y="816"/>
+  <use href="#folder" class="gen" x="80" y="848"/>
 
   <!-- names -->
   <text class="name" x="48" y="53" font-weight="bold">MyBook/</text>
   <text class="name" x="76" y="85">config.yml</text>
   <text class="name" x="76" y="117">images/</text>
   <text class="name" x="104" y="149">cover.jpg</text>
-  <text class="name" x="76" y="181">outline/</text>
-  <text class="name" x="104" y="213">00-Prologue/</text>
-  <text class="name" x="132" y="245">01-Scene.md</text>
-  <text class="name" x="104" y="277">01-A_Dark_and_Stormy_Night/</text>
+  <text class="name" x="104" y="181">chapter.png</text>
+  <text class="name" x="104" y="213">chapter-epub.png</text>
+  <text class="name" x="76" y="245">outline/</text>
+  <text class="name" x="104" y="277">00-Prologue/</text>
   <text class="name" x="132" y="309">01-Scene.md</text>
-  <text class="name" x="132" y="341">02-Scene.md</text>
-  <text class="name" x="104" y="373">02/</text>
-  <text class="name" x="132" y="405">01-Scene.md</text>
-  <text class="name" x="104" y="437">99-Epilogue/</text>
+  <text class="name" x="104" y="341">01-A_Dark_and_Stormy_Night/</text>
+  <text class="name" x="132" y="373">01-Scene.md</text>
+  <text class="name" x="132" y="405">02-Scene.md</text>
+  <text class="name" x="104" y="437">02/</text>
   <text class="name" x="132" y="469">01-Scene.md</text>
-  <text class="name gen-text" x="76" y="501">.vscode/</text>
-  <text class="name gen-text" x="104" y="533">tasks.json</text>
-  <text class="name gen-text" x="76" y="565">Fiction-Publisher-Output/</text>
-  <text class="name gen-text" x="104" y="597">MyBook.epub</text>
-  <text class="name gen-text" x="104" y="629">MyBook-amazon.epub</text>
-  <text class="name gen-text" x="104" y="661">MyBook-print.pdf</text>
-  <text class="name gen-text" x="104" y="693">MyBook DRAFT.docx</text>
-  <text class="name gen-text" x="104" y="725">MyBook Format Warnings.log</text>
-  <text class="name gen-text" x="104" y="757">MyBook Build Errors.log</text>
-  <text class="name gen-text" x="104" y="789">build/</text>
+  <text class="name" x="104" y="501">99-Epilogue/</text>
+  <text class="name" x="132" y="533">01-Scene.md</text>
+  <text class="name gen-text" x="76" y="565">.vscode/</text>
+  <text class="name gen-text" x="104" y="597">tasks.json</text>
+  <text class="name gen-text" x="76" y="629">Fiction-Publisher-Output/</text>
+  <text class="name gen-text" x="104" y="661">MyBook.epub</text>
+  <text class="name gen-text" x="104" y="693">MyBook-amazon.epub</text>
+  <text class="name gen-text" x="104" y="725">MyBook-print.pdf</text>
+  <text class="name gen-text" x="104" y="757">MyBook DRAFT.docx</text>
+  <text class="name gen-text" x="104" y="789">MyBook Format Warnings.log</text>
+  <text class="name gen-text" x="104" y="821">MyBook Build Errors.log</text>
+  <text class="name gen-text" x="104" y="853">build/</text>
 
   <!-- notes -->
   <text class="note" x="380" y="53">Your book folder (passed with -BookFolder)</text>
   <text class="note" x="380" y="85">Book metadata and build options</text>
-  <text class="note" x="380" y="117">Optional (e.g., for the cover-image)</text>
-  <text class="note" x="380" y="181">One subfolder per chapter, ordered by number</text>
-  <text class="note" x="380" y="213">Unnumbered chapter (no “Chapter N” label)</text>
-  <text class="note" x="380" y="277">Chapter 1, titled from the folder name</text>
-  <text class="note" x="380" y="309">One Markdown file per scene, ordered by number</text>
-  <text class="note" x="380" y="341">End all but the last scene with *** for a separator</text>
-  <text class="note" x="380" y="373">Chapter 2, number only (no title)</text>
-  <text class="note" x="380" y="437">Unnumbered chapter</text>
-  <text class="note gen-text" x="380" y="501">Created by Config.ps1</text>
-  <text class="note gen-text" x="380" y="533">Build tasks for VS Codium / VS Code</text>
-  <text class="note gen-text" x="380" y="565">Created by Build.ps1 (recreated on each build)</text>
-  <text class="note gen-text" x="380" y="597">ePub</text>
-  <text class="note gen-text" x="380" y="629">Amazon KDP ePub</text>
-  <text class="note gen-text" x="380" y="661">Print-ready PDF</text>
-  <text class="note gen-text" x="380" y="693">Word draft</text>
-  <text class="note gen-text" x="380" y="725">Formatting issues in the source files (if any)</text>
-  <text class="note gen-text" x="380" y="757">Pandoc and LaTeX errors and warnings (if any)</text>
-  <text class="note gen-text" x="380" y="789">Intermediate files (kept only if the build fails)</text>
+  <text class="note" x="380" y="117">Optional artwork, referred to as images/...</text>
+  <text class="note" x="380" y="149">ePub cover (cover-image)</text>
+  <text class="note" x="380" y="181">Chapter heading artwork (chapter-image)</text>
+  <text class="note" x="380" y="213">ePub chapter heading artwork (chapter-image-epub)</text>
+  <text class="note" x="380" y="245">One subfolder per chapter, ordered by number</text>
+  <text class="note" x="380" y="277">Unnumbered chapter (no “Chapter N” label)</text>
+  <text class="note" x="380" y="341">Chapter 1, titled from the folder name</text>
+  <text class="note" x="380" y="373">One Markdown file per scene, ordered by number</text>
+  <text class="note" x="380" y="405">End all but the last scene with *** for a separator</text>
+  <text class="note" x="380" y="437">Chapter 2, number only (no title)</text>
+  <text class="note" x="380" y="501">Unnumbered chapter</text>
+  <text class="note gen-text" x="380" y="565">Created by Config.ps1</text>
+  <text class="note gen-text" x="380" y="597">Build tasks for VS Codium / VS Code</text>
+  <text class="note gen-text" x="380" y="629">Created by Build.ps1 (recreated on each build)</text>
+  <text class="note gen-text" x="380" y="661">ePub</text>
+  <text class="note gen-text" x="380" y="693">Amazon KDP ePub</text>
+  <text class="note gen-text" x="380" y="725">Print-ready PDF</text>
+  <text class="note gen-text" x="380" y="757">Word draft</text>
+  <text class="note gen-text" x="380" y="789">Formatting issues in the source files (if any)</text>
+  <text class="note gen-text" x="380" y="821">Pandoc and LaTeX errors and warnings (if any)</text>
+  <text class="note gen-text" x="380" y="853">Intermediate files (kept only if the build fails)</text>
 </svg>

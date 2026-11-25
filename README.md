@@ -304,6 +304,13 @@ The colophon is the last page of the print output.
 
   ![Chapter heading styles](docs/chapter-headings.png)
 
+- **chapter-image**: Artwork shown above every chapter heading, for example `images/chapter.png`.
+  (It isn't shown in the PDF when **fancy-chapter** is used.)
+  For print, use a grayscale image of at least 300 DPI at its printed size. Avoid transparency when **pdf-x** is `true`.
+- **chapter-image-epub**: Artwork for the ePub's chapter headings, if different from **chapter-image**.
+  A PNG with transparency works best, since it blends with e-readers' sepia and dark themes.
+- **chapter-image-width**: The width of the chapter heading artwork, such as `2in` or `50mm`. Default is `1.5in`.
+
 - **chapter-name**: The word used for "Chapter" (default is `Chapter`), for example `Kapitel` or `Part`.
   PDF output uses it in chapter headings and running headers.
   ePub output uses it for chapters with no title.

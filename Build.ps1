@@ -138,6 +138,38 @@ function Add-PrintDropCap
     return $Content
     }
 
+# Removes the chapter heading artwork from an ePub's table of contents
+# (Pandoc copies the whole heading into it, including the image)
+function Remove-EpubTocChapterImage
+    {
+    param([string]$EpubPath)
+    $zip = [IO.Compression.ZipFile]::Open($EpubPath, [IO.Compression.ZipArchiveMode]::Update)
+    try
+        {
+        foreach ($entry in @($zip.Entries | Where-Object { $_.FullName -match '(^|/)nav\.xhtml$' }))
+            {
+            $stream = $entry.Open()
+            try
+                {
+                $reader = [IO.StreamReader]::new($stream, [Text.UTF8Encoding]::new($false), $false, 4096, $true)
+                $nav = $reader.ReadToEnd()
+                $reader.Dispose()
+                $cleaned = $nav -replace '<img\b[^>]*\bclass="chapter-image"[^>]*/>\s*', ''
+                if ($cleaned -ne $nav)
+                    {
+                    $stream.SetLength(0)
+                    $bytes = [Text.UTF8Encoding]::new($false).GetBytes($cleaned)
+                    $stream.Write($bytes, 0, $bytes.Length)
+                    }
+                }
+            finally
+                { $stream.Dispose() }
+            }
+        }
+    finally
+        { $zip.Dispose() }
+    }
+
 # Adds an HTML drop cap and small caps to the first word after '$Prefix' (a regex with one group, by default a top-level heading).
 function Add-EpubDropCap
     {
@@ -256,6 +288,16 @@ function Test-BookProject
             }
         }
 
+    # chapter heading artwork (path is relative to the book's folder)
+    foreach ($chapterImageKey in 'chapter-image', 'chapter-image-epub')
+        {
+        $chapterImage = Get-ConfigValue $lines $chapterImageKey
+        if ($chapterImage -and -not [IO.File]::Exists("$bookDir/$($chapterImage.Value)"))
+            {
+            $issues.Add([pscustomobject]@{ File = $configPath; Line = $chapterImage.Line; Severity = 'error'; Message = "$chapterImageKey '$($chapterImage.Value)' not found in '$bookPath'." })
+            }
+        }
+
     # fonts (only validated if specified as a font file; otherwise, it is a font name installed on the system)
     if ($buildPrint)
         {
@@ -359,8 +401,14 @@ function Get-RequiredLatexPackages
     if ($dropCapStyle -and $dropCapPackages.ContainsKey($dropCapStyle))
         { $packages += $dropCapPackages[$dropCapStyle] }
 
-    # the PDF/X packages are only loaded when pdf-x is true (so the pdf-x blocks are skipped while reading otherwise)
-    $skippedBlocks = If ((Get-ConfigValue $ConfigLines 'pdf-x').Value -eq 'true') { 'drop-cap-style' } Else { 'drop-cap-style|pdf-x' }
+    # the PDF/X packages are only loaded when pdf-x is true, and the chapter image package when chapter-image is set
+    # (so their blocks are skipped while reading otherwise)
+    $skippedBlocks = @('drop-cap-style')
+    if ((Get-ConfigValue $ConfigLines 'pdf-x').Value -ne 'true')
+        { $skippedBlocks += 'pdf-x' }
+    if (-not (Get-ConfigValue $ConfigLines 'chapter-image').Value)
+        { $skippedBlocks += 'chapter-image' }
+    $skippedBlocks = $skippedBlocks -join '|'
 
     foreach ($template in $templates)
         {
@@ -1006,6 +1054,15 @@ If ($buildEpub -ne "false")
     $partNumber = 0
     $partName = Get-ConfigValue (Get-Content -LiteralPath "$bookDir/config.yml") 'part-name'
     $partName = If ($partName) { $partName.Value } Else { 'Part' }
+    # the ePub can have its own chapter image (e.g., with transparency); otherwise, use the print one
+    $chapterImage = (Get-ConfigValue (Get-Content -LiteralPath "$bookDir/config.yml") 'chapter-image-epub').Value
+    if (-not $chapterImage)
+        { $chapterImage = (Get-ConfigValue (Get-Content -LiteralPath "$bookDir/config.yml") 'chapter-image').Value }
+    if ($chapterImage)
+        {
+        $chapterImageWidth = (Get-ConfigValue (Get-Content -LiteralPath "$bookDir/config.yml") 'chapter-image-width').Value
+        $chapterImage = "![]($chapterImage){.chapter-image width=$(If ($chapterImageWidth) { $chapterImageWidth } Else { '1.5in' })}"
+        }
     foreach ($file in $epubMdFiles)
         {
         $content = [IO.File]::ReadAllText($file)
@@ -1036,6 +1093,13 @@ If ($buildEpub -ne "false")
                 $chapterLabel = "$chapterName $epubChapterNumber"
                 $emptyHeadingRegex = [regex]::new('^(\s*)#[ \t]*(\{[^}]*\})?[ \t]*(?=\r?$)', [Text.RegularExpressions.RegexOptions]::Multiline)
                 $content = $emptyHeadingRegex.Replace($content, ('$1# ' + $chapterLabel), 1)
+                }
+
+            # artwork above the chapter heading (inside the heading, so that it stays on the chapter's page)
+            if ($chapterImage)
+                {
+                $headingRegex = [regex]::new('^(\s*)#[ \t]*', [Text.RegularExpressions.RegexOptions]::Multiline)
+                $content = $headingRegex.Replace($content, ('$1# ' + $chapterImage.Replace('$', '$$') + ' '), 1)
                 }
             }
 
@@ -1088,6 +1152,8 @@ If ($buildEpub -ne "false")
            $epubMdFiles `
            "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"
+    if ($chapterImage -and [IO.File]::Exists("$outputDir/$bookName.epub"))
+        { Remove-EpubTocChapterImage "$outputDir/$bookName.epub" }
     }
 
 # Amazon (KDP) epub; same as the standard epub, except for the Amazon-specific series page
@@ -1103,6 +1169,8 @@ If ($buildEpub -ne "false" -and $buildAmazonEpub -ne "false")
            $epubMdFiles `
            "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"
+    if ($chapterImage -and [IO.File]::Exists("$outputDir/$bookName-amazon.epub"))
+        { Remove-EpubTocChapterImage "$outputDir/$bookName-amazon.epub" }
     }
 
 # Optional epub validation

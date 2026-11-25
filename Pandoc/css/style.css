@@ -21,6 +21,9 @@ h5 { text-align: center; font-weight: normal; font-size: medium; }
 /* Part pages start lower, with "Part I" shown above the title */
 h1.part { margin-top: 30%; }
 
+/* Chapter heading artwork, shown above the chapter's title */
+h1 img.chapter-image { display: block; max-width: 60%; height: auto; margin: 0 auto 0.75em auto; }
+
 /* Add a top margin for good spacing */
 .top-margin { padding-top: 3em; }
 

@@ -420,8 +420,27 @@ $endif$
 % so set it to the chapter's title (rather than leaving the previous chapter's title there)
 \makeatletter
 \let\fp@chapter\chapter
-\renewcommand{\chapter}{\@ifstar{\fp@starchapter}{\fp@chapter}}
+\renewcommand{\chapter}{\fp@chapterimage\@ifstar{\fp@starchapter}{\fp@chapter}}
 \newcommand{\fp@starchapter}[1]{\fp@chapter*{#1}\markboth{#1}{}}
+
+%% Artwork above each chapter heading in the main matter.
+%% It is drawn in the space above the heading, so it works with every chapter heading theme (but not fncychap).
+$if(chapter-image)$
+$if(fancy-chapter)$
+\newcommand{\fp@chapterimage}{}
+$else$
+\usepackage{eso-pic}
+\newcommand{\fp@chapterimage}{%
+  \if@mainmatter
+    % start the chapter's page first, so that the image is added to it
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \AddToShipoutPictureFG*{\AtTextUpperLeft{\put(\LenToUnit{0.5\textwidth},\LenToUnit{-75pt}){%
+      \makebox(0,0){\includegraphics[width=$if(chapter-image-width)$$chapter-image-width$$else$1.5in$endif$,height=120pt,keepaspectratio]{$chapter-image$}}}}}%
+  \fi}
+$endif$
+$else$
+\newcommand{\fp@chapterimage}{}
+$endif$
 
 %% Part pages for every chapter heading theme: "Part One" in spaced small caps, a short rule, and the part's title
 \newcommand{\fp@parttitle}[1]{\if\relax\detokenize{#1}\relax\else\rule{2cm}{0.4pt}\endgraf\vspace{6mm}\Huge #1\fi}
