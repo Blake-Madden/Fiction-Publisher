@@ -132,7 +132,10 @@
 
         "foreword": { "$ref": "#/definitions/text", "description": "Foreword text (Markdown), usually written by someone other than the author." },
         "foreword-author": { "$ref": "#/definitions/text", "description": "Who wrote the foreword, shown as its sign-off." },
+        "foreword-title": { "$ref": "#/definitions/text", "description": "The foreword's heading (e.g., Vorwort). Default is Foreword." },
         "preface": { "$ref": "#/definitions/text", "description": "Preface text (Markdown), written by the author." },
+        "preface-signoff": { "$ref": "#/definitions/text", "description": "The preface's sign-off (e.g., the author's initials or the place and date it was written)." },
+        "preface-title": { "$ref": "#/definitions/text", "description": "The preface's heading (e.g., Préface). Default is Preface." },
 
         "toc": { "$ref": "#/definitions/switch", "description": "Whether to include a table of contents in the print output." },
         "toc-title": { "$ref": "#/definitions/text", "description": "Header text for the table of contents." },
@@ -154,9 +157,14 @@
         "colophon": { "$ref": "#/definitions/switch", "description": "Whether to include a colophon page (typesetting information) in the print output." },
 
         "author-bio": { "$ref": "#/definitions/text", "description": "Author biography." },
+        "author-bio-title": { "$ref": "#/definitions/text", "description": "The author biography's heading. Default is About the Author." },
         "afterword": { "$ref": "#/definitions/text", "description": "Afterword text (Markdown)." },
+        "afterword-title": { "$ref": "#/definitions/text", "description": "The afterword's heading (e.g., Nachwort). Default is Afterword." },
         "acknowledgments": { "$ref": "#/definitions/text", "description": "Acknowledgments text (Markdown)." },
+        "acknowledgments-title": { "$ref": "#/definitions/text", "description": "The acknowledgments' heading (e.g., Remerciements). Default is Acknowledgments." },
         "reading-group-guide": { "$ref": "#/definitions/text", "description": "Reading group discussion questions, as a numbered Markdown list." },
+        "reading-group-guide-title": { "$ref": "#/definitions/text", "description": "The reading group guide's heading. Default is Reading Group Guide." },
+        "reading-group-subtitle": { "$ref": "#/definitions/text", "description": "The subheading above the reading group questions. Default is Questions and Topics for Discussion." },
         "reading-group-intro": { "$ref": "#/definitions/text", "description": "Introduction shown above the reading group questions (Markdown)." },
         "afterword-flourish": {
             "description": "pgfornament number of the flourish above the afterword's sign-off, or none to leave it out (PDF only). Default is none.",
@@ -169,6 +177,9 @@
         },
         "excerpt": { "$ref": "#/definitions/text", "description": "Excerpt from the next book (Markdown)." },
         "excerpt-title": { "$ref": "#/definitions/text", "description": "Title of the book that the excerpt is from." },
+        "excerpt-heading": { "$ref": "#/definitions/text", "description": "The excerpt's heading when excerpt-title is not set. Default is Excerpt." },
+        "excerpt-preview": { "$ref": "#/definitions/text", "description": "The line above the excerpt's title. Default is A Preview of." },
+        "excerpt-closing": { "$ref": "#/definitions/text", "description": "The line that ends the excerpt. Default is To be continued…" },
         "backmatter-flourish": {
             "description": "pgfornament number of the flourish that closes the acknowledgments and excerpt, or none to leave it out (PDF only). Default is 88.",
             "anyOf": [

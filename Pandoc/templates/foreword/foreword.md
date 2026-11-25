@@ -1,5 +1,5 @@
 $if(foreword)$
-# Foreword {#foreword .foreword epub:type=foreword}
+# $if(foreword-title)$$foreword-title$$else$Foreword$endif$ {#foreword .foreword epub:type=foreword}
 
 <!--dropcap-->
 

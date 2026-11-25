@@ -1,6 +1,6 @@
 $if(excerpt)$
 $if(excerpt-title)$
-# [A Preview of]{.kicker} $excerpt-title$ {#excerpt .backmatter}
+# [$if(excerpt-preview)$$excerpt-preview$$else$A Preview of$endif$]{.kicker} $excerpt-title$ {#excerpt .backmatter}
 
 ::: bm-byline
 $for(author)$$author$$sep$, $endfor$
@@ -12,7 +12,7 @@ $if(excerpt-note)$
 :::
 $endif$
 $else$
-# Excerpt {#excerpt .backmatter}
+# $if(excerpt-heading)$$excerpt-heading$$else$Excerpt$endif$ {#excerpt .backmatter}
 $endif$
 
 <!--dropcap-->
@@ -22,6 +22,6 @@ $excerpt$
 ::: bm-ornament
 ❦
 
-*To be continued…*
+*$if(excerpt-closing)$$excerpt-closing$$else$To be continued…$endif$*
 :::
 $endif$

@@ -249,10 +249,13 @@ The following can be specified in a book project's "config.yml" file (which shou
 
 - **foreword**: Optional foreword, usually written by someone other than the author. It follows the table of contents and opens with a drop cap.
 - **foreword-author**: Who wrote the foreword, shown as its sign-off
+- **foreword-title**: The foreword's heading (default is `Foreword`), for example `Vorwort`.
 
 ### Preface
 
 - **preface**: Optional preface written by the author. It follows the foreword and opens with a drop cap.
+- **preface-signoff**: The preface's sign-off, for example the author's initials or the place and date it was written
+- **preface-title**: The preface's heading (default is `Preface`), for example `Préface`.
 
 ### Table of Contents
 
@@ -287,13 +290,21 @@ These pages follow the story in this order. A page is left out if its value isn'
 Values are Markdown, so use a YAML block (`|`) for multiple paragraphs.
 
 - **afterword**: Afterword, which opens with a drop cap and is signed by the author
+- **afterword-title**: The afterword's heading (default is `Afterword`)
 - **acknowledgments**: Acknowledgments
+- **acknowledgments-title**: The acknowledgments' heading (default is `Acknowledgments`)
 - **reading-group-guide**: Discussion questions, written as a numbered list
+- **reading-group-guide-title**: The reading group guide's heading (default is `Reading Group Guide`)
+- **reading-group-subtitle**: The subheading above the questions (default is `Questions and Topics for Discussion`)
 - **reading-group-intro**: Introduction shown above the questions
 - **author-bio**: Author biography
+- **author-bio-title**: The author biography's heading (default is `About the Author`)
 - **excerpt**: Opening of your next book, which starts with a drop cap
 - **excerpt-title**: Title of the book that the excerpt is from
 - **excerpt-note**: Line shown under the excerpt's title (e.g., `Coming Soon`)
+- **excerpt-heading**: The excerpt's heading when `excerpt-title` is not set (default is `Excerpt`)
+- **excerpt-preview**: The line above the excerpt's title (default is `A Preview of`)
+- **excerpt-closing**: The line that ends the excerpt (default is `To be continued…`)
 - **afterword-flourish**: Number of the [pgfornament](https://ctan.org/pkg/pgfornament) ornament above the afterword's sign-off, or `none` to leave it out. Default is `none`.
 - **backmatter-flourish**: Number of the [pgfornament](https://ctan.org/pkg/pgfornament) ornament that closes the acknowledgments and excerpt, or `none` to leave it out. Default is `88`.
 

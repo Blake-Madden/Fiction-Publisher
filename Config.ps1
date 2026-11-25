@@ -122,7 +122,10 @@ dedication: Dedicated to my readers.
 # epigraph-quote: true
 # foreword: |
 # foreword-author:
+# foreword-title: Foreword
 # preface: |
+# preface-signoff:
+# preface-title: Preface
 toc: true
 # toc-title:
 # toc-depth: 0
@@ -155,12 +158,20 @@ toc: true
 
 # ----- Back Matter -----
 # author-bio: |
+# author-bio-title: About the Author
 # afterword: |
+# afterword-title: Afterword
 # afterword-flourish: none
 # acknowledgments: |
+# acknowledgments-title: Acknowledgments
 # reading-group-intro: |
 # reading-group-guide: |
+# reading-group-guide-title: Reading Group Guide
+# reading-group-subtitle: Questions and Topics for Discussion
 # excerpt-title:
+# excerpt-heading: Excerpt
+# excerpt-preview: A Preview of
+# excerpt-closing: To be continued…
 # excerpt-note:
 # excerpt: |
 # backmatter-flourish: 88

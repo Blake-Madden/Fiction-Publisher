@@ -2,9 +2,9 @@ $if(foreword)$
 \cleardoublepage
 \pagestyle{frontmatter}
 \thispagestyle{plain}
-\markboth{Foreword}{}
+\markboth{$if(foreword-title)$$foreword-title$$else$Foreword$endif$}{}
 \vspace*{120pt}
-{\centering\chapterheadingfont\bfseries\Large\addfontfeature{LetterSpace=10}\MakeTextUppercase{Foreword}\par}
+{\centering\chapterheadingfont\bfseries\Large\addfontfeature{LetterSpace=10}\MakeTextUppercase{$if(foreword-title)$$foreword-title$$else$Foreword$endif$}\par}
 \vspace{12pt}
 {\centering\rule[0.5ex]{2cm}{0.4pt}\hspace{0.8em}{\large\adforn{21}}\hspace{0.8em}\rule[0.5ex]{2cm}{0.4pt}\par}
 \vspace{20pt}

@@ -1,5 +1,5 @@
 $if(afterword)$
-# Afterword {#afterword .backmatter .letter}
+# $if(afterword-title)$$afterword-title$$else$Afterword$endif$ {#afterword .backmatter .letter}
 
 <!--dropcap-->
 

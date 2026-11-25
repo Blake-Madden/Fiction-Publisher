@@ -1,5 +1,5 @@
 $if(reading-group-guide)$
-# Reading Group Guide {#reading-group-guide .backmatter}
+# $if(reading-group-guide-title)$$reading-group-guide-title$$else$Reading Group Guide$endif$ {#reading-group-guide .backmatter}
 
 ::: bm-ornament
 ❦
@@ -12,7 +12,7 @@ $reading-group-intro$
 
 $endif$
 ::: bm-subtitle
-[Questions and Topics for Discussion]{.guide-heading}
+[$if(reading-group-subtitle)$$reading-group-subtitle$$else$Questions and Topics for Discussion$endif$]{.guide-heading}
 :::
 
 ::: guide

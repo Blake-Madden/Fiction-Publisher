@@ -1,5 +1,5 @@
 $if(acknowledgments)$
-# Acknowledgments {#acknowledgments .backmatter}
+# $if(acknowledgments-title)$$acknowledgments-title$$else$Acknowledgments$endif$ {#acknowledgments .backmatter}
 
 ::: bm-ornament
 ❦

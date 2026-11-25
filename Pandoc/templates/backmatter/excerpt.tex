@@ -1,7 +1,7 @@
 $if(excerpt)$
 $if(excerpt-title)$
 % teaser page for the next book, with the excerpt starting on the next right-hand page
-\backmatterteaser{A Preview of}{$excerpt-title$}{$for(author)$$author$$sep$, $endfor$}
+\backmatterteaser{$if(excerpt-preview)$$excerpt-preview$$else$A Preview of$endif$}{$excerpt-title$}{$for(author)$$author$$sep$, $endfor$}
 \label{excerpt}
 $if(excerpt-note)$
 \vspace{30pt}
@@ -12,7 +12,7 @@ $endif$
 
 \backmattertitle{$excerpt-title$}
 $else$
-\backmattertitle{Excerpt}
+\backmattertitle{$if(excerpt-heading)$$excerpt-heading$$else$Excerpt$endif$}
 \label{excerpt}
 $endif$
 
@@ -26,6 +26,6 @@ $excerpt$
 \vspace{24pt}
 {\centering\backmatterflourish\par
 \vspace{8pt}
-\itshape To be continued\ldots\par}
+\itshape $if(excerpt-closing)$$excerpt-closing$$else$To be continued\ldots$endif$\par}
 \endgroup
 $endif$

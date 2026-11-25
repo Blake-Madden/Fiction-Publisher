@@ -2,9 +2,9 @@ $if(preface)$
 \cleardoublepage
 \pagestyle{frontmatter}
 \thispagestyle{plain}
-\markboth{Preface}{}
+\markboth{$if(preface-title)$$preface-title$$else$Preface$endif$}{}
 \vspace*{120pt}
-{\centering\chapterheadingfont\bfseries\Large\addfontfeature{LetterSpace=10}\MakeTextUppercase{Preface}\par}
+{\centering\chapterheadingfont\bfseries\Large\addfontfeature{LetterSpace=10}\MakeTextUppercase{$if(preface-title)$$preface-title$$else$Preface$endif$}\par}
 \vspace{12pt}
 {\centering\rule[0.5ex]{2cm}{0.4pt}\hspace{0.8em}{\large\adforn{21}}\hspace{0.8em}\rule[0.5ex]{2cm}{0.4pt}\par}
 \vspace{20pt}
@@ -17,5 +17,12 @@ $if(preface)$
 \noindent
 %%dropcap
 $preface$
+
+$if(preface-signoff)$
+\vspace{24pt}
+\begin{flushright}
+{\scshape\addfontfeature{LetterSpace=6}\MakeTextLowercase{$preface-signoff$}}
+\end{flushright}
+$endif$
 \endgroup
 $endif$

@@ -1,5 +1,5 @@
 $if(reading-group-guide)$
-\backmattertitle{Reading Group Guide}
+\backmattertitle{$if(reading-group-guide-title)$$reading-group-guide-title$$else$Reading Group Guide$endif$}
 \label{reading-group-guide}
 
 $if(reading-group-intro)$
@@ -16,7 +16,7 @@ $endif$
 % subtitle between two short rules
 {\centering
 \rule{0.4\textwidth}{0.4pt}\\[3pt]
-{\scshape\addfontfeature{LetterSpace=5}Questions and Topics for Discussion}\\[-4pt]
+{\scshape\addfontfeature{LetterSpace=5}$if(reading-group-subtitle)$$reading-group-subtitle$$else$Questions and Topics for Discussion$endif$}\\[-4pt]
 \rule{0.4\textwidth}{0.4pt}\par}
 
 \begingroup
