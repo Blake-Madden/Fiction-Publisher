@@ -179,6 +179,7 @@ toc: true
 # build-epub: true
 # build-amazon-epub: true
 # build-print: true
+# pdf-x: false
 ---
 '@
   $config = $config.Replace('{GUID}', [guid]::NewGuid().ToString())

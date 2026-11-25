@@ -225,6 +225,7 @@
         "build-draft": { "$ref": "#/definitions/switch", "description": "false to not build a draft copy (default is true)." },
         "build-epub": { "$ref": "#/definitions/switch", "description": "false to not build an ePub file (default is true)." },
         "build-amazon-epub": { "$ref": "#/definitions/switch", "description": "false to not build the Amazon KDP ePub (default is true)." },
-        "build-print": { "$ref": "#/definitions/switch", "description": "false to not build a PDF file (default is true)." }
+        "build-print": { "$ref": "#/definitions/switch", "description": "false to not build a PDF file (default is true)." },
+        "pdf-x": { "$ref": "#/definitions/switch", "description": "true to make the print PDF PDF/X-1a:2001 compliant, which IngramSpark asks for and KDP prefers (default is false)." }
     }
 }

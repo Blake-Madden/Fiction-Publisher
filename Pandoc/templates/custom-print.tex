@@ -3,6 +3,17 @@
 %%%%%%%%%%%%%%%%%%% BASE DOCUMENT SETTINGS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+$if(pdf-x)$
+%% PDF/X metadata, which pdfx reads from \jobname.xmpdata
+\begin{filecontents}[force]{\jobname.xmpdata}
+$if(title-meta)$\Title{$title-meta$}$endif$
+$if(author-meta)$\Author{$author-meta$}$endif$
+$if(lang)$\Language{$lang$}$endif$
+$if(publisher)$\Publisher{$for(publisher)$$publisher$$endfor$}$endif$
+$if(rights)$\Copyright{$rights$}$endif$
+\end{filecontents}
+$endif$
+
 %% Set document class
 \documentclass%
 [11pt]
@@ -77,8 +88,8 @@ $endif$
 \setlength{\emergencystretch}{3em}
 \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
-%%%%%%%%% PDF-X stuff, IF USING xelatex %%%%%%%%%
-% Thanks to LSinev for most of this PDF X-1a stuff;
+%%%%%%%%% Print boxes, IF USING xelatex (PDF/X itself is set by pdf-x below) %%%%%%%%%
+% Thanks to LSinev for most of this;
 % https://gist.github.com/LSinev/74ea05423c9208d6677d
 
 % TrimBox is the page size in bp, calculated from paper-width and paper-height
@@ -98,29 +109,26 @@ $endif$
     /TrimBox [0 0 \trimboxwidth\space\trimboxheight]
   >>
 }
-\special{pdf:docinfo
-  <<
-    /GTS_PDFXVersion (PDF/X-1:2001)
-    /GTS_PDFXConformance (PDF/X-1a:2001)
-  >>
-}
-
 \special{pdf:put @catalog
 <<
   /PageMode /UseNone
-  /OutputIntents [
-    <<
-      /Info (none)
-      /Type /OutputIntent
-      /S /GTS_PDFX
-      /OutputConditionIdentifier (Custom)
-      /RegistryName (http://www.color.org/)
-    >>
-  ]
 >>
 }%
 
 \usepackage{datetime} % for \pdfdate command
+
+$if(pdf-x)$
+%% Export PDF as PDF/X-1a:2001
+%% pdfx loads hyperref and loads xcolor with CMYK colors, so their options are passed here
+\PassOptionsToPackage{bookmarks=false}{hyperref}
+\PassOptionsToPackage{dvipsnames,svgnames}{xcolor}
+\usepackage[x-1a1]{pdfx}
+%% pdfx insets the TrimBox from the page edges, but the page is the trim size
+\makeatletter
+\gdef\pdfx@everypage@xetex{/TrimBox [0 0 \trimboxwidth\space\trimboxheight]}
+\makeatother
+\special{pdf:put @pages << /TrimBox [0 0 \trimboxwidth\space\trimboxheight] >>}
+$endif$
 
 %% URL / Hyperlink style
 \usepackage[bookmarks=false]{hyperref}
@@ -154,9 +162,6 @@ $endif$
             breaklinks=true}
             
 \urlstyle{same}  % don't use monospace font for urls
-
-%% Export PDF as PDF/X-1a for best KDP Print / IngramSpark results
-%\usepackage[X-1a]{pdfx}
 
 $for(header-includes)$
 $header-includes$

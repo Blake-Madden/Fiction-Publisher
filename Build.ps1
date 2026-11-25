@@ -359,20 +359,23 @@ function Get-RequiredLatexPackages
     if ($dropCapStyle -and $dropCapPackages.ContainsKey($dropCapStyle))
         { $packages += $dropCapPackages[$dropCapStyle] }
 
+    # the PDF/X packages are only loaded when pdf-x is true (so the pdf-x blocks are skipped while reading otherwise)
+    $skippedBlocks = If ((Get-ConfigValue $ConfigLines 'pdf-x').Value -eq 'true') { 'drop-cap-style' } Else { 'drop-cap-style|pdf-x' }
+
     foreach ($template in $templates)
         {
         if (-not [IO.File]::Exists($template))
             { continue } # (reported by the project review)
-        $inDropCapBlock = $false
+        $inSkippedBlock = $false
         foreach ($line in [IO.File]::ReadAllLines($template))
             {
             $line = $line -replace '(?<!\\)%.*$', '' # remove comments
-            if ($line -match '^\s*\$if\(drop-cap-style\)\$')
-                { $inDropCapBlock = $true; continue }
-            if ($inDropCapBlock)
+            if ($line -match "^\s*\`$if\(($skippedBlocks)\)\`$")
+                { $inSkippedBlock = $true; continue }
+            if ($inSkippedBlock)
                 {
                 if ($line -match '^\s*\$endif\$')
-                    { $inDropCapBlock = $false }
+                    { $inSkippedBlock = $false }
                 continue
                 }
             foreach ($match in [regex]::Matches($line, '\\usepackage(\[[^\]]*\])?\{([^}]+)\}'))
@@ -393,6 +396,8 @@ function Get-RequiredLatexPackages
         Romantik = [pscustomobject]@{ Sty = 'Romantik.fd'; TlPackage = 'initials' }
         calligra = [pscustomobject]@{ Sty = 'callig15.mf'; TlPackage = 'calligra' }
         pgfornament = [pscustomobject]@{ Sty = 'pgfopts.sty'; TlPackage = 'pgfopts' }
+        pdfx = @([pscustomobject]@{ Sty = 'colorprofiles.tex'; TlPackage = 'colorprofiles' },
+                 [pscustomobject]@{ Sty = 'xmpincl.sty'; TlPackage = 'xmpincl' })
         }
     # babel is loaded with a template variable, so it's skipped above
     $packages += 'babel'

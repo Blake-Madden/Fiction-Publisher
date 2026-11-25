@@ -349,6 +349,8 @@ The colophon is the last page of the print output.
 - **build-epub**: `false` to not build an ePub file (`true` by default)
 - **build-amazon-epub**: `false` to not build the Amazon KDP ePub, `<book>-amazon.epub` (`true` by default)
 - **build-print**: `false` to not build a PDF file (`true` by default)
+- **pdf-x**: `true` to make the print PDF PDF/X-1a:2001 compliant, which IngramSpark asks for and KDP prefers. Default is `false`.
+  Colors are converted to CMYK, so use grayscale or CMYK images without transparency.
 
 ## Fiction Publisher Structure
 The following folders in "Fiction-Publisher" hold the resources that the build uses:
