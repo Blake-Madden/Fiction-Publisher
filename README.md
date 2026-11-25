@@ -277,20 +277,12 @@ praise:
 
 ### Series Page
 
-- **series-book1**: 
-    - **title**: Optional books to include on the series page
+- **series-books**: Optional list of books to include on the series page. Each can have:
+    - **title**: Title of the book
     - **title-latex**: LaTeX-formatted title for PDF output (will override **title**)
-    - **subtitle**: Subtitle of book
-    - **subtitle-latex**: LaTeX-formatted subtitle of book (will override **subtitle**)
+    - **subtitle**: Subtitle of the book
+    - **subtitle-latex**: LaTeX-formatted subtitle for PDF output (will override **subtitle**)
     - **link**: Store link for the book (used in the Amazon ePub)
-- **series-book2**:
-    - **title**: Add a second book
-- **series-book3**:
-    - **title**: Third book
-- **series-book4**:
-    - **title**: Fourth book
-- **series-book5**:
-    - **title**: Fifth book
 - **series-header**: Header that should appear on the series title page (default is "Also Available")
 
 ### Colophon
@@ -436,7 +428,7 @@ This folder contains the praise page templates, which display the `praise` quote
 This folder contains the preface page templates, which display the `preface` field from your **config.yml** file.
 
 ##### Pandoc/templates/seriespage
-This folder contains the series page templates (including the Amazon KDP version), which list the `series-book` entries from your **config.yml** file.
+This folder contains the series page templates (including the Amazon KDP version), which list the `series-books` entries from your **config.yml** file.
 
 #### Pandoc/fonts
 This folder contains any font files (TTF, OTF) you would like to use in your PDF output.

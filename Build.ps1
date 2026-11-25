@@ -779,6 +779,11 @@ for ($i = 0; $i -lt $configLines.Count; $i++)
         {
         $WarningList.Add([pscustomobject]@{ File = $configDisplayPath; Line = $i + 1; Message = "placeholder text found (`"$($Matches[0])`"). Replace it before publishing." })
         }
+    # the numbered series fields were replaced by a list, so warn for projects that need to be upgraded
+    if ($configLines[$i] -match '^(series-book[1-5]):')
+        {
+        $WarningList.Add([pscustomobject]@{ File = $configDisplayPath; Line = $i + 1; Message = "'$($Matches[1])' is no longer supported, so this book won't be on the series page. List the books under 'series-books' instead." })
+        }
     }
 
 # Write out any formatting warnings
@@ -894,12 +899,10 @@ If (($coverImage.Length -gt 0) -and ($buildEpub -ne "false"))
 $includeToc = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^toc:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
 $includeToc = If ($includeToc -eq "true") { @("--toc") } Else { @() }
 
-# whether the series page should be included (based on whether a "book" value is mentioned in the metadata)
-$includeSeriesPageEpub = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^series-book[1-5]:'
-$includeSeriesPageEpub = If ($includeSeriesPageEpub.Matches.Count -gt 0) { @("$buildDir/seriespage.md") } Else { @() }
-
-$includeSeriesPageAmazonEpub = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^series-book[1-5]:'
-$includeSeriesPageAmazonEpub = If ($includeSeriesPageAmazonEpub.Matches.Count -gt 0) { @("$buildDir/amazon-seriespage.md") } Else { @() }
+# whether the series page should be included (based on whether series-books is in the metadata)
+$hasSeriesBooks = [bool](Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^series-books:')
+$includeSeriesPageEpub = If ($hasSeriesBooks) { @("$buildDir/seriespage.md") } Else { @() }
+$includeSeriesPageAmazonEpub = If ($hasSeriesBooks) { @("$buildDir/amazon-seriespage.md") } Else { @() }
 
 # build epub and print series pages (although they may not be included)
 Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/seriespage.md" `

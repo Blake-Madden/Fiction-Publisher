@@ -182,12 +182,11 @@ toc: true
 # colophon: false
 
 # ----- Series -----
-# Up to 5 books, series-book1 through series-book5. The link is used in the Amazon ePub.
+# The link is used in the Amazon ePub.
 # series-header: Also Available
-# series-book1:
+# series-books:
 #     - title: Any book you've written
 #       link: http://www.amazon.com/dp/XXXXXXXX
-# series-book2:
 #     - title: Another book you've written
 #       link:
 

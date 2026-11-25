@@ -22,7 +22,7 @@
         },
         "seriesBook": {
             "type": ["array", "null"],
-            "description": "A book to list on the series (\"Also Available\") page.",
+            "description": "Books to list on the series (\"Also Available\") page.",
             "items": {
                 "type": "object",
                 "properties": {
@@ -162,11 +162,7 @@
             "examples": [0, 1]
         },
 
-        "series-book1": { "$ref": "#/definitions/seriesBook" },
-        "series-book2": { "$ref": "#/definitions/seriesBook" },
-        "series-book3": { "$ref": "#/definitions/seriesBook" },
-        "series-book4": { "$ref": "#/definitions/seriesBook" },
-        "series-book5": { "$ref": "#/definitions/seriesBook" },
+        "series-books": { "$ref": "#/definitions/seriesBook" },
         "series-header": { "$ref": "#/definitions/text", "description": "Header on the series page (default is \"Also Available\")." },
 
         "colophon": { "$ref": "#/definitions/switch", "description": "Whether to include a colophon page (typesetting information) in the print output." },
