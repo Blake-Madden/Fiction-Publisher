@@ -344,7 +344,18 @@ The colophon is the last page of the print output.
 - **paper-width**: The width of the paper for print output
 - **top-margin**: The top margin in the print output (headers will be inside of the text body)
 - **bottom-margin**: The bottom margin in the print output
-- **inner-margin**: The inner/gutter margin in the print output
+- **inner-margin**: The inner/gutter margin in the print output. Default is `22mm`.
+  Thicker books need a wider gutter, since more of the page curves into the binding. KDP's minimums are:
+
+  | Pages   | Inner margin |
+  |---------|--------------|
+  | 24–150  | 0.375in      |
+  | 151–300 | 0.5in        |
+  | 301–500 | 0.625in      |
+  | 501–700 | 0.75in       |
+  | 701–828 | 0.875in      |
+
+  These are minimums, so adding 0.125in or so makes the text easier to read near the spine.
 - **outer-margin**: The outer margin in the print output
 - **bleed**: `true` to add a 0.125in bleed to the outside, top, and bottom edges of the print PDF, which KDP and IngramSpark need when artwork reaches the edge of the page. Default is `false`.
   The page size and margins are the trimmed sizes, so the text stays in the same place.
