@@ -340,6 +340,11 @@ cast:
 These pages follow the story in this order. A page is left out if its value isn't set.
 Values are Markdown, so use a YAML block (`|`) for multiple paragraphs.
 
+- **glossary**: Terms and their definitions, in two columns in print. Each group has an optional **group** heading and its **terms**, each with a **term**, a **definition**, and an optional **pronunciation**. Terms appear in the order listed.
+- **glossary-title**: The glossary's heading (default is `Glossary`)
+- **call-to-action**: A note asking readers to leave a review or join a newsletter, signed by the author and shown right after the story
+- **call-to-action-title**: The call to action's heading (default is `Before You Go`)
+- **call-to-action-links**: The call to action's links, shown as buttons in the ePub and as web addresses in print. Each has a **label**, a **link**, and an optional **link-amazon** for the Amazon ePub. Short addresses work best in print.
 - **afterword**: Afterword, which opens with a drop cap and is signed by the author
 - **afterword-title**: The afterword's heading (default is `Afterword`)
 - **acknowledgments**: Acknowledgments
@@ -479,8 +484,14 @@ This folder contains the custom copyright templates. You can select which templa
 ##### Pandoc/templates/foreword
 This folder contains the foreword page templates, which display the `foreword` field from your **config.yml** file.
 
+##### Pandoc/templates/glossary
+This folder contains the glossary templates, which display the `glossary` from your **config.yml** file.
+
 ##### Pandoc/templates/half-titlepage
 This folder contains the half-title page template (PDF only).
+
+##### Pandoc/templates/call-to-action
+This folder contains the call to action templates, which displays the `call-to-action` from your **config.yml** file.
 
 ##### Pandoc/templates/cast
 This folder contains the ePub cast of characters template, which displays the `cast` from your **config.yml** file.

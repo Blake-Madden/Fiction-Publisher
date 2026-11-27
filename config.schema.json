@@ -214,6 +214,48 @@
 
         "author-bio": { "$ref": "#/definitions/text", "description": "Author biography." },
         "author-bio-title": { "$ref": "#/definitions/text", "description": "The author biography's heading. Default is About the Author." },
+        "glossary": {
+            "type": ["array", "null"],
+            "description": "Glossary of terms, shown right after the story. Terms appear in the order listed and can be grouped, such as by places or magic.",
+            "items": {
+                "type": "object",
+                "required": ["terms"],
+                "properties": {
+                    "group": { "$ref": "#/definitions/text", "description": "The group's heading (e.g., Places). Leave out for an ungrouped list." },
+                    "terms": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": ["term", "definition"],
+                            "properties": {
+                                "term": { "$ref": "#/definitions/text", "description": "The term, shown in bold small caps." },
+                                "pronunciation": { "$ref": "#/definitions/text", "description": "How to say the term (e.g., EE-thur)." },
+                                "definition": { "$ref": "#/definitions/text", "description": "The term's definition (Markdown)." }
+                            },
+                            "additionalProperties": false
+                        }
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "glossary-title": { "$ref": "#/definitions/text", "description": "The glossary's heading (e.g., Lexicon). Default is Glossary." },
+        "call-to-action": { "$ref": "#/definitions/text", "description": "A note asking readers to leave a review or join a newsletter (Markdown), signed by the author and shown right after the story." },
+        "call-to-action-title": { "$ref": "#/definitions/text", "description": "The call to action's heading (e.g., Enjoyed the Book?). Default is Before You Go." },
+        "call-to-action-links": {
+            "type": ["array", "null"],
+            "description": "The call to action's links, shown as buttons in the ePub and as web addresses in print.",
+            "items": {
+                "type": "object",
+                "required": ["label", "link"],
+                "properties": {
+                    "label": { "$ref": "#/definitions/text", "description": "The button's text (e.g., Leave a Review)." },
+                    "link": { "$ref": "#/definitions/text", "description": "The web address. Short addresses work best in print." },
+                    "link-amazon": { "$ref": "#/definitions/text", "description": "The web address used in the Amazon ePub (e.g., the book's Amazon review page). Default is link." }
+                },
+                "additionalProperties": false
+            }
+        },
         "afterword": { "$ref": "#/definitions/text", "description": "Afterword text (Markdown)." },
         "afterword-title": { "$ref": "#/definitions/text", "description": "The afterword's heading (e.g., Nachwort). Default is Afterword." },
         "acknowledgments": { "$ref": "#/definitions/text", "description": "Acknowledgments text (Markdown)." },

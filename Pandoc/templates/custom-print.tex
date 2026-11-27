@@ -258,6 +258,9 @@ $endfor$
 %% Vector ornaments for the backmatter pages
 \usepackage{pgfornament}
 
+%% Two-column layout (for the glossary)
+\usepackage{multicol}
+
 %% Add support for strikethrough (\st{} command)
 \usepackage{soul}
 
@@ -898,6 +901,24 @@ $endif$
    {\titlefont\Huge #2}\par
    \vspace{20pt}%
    {\scshape\addfontfeature{LetterSpace=5}\MakeTextLowercase{#3}}\par}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create the reader call to action (right after the story, while the reader is most engaged)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+$if(glossary)$
+\input{glossary.tex}
+
+\clearpage{\thispagestyle{empty}\cleardoublepage}
+$endif$
+
+$if(call-to-action)$
+\input{call-to-action.tex}
+
+\clearpage{\thispagestyle{empty}\cleardoublepage}
+$endif$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%

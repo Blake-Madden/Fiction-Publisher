@@ -1049,6 +1049,20 @@ Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -o "$build
 Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/content-note.md" `
        --template="$PSScriptRoot/Pandoc/templates/content-note/content-note.md" "$buildDir/dummy.txt"
 
+# Create the glossary pages for print and epub
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/glossary.tex" -t latex `
+       --template="$PSScriptRoot/Pandoc/templates/glossary/glossary.tex" "$buildDir/dummy.txt"
+Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/glossary.md" `
+       --template="$PSScriptRoot/Pandoc/templates/glossary/glossary.md" "$buildDir/dummy.txt"
+
+# Create the reader call to action pages for print and the epubs, with the Amazon epub using any Amazon-specific links
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/call-to-action.tex" -t latex `
+       --template="$PSScriptRoot/Pandoc/templates/call-to-action/call-to-action.tex" "$buildDir/dummy.txt"
+Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/call-to-action.md" `
+       --template="$PSScriptRoot/Pandoc/templates/call-to-action/call-to-action.md" "$buildDir/dummy.txt"
+Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -M amazon=true -o "$buildDir/amazon-call-to-action.md" `
+       --template="$PSScriptRoot/Pandoc/templates/call-to-action/call-to-action.md" "$buildDir/dummy.txt"
+
 # Create the foreword, preface, and backmatter pages for print and epub
 $dropCapStyle = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^drop-cap-style:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
 foreach ($pageTemplate in @('foreword/foreword', 'preface/preface', 'backmatter/afterword', 'backmatter/acknowledgments', 'backmatter/reading-group-guide', 'backmatter/excerpt'))
@@ -1241,7 +1255,7 @@ If ($buildEpub -ne "false")
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName.epub" `
            "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" "$buildDir/maps.md" "$buildDir/cast.md" "$buildDir/content-note.md" `
            $epubMdFiles `
-           "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
+           "$buildDir/glossary.md" "$buildDir/call-to-action.md" "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"
     if ($chapterImage -and [IO.File]::Exists("$outputDir/$bookName.epub"))
         { Remove-EpubTocChapterImage "$outputDir/$bookName.epub" }
@@ -1258,7 +1272,7 @@ If ($buildEpub -ne "false" -and $buildAmazonEpub -ne "false")
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName-amazon.epub" `
            "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageAmazonEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" "$buildDir/maps.md" "$buildDir/cast.md" "$buildDir/content-note.md" `
            $epubMdFiles `
-           "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
+           "$buildDir/glossary.md" "$buildDir/amazon-call-to-action.md" "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"
     if ($chapterImage -and [IO.File]::Exists("$outputDir/$bookName-amazon.epub"))
         { Remove-EpubTocChapterImage "$outputDir/$bookName-amazon.epub" }

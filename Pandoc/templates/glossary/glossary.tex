@@ -1,0 +1,23 @@
+$if(glossary)$
+\backmattertitle{$if(glossary-title)$$glossary-title$$else$Glossary$endif$}
+\label{glossary}
+
+% dictionary-style entries in two columns, with each definition hanging under its term
+\begingroup
+\small
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\columnsep}{18pt}
+\raggedright
+\begin{multicols}{2}
+$for(glossary)$
+$if(glossary.group)$
+\vspace{6pt}{\centering\itshape $glossary.group$\par}\nopagebreak[4]\vspace{2pt}
+$endif$
+$for(glossary.terms)$
+\hangindent=1em\hangafter=1 {\bfseries\scshape $glossary.terms.term$}$if(glossary.terms.pronunciation)$ (\textit{$glossary.terms.pronunciation$})$endif$\enspace $glossary.terms.definition$\par
+$endfor$
+$endfor$
+\end{multicols}
+\endgroup
+$endif$

@@ -176,6 +176,19 @@ toc: true
 # header-includes:
 
 # ----- Back Matter -----
+# glossary:
+#     - group:
+#       terms:
+#           - term:
+#             pronunciation:
+#             definition:
+# glossary-title: Glossary
+# call-to-action: |
+# call-to-action-title: Before You Go
+# call-to-action-links:
+#     - label:
+#       link:
+#       link-amazon:
 # author-bio: |
 # author-bio-title: About the Author
 # afterword: |

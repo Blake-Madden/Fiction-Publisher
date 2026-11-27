@@ -45,6 +45,29 @@ preface: |
 
   Any resemblance to actual storms, living or dead, is purely coincidental. The wind, however, knows exactly what it did.
 preface-signoff: Somewhere in Tornado Alley, 2024
+glossary:
+    - group: The House
+      terms:
+          - term: Harbor House
+            definition: The old house above the harbor, where the shutters are never quiet.
+          - term: Widow's Walk
+            definition: The railed platform on the roof, from which no one has watched for ships in years.
+    - group: The Weather
+      terms:
+          - term: Nor'easter
+            pronunciation: nor-EE-ster
+            definition: A storm that blows in from the northeast, usually at the worst possible time.
+          - term: Torrent
+            definition: Rain falling hard enough to be heard over the wind.
+call-to-action-title: Enjoyed the Book?
+call-to-action: |
+  Reviews help other readers find this book, and they mean the world to me. If the storm kept you up, I'd love to hear about it.
+call-to-action-links:
+    - label: Leave a Review
+      link: https://example.com/review
+      link-amazon: https://www.amazon.com/review/create-review?asin=XXXXXXXXXX
+    - label: Join the Newsletter
+      link: https://example.com/newsletter
 afterword: |
   Every writer is told never to open a story with the weather. This one does anyway, because some nights the weather is the story.
 

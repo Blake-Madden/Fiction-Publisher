@@ -96,6 +96,20 @@ h1.content-note { font-variant: small-caps; letter-spacing: 0.1em; font-size: 1.
 .content-note-text { margin: 0 10%; }
 .content-note-text p { text-align: center; text-indent: 0; margin-top: 0.5em; }
 
+/* Glossary page, with dictionary-style entries */
+.glossary-group p { text-align: center; text-indent: 0; font-style: italic; margin: 1.25em 0 0.5em 0; }
+.glossary dl { margin: 0; }
+.glossary dt { margin-top: 0.6em; }
+.glossary dd { margin: 0 0 0 1.5em; }
+.glossary dd p { text-align: left; text-indent: 0; }
+.glossary-term { font-weight: bold; font-variant: small-caps; letter-spacing: 0.05em; }
+.glossary-pronunciation { font-style: italic; }
+
+/* Reader call to action page, with each link shown as a button */
+.cta-text p { text-align: center; text-indent: 0; margin: 0 5% 0.5em 5%; }
+p.cta-link { text-align: center; text-indent: 0; margin: 1.5em 0 0 0; }
+p.cta-link a { display: inline-block; border: 1px solid; border-radius: 0.3em; padding: 0.5em 1.5em; font-variant: small-caps; letter-spacing: 0.08em; text-decoration: none; color: inherit; }
+
 /* Backmatter pages (afterword, acknowledgments, reading group guide, excerpt) */
 .backmatter h1, h1.backmatter, .foreword h1, h1.foreword, .preface h1, h1.preface, h1.praise { font-variant: small-caps; letter-spacing: 0.1em; padding-top: 2em; }
 .kicker { display: block; font-size: 0.55em; font-weight: normal; letter-spacing: 0.15em; margin-bottom: 0.5em; }
