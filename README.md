@@ -62,6 +62,7 @@ Refer [here](#your-book-structure) for the recommended file structure for your b
 - [X] Author biography page template
 - [X] Praise page template
 - [X] Foreword and preface page templates
+- [X] Map pages, including two-page spreads
 - [X] Afterword, acknowledgments, reading group guide, and excerpt page templates
 - [X] Customizable fonts for the main text, author name, and title
 
@@ -269,6 +270,25 @@ praise:
 - **preface-signoff**: The preface's sign-off, for example the author's initials or the place and date it was written
 - **preface-title**: The preface's heading (default is `Preface`), for example `Préface`.
 
+### Maps
+
+- **maps**: Optional list of maps, shown just before the first chapter. Each has:
+    - **image**: Path to the map, relative to the book's folder (e.g., `images/map.png`)
+    - **title**: The map's name, shown under it in the ePub
+    - **spread**: `true` to print the map across a left and right page. Default is `false`.
+
+Maps are printed to the edge of the page, so they need **bleed** to be `true`.
+A map covers its page, and any part that doesn't fit is cut off at the edges.
+Keep labels at least 0.5in from the edges, and away from the middle of a spread, where the pages are bound.
+For print, use an image of at least 300 DPI at its printed size. For 6x9 inches, a map is 6.125x9.25 inches and a spread is 12.25x9.25 inches.
+
+```yaml
+maps:
+    - image: images/kingdom.png
+      title: The Kingdom of Meldorf
+      spread: true
+```
+
 ### Table of Contents
 
 - **toc**: Whether to include a table of contents in the print output (`true` or `false`)
@@ -423,6 +443,9 @@ This folder contains the foreword page templates, which display the `foreword` f
 
 ##### Pandoc/templates/half-titlepage
 This folder contains the half-title page template (PDF only).
+
+##### Pandoc/templates/maps
+This folder contains the map page templates, which display the `maps` from your **config.yml** file.
 
 ##### Pandoc/templates/praise
 This folder contains the praise page templates, which display the `praise` quotes from your **config.yml** file.

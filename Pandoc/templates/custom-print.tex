@@ -111,10 +111,8 @@ $endif$
 \edef\bleedbox{0 0 \tobp{\fptrimwidth+\fpbleed} \tobp{\fptrimheight+2*\fpbleed}}
 \newcommand{\pageboxes}{/TrimBox [\ifodd\value{page}\trimboxrecto\else\trimboxverso\fi] /BleedBox [\bleedbox]}
 \usepackage{atbegshi}
-\AtBeginShipout{% %A hook that is executed for every page (after first one)
-    \special{pdf: put @thispage << \pageboxes\space >>}
-}
-\special{pdf: put @thispage << \pageboxes\space >>}
+% added to the page being shipped out, since a \special written outside of it would go on the next page
+\AtBeginShipout{\AtBeginShipoutAddToBox{\special{pdf: put @thispage << \pageboxes\space >>}}}
 \special{pdf:put @catalog
 <<
   /PageMode /UseNone
@@ -129,9 +127,10 @@ $if(pdf-x)$
 \PassOptionsToPackage{bookmarks=false}{hyperref}
 \PassOptionsToPackage{dvipsnames,svgnames}{xcolor}
 \usepackage[x-1a1]{pdfx}
-%% pdfx insets the TrimBox from the page edges, but the page is the trim size (plus any bleed)
+%% pdfx insets the TrimBox from the page edges, but the page is the trim size (plus any bleed).
+%% Its page boxes would also go on the next page, so the boxes from the shipout hook above are used instead.
 \makeatletter
-\gdef\pdfx@everypage@xetex{\pageboxes}
+\gdef\pdfx@everypage@xetex{}
 \makeatother
 \special{pdf:put @pages << /TrimBox [\trimboxrecto] /BleedBox [\bleedbox] >>}
 $endif$
@@ -465,6 +464,42 @@ $else$
 \newcommand{\fp@chapterimage}{}
 $endif$
 
+%% Map pages: a map covers its page out to the bleed edge, and a spread covers a left and right page.
+%% The map keeps its proportions, so any part that doesn't fit is cut off at the page edges.
+$if(maps)$
+\usepackage{eso-pic}
+\newsavebox{\fp@mapbox}
+% scales map #1 to cover an area #2 wide and #3 high
+\newcommand{\fp@setmap}[3]{%
+  \begingroup
+  % an underscore in the file name is written as \_
+  \def\_{\string_}%
+  \sbox0{\includegraphics{#1}}%
+  \dimen@=\wd0 \dimen@ii=\ht0
+  \ifnum\fpeval{\dimen@/\dimen@ii > (#2)/(#3)}=1
+    \global\setbox\fp@mapbox\hbox{\includegraphics[height=#3]{#1}}%
+  \else
+    \global\setbox\fp@mapbox\hbox{\includegraphics[width=#2]{#1}}%
+  \fi
+  \endgroup}
+% a page with the map box centered at (#1, #2) from its lower left corner
+\newcommand{\fp@mapshipout}[2]{%
+  \thispagestyle{empty}%
+  \AddToShipoutPictureBG*{\AtPageLowerLeft{\put(\LenToUnit{#1},\LenToUnit{#2}){\makebox(0,0){\usebox\fp@mapbox}}}}%
+  \null\clearpage}
+\newcommand{\fp@mappage}[1]{%
+  \clearpage
+  \fp@setmap{#1}{\paperwidth}{\paperheight}%
+  \fp@mapshipout{0.5\paperwidth}{0.5\paperheight}}
+% a spread starts on a left (even) page, and is centered on the spine
+\newcommand{\fp@mapspread}[1]{%
+  \clearpage
+  \ifodd\c@page\thispagestyle{empty}\null\clearpage\fi
+  \fp@setmap{#1}{2\paperwidth}{\paperheight}%
+  \fp@mapshipout{\paperwidth}{0.5\paperheight}%
+  \fp@mapshipout{0pt}{0.5\paperheight}}
+$endif$
+
 %% Part pages for every chapter heading theme: "Part One" in spaced small caps, a short rule, and the part's title
 \newcommand{\fp@parttitle}[1]{\if\relax\detokenize{#1}\relax\else\rule{2cm}{0.4pt}\endgraf\vspace{6mm}\Huge #1\fi}
 \titleformat{\part}[display]
@@ -706,6 +741,15 @@ $if(preface)$
 \input{preface.tex}
 
 \clearpage{\thispagestyle{empty}\cleardoublepage}
+$endif$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create the map pages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+$if(maps)$
+\input{maps.tex}
 $endif$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%

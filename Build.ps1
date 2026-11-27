@@ -225,6 +225,23 @@ function Get-ConfigValue
     return $null
     }
 
+# Returns the image (and line number) of each entry in config.yml's maps list
+function Get-ConfigMaps
+    {
+    param([string[]]$Lines)
+    $start = [array]::FindIndex([string[]]$Lines, [Predicate[string]] { param($line) $line -match '^maps:' })
+    if ($start -lt 0)
+        { return }
+    for ($i = $start + 1; $i -lt $Lines.Count; $i++)
+        {
+        # the list ends at the next top-level key
+        if ($Lines[$i] -match '^\S')
+            { break }
+        if ($Lines[$i] -match '^\s+(-\s+)?image:[ ]*(.*?)[ ]*$')
+            { [pscustomobject]@{ Value = $Matches[2] -replace '^["'']|["'']$', ''; Line = $i + 1 } }
+        }
+    }
+
 # Validates an ISBN-10 or ISBN-13 check digit (hyphens and spaces are ignored)
 function Test-Isbn
     {
@@ -296,6 +313,21 @@ function Test-BookProject
             {
             $issues.Add([pscustomobject]@{ File = $configPath; Line = $chapterImage.Line; Severity = 'error'; Message = "$chapterImageKey '$($chapterImage.Value)' not found in '$bookPath'." })
             }
+        }
+
+    # maps (paths are relative to the book's folder)
+    $maps = @(Get-ConfigMaps $lines)
+    foreach ($map in $maps)
+        {
+        if (-not $map.Value)
+            { $issues.Add([pscustomobject]@{ File = $configPath; Line = $map.Line; Severity = 'error'; Message = "A map's image is empty. Enter the path to the map." }) }
+        elseif (-not [IO.File]::Exists("$bookDir/$($map.Value)"))
+            { $issues.Add([pscustomobject]@{ File = $configPath; Line = $map.Line; Severity = 'error'; Message = "map image '$($map.Value)' not found in '$bookPath'." }) }
+        }
+    # a map is printed to the edge of the page, which needs a bleed
+    if ($buildPrint -and $maps.Count -and (Get-ConfigValue $lines 'bleed').Value -ne 'true')
+        {
+        $issues.Add([pscustomobject]@{ File = $configPath; Line = $maps[0].Line; Severity = 'error'; Message = "Maps are printed to the edge of the page, so they need 'bleed: true'." })
         }
 
     # fonts (only validated if specified as a font file; otherwise, it is a font name installed on the system)
@@ -401,13 +433,15 @@ function Get-RequiredLatexPackages
     if ($dropCapStyle -and $dropCapPackages.ContainsKey($dropCapStyle))
         { $packages += $dropCapPackages[$dropCapStyle] }
 
-    # the PDF/X packages are only loaded when pdf-x is true, and the chapter image package when chapter-image is set
-    # (so their blocks are skipped while reading otherwise)
+    # the PDF/X packages are only loaded when pdf-x is true, the chapter image package when chapter-image is set,
+    # and the map package when there are maps (so their blocks are skipped while reading otherwise)
     $skippedBlocks = @('drop-cap-style')
     if ((Get-ConfigValue $ConfigLines 'pdf-x').Value -ne 'true')
         { $skippedBlocks += 'pdf-x' }
     if (-not (Get-ConfigValue $ConfigLines 'chapter-image').Value)
         { $skippedBlocks += 'chapter-image' }
+    if (-not @(Get-ConfigMaps $ConfigLines).Count)
+        { $skippedBlocks += 'maps' }
     $skippedBlocks = $skippedBlocks -join '|'
 
     foreach ($template in $templates)
@@ -965,6 +999,12 @@ Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" 
 Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" $quoteVariables `
        -o "$buildDir/praise.md" --template="$PSScriptRoot/Pandoc/templates/praise/praise.md" "$buildDir/dummy.txt"
 
+# Create the map pages for print and epub
+Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" `
+       -o "$buildDir/maps.tex" -t latex --template="$PSScriptRoot/Pandoc/templates/maps/maps.tex" "$buildDir/dummy.txt"
+Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" `
+       -o "$buildDir/maps.md" --template="$PSScriptRoot/Pandoc/templates/maps/maps.md" "$buildDir/dummy.txt"
+
 # Create the latex half titlepage
 # half titlepage doesn't really make sense because e-readers force the main title page to the front
 Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/half-titlepage.tex" -t latex `
@@ -1187,7 +1227,7 @@ If ($buildEpub -ne "false")
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName.epub" `
-           "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" `
+           "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" "$buildDir/maps.md" `
            $epubMdFiles `
            "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"
@@ -1204,7 +1244,7 @@ If ($buildEpub -ne "false" -and $buildAmazonEpub -ne "false")
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName-amazon.epub" `
-           "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageAmazonEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" `
+           "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageAmazonEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" "$buildDir/maps.md" `
            $epubMdFiles `
            "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"

@@ -81,6 +81,10 @@ table {margin-left: auto; margin-right: auto; margin-top: 10px;}
 .epigraph p { font-style: italic; text-align: left; text-indent: 0; }
 .epigraph-source p { font-style: normal; font-variant: small-caps; text-align: right; margin-top: 1em; }
 
+/* Map pages, with the map's title as its caption */
+h1.map { margin: 0; padding: 0; }
+img.map-image { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+
 /* Backmatter pages (afterword, acknowledgments, reading group guide, excerpt) */
 .backmatter h1, h1.backmatter, .foreword h1, h1.foreword, .preface h1, h1.preface, h1.praise { font-variant: small-caps; letter-spacing: 0.1em; padding-top: 2em; }
 .kicker { display: block; font-size: 0.55em; font-weight: normal; letter-spacing: 0.15em; margin-bottom: 0.5em; }

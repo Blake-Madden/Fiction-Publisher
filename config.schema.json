@@ -152,6 +152,21 @@
         "preface-signoff": { "$ref": "#/definitions/text", "description": "The preface's sign-off (e.g., the author's initials or the place and date it was written)." },
         "preface-title": { "$ref": "#/definitions/text", "description": "The preface's heading (e.g., Préface). Default is Preface." },
 
+        "maps": {
+            "type": ["array", "null"],
+            "description": "Maps shown just before the first chapter. They are printed to the edge of the page, so the print PDF needs bleed set to true.",
+            "items": {
+                "type": "object",
+                "required": ["image"],
+                "properties": {
+                    "image": { "$ref": "#/definitions/text", "description": "Path to the map, relative to the book's folder (e.g., images/map.png)." },
+                    "title": { "$ref": "#/definitions/text", "description": "The map's name, shown under it in the ePub." },
+                    "spread": { "$ref": "#/definitions/switch", "description": "true to print the map across a left and right page (default is false)." }
+                },
+                "additionalProperties": false
+            }
+        },
+
         "toc": { "$ref": "#/definitions/switch", "description": "Whether to include a table of contents in the print output." },
         "toc-title": { "$ref": "#/definitions/text", "description": "Header text for the table of contents." },
         "toc-depth": {

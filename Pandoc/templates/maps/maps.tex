@@ -1,0 +1,11 @@
+$if(maps)$
+\makeatletter
+$for(maps)$
+$if(maps.spread)$
+\fp@mapspread{$maps.image$}
+$else$
+\fp@mappage{$maps.image$}
+$endif$
+$endfor$
+\makeatother
+$endif$

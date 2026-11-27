@@ -130,6 +130,11 @@ dedication: Dedicated to my readers.
 # preface: |
 # preface-signoff:
 # preface-title: Preface
+# Maps need 'bleed: true'
+# maps:
+#     - image: images/map.png
+#       title:
+#       spread: false
 toc: true
 # toc-title:
 # toc-depth: 0
