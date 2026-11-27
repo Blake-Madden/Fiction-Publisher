@@ -208,6 +208,7 @@
         "bottom-margin": { "$ref": "#/definitions/length", "description": "Bottom margin in the print output." },
         "inner-margin": { "$ref": "#/definitions/length", "description": "Inner (gutter) margin in the print output." },
         "outer-margin": { "$ref": "#/definitions/length", "description": "Outer margin in the print output." },
+        "bleed": { "$ref": "#/definitions/switch", "description": "true to add a 0.125in bleed to the outside, top, and bottom edges of the print PDF, for artwork that reaches the edge of the page (default is false)." },
         "fancy-chapter": {
             "type": ["string", "null"],
             "description": "Chapter heading style from the fncychap package (PDF only). Overrides chapter-heading.",

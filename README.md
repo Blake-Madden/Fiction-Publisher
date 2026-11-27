@@ -321,6 +321,9 @@ The colophon is the last page of the print output.
 - **bottom-margin**: The bottom margin in the print output
 - **inner-margin**: The inner/gutter margin in the print output
 - **outer-margin**: The outer margin in the print output
+- **bleed**: `true` to add a 0.125in bleed to the outside, top, and bottom edges of the print PDF, which KDP and IngramSpark need when artwork reaches the edge of the page. Default is `false`.
+  The page size and margins are the trimmed sizes, so the text stays in the same place.
+  Choose the bleed option when uploading the PDF to the printer.
 
 - **fancy-chapter**: Chapter heading style from the [fncychap](https://www.ctan.org/pkg/fncychap) library (PDF output only).
   Styles include `Sonny`, `Lenny`, `Glenn`, `Conny`, `Rejne`, `Bjarne`, and `Bjornstrup`

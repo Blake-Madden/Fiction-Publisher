@@ -19,20 +19,30 @@ $endif$
 [11pt]
 {book} % Set document Class
 
+%% Trim size of the page (default is 6x9 inches)
+\newlength{\fptrimwidth}\setlength{\fptrimwidth}{$if(paper-width)$$paper-width$$else$152.4mm$endif$}
+\newlength{\fptrimheight}\setlength{\fptrimheight}{$if(paper-height)$$paper-height$$else$228.6mm$endif$}
+
+%% Bleed: extra paper past the outside, top, and bottom trim edges, which KDP and IngramSpark ask for when artwork reaches the edge
+\newlength{\fpbleed}
+$if(bleed)$
+\setlength{\fpbleed}{0.125in}
+$endif$
+
 %% Set page size and margins
 \usepackage{geometry}
   \geometry{
-  paperheight=$if(paper-height)$$paper-height$$else$228.6mm$endif$,  %actual height measurement of the page (default is 6x9 inches)
-  paperwidth=$if(paper-width)$$paper-width$$else$152.4mm$endif$,    %actual width measurement of the page
+  paperheight=\dimexpr\fptrimheight+2\fpbleed\relax, %trim height, plus the top and bottom bleed
+  paperwidth=\dimexpr\fptrimwidth+\fpbleed\relax,    %trim width, plus the outside bleed
   $if(copyedit)$
     includeall, %include header, footer, and margin notes inside of text area calculation (in copyedit mode, show margin notes off to the side)
   $else$
     includehead, %include header inside of text area calculation (footer and margin notes aren't used in this template)
   $endif$
-  top=$if(top-margin)$$top-margin$$else$30.0mm$endif$, % top margin
-  bottom=$if(bottom-margin)$$bottom-margin$$else$27.0mm$endif$, %bottom margin
+  top=\dimexpr$if(top-margin)$$top-margin$$else$30.0mm$endif$+\fpbleed\relax, % top margin
+  bottom=\dimexpr$if(bottom-margin)$$bottom-margin$$else$27.0mm$endif$+\fpbleed\relax, %bottom margin
   inner=$if(inner-margin)$$inner-margin$$else$22.0mm$endif$, %inner/gutter margin
-  outer=$if(outer-margin)$$outer-margin$$else$19.0mm$endif$, %outer margin
+  outer=\dimexpr$if(outer-margin)$$outer-margin$$else$19.0mm$endif$+\fpbleed\relax, %outer margin
   $if(copyedit)$
     showframe %show lines drawn around text, footer, header, and margin note areas
   $endif$
@@ -92,23 +102,19 @@ $endif$
 % Thanks to LSinev for most of this;
 % https://gist.github.com/LSinev/74ea05423c9208d6677d
 
-% TrimBox is the page size in bp, calculated from paper-width and paper-height
-% (rounded to avoid exceeding the page size)
-\newcommand{\trimboxwidth}{\fpeval{round(\paperwidth*72/72.27, 2)}}
-\newcommand{\trimboxheight}{\fpeval{round(\paperheight*72/72.27, 2)}}
+% TrimBox is the trim size in bp, calculated from paper-width and paper-height
+% (rounded to avoid exceeding the page size).
+% The bleed is on the outside edge, so it is on the right of odd (recto) pages and on the left of even (verso) pages.
+\newcommand{\tobp}[1]{\fpeval{round((#1)*72/72.27, 2)}}
+\edef\trimboxrecto{0 \tobp{\fpbleed} \tobp{\fptrimwidth} \tobp{\fptrimheight+\fpbleed}}
+\edef\trimboxverso{\tobp{\fpbleed} \tobp{\fpbleed} \tobp{\fptrimwidth+\fpbleed} \tobp{\fptrimheight+\fpbleed}}
+\edef\bleedbox{0 0 \tobp{\fptrimwidth+\fpbleed} \tobp{\fptrimheight+2*\fpbleed}}
+\newcommand{\pageboxes}{/TrimBox [\ifodd\value{page}\trimboxrecto\else\trimboxverso\fi] /BleedBox [\bleedbox]}
 \usepackage{atbegshi}
 \AtBeginShipout{% %A hook that is executed for every page (after first one)
-    \special{pdf: put @thispage
-      <<
-        /TrimBox [0 0 \trimboxwidth\space\trimboxheight]
-      >>
-    }
+    \special{pdf: put @thispage << \pageboxes\space >>}
 }
-\special{pdf: put @thispage
-  <<
-    /TrimBox [0 0 \trimboxwidth\space\trimboxheight]
-  >>
-}
+\special{pdf: put @thispage << \pageboxes\space >>}
 \special{pdf:put @catalog
 <<
   /PageMode /UseNone
@@ -123,11 +129,11 @@ $if(pdf-x)$
 \PassOptionsToPackage{bookmarks=false}{hyperref}
 \PassOptionsToPackage{dvipsnames,svgnames}{xcolor}
 \usepackage[x-1a1]{pdfx}
-%% pdfx insets the TrimBox from the page edges, but the page is the trim size
+%% pdfx insets the TrimBox from the page edges, but the page is the trim size (plus any bleed)
 \makeatletter
-\gdef\pdfx@everypage@xetex{/TrimBox [0 0 \trimboxwidth\space\trimboxheight]}
+\gdef\pdfx@everypage@xetex{\pageboxes}
 \makeatother
-\special{pdf:put @pages << /TrimBox [0 0 \trimboxwidth\space\trimboxheight] >>}
+\special{pdf:put @pages << /TrimBox [\trimboxrecto] /BleedBox [\bleedbox] >>}
 $endif$
 
 %% URL / Hyperlink style
