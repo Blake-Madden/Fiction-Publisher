@@ -274,17 +274,22 @@ praise:
 
 - **maps**: Optional list of maps, shown just before the first chapter. Each has:
     - **image**: Path to the map, relative to the book's folder (e.g., `images/map.png`)
+    - **image-epub**: The ePub's map, if different from **image**
     - **title**: The map's name, shown under it in the ePub
     - **spread**: `true` to print the map across a left and right page. Default is `false`.
 
 Maps are printed to the edge of the page, so they need **bleed** to be `true`.
 A map covers its page, and any part that doesn't fit is cut off at the edges.
 Keep labels at least 0.5in from the edges, and away from the middle of a spread, where the pages are bound.
-For print, use an image of at least 300 DPI at its printed size. For 6x9 inches, a map is 6.125x9.25 inches and a spread is 12.25x9.25 inches.
+For print, use an image of at least 300 DPI at its printed size.
+For 6x9 inches, a map is 6.125x9.25 inches and a spread is 12.25x9.25 inches.
+For a black-and-white interior, use a grayscale image and check that its regions are still easy to tell apart.
+Use **image-epub** to keep a color version in the ePub.
 
 ```yaml
 maps:
     - image: images/kingdom.png
+      image-epub: images/kingdom-color.png
       title: The Kingdom of Meldorf
       spread: true
 ```

@@ -133,6 +133,7 @@ dedication: Dedicated to my readers.
 # Maps need 'bleed: true'
 # maps:
 #     - image: images/map.png
+#       image-epub:
 #       title:
 #       spread: false
 toc: true

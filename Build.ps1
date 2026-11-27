@@ -225,7 +225,7 @@ function Get-ConfigValue
     return $null
     }
 
-# Returns the image (and line number) of each entry in config.yml's maps list
+# Returns the images (and their keys and line numbers) of the entries in config.yml's maps list
 function Get-ConfigMaps
     {
     param([string[]]$Lines)
@@ -237,8 +237,8 @@ function Get-ConfigMaps
         # the list ends at the next top-level key
         if ($Lines[$i] -match '^\S')
             { break }
-        if ($Lines[$i] -match '^\s+(-\s+)?image:[ ]*(.*?)[ ]*$')
-            { [pscustomobject]@{ Value = $Matches[2] -replace '^["'']|["'']$', ''; Line = $i + 1 } }
+        if ($Lines[$i] -match '^\s+(-\s+)?(image(-epub)?):[ ]*(.*?)[ ]*$')
+            { [pscustomobject]@{ Key = $Matches[2]; Value = $Matches[4] -replace '^["'']|["'']$', ''; Line = $i + 1 } }
         }
     }
 
@@ -319,10 +319,14 @@ function Test-BookProject
     $maps = @(Get-ConfigMaps $lines)
     foreach ($map in $maps)
         {
+        # an empty image-epub uses the map's image
         if (-not $map.Value)
-            { $issues.Add([pscustomobject]@{ File = $configPath; Line = $map.Line; Severity = 'error'; Message = "A map's image is empty. Enter the path to the map." }) }
+            {
+            if ($map.Key -eq 'image')
+                { $issues.Add([pscustomobject]@{ File = $configPath; Line = $map.Line; Severity = 'error'; Message = "A map's image is empty. Enter the path to the map." }) }
+            }
         elseif (-not [IO.File]::Exists("$bookDir/$($map.Value)"))
-            { $issues.Add([pscustomobject]@{ File = $configPath; Line = $map.Line; Severity = 'error'; Message = "map image '$($map.Value)' not found in '$bookPath'." }) }
+            { $issues.Add([pscustomobject]@{ File = $configPath; Line = $map.Line; Severity = 'error'; Message = "map $($map.Key) '$($map.Value)' not found in '$bookPath'." }) }
         }
     # a map is printed to the edge of the page, which needs a bleed
     if ($buildPrint -and $maps.Count -and (Get-ConfigValue $lines 'bleed').Value -ne 'true')

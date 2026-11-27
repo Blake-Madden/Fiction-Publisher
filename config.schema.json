@@ -159,7 +159,8 @@
                 "type": "object",
                 "required": ["image"],
                 "properties": {
-                    "image": { "$ref": "#/definitions/text", "description": "Path to the map, relative to the book's folder (e.g., images/map.png)." },
+                    "image": { "$ref": "#/definitions/text", "description": "Path to the map, relative to the book's folder (e.g., images/map.png). Use a grayscale image for a black-and-white print interior." },
+                    "image-epub": { "$ref": "#/definitions/text", "description": "Path to the ePub's map, such as a color version (e.g., images/map-color.png). Default is image." },
                     "title": { "$ref": "#/definitions/text", "description": "The map's name, shown under it in the ePub." },
                     "spread": { "$ref": "#/definitions/switch", "description": "true to print the map across a left and right page (default is false)." }
                 },
