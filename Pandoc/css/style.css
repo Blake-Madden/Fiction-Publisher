@@ -85,6 +85,11 @@ table {margin-left: auto; margin-right: auto; margin-top: 10px;}
 h1.map { margin: 0; padding: 0; }
 img.map-image { display: block; max-width: 100%; height: auto; margin: 0 auto; }
 
+/* Content note page, centered like the dedication */
+h1.content-note { font-variant: small-caps; letter-spacing: 0.1em; font-size: 1.2em; padding-top: 25%; }
+.content-note-text { margin: 0 10%; }
+.content-note-text p { text-align: center; text-indent: 0; margin-top: 0.5em; }
+
 /* Backmatter pages (afterword, acknowledgments, reading group guide, excerpt) */
 .backmatter h1, h1.backmatter, .foreword h1, h1.foreword, .preface h1, h1.preface, h1.praise { font-variant: small-caps; letter-spacing: 0.1em; padding-top: 2em; }
 .kicker { display: block; font-size: 0.55em; font-weight: normal; letter-spacing: 0.15em; margin-bottom: 0.5em; }

@@ -754,6 +754,29 @@ $endif$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create a content note page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+$if(content-note)$
+    \pagestyle{empty}
+    \cleardoublepage
+    \vspace*{\fill}
+    \begin{center}
+    \begin{minipage}{0.75\textwidth}
+      \centering
+      \setlength{\parindent}{0pt}
+      \setlength{\parskip}{6pt}
+      {\chapterheadingfont\bfseries\large\addfontfeature{LetterSpace=10}\MakeTextUppercase{$if(content-note-title)$$content-note-title$$else$Content Note$endif$}\par}
+      \vspace{12pt}
+      \primaryfont\normalsize $content-note$\par
+    \end{minipage}
+    \end{center}
+    \vspace*{\fill}
+    \clearpage
+$endif$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Create the chapters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%

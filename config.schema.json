@@ -168,6 +168,9 @@
             }
         },
 
+        "content-note": { "$ref": "#/definitions/text", "description": "Optional note to the reader about difficult themes (Markdown), shown on its own page just before the first chapter." },
+        "content-note-title": { "$ref": "#/definitions/text", "description": "The content note's heading (e.g., A Note to the Reader). Default is Content Note." },
+
         "toc": { "$ref": "#/definitions/switch", "description": "Whether to include a table of contents in the print output." },
         "toc-title": { "$ref": "#/definitions/text", "description": "Header text for the table of contents." },
         "toc-depth": {

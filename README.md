@@ -294,6 +294,11 @@ maps:
       spread: true
 ```
 
+### Content Note
+
+- **content-note**: Optional note to the reader about difficult themes, shown on its own page just before the first chapter
+- **content-note-title**: The content note's heading (default is `Content Note`), for example `A Note to the Reader`.
+
 ### Table of Contents
 
 - **toc**: Whether to include a table of contents in the print output (`true` or `false`)
@@ -459,6 +464,9 @@ This folder contains the foreword page templates, which display the `foreword` f
 
 ##### Pandoc/templates/half-titlepage
 This folder contains the half-title page template (PDF only).
+
+##### Pandoc/templates/content-note
+This folder contains the ePub content note template, which displays the `content-note` from your **config.yml** file.
 
 ##### Pandoc/templates/maps
 This folder contains the map page templates, which display the `maps` from your **config.yml** file.

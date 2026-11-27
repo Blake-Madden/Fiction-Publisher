@@ -136,6 +136,8 @@ dedication: Dedicated to my readers.
 #       image-epub:
 #       title:
 #       spread: false
+# content-note: |
+# content-note-title: Content Note
 toc: true
 # toc-title:
 # toc-depth: 0

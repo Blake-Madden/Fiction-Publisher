@@ -1041,6 +1041,10 @@ Invoke-Pandoc --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/bio.md" 
 Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" $quoteVariables -o "$buildDir/epigraph.md" `
        --template="$PSScriptRoot/Pandoc/templates/epigraph/epigraph.md" "$buildDir/dummy.txt"
 
+# Create the content note page for the epub (print builds it in its main template)
+Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/content-note.md" `
+       --template="$PSScriptRoot/Pandoc/templates/content-note/content-note.md" "$buildDir/dummy.txt"
+
 # Create the foreword, preface, and backmatter pages for print and epub
 $dropCapStyle = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^drop-cap-style:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
 foreach ($pageTemplate in @('foreword/foreword', 'preface/preface', 'backmatter/afterword', 'backmatter/acknowledgments', 'backmatter/reading-group-guide', 'backmatter/excerpt'))
@@ -1231,7 +1235,7 @@ If ($buildEpub -ne "false")
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName.epub" `
-           "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" "$buildDir/maps.md" `
+           "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" "$buildDir/maps.md" "$buildDir/content-note.md" `
            $epubMdFiles `
            "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"
@@ -1248,7 +1252,7 @@ If ($buildEpub -ne "false" -and $buildAmazonEpub -ne "false")
            --template="$PSScriptRoot/Pandoc/templates/custom-epub.html" `
            $coverImageOption `
            --css="$PSScriptRoot/Pandoc/css/style.css" -f markdown+smart -t epub3 -o "$outputDir/$bookName-amazon.epub" `
-           "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageAmazonEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" "$buildDir/maps.md" `
+           "$buildDir/praise.md" "$buildDir/copyright.md" $includeSeriesPageAmazonEpub "$buildDir/epigraph.md" "$buildDir/foreword.md" "$buildDir/preface.md" "$buildDir/maps.md" "$buildDir/content-note.md" `
            $epubMdFiles `
            "$buildDir/afterword.md" "$buildDir/acknowledgments.md" "$buildDir/reading-group-guide.md" `
            "$buildDir/bio.md" "$buildDir/excerpt.md"
