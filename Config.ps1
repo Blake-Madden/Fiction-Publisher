@@ -136,6 +136,12 @@ dedication: Dedicated to my readers.
 #       image-epub:
 #       title:
 #       spread: false
+# cast:
+#     - group:
+#       characters:
+#           - name:
+#             description:
+# cast-title: Cast of Characters
 # content-note: |
 # content-note-title: Content Note
 toc: true

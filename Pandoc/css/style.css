@@ -85,6 +85,12 @@ table {margin-left: auto; margin-right: auto; margin-top: 10px;}
 h1.map { margin: 0; padding: 0; }
 img.map-image { display: block; max-width: 100%; height: auto; margin: 0 auto; }
 
+/* Cast of characters page, with each description hanging under its name */
+h1.cast { font-variant: small-caps; letter-spacing: 0.1em; font-size: 1.2em; padding-top: 2em; margin-bottom: 1em; }
+.cast-group p { text-align: center; text-indent: 0; font-style: italic; margin: 1.25em 0 0.5em 0; }
+.cast-entry p { text-align: left; text-indent: -1.5em; margin: 0 0 0.4em 1.5em; }
+.cast-name { font-variant: small-caps; letter-spacing: 0.05em; }
+
 /* Content note page, centered like the dedication */
 h1.content-note { font-variant: small-caps; letter-spacing: 0.1em; font-size: 1.2em; padding-top: 25%; }
 .content-note-text { margin: 0 10%; }

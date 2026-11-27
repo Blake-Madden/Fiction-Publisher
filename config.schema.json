@@ -168,6 +168,32 @@
             }
         },
 
+        "cast": {
+            "type": ["array", "null"],
+            "description": "Cast of characters, shown just before the first chapter. Characters can be grouped, such as by family or faction.",
+            "items": {
+                "type": "object",
+                "required": ["characters"],
+                "properties": {
+                    "group": { "$ref": "#/definitions/text", "description": "The group's heading (e.g., House Varenne). Leave out for an ungrouped list." },
+                    "characters": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": ["name"],
+                            "properties": {
+                                "name": { "$ref": "#/definitions/text", "description": "The character's name, shown in small caps." },
+                                "description": { "$ref": "#/definitions/text", "description": "A short description of the character (Markdown)." }
+                            },
+                            "additionalProperties": false
+                        }
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "cast-title": { "$ref": "#/definitions/text", "description": "The cast of characters' heading (e.g., Dramatis Personae). Default is Cast of Characters." },
+
         "content-note": { "$ref": "#/definitions/text", "description": "Optional note to the reader about difficult themes (Markdown), shown on its own page just before the first chapter." },
         "content-note-title": { "$ref": "#/definitions/text", "description": "The content note's heading (e.g., A Note to the Reader). Default is Content Note." },
 

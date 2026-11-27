@@ -754,6 +754,31 @@ $endif$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Create a cast of characters page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+$if(cast)$
+    \pagestyle{empty}
+    \cleardoublepage
+    \thispagestyle{empty}
+    \vspace*{2\baselineskip}
+    {\centering\chapterheadingfont\bfseries\large\addfontfeature{LetterSpace=10}\MakeTextUppercase{$if(cast-title)$$cast-title$$else$Cast of Characters$endif$}\par}
+    \vspace{18pt}
+    {\primaryfont\normalsize\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}\raggedright
+    $for(cast)$
+    $if(cast.group)$
+    \vspace{12pt}{\centering\itshape $cast.group$\par}\nopagebreak[4]\vspace{4pt}
+    $endif$
+    $for(cast.characters)$
+    \hangindent=1.5em\hangafter=1 \textsc{$cast.characters.name$}$if(cast.characters.description)$~\textemdash{} $cast.characters.description$$endif$\par
+    $endfor$
+    $endfor$
+    }
+    \clearpage
+$endif$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Create a content note page
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%

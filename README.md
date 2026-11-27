@@ -294,6 +294,23 @@ maps:
       spread: true
 ```
 
+### Cast of Characters
+
+- **cast**: Optional list of characters, shown just before the first chapter. Each group has:
+    - **group**: The group's heading, such as a family or faction. Leave it out for an ungrouped list.
+    - **characters**: The group's characters, each with a **name** and a short **description**
+- **cast-title**: The cast's heading (default is `Cast of Characters`), for example `Dramatis Personae`.
+
+```yaml
+cast:
+    - group: House Varenne
+      characters:
+          - name: Elena Voss
+            description: a cartographer with debts
+          - name: Lord Varenne
+            description: her patron
+```
+
 ### Content Note
 
 - **content-note**: Optional note to the reader about difficult themes, shown on its own page just before the first chapter
@@ -464,6 +481,9 @@ This folder contains the foreword page templates, which display the `foreword` f
 
 ##### Pandoc/templates/half-titlepage
 This folder contains the half-title page template (PDF only).
+
+##### Pandoc/templates/cast
+This folder contains the ePub cast of characters template, which displays the `cast` from your **config.yml** file.
 
 ##### Pandoc/templates/content-note
 This folder contains the ePub content note template, which displays the `content-note` from your **config.yml** file.

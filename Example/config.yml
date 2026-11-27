@@ -21,6 +21,20 @@ epigraph: |
   It was a dark and stormy night; the rain fell in torrents---except at occasional intervals, when it was checked by a violent gust of wind.
 epigraph-source: Edward Bulwer-Lytton, *Paul Clifford*
 toc: false
+cast-title: Persons of the Story
+cast:
+    - group: The Harbor House
+      characters:
+          - name: Mabel
+            description: a light sleeper, who hears everything
+          - name: Harold
+            description: her husband, a devoted reader of the *Gazette*
+    - group: Outside
+      characters:
+          - name: The Voice at the Door
+            description: unknown
+          - name: A Dog
+            description: somewhere below, far below
 foreword: |
   Rarely does a novel come along that changes how we think about weather. This is one of the most important weather-based novels ever written, and I say that as someone who has read the back of a barometer.
 
