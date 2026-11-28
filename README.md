@@ -66,6 +66,7 @@ Refer [here](#your-book-structure) for the recommended file structure for your b
 - [X] Full-page illustrations
 - [X] Chapter subtitles and epigraphs
 - [X] Afterword, acknowledgments, reading group guide, and excerpt page templates
+- [X] Running headers showing the author, title, chapter, or series (PDF only)
 - [X] Customizable fonts for the main text, author name, and title
 
 #### Adds formatting to output (PDF and ePub)
@@ -118,7 +119,7 @@ Every occurrence of an issue is reported, along with its file and line number.
   If the book already has its own "tasks.json", it is left as is.
 - Copy any custom fonts that you wish to use into the "Pandoc/fonts" folder.
 
-### Update Your MetaData
+### Update Your Metadata
 Each book project contains a "config.yml", which is used to define metadata about your book. Refer to the [Metadata Documentation](#metadata-options) for more information.
 
 ### Build Your Book
@@ -370,10 +371,10 @@ Values are Markdown, so use a YAML block (`|`) for multiple paragraphs.
 The colophon is the last page of the print output.
 
 ### Page Formatting
-- **paper-height**: The height of the paper for print output (the default papersize is 6x9 inches)
-- **paper-width**: The width of the paper for print output
-- **top-margin**: The top margin in the print output (headers will be inside of the text body)
-- **bottom-margin**: The bottom margin in the print output
+- **paper-height**: The height of the paper for print output. Default is `9in`.
+- **paper-width**: The width of the paper for print output. Default is `6in`.
+- **top-margin**: The top margin in the print output, with the running header inside it. Default is `30mm`.
+- **bottom-margin**: The bottom margin in the print output. Default is `27mm`.
 - **inner-margin**: The inner/gutter margin in the print output. Default is `22mm`.
   Thicker books need a wider gutter, since more of the page curves into the binding. KDP's minimums are:
 
@@ -386,7 +387,7 @@ The colophon is the last page of the print output.
   | 701–828 | 0.875in      |
 
   These are minimums, so adding 0.125in or so makes the text easier to read near the spine.
-- **outer-margin**: The outer margin in the print output
+- **outer-margin**: The outer margin in the print output. Default is `19mm`.
 - **font-size**: The body font size in points for print output. Default is `11`. Large print editions usually use `16` or more.
 - **line-spacing**: The line spacing for print output, as a multiple of the font's normal spacing. Default is `1.3`.
 - **bleed**: `true` to add a 0.125in bleed to the outside, top, and bottom edges of the print PDF, which KDP and IngramSpark need when artwork reaches the edge of the page. Default is `false`.
@@ -408,12 +409,13 @@ The colophon is the last page of the print output.
 - **chapter-image-width**: The width of the chapter heading artwork, such as `2in` or `50mm`. Default is `1.5in`.
 
 - **chapter-name**: The word used for "Chapter" (default is `Chapter`), for example `Kapitel` or `Part`.
-  PDF output uses it in chapter headings and running headers.
+  PDF output uses it in chapter headings and in running headers that show the chapter number.
   ePub output uses it for chapters with no title.
   Spelled-out numbers follow **lang**.
-- **chapter-number-words**: Set to `true` to spell out chapter numbers in PDF headings and running headers (e.g., "Chapter One"). Default is `false`.
+- **chapter-number-words**: `true` to spell out chapter numbers in PDF chapter headings and running headers (e.g., "Chapter One"). Default is `false`.
 - **part-name**: The word used for "Part" on part pages (default is `Part`), for example `Teil`.
-  PDF part numbers are spelled out when **chapter-number-words** is `true` and Roman numerals otherwise. ePub part numbers are Roman numerals.
+  PDF part numbers are spelled out when **chapter-number-words** is `true` and Roman numerals otherwise.
+  ePub part numbers are Roman numerals.
 
 - **unnumbered-chapters**: Semicolon-separated list of chapter folder names (without the number prefix) that are unnumbered chapters, such as a prologue (default is `Prologue; Epilogue`).
   Names are case-insensitive, and underscores in folder names match spaces.
@@ -430,15 +432,20 @@ The colophon is the last page of the print output.
 
 - **page-number-position**: Where page numbers appear in the PDF (`header`, `bottom-center`, `bottom-outer`).
   Bottom page numbers are also shown on chapter opening pages.
+  Default is `header`.
 - **running-head-verso**: What the running header shows on left-hand pages (`author`, `title`, `chapter`, `series`). Default is `author`.
 - **running-head-recto**: What the running header shows on right-hand pages, with the same choices. Default is `title`.
-- **running-head-chapter-number**: `true` to show "Chapter 3 --" before the chapter's title in the running header. A chapter with no title always shows its number. Default is `false`.
-  Default is `header`.
+- **running-head-chapter-number**: `true` to show "Chapter 3 --" before the chapter's title in the running header.
+  A chapter with no title always shows its number.
+  Default is `false`.
 
 - **scene-separator-latex**: LaTeX code to replace `***` sequences between scenes (used for PDF output)
 - **scene-separator-html**: HTML code to replace `***` sequences between scenes (used for ePub output)
 
-- **hyphenation-exceptions**: Space-separated list of hyphenation exceptions (PDF only). A word without internal hyphens (e.g., `McKinley`) is never split across a line. A word with hyphens (e.g., `man-u-script`) marks allowed break points. Useful for character names. The older `no-hyphenate-list` key still works as an alias.
+- **hyphenation-exceptions**: Space-separated list of hyphenation exceptions (PDF only).
+  A word without internal hyphens (e.g., `McKinley`) is never split across a line.
+  A word with hyphens (e.g., `man-u-script`) marks allowed break points. Useful for character names.
+  The older `no-hyphenate-list` key still works as an alias.
 
 ### Extra
 
@@ -446,20 +453,24 @@ The colophon is the last page of the print output.
 
 ### Validation & Testing
 
-- **emphasis-check**: Semicolon-separated list of phrases that should be italicized. If they are not, a warning will be logged
-- **copyedit**: Set as `true` to draw an outline around the various sections in the print output and show marginal notes in the print output (useful if using [CriticMarkup](https://github.com/CriticMarkup/CriticMarkup-toolkit)).
-  Lines that stick out past the right margin are marked with a black bar. Fix these by rewording or by adding break points to **hyphenation-exceptions**.
-  Placeholder text is still shown in red, but isn't reported as a warning.
+- **emphasis-check**: Semicolon-separated list of phrases that should be italicized.
+  If they are not, a warning will be logged while building.
+  Examples can be the names of ships or foreign words.
+- **copyedit**: `true` to draw an outline around the various sections in the print output and show marginal notes in the print output (useful if using [CriticMarkup](https://github.com/CriticMarkup/CriticMarkup-toolkit)).
+  Lines that stick out past the right margin are marked with a black bar.
+  Fix these by rewording or by adding break points to **hyphenation-exceptions**.
+  (Placeholder text is still shown in red, but isn't reported as a warning.)
 
 ### Build Options
 
-- **build-draft**: `false` to not build a draft copy (`true` by default)
-- **build-epub**: `false` to not build an ePub file (`true` by default)
-- **build-amazon-epub**: `false` to not build the Amazon KDP ePub, `<book>-amazon.epub` (`true` by default)
-- **build-print**: `false` to not build a PDF file (`true` by default)
+- **build-draft**: `false` to not build a draft copy. Default is `true`.
+- **build-epub**: `false` to not build an ePub file. Default is `true`.
+- **build-amazon-epub**: `false` to not build the Amazon KDP ePub, `<book>-amazon.epub`. Default is `true`.
+- **build-print**: `false` to not build a PDF file. Default is `true`.
 - **pdf-x**: `true` to make the print PDF PDF/X-1a:2001 compliant, which IngramSpark asks for and KDP prefers. Default is `false`.
   Colors are converted to CMYK, so use grayscale or CMYK images without transparency.
-- **pdf-engine**: The TeX engine for the print PDF, `lualatex` or `xelatex`. Default is `lualatex`, which also evens out word spacing by slightly stretching or shrinking letters.
+- **pdf-engine**: The TeX engine for the print PDF, `lualatex` or `xelatex`.
+  Default is `lualatex`, which also evens out word spacing by slightly stretching or shrinking letters.
 
 ## Fiction Publisher Structure
 The following folders in "Fiction-Publisher" hold the resources that the build uses:
@@ -502,7 +513,7 @@ This folder contains the glossary templates, which display the `glossary` from y
 This folder contains the half-title page template (PDF only).
 
 ##### Pandoc/templates/call-to-action
-This folder contains the call to action templates, which displays the `call-to-action` from your **config.yml** file.
+This folder contains the call to action templates, which display the `call-to-action` from your **config.yml** file.
 
 ##### Pandoc/templates/cast
 This folder contains the ePub cast of characters template, which displays the `cast` from your **config.yml** file.
