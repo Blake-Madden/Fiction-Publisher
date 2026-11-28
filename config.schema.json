@@ -339,7 +339,7 @@
 
         "unnumbered-chapters": { "$ref": "#/definitions/text", "description": "Semicolon-separated list of chapter folder names (without the number prefix) that are unnumbered, such as a prologue. These aren't labeled or counted as numbered chapters. Default is Prologue; Epilogue." },
         "emphasis-check": { "$ref": "#/definitions/text", "description": "Semicolon-separated list of phrases that should be italicized (a warning is logged if they aren't)." },
-        "copyedit": { "$ref": "#/definitions/switch", "description": "Outline the sections and show marginal notes in the print output (useful with CriticMarkup)." },
+        "copyedit": { "$ref": "#/definitions/switch", "description": "Outline the sections, show marginal notes, and mark lines that stick out past the margin in the print output (useful with CriticMarkup)." },
 
         "build-draft": { "$ref": "#/definitions/switch", "description": "false to not build a draft copy (default is true)." },
         "build-epub": { "$ref": "#/definitions/switch", "description": "false to not build an ePub file (default is true)." },
