@@ -48,6 +48,7 @@
         "subtitle": { "$ref": "#/definitions/text", "description": "Optional subtitle." },
         "subtitle-latex": { "$ref": "#/definitions/text", "description": "LaTeX-formatted subtitle (overrides subtitle on the title page of PDF output)." },
         "author": { "$ref": "#/definitions/text", "description": "Author name." },
+        "series": { "$ref": "#/definitions/text", "description": "Name of the series the book belongs to, for the running header." },
         "author-font": { "$ref": "#/definitions/text", "description": "Font for the author's name on the title page (a TTF/OTF filename in Pandoc/fonts, or a font name)." },
         "author-by-header": { "$ref": "#/definitions/text", "description": "The \"By\" label above the author on the title page (default is blank)." },
         "email": { "$ref": "#/definitions/text", "description": "Author e-mail." },
@@ -325,6 +326,16 @@
             "type": ["string", "null"],
             "description": "Where page numbers appear (PDF only). Default is header.",
             "enum": ["header", "bottom-center", "bottom-outer", null]
+        },
+        "running-head-verso": {
+            "type": ["string", "null"],
+            "description": "What the running header shows on left-hand pages (PDF only). Default is author.",
+            "enum": ["author", "title", "chapter", "series", null]
+        },
+        "running-head-recto": {
+            "type": ["string", "null"],
+            "description": "What the running header shows on right-hand pages (PDF only). Default is title.",
+            "enum": ["author", "title", "chapter", "series", null]
         },
         "running-head-chapter-number": { "type": ["boolean", "null"], "description": "true to show \"Chapter N --\" before the chapter's title in the running header (PDF only). A chapter with no title always shows its number. Default is false." },
         "drop-cap-color": { "$ref": "#/definitions/text", "description": "Color of the drop cap, as a basic or named xcolor color (PDF only). Default is black." },

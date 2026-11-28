@@ -62,6 +62,7 @@ else
 title:
 subtitle:
 author:
+# series:
 # email:
 website:
 type:
@@ -175,6 +176,8 @@ toc: true
 # line-spacing: 1.3
 # bleed: false
 # page-number-position: header
+# running-head-verso: author
+# running-head-recto: title
 # running-head-chapter-number: false
 # header-includes:
 

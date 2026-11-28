@@ -190,6 +190,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **subtitle**: Optional subtitle
 - **subtitle-latex**: LaTeX-formatted subtitle (will override "subtitle" value on the title page of PDF output)
 - **author**: Author name
+- **series**: Name of the series the book belongs to, for the running header
 - **author-font**: The font for the author's name on the title page (can be a TTF/OTF filename in the "Pandoc/fonts" folder or font name)
 - **author-by-header**: The "By" label that appears above the author on the title page (default is blank)
 - **email**: Author e-mail
@@ -429,6 +430,8 @@ The colophon is the last page of the print output.
 
 - **page-number-position**: Where page numbers appear in the PDF (`header`, `bottom-center`, `bottom-outer`).
   Bottom page numbers are also shown on chapter opening pages.
+- **running-head-verso**: What the running header shows on left-hand pages (`author`, `title`, `chapter`, `series`). Default is `author`.
+- **running-head-recto**: What the running header shows on right-hand pages, with the same choices. Default is `title`.
 - **running-head-chapter-number**: `true` to show "Chapter 3 --" before the chapter's title in the running header. A chapter with no title always shows its number. Default is `false`.
   Default is `header`.
 

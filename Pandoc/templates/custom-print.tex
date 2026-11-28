@@ -227,6 +227,22 @@ $endfor$
 \newcommand{\fprunninghead}[1]{{\primaryfont\small\scshape\addfontfeature{LetterSpace=5,Numbers=OldStyle}\MakeTextLowercase{#1}}}
 \newcommand{\fpheadpagenumber}{{\primaryfont\small\thepage}}
 
+%% Running head content for left (verso) and right (recto) pages: author, title, chapter, or series
+\makeatletter
+\def\fp@headauthor{author}\def\fp@headtitle{title}\def\fp@headchapter{chapter}\def\fp@headseries{series}
+\newcommand{\fp@series}{$if(series)$$series$$else$\@author$endif$}
+% #1 is the macro to define, #2 is the setting, and #3 is the text used when the setting isn't recognized
+\newcommand{\fp@setheadtext}[3]{%
+  \def\fp@headsetting{#2}%
+  \ifx\fp@headsetting\fp@headauthor\def#1{\@author}\else
+  \ifx\fp@headsetting\fp@headtitle\def#1{\@title}\else
+  \ifx\fp@headsetting\fp@headchapter\def#1{\leftmark}\else
+  \ifx\fp@headsetting\fp@headseries\def#1{\fp@series}\else
+  \def#1{#3}\fi\fi\fi\fi}
+\fp@setheadtext\fp@versohead{$running-head-verso$}{\@author}
+\fp@setheadtext\fp@rectohead{$running-head-recto$}{\@title}
+\makeatother
+
 %% Page number placement (header, bottom-center, or bottom-outer)
 \def\pagenumberposition{$if(page-number-position)$$page-number-position$$else$header$endif$}
 \def\bottomcenter{bottom-center}
@@ -252,8 +268,8 @@ $endfor$
 \else
   \fancyhead[RO,LE]{\fpheadpagenumber}
 \fi\fi
-\fancyhead[LO]{\fprunninghead{\leftmark}}
-\fancyhead[RE]{\fprunninghead{\@title}}
+\fancyhead[LO]{\fprunninghead{\fp@rectohead}}
+\fancyhead[RE]{\fprunninghead{\fp@versohead}}
 }
 \makeatother
 
@@ -892,8 +908,8 @@ $if(running-head-chapter-number)$\runningheadchapternumbertrue$endif$
 \else
   \fancyhead[RO,LE]{\fpheadpagenumber} % add page numbers to the header
 \fi\fi
-\fancyhead[LO]{\fprunninghead{\leftmark}} % add subtitle to header
-\fancyhead[RE]{\fprunninghead{\@title}}
+\fancyhead[LO]{\fprunninghead{\fp@rectohead}}
+\fancyhead[RE]{\fprunninghead{\fp@versohead}}
 \renewcommand{\headrulewidth}{0.0pt} 
 \makeatother
 

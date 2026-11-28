@@ -507,6 +507,17 @@ function Test-BookProject
         $issues.Add([pscustomobject]@{ File = $configPath; Line = $pageNumberPosition.Line; Severity = 'warning'; Message = "page-number-position '$($pageNumberPosition.Value)' is not recognized (page numbers will be placed in the header)." })
         }
 
+    # running head content
+    foreach ($side in @(@{ Name = 'verso'; Default = 'author' }, @{ Name = 'recto'; Default = 'title' }))
+        {
+        $runningHead = Get-ConfigValue $lines "running-head-$($side.Name)"
+        if (-not $buildPrint -or -not $runningHead -or -not $runningHead.Value) { continue }
+        if ($runningHead.Value -notin 'author', 'title', 'chapter', 'series')
+            { $issues.Add([pscustomobject]@{ File = $configPath; Line = $runningHead.Line; Severity = 'warning'; Message = "running-head-$($side.Name) '$($runningHead.Value)' is not recognized (the $($side.Default) will be shown)." }) }
+        elseif ($runningHead.Value -eq 'series' -and -not (Get-ConfigValue $lines 'series').Value)
+            { $issues.Add([pscustomobject]@{ File = $configPath; Line = $runningHead.Line; Severity = 'warning'; Message = "running-head-$($side.Name) is 'series', but 'series' isn't set in config.yml (the author will be shown)." }) }
+        }
+
     # ISBNs
     foreach ($format in 'paperback', 'hardcover', 'epub')
         {
