@@ -429,6 +429,7 @@ The colophon is the last page of the print output.
 
 - **page-number-position**: Where page numbers appear in the PDF (`header`, `bottom-center`, `bottom-outer`).
   Bottom page numbers are also shown on chapter opening pages.
+- **running-head-chapter-number**: `false` to show only the chapter's title in the running header, without "Chapter 3 --". A chapter with no title still shows its number. Default is `true`.
   Default is `header`.
 
 - **scene-separator-latex**: LaTeX code to replace `***` sequences between scenes (used for PDF output)

@@ -326,6 +326,7 @@
             "description": "Where page numbers appear (PDF only). Default is header.",
             "enum": ["header", "bottom-center", "bottom-outer", null]
         },
+        "running-head-chapter-number": { "type": ["boolean", "null"], "description": "false to show only the chapter's title in the running header, without \"Chapter N --\" (PDF only). A chapter with no title still shows its number. Default is true." },
         "drop-cap-color": { "$ref": "#/definitions/text", "description": "Color of the drop cap, as a basic or named xcolor color (PDF only). Default is black." },
         "scene-separator-latex": { "$ref": "#/definitions/text", "description": "LaTeX code to replace *** between scenes (PDF output)." },
         "scene-separator-html": { "$ref": "#/definitions/text", "description": "HTML code to replace *** between scenes (ePub output)." },

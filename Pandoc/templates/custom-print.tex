@@ -874,7 +874,10 @@ $endif$
 \pagestyle{fancy}
 %\renewcommand{\chaptermark}[1]{\markboth{#1}{}} % This removes the 'Chapter x' from the header
 % Chapter with no title shows only 'Chapter N', without a trailing ' -- '
-\renewcommand{\chaptermark}[1]{\markboth{\if\relax\detokenize{#1}\relax\@chapapp\ \chapternumber\else\@chapapp\ \chapternumber\ --\ {#1}\fi}{}}
+% running-head-chapter-number: false shows only the title of a chapter that has one
+\newif\ifrunningheadchapternumber \runningheadchapternumbertrue
+$if(running-head-no-chapter-number)$\runningheadchapternumberfalse$endif$
+\renewcommand{\chaptermark}[1]{\markboth{\if\relax\detokenize{#1}\relax\@chapapp\ \chapternumber\else\ifrunningheadchapternumber\@chapapp\ \chapternumber\ --\ \fi{#1}\fi}{}}
 
 \fancyhf{} % clear default header/footer content
 \ifx\pagenumberposition\bottomcenter
