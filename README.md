@@ -136,7 +136,7 @@ Any errors or warnings from Pandoc (including LaTeX errors and characters missin
 
 Before building, the script checks that:
 
-- **Pandoc** and **XeLaTeX** are available
+- **Pandoc** and **LuaLaTeX** (or **XeLaTeX**, refer to **pdf-engine**) are available
 - LaTeX packages needed for the print PDF are installed
 - Book project is valid
 
@@ -449,6 +449,7 @@ The colophon is the last page of the print output.
 - **build-print**: `false` to not build a PDF file (`true` by default)
 - **pdf-x**: `true` to make the print PDF PDF/X-1a:2001 compliant, which IngramSpark asks for and KDP prefers. Default is `false`.
   Colors are converted to CMYK, so use grayscale or CMYK images without transparency.
+- **pdf-engine**: The TeX engine for the print PDF, `lualatex` or `xelatex`. Default is `lualatex`, which also evens out word spacing by slightly stretching or shrinking letters.
 
 ## Fiction Publisher Structure
 The following folders in "Fiction-Publisher" hold the resources that the build uses:

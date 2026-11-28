@@ -228,6 +228,7 @@ toc: true
 # build-amazon-epub: true
 # build-print: true
 # pdf-x: false
+# pdf-engine: lualatex
 ---
 '@
   $config = $config.Replace('{GUID}', [guid]::NewGuid().ToString())

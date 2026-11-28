@@ -389,6 +389,13 @@ function Test-BookProject
             }
         }
 
+    # TeX engine
+    $pdfEngineValue = Get-ConfigValue $lines 'pdf-engine'
+    if ($buildPrint -and $pdfEngineValue -and $pdfEngineValue.Value -notin 'lualatex', 'xelatex')
+        {
+        $issues.Add([pscustomobject]@{ File = $configPath; Line = $pdfEngineValue.Line; Severity = 'warning'; Message = "pdf-engine '$($pdfEngineValue.Value)' is not recognized (lualatex will be used)." })
+        }
+
     # page number placement
     $pageNumberPosition = Get-ConfigValue $lines 'page-number-position'
     if ($buildPrint -and $pageNumberPosition -and $pageNumberPosition.Value -notin 'header', 'bottom-center', 'bottom-outer')
@@ -494,12 +501,21 @@ function Get-RequiredLatexPackages
         }
     }
 
+# the TeX engine for the print PDF (lualatex unless pdf-engine is xelatex)
+$pdfEngine = 'lualatex'
+if (Test-Path -LiteralPath "$bookDir/config.yml")
+    {
+    $engineSetting = (Get-ConfigValue (Get-Content -LiteralPath "$bookDir/config.yml") 'pdf-engine').Value
+    if ($engineSetting -eq 'xelatex')
+        { $pdfEngine = 'xelatex' }
+    }
+
 # make sure the required tools are available before touching anything (e.g., previous output)
 $missingTools = @()
 if (-not (Get-Command pandoc -ErrorAction SilentlyContinue))
     { $missingTools += "pandoc (https://pandoc.org/installing.html)" }
-if (-not (Get-Command xelatex -ErrorAction SilentlyContinue))
-    { $missingTools += "xelatex (install TeX Live, MiKTeX, or MacTeX)" }
+if (-not (Get-Command $pdfEngine -ErrorAction SilentlyContinue))
+    { $missingTools += "$pdfEngine (install TeX Live, MiKTeX, or MacTeX)" }
 if ($missingTools.Count)
     {
     Write-Host -ForegroundColor Red "Required tool(s) not found on PATH:"
@@ -529,7 +545,7 @@ if ((Get-ConfigValue $configLines 'build-print').Value -ne 'false' -and (Get-Com
     if ($missingPackages.Count)
         {
         $missingList = ($missingPackages.Sty) -join ', '
-        if ((& xelatex --version | Select-Object -First 1) -match 'MiKTeX')
+        if ((& $pdfEngine --version | Select-Object -First 1) -match 'MiKTeX')
             {
             # MiKTeX can install missing packages during the build (depending on its settings), so this isn't an error
             Write-Warning "LaTeX package(s) not installed: $missingList. If MiKTeX isn't set to install missing packages automatically, install these with MiKTeX Console."
@@ -943,13 +959,13 @@ $includeSeriesPageEpub = If ($hasSeriesBooks) { @("$buildDir/seriespage.md") } E
 $includeSeriesPageAmazonEpub = If ($hasSeriesBooks) { @("$buildDir/amazon-seriespage.md") } Else { @() }
 
 # build epub and print series pages (although they may not be included)
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/seriespage.md" `
+Invoke-Pandoc --pdf-engine=$pdfEngine --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/seriespage.md" `
        --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.md" "$buildDir/dummy.txt"
 
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/amazon-seriespage.md" `
+Invoke-Pandoc --pdf-engine=$pdfEngine --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/amazon-seriespage.md" `
        --template="$PSScriptRoot/Pandoc/templates/seriespage/amazon-seriespage.md" "$buildDir/dummy.txt"
 
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/seriespage.tex" -t latex `
+Invoke-Pandoc --pdf-engine=$pdfEngine --metadata-file "$buildDir/config-print.yml" -o "$buildDir/seriespage.tex" -t latex `
        --template="$PSScriptRoot/Pandoc/templates/seriespage/seriespage.tex" "$buildDir/dummy.txt"
 
 # Select the copyright page template (can be customized by "copyright-page" line in metadata file)
@@ -958,7 +974,7 @@ $copyrightPage = If ($copyrightPage.Length -gt 0) { $copyrightPage } Else { "cre
 
 # Create the latex copyright file to insert into the print documents.
 # Note that we are simply using the copyright template and expanding the variables from our config.yml into it.
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/copyright.tex" -t latex `
+Invoke-Pandoc --pdf-engine=$pdfEngine --metadata-file "$buildDir/config-print.yml" -o "$buildDir/copyright.tex" -t latex `
        --template="$PSScriptRoot/Pandoc/templates/copyright/$copyrightPage.tex" "$buildDir/dummy.txt"
 
 # Create the copyright file to insert into the epub documents.
@@ -998,25 +1014,25 @@ if ($quoteOpen -eq [string][char] 0x201E)
     { $quoteVariables += @('-V', 'quote-open-low=true') }
 
 # Create the praise page for print and epub
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" $quoteVariables `
+Invoke-Pandoc --pdf-engine=$pdfEngine --metadata-file "$buildDir/config-print.yml" $quoteVariables `
        -o "$buildDir/praise.tex" -t latex --template="$PSScriptRoot/Pandoc/templates/praise/praise.tex" "$buildDir/dummy.txt"
 Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" $quoteVariables `
        -o "$buildDir/praise.md" --template="$PSScriptRoot/Pandoc/templates/praise/praise.md" "$buildDir/dummy.txt"
 
 # Create the map pages for print and epub
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" `
+Invoke-Pandoc --pdf-engine=$pdfEngine --metadata-file "$buildDir/config-print.yml" `
        -o "$buildDir/maps.tex" -t latex --template="$PSScriptRoot/Pandoc/templates/maps/maps.tex" "$buildDir/dummy.txt"
 Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" `
        -o "$buildDir/maps.md" --template="$PSScriptRoot/Pandoc/templates/maps/maps.md" "$buildDir/dummy.txt"
 
 # Create the latex half titlepage
 # half titlepage doesn't really make sense because e-readers force the main title page to the front
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/half-titlepage.tex" -t latex `
+Invoke-Pandoc --pdf-engine=$pdfEngine --metadata-file "$buildDir/config-print.yml" -o "$buildDir/half-titlepage.tex" -t latex `
        --template="$PSScriptRoot/Pandoc/templates/half-titlepage/half-titlepage.tex" "$buildDir/dummy.txt"
 
 # Create the latex colophon page
 # ePub doesn't use typesetting, so not built for those
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/colophon.tex" -t latex `
+Invoke-Pandoc --pdf-engine=$pdfEngine --metadata-file "$buildDir/config-print.yml" -o "$buildDir/colophon.tex" -t latex `
        --template="$PSScriptRoot/Pandoc/templates/colophon/default.tex" "$buildDir/dummy.txt"
 
 # Create the latex chapter heading file to insert into the print documents.
@@ -1024,12 +1040,12 @@ Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" 
 # Select the chapter heading template (can be customized by "chapter-heading" line in metadata file)
 $chapterHeading = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^chapter-heading:[ ]*([\w-]*)' | % {($_.matches.groups[1].Value) }
 $chapterHeading = If ($chapterHeading.Length -gt 0) { $chapterHeading } Else { "default" }
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/chapter-heading.tex" -t latex `
+Invoke-Pandoc --pdf-engine=$pdfEngine --metadata-file "$buildDir/config-print.yml" -o "$buildDir/chapter-heading.tex" -t latex `
        --template="$PSScriptRoot/Pandoc/templates/chapter-heading/$chapterHeading.tex" "$buildDir/dummy.txt"
 
 # Create the author biography file to insert into the print
 # TODO: need to be able to exclude this from hardcover editions via metadata because there they go on the dustjacket
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/bio.tex" -t latex `
+Invoke-Pandoc --pdf-engine=$pdfEngine --metadata-file "$buildDir/config-print.yml" -o "$buildDir/bio.tex" -t latex `
        --template="$PSScriptRoot/Pandoc/templates/biography/bio.tex" "$buildDir/dummy.txt"
 
 # Create the author biography file to insert into the epub documents
@@ -1050,13 +1066,13 @@ Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -o "$build
        --template="$PSScriptRoot/Pandoc/templates/content-note/content-note.md" "$buildDir/dummy.txt"
 
 # Create the glossary pages for print and epub
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/glossary.tex" -t latex `
+Invoke-Pandoc --pdf-engine=$pdfEngine --metadata-file "$buildDir/config-print.yml" -o "$buildDir/glossary.tex" -t latex `
        --template="$PSScriptRoot/Pandoc/templates/glossary/glossary.tex" "$buildDir/dummy.txt"
 Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/glossary.md" `
        --template="$PSScriptRoot/Pandoc/templates/glossary/glossary.md" "$buildDir/dummy.txt"
 
 # Create the reader call to action pages for print and the epubs, with the Amazon epub using any Amazon-specific links
-Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/call-to-action.tex" -t latex `
+Invoke-Pandoc --pdf-engine=$pdfEngine --metadata-file "$buildDir/config-print.yml" -o "$buildDir/call-to-action.tex" -t latex `
        --template="$PSScriptRoot/Pandoc/templates/call-to-action/call-to-action.tex" "$buildDir/dummy.txt"
 Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/call-to-action.md" `
        --template="$PSScriptRoot/Pandoc/templates/call-to-action/call-to-action.md" "$buildDir/dummy.txt"
@@ -1068,7 +1084,7 @@ $dropCapStyle = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -
 foreach ($pageTemplate in @('foreword/foreword', 'preface/preface', 'backmatter/afterword', 'backmatter/acknowledgments', 'backmatter/reading-group-guide', 'backmatter/excerpt'))
     {
     $backmatterPage = Split-Path $pageTemplate -Leaf
-    Invoke-Pandoc --pdf-engine=xelatex --metadata-file "$buildDir/config-print.yml" -o "$buildDir/$backmatterPage.tex" -t latex `
+    Invoke-Pandoc --pdf-engine=$pdfEngine --metadata-file "$buildDir/config-print.yml" -o "$buildDir/$backmatterPage.tex" -t latex `
            --template="$PSScriptRoot/Pandoc/templates/$pageTemplate.tex" "$buildDir/dummy.txt"
     # Not wrapped, so that a long heading stays on one line with its attributes
     Invoke-Pandoc --wrap=none --metadata-file "$buildDir/config-epub.yml" -o "$buildDir/$backmatterPage.md" `
@@ -1304,7 +1320,11 @@ if ($epubFiles)
 If ($buildPrint -ne "false")
     {
     Write-Output "Building for print..."
-    Invoke-Pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.tex" --pdf-engine=xelatex --pdf-engine-opt=-output-driver="xdvipdfmx -V 3 -z 0" `
+    # XeLaTeX writes PDF 1.3 (for PDF/X-1a) through its output driver, while LuaLaTeX sets this in the template
+    $engineOptions = @()
+    if ($pdfEngine -eq 'xelatex')
+        { $engineOptions = @('--pdf-engine-opt=-output-driver=xdvipdfmx -V 3 -z 0') }
+    Invoke-Pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.tex" --pdf-engine=$pdfEngine $engineOptions `
            --metadata-file "$buildDir/config-print.yml" $quoteVariables `
            -f markdown+smart $mdFiles -o "$outputDir/$bookName-print.pdf"
 

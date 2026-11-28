@@ -98,7 +98,7 @@ $endif$
 \setlength{\emergencystretch}{3em}
 \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
-%%%%%%%%% Print boxes, IF USING xelatex (PDF/X itself is set by pdf-x below) %%%%%%%%%
+%%%%%%%%% Print boxes, for xelatex or lualatex (PDF/X itself is set by pdf-x below) %%%%%%%%%
 % Thanks to LSinev for most of this;
 % https://gist.github.com/LSinev/74ea05423c9208d6677d
 
@@ -111,6 +111,11 @@ $endif$
 \edef\bleedbox{0 0 \tobp{\fptrimwidth+\fpbleed} \tobp{\fptrimheight+2*\fpbleed}}
 \newcommand{\pageboxes}{/TrimBox [\ifodd\value{page}\trimboxrecto\else\trimboxverso\fi] /BleedBox [\bleedbox]}
 \usepackage{atbegshi}
+\usepackage{iftex}
+\ifluatex
+% set for each page as it is shipped out (hyperref sets the page mode with lualatex)
+\AtBeginShipout{\edef\fpthispageboxes{\pageboxes}\global\pdfvariable pageattr\expandafter{\fpthispageboxes}}
+\else
 % added to the page being shipped out, since a \special written outside of it would go on the next page
 \AtBeginShipout{\AtBeginShipoutAddToBox{\special{pdf: put @thispage << \pageboxes\space >>}}}
 \special{pdf:put @catalog
@@ -118,6 +123,7 @@ $endif$
   /PageMode /UseNone
 >>
 }%
+\fi
 
 \usepackage{datetime} % for \pdfdate command
 
@@ -126,13 +132,33 @@ $if(pdf-x)$
 %% pdfx loads hyperref and loads xcolor with CMYK colors, so their options are passed here
 \PassOptionsToPackage{bookmarks=false}{hyperref}
 \PassOptionsToPackage{dvipsnames,svgnames}{xcolor}
+%% pdfx uses pdfTeX's command names, which luatex85 provides for lualatex
+\usepackage{luatex85}
+%% With lualatex, pdfx writes /Lang and /OutputIntents to the catalog twice while loading, duplicating the keys.
+%% Its first write is held back, and only written if no second one follows.
+%% (This is set up after hyperref loads, since pdfx loads hyperref, which redefines \pdfcatalog.)
+\ifluatex
+\newcount\fpcatalogwrites
+\AddToHook{package/hyperref/after}{%
+  \let\fppdfcatalog\pdfcatalog
+  \def\pdfcatalog#1{\global\advance\fpcatalogwrites 1 \ifnum\fpcatalogwrites=1 \xdef\fpfirstcatalog{#1}\else\fppdfcatalog{#1}\fi}}
+\fi
 \usepackage[x-1a1]{pdfx}
+\ifluatex
+\let\pdfcatalog\fppdfcatalog
+\ifnum\fpcatalogwrites=1 \expandafter\pdfcatalog\expandafter{\fpfirstcatalog}\fi
+\fi
 %% pdfx insets the TrimBox from the page edges, but the page is the trim size (plus any bleed).
 %% Its page boxes would also go on the next page, so the boxes from the shipout hook above are used instead.
+\ifluatex
+\edef\fppagesboxes{/TrimBox [\trimboxrecto] /BleedBox [\bleedbox]}
+\pdfvariable pagesattr\expandafter{\fppagesboxes}
+\else
 \makeatletter
 \gdef\pdfx@everypage@xetex{}
 \makeatother
 \special{pdf:put @pages << /TrimBox [\trimboxrecto] /BleedBox [\bleedbox] >>}
+\fi
 $endif$
 
 %% URL / Hyperlink style
@@ -232,6 +258,10 @@ $endfor$
 
 %% Curly quotes and dashes (must come before fonts are defined)
 \defaultfontfeatures{Ligatures=TeX}
+
+%% Hangs punctuation into the margin for a straighter-looking edge,
+%% and with lualatex, slightly stretches or shrinks letters for more even word spacing
+\usepackage{microtype}
 
 %% For editing font names
 \usepackage{xstring}
