@@ -102,6 +102,23 @@ publisher:
 # all-rights-reserved:
 # request-permissions:
 # stripped-book-notice:
+# some-rights-reserved:
+# published-by-header:
+# cc-license-statement:
+# cc-free-header:
+# cc-share-header:
+# cc-share:
+# cc-adapt-header:
+# cc-adapt:
+# cc-terms-header:
+# cc-attribution-header:
+# cc-attribution:
+# cc-noncommercial-header:
+# cc-noncommercial:
+# cc-sharealike-header:
+# cc-sharealike:
+# cc-no-restrictions-header:
+# cc-no-restrictions:
 # rights:
 paperback-isbn-13:
 paperback-isbn-10:
@@ -229,6 +246,12 @@ toc: true
 # excerpt: |
 # backmatter-flourish: 88
 # colophon: false
+# colophon-created-with:
+# colophon-main-font-header:
+# colophon-title-font-header:
+# colophon-chapter-font-header:
+# colophon-author-font-header:
+# colophon-drop-cap-font-header:
 
 # ----- Series -----
 # The link is used in the Amazon ePub.

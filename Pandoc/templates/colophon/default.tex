@@ -1,7 +1,7 @@
 \pagestyle{empty}
 
-This book was created using \LaTeX .\par
-The main font was set in \primaryfontname. \par
+$if(colophon-created-with)$$colophon-created-with$$else$This book was created using \LaTeX .$endif$\par
+$if(colophon-main-font-header)$$colophon-main-font-header$$else$The main font was set in$endif$ \primaryfontname. \par
 $if(title-font)$
 \def\titlefontfile{$title-font$}
 \ifx\titlefontfile\primaryfontfile
@@ -9,7 +9,7 @@ $if(title-font)$
 \else
   \StrDel{$title-font$}{.ttf}[\titlefontname]%
   \StrDel{\titlefontname}{.otf}[\titlefontname]%
-  Title was set in {\titlefont \titlefontname}. \par
+  $if(colophon-title-font-header)$$colophon-title-font-header$$else$Title was set in$endif$ {\titlefont \titlefontname}. \par
 \fi
 $endif$
 $if(fancy-chapter)$
@@ -18,7 +18,7 @@ $elseif(chapter-heading)$
 \ifx\chapterheaderfontname\primaryfontname
   % no need to print anything if the fonts are the same
 \else
-  Chapter headings were set in {\chapterheaderfont \chapterheaderfontname}. \par
+  $if(colophon-chapter-font-header)$$colophon-chapter-font-header$$else$Chapter headings were set in$endif$ {\chapterheaderfont \chapterheaderfontname}. \par
 \fi
 $endif$
 $if(author-font)$
@@ -28,18 +28,19 @@ $if(author-font)$
 \else
   \StrDel{$author-font$}{.ttf}[\authorfontname]%
   \StrDel{\authorfontname}{.otf}[\authorfontname]%
-  Author name was set in {\authorfont \authorfontname}. \par
+  $if(colophon-author-font-header)$$colophon-author-font-header$$else$Author name was set in$endif$ {\authorfont \authorfontname}. \par
 \fi
 $endif$
+\def\colophondropcapheader{$if(colophon-drop-cap-font-header)$$colophon-drop-cap-font-header$$else$Drop caps were set in$endif$}
 \ifx\$drop-cap-style$\romance
-  Drop caps were set in {\dropcapfont TeX Gyre Chorus}. \par
+  \colophondropcapheader\ {\dropcapfont TeX Gyre Chorus}. \par
 \fi
 \ifx\$drop-cap-style$\scifi
-  Drop caps were set in {\dropcapfont Orbitron Bold}. \par
+  \colophondropcapheader\ {\dropcapfont Orbitron Bold}. \par
 \fi
 \ifx\$drop-cap-style$\oldwest
-  Drop caps were set in {\dropcapfont Chunk Five Regular}. \par
+  \colophondropcapheader\ {\dropcapfont Chunk Five Regular}. \par
 \fi
 \ifx\$drop-cap-style$\blockletter
-  Drop caps were set in Romantik ({\usefont{U}{Romantik}{xl}{n} Romantik}). \par
+  \colophondropcapheader\ Romantik ({\usefont{U}{Romantik}{xl}{n} Romantik}). \par
 \fi

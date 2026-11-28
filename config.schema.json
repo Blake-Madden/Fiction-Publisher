@@ -96,6 +96,23 @@
                 { "type": ["string", "null"] }
             ]
         },
+        "some-rights-reserved": { "$ref": "#/definitions/text", "description": "The \"Some rights reserved.\" text on the creative-commons copyright page." },
+        "published-by-header": { "$ref": "#/definitions/text", "description": "The \"Published by\" text on the creative-commons copyright page." },
+        "cc-license-statement": { "$ref": "#/definitions/text", "description": "The license sentence on the creative-commons copyright page." },
+        "cc-free-header": { "$ref": "#/definitions/text", "description": "The line introducing the license's freedoms (default is \"That means you are free:\")." },
+        "cc-terms-header": { "$ref": "#/definitions/text", "description": "The line introducing the license's terms." },
+        "cc-share-header": { "$ref": "#/definitions/text", "description": "The bold label of the license's share item." },
+        "cc-share": { "$ref": "#/definitions/text", "description": "The text of the license's share item." },
+        "cc-adapt-header": { "$ref": "#/definitions/text", "description": "The bold label of the license's adapt item." },
+        "cc-adapt": { "$ref": "#/definitions/text", "description": "The text of the license's adapt item." },
+        "cc-attribution-header": { "$ref": "#/definitions/text", "description": "The bold label of the license's attribution item." },
+        "cc-attribution": { "$ref": "#/definitions/text", "description": "The text of the license's attribution item." },
+        "cc-noncommercial-header": { "$ref": "#/definitions/text", "description": "The bold label of the license's noncommercial item." },
+        "cc-noncommercial": { "$ref": "#/definitions/text", "description": "The text of the license's noncommercial item." },
+        "cc-sharealike-header": { "$ref": "#/definitions/text", "description": "The bold label of the license's sharealike item." },
+        "cc-sharealike": { "$ref": "#/definitions/text", "description": "The text of the license's sharealike item." },
+        "cc-no-restrictions-header": { "$ref": "#/definitions/text", "description": "The bold label of the license's no-restrictions item." },
+        "cc-no-restrictions": { "$ref": "#/definitions/text", "description": "The text of the license's no-restrictions item." },
         "contributors": {
             "type": ["array", "null"],
             "description": "People who contributed to the book.",
@@ -226,6 +243,12 @@
         "series-books": { "$ref": "#/definitions/seriesBook" },
         "series-header": { "$ref": "#/definitions/text", "description": "Header on the series page (default is \"Also Available\")." },
 
+        "colophon-created-with": { "$ref": "#/definitions/text", "description": "The colophon's first sentence. Default is \"This book was created using LaTeX.\"" },
+        "colophon-main-font-header": { "$ref": "#/definitions/text", "description": "The text before the main font name in the colophon. Default is \"The main font was set in\"." },
+        "colophon-title-font-header": { "$ref": "#/definitions/text", "description": "The text before the title font name in the colophon. Default is \"Title was set in\"." },
+        "colophon-chapter-font-header": { "$ref": "#/definitions/text", "description": "The text before the chapter heading font name in the colophon. Default is \"Chapter headings were set in\"." },
+        "colophon-author-font-header": { "$ref": "#/definitions/text", "description": "The text before the author font name in the colophon. Default is \"Author name was set in\"." },
+        "colophon-drop-cap-font-header": { "$ref": "#/definitions/text", "description": "The text before the drop cap font name in the colophon. Default is \"Drop caps were set in\"." },
         "colophon": { "$ref": "#/definitions/switch", "description": "Whether to include a colophon page (typesetting information) in the print output." },
 
         "author-bio": { "$ref": "#/definitions/text", "description": "Author biography." },

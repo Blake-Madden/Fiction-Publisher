@@ -11,14 +11,14 @@
     
 % Write the CC logo, year, and author
     $if(copyright-header)$$copyright-header$$else$Copyright$endif$ \ccLogo\ \makeatletter \@date \ \@author \makeatother \par
-    Some rights reserved. \par
+    $if(some-rights-reserved)$$some-rights-reserved$$else$Some rights reserved.$endif$ \par
     
 % Add a vertical space
     \vspace{0.4cm}
 
 $if(publisher)$
 % Write who published it
-    Published by \par
+    $if(published-by-header)$$published-by-header$$else$Published by$endif$ \par
 
 % Write the publisher name
     \publisher \par
@@ -33,7 +33,7 @@ $endif$
     \vspace{0.4cm}
 
 % Write the specific license name
-    This book is distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. \par
+    $if(cc-license-statement)$$cc-license-statement$$else$This book is distributed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.$endif$ \par
 
 % Add a vertical space
     \vspace{0.4cm}
@@ -47,24 +47,24 @@ $endif$
 % Write license text
    \scriptsize
    \noindent \sansfont
-    That means you are free:
-      \begin{itemize}
-        \setlength{\itemsep}{0pt}
-        \setlength{\parskip}{0pt}
-        \setlength{\parsep}{0pt} 
-          \item \textbf{To Share}---copy and redistribute the material in any medium or format.
-         \item \textbf{To Adapt}---remix, transform, and build upon the material.
-      \end{itemize}
-    The licensor cannot revoke these freedoms as long as you follow the license terms: \par
+    $if(cc-free-header)$$cc-free-header$$else$That means you are free:$endif$
       \begin{itemize}
         \setlength{\itemsep}{0pt}
         \setlength{\parskip}{0pt}
         \setlength{\parsep}{0pt}
-          \item \textbf{Attribution}---You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use. \par
-          \item \textbf{NonCommercial}---You may not use the material for commercial purposes. \par
-          \item \textbf{ShareAlike}---If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original. \par
+          \item \textbf{$if(cc-share-header)$$cc-share-header$$else$To Share$endif$}---$if(cc-share)$$cc-share$$else$copy and redistribute the material in any medium or format.$endif$
+         \item \textbf{$if(cc-adapt-header)$$cc-adapt-header$$else$To Adapt$endif$}---$if(cc-adapt)$$cc-adapt$$else$remix, transform, and build upon the material.$endif$
       \end{itemize}
-    \textbf{No additional restrictions}---You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+    $if(cc-terms-header)$$cc-terms-header$$else$The licensor cannot revoke these freedoms as long as you follow the license terms:$endif$ \par
+      \begin{itemize}
+        \setlength{\itemsep}{0pt}
+        \setlength{\parskip}{0pt}
+        \setlength{\parsep}{0pt}
+          \item \textbf{$if(cc-attribution-header)$$cc-attribution-header$$else$Attribution$endif$}---$if(cc-attribution)$$cc-attribution$$else$You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.$endif$ \par
+          \item \textbf{$if(cc-noncommercial-header)$$cc-noncommercial-header$$else$NonCommercial$endif$}---$if(cc-noncommercial)$$cc-noncommercial$$else$You may not use the material for commercial purposes.$endif$ \par
+          \item \textbf{$if(cc-sharealike-header)$$cc-sharealike-header$$else$ShareAlike$endif$}---$if(cc-sharealike)$$cc-sharealike$$else$If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.$endif$ \par
+      \end{itemize}
+    \textbf{$if(cc-no-restrictions-header)$$cc-no-restrictions-header$$else$No additional restrictions$endif$}---$if(cc-no-restrictions)$$cc-no-restrictions$$else$You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.$endif$
     
 % Add a vertical space
     \vspace{.5cm}

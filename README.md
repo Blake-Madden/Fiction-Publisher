@@ -233,6 +233,10 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **publisher-address-html**: HTML-formatted publisher address (used on ePub copyright page)
 - **all-rights-reserved**: The "All rights reserved..." statement on the `commercial` copyright page (default is the English statement)
 - **request-permissions**: The text before the author's e-mail on the `commercial` copyright page (default is "To request permissions, contact the author at")
+- **some-rights-reserved**, **published-by-header**: The "Some rights reserved." and "Published by" text on the `creative-commons` copyright page
+- **cc-license-statement**: The license sentence on the `creative-commons` copyright page
+- **cc-free-header**, **cc-terms-header**: The lines introducing the license's freedoms and terms
+- **cc-share-header**, **cc-share**, **cc-adapt-header**, **cc-adapt**, **cc-attribution-header**, **cc-attribution**, **cc-noncommercial-header**, **cc-noncommercial**, **cc-sharealike-header**, **cc-sharealike**, **cc-no-restrictions-header**, **cc-no-restrictions**: The bold label and the text of each license item
 - **stripped-book-notice**: The boxed "If you purchased this book without a cover..." notice on the `commercial` PDF copyright page (default is the English notice)
 - **rights**: A single sentence regarding the licensing of your book (used as EPUB metadata only)
 
@@ -349,6 +353,8 @@ cast:
 ### Colophon
 
 - **colophon**: Whether to include a colophon page (detailing typesetting information) in the print output
+- **colophon-created-with**: The colophon's first sentence (default is "This book was created using LaTeX.")
+- **colophon-main-font-header**, **colophon-title-font-header**, **colophon-chapter-font-header**, **colophon-author-font-header**, **colophon-drop-cap-font-header**: The text before each font name in the colophon (defaults are "The main font was set in", "Title was set in", "Chapter headings were set in", "Author name was set in", and "Drop caps were set in")
 
 ### Backmatter
 These pages follow the story in this order. A page is left out if its value isn't set.
