@@ -222,10 +222,17 @@ The following can be specified in a book project's "config.yml" file (which shou
   - **cover-artist**: Who created the art of your book cover
   - **editor**: Who edited your book
   - **illustrator**: Who did the interior illustrations (will appear on the title page)
+- **designer-header**, **cover-artist-header**, **editor-header**, **illustrator-header**: The labels before each contributor on the copyright page (defaults are "Design:", "Cover Artist:", "Editor:", and "Illustrator:")
+- **illustrated-by-header**: The label above the illustrator on the title page (default is "Illustrated by")
+- **copyright-header**: The word before the © on the copyright page (default is "Copyright")
+- **isbn-paperback-header**, **isbn-hardcover-header**, **isbn-epub-header**: The format names after each ISBN on the copyright page (defaults are "paperback", "hardcover", and "ePub")
 
 - **publisher**: Publisher of your book
+- **printed-by-header**: The text before the publisher in the "Printed by" line on the `commercial` PDF copyright page (default is "Printed by")
 - **publisher-address-latex**: LaTeX-formatted publisher address (used on PDF copyright page)
 - **publisher-address-html**: HTML-formatted publisher address (used on ePub copyright page)
+- **all-rights-reserved**: The "All rights reserved..." statement on the `commercial` copyright page (default is the English statement)
+- **request-permissions**: The text before the author's e-mail on the `commercial` copyright page (default is "To request permissions, contact the author at")
 - **stripped-book-notice**: The boxed "If you purchased this book without a cover..." notice on the `commercial` PDF copyright page (default is the English notice)
 - **rights**: A single sentence regarding the licensing of your book (used as EPUB metadata only)
 
@@ -237,6 +244,8 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **epub-isbn-10**: Optional 10 digit ISBN of your ePub book
 - **first-paperback-date**: Publication date of first paperback edition
 - **lcc-info-latex**: LaTeX-formatted Library of Congress Cataloging-in-Publication Data (used on PDF copyright page)
+- **first-paperback-header**: The text before the first paperback edition date on the `commercial` copyright page (default is "First paperback edition")
+- **lcc-info-header**: The heading above the Library of Congress data on the `commercial` copyright page (default is "Library of Congress Cataloging-in-Publication Data:")
 - **lcc-info-html**: HTML-formatted Library of Congress Cataloging-in-Publication Data (used on ePub copyright page)
 
 - **impression-line-years**: The year part of the impression number/printer line (years run right-to-left, and are usually 2-digit)

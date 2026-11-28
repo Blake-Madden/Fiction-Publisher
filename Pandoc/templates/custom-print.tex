@@ -698,7 +698,7 @@ $else$
 $endif$
 
 % Illustrator
-$for(contributors)$$if(contributors.illustrator)$ \vspace*{4cm} \normalsize Illustrated by \par \Large \illustrator \par$endif$$endfor$
+$for(contributors)$$if(contributors.illustrator)$ \vspace*{4cm} \normalsize $if(illustrated-by-header)$$illustrated-by-header$$else$Illustrated by$endif$ \par \Large \illustrator \par$endif$$endfor$
 
 % Stop centering and single spacing everything
   \end{center}

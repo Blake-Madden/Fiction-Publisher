@@ -95,9 +95,12 @@ identifier:
 
 # ----- Publishing & Copyright -----
 publisher:
+# printed-by-header:
 # publisher-address-latex:
 # publisher-address-html:
 # copyright-page: creative-commons
+# all-rights-reserved:
+# request-permissions:
 # stripped-book-notice:
 # rights:
 paperback-isbn-13:
@@ -107,6 +110,8 @@ hardcover-isbn-10:
 epub-isbn-13:
 epub-isbn-10:
 # first-paperback-date:
+# first-paperback-header:
+# lcc-info-header:
 # lcc-info-latex:
 # lcc-info-html:
 # impression-line-years:
@@ -116,6 +121,15 @@ contributors:
       cover-artist:
       editor:
       # illustrator:
+# designer-header:
+# cover-artist-header:
+# editor-header:
+# illustrator-header:
+# illustrated-by-header:
+# copyright-header:
+# isbn-paperback-header:
+# isbn-hardcover-header:
+# isbn-epub-header:
 
 # ----- Front Matter -----
 # praise:
