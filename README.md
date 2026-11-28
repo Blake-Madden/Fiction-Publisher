@@ -384,6 +384,8 @@ The colophon is the last page of the print output.
 
   These are minimums, so adding 0.125in or so makes the text easier to read near the spine.
 - **outer-margin**: The outer margin in the print output
+- **font-size**: The body font size in points for print output. Default is `11`. Large print editions usually use `16` or more.
+- **line-spacing**: The line spacing for print output, as a multiple of the font's normal spacing. Default is `1.3`.
 - **bleed**: `true` to add a 0.125in bleed to the outside, top, and bottom edges of the print PDF, which KDP and IngramSpark need when artwork reaches the edge of the page. Default is `false`.
   The page size and margins are the trimmed sizes, so the text stays in the same place.
   Choose the bleed option when uploading the PDF to the printer.

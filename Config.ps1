@@ -171,6 +171,8 @@ toc: true
 # bottom-margin: 27mm
 # inner-margin: 22mm
 # outer-margin: 19mm
+# font-size: 11
+# line-spacing: 1.3
 # bleed: false
 # page-number-position: header
 # header-includes:

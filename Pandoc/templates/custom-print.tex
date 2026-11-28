@@ -5,7 +5,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 $if(pdf-x)$
 %% PDF/X metadata, which pdfx reads from \jobname.xmpdata
-\begin{filecontents}[force]{\jobname.xmpdata}
+\begin{filecontents}[force,nowarn]{\jobname.xmpdata}
 $if(title-meta)$\Title{$title-meta$}$endif$
 $if(author-meta)$\Author{$author-meta$}$endif$
 $if(lang)$\Language{$lang$}$endif$
@@ -18,6 +18,11 @@ $endif$
 \documentclass%
 [11pt]
 {book} % Set document Class
+
+%% Body font size in points. The class sets 11pt, and the fontsize package allows any other size, including large print.
+$if(font-size)$
+\usepackage[fontsize=$font-size$pt]{fontsize}
+$endif$
 
 %% Trim size of the page (default is 6x9 inches)
 \newlength{\fptrimwidth}\setlength{\fptrimwidth}{$if(paper-width)$$paper-width$$else$152.4mm$endif$}
@@ -48,11 +53,11 @@ $endif$
   $endif$
   }
 
-%% Set line spacing
+%% Set line spacing, 1.3 by default
 % 1.0 = single space
 % 1.3 = 1.5 space
 % 1.6 = double space
-\linespread{1.3}
+\linespread{$if(line-spacing)$$line-spacing$$else$1.3$endif$}
 
 % Useful for switching line spacing for small sections in sub-documents
 \usepackage{setspace}

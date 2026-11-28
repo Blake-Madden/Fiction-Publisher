@@ -396,6 +396,17 @@ function Test-BookProject
         $issues.Add([pscustomobject]@{ File = $configPath; Line = $pdfEngineValue.Line; Severity = 'warning'; Message = "pdf-engine '$($pdfEngineValue.Value)' is not recognized (lualatex will be used)." })
         }
 
+    # body font size and line spacing
+    foreach ($key in 'font-size', 'line-spacing')
+        {
+        $setting = Get-ConfigValue $lines $key
+        $number = 0.0
+        if ($buildPrint -and $setting -and -not ([double]::TryParse($setting.Value, [Globalization.NumberStyles]::Float, [Globalization.CultureInfo]::InvariantCulture, [ref]$number) -and $number -gt 0))
+            {
+            $issues.Add([pscustomobject]@{ File = $configPath; Line = $setting.Line; Severity = 'error'; Message = "$key '$($setting.Value)' must be a positive number, such as $(If ($key -eq 'font-size') { '12' } Else { '1.2' })." })
+            }
+        }
+
     # page number placement
     $pageNumberPosition = Get-ConfigValue $lines 'page-number-position'
     if ($buildPrint -and $pageNumberPosition -and $pageNumberPosition.Value -notin 'header', 'bottom-center', 'bottom-outer')
