@@ -443,6 +443,7 @@ The colophon is the last page of the print output.
 - **emphasis-check**: Semicolon-separated list of phrases that should be italicized. If they are not, a warning will be logged
 - **copyedit**: Set as `true` to draw an outline around the various sections in the print output and show marginal notes in the print output (useful if using [CriticMarkup](https://github.com/CriticMarkup/CriticMarkup-toolkit)).
   Lines that stick out past the right margin are marked with a black bar. Fix these by rewording or by adding break points to **hyphenation-exceptions**.
+  Placeholder text is still shown in red, but isn't reported as a warning.
 
 ### Build Options
 

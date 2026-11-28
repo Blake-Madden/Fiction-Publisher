@@ -673,6 +673,9 @@ foreach ($file in $mdFiles)
 Write-Output "Reviewing formatting in source files..."
 $WarningList = New-Object Collections.Generic.List[object]
 
+# placeholders are expected while copyediting, so they are only shown in red in the output, without warnings
+$copyedit = (Get-ConfigValue ([IO.File]::ReadAllLines("$bookDir/config.yml")) 'copyedit').Value -eq 'true'
+
 # semicolon separated list of items that should be italicized (specified in metadata)
 $itemsToEmphasize = Get-Content -LiteralPath "$bookDir/config.yml" | Select-String -Pattern '^emphasis-check:(.*)' | % {($_.matches.groups[1].Value) }
 if ($itemsToEmphasize.Length -gt 0)
@@ -771,8 +774,11 @@ foreach ($file in $mdFiles)
                          -Message ("{0} (U+{1:X4}) found. This is usually pasted in from a word processor or web page; consider removing it (or replacing it with a regular space)." -f $character.Value, [int]$character.Key)
         }
     # placeholder text (e.g., "[[TK]]") that should be filled in before publishing
+    if (-not $copyedit)
+        {
     Test-FormatIssue -Pattern '\[\[(.*?)\]\]' `
                      -Message "placeholder text found (`"{0}`"). Replace it before publishing."
+        }
     # stray period or comma around ? or !
     Test-FormatIssue -Pattern '([.,][?!]|[?!][.,]|[,][.])' `
                      -Message "stray period or comma found (`"{0}`")."
