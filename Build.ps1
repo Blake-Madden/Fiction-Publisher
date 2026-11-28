@@ -107,11 +107,14 @@ function Invoke-Pandoc
         }
     }
 
+# The default drop cap position: after a top-level heading, and after any full-page illustrations that follow it
+$dropCapPrefix = '(^[\s]*#[^\r\n]+[\r\n]+(?:[ \t]*!\[[^\]\r\n]*\]\([^)\s]+\)\{[ \t]*\.full-page[ \t]*\}[ \t]*[\r\n]+)*)'
+
 # Adds a LaTeX drop cap to the first word after '$Prefix' (a regex with one group, by default a top-level heading).
 # Note that a leading quotation mark at start of paragraph will be removed, per Chicago Manual of Style.
 function Add-PrintDropCap
     {
-    param([string]$Content, [string]$Style, [string]$Prefix = '(^[\s]*#[^\r\n]+[\r\n]+)')
+    param([string]$Content, [string]$Style, [string]$Prefix = $dropCapPrefix)
     $quote = "[$sq1'`"$q1$gm1 ]?"
 
     # romance style is oblique, so need some special commands for certain letters to look nice
@@ -173,7 +176,7 @@ function Remove-EpubTocChapterImage
 # Adds an HTML drop cap and small caps to the first word after '$Prefix' (a regex with one group, by default a top-level heading).
 function Add-EpubDropCap
     {
-    param([string]$Content, [string]$Prefix = '(^[\s]*#[^\r\n]+[\r\n]+)')
+    param([string]$Content, [string]$Prefix = $dropCapPrefix)
     return $Content -replace "$Prefix([$sq1'`"$q1$gm1 ]?[A-Z$agrave-$oumlauts$ostroke-$yacute])([\w'$sq2]*[\s,])",
                              '$1<span class="drop-caps">$2</span><span class="small-caps">$3</span>'
     }
@@ -239,6 +242,24 @@ function Get-ConfigMaps
             { break }
         if ($Lines[$i] -match '^\s+(-\s+)?(image(-epub)?):[ ]*(.*?)[ ]*$')
             { [pscustomobject]@{ Key = $Matches[2]; Value = $Matches[4] -replace '^["'']|["'']$', ''; Line = $i + 1 } }
+        }
+    }
+
+# A full-page illustration in a scene file: an image on a line by itself, marked with {.full-page}
+# (group 1 is the image's description and group 2 is its path)
+$fullPagePattern = '(?m)^[ \t]*!\[([^\]\r\n]*)\]\(([^)\s]+)\)\{[ \t]*\.full-page[ \t]*\}[ \t]*(?=\r?$)'
+
+# Returns the full-page illustrations (their file, line number, and image path) in the markdown files under a folder
+function Get-FullPageImages
+    {
+    param([string]$Folder)
+    if (-not [IO.Directory]::Exists($Folder))
+        { return }
+    foreach ($file in Get-MarkdownFiles $Folder)
+        {
+        $content = [IO.File]::ReadAllText($file)
+        foreach ($match in [regex]::Matches($content, $fullPagePattern))
+            { [pscustomobject]@{ File = $file -replace '\\', '/'; Line = $content.Substring(0, $match.Index).Split("`n").Count; Path = $match.Groups[2].Value } }
         }
     }
 
@@ -332,6 +353,18 @@ function Test-BookProject
     if ($buildPrint -and $maps.Count -and (Get-ConfigValue $lines 'bleed').Value -ne 'true')
         {
         $issues.Add([pscustomobject]@{ File = $configPath; Line = $maps[0].Line; Severity = 'error'; Message = "Maps are printed to the edge of the page, so they need 'bleed: true'." })
+        }
+
+    # full-page illustrations (paths are relative to the book's folder), which are also printed to the edge of the page
+    $fullPageImages = @(Get-FullPageImages "$bookDir/outline")
+    foreach ($image in $fullPageImages)
+        {
+        if (-not [IO.File]::Exists("$bookDir/$($image.Path)"))
+            { $issues.Add([pscustomobject]@{ File = $image.File; Line = $image.Line; Severity = 'error'; Message = "Full-page illustration '$($image.Path)' not found in '$bookPath'." }) }
+        }
+    if ($buildPrint -and $fullPageImages.Count -and (Get-ConfigValue $lines 'bleed').Value -ne 'true')
+        {
+        $issues.Add([pscustomobject]@{ File = $fullPageImages[0].File; Line = $fullPageImages[0].Line; Severity = 'error'; Message = "Full-page illustrations are printed to the edge of the page, so they need 'bleed: true' in config.yml." })
         }
 
     # fonts (only validated if specified as a font file; otherwise, it is a font name installed on the system)
@@ -456,14 +489,14 @@ function Get-RequiredLatexPackages
         { $packages += $dropCapPackages[$dropCapStyle] }
 
     # the PDF/X packages are only loaded when pdf-x is true, the chapter image package when chapter-image is set,
-    # and the map package when there are maps (so their blocks are skipped while reading otherwise)
+    # and the page image packages when there are maps or full-page illustrations (so their blocks are skipped while reading otherwise)
     $skippedBlocks = @('drop-cap-style')
     if ((Get-ConfigValue $ConfigLines 'pdf-x').Value -ne 'true')
         { $skippedBlocks += 'pdf-x' }
     if (-not (Get-ConfigValue $ConfigLines 'chapter-image').Value)
         { $skippedBlocks += 'chapter-image' }
-    if (-not @(Get-ConfigMaps $ConfigLines).Count)
-        { $skippedBlocks += 'maps' }
+    if (-not @(Get-ConfigMaps $ConfigLines).Count -and -not @(Get-FullPageImages "$bookDir/outline").Count)
+        { $skippedBlocks += 'page-images' }
     $skippedBlocks = $skippedBlocks -join '|'
 
     foreach ($template in $templates)
@@ -493,7 +526,7 @@ function Get-RequiredLatexPackages
         }
 
     # TeX Live packages that are named differently from their .sty file
-    $tlPackageNames = @{ Romantik = 'cfr-initials'; calligra = 'fundus-calligra'; longtable = 'tools' }
+    $tlPackageNames = @{ Romantik = 'cfr-initials'; calligra = 'fundus-calligra'; longtable = 'tools'; afterpage = 'tools' }
     # files that a package needs from a different TeX Live package
     # (e.g., Romantik.sty is only a wrapper, the font itself comes from initials)
     $extraFiles = @{
@@ -776,8 +809,8 @@ foreach ($file in $mdFiles)
     # placeholder text (e.g., "[[TK]]") that should be filled in before publishing
     if (-not $copyedit)
         {
-    Test-FormatIssue -Pattern '\[\[(.*?)\]\]' `
-                     -Message "placeholder text found (`"{0}`"). Replace it before publishing."
+        Test-FormatIssue -Pattern '\[\[(.*?)\]\]' `
+                         -Message "placeholder text found (`"{0}`"). Replace it before publishing."
         }
     # stray period or comma around ? or !
     Test-FormatIssue -Pattern '([.,][?!]|[?!][.,]|[,][.])' `
@@ -846,7 +879,7 @@ $configDisplayPath = "$bookDir/config.yml" -replace '\\', '/'
 $configLines = [IO.File]::ReadAllLines("$bookDir/config.yml")
 for ($i = 0; $i -lt $configLines.Count; $i++)
     {
-    if ($configLines[$i] -match '\[\[(.*?)\]\]')
+    if (-not $copyedit -and $configLines[$i] -match '\[\[(.*?)\]\]')
         {
         $WarningList.Add([pscustomobject]@{ File = $configDisplayPath; Line = $i + 1; Message = "placeholder text found (`"$($Matches[0])`"). Replace it before publishing." })
         }
@@ -1163,11 +1196,14 @@ If ($buildPrint -ne "false")
         # placeholder text: render in red so it stands out in the print output
         $content = ConvertTo-LatexPlaceholder $content
 
+        # full-page illustrations go on a page of their own
+        $content = $content -replace $fullPagePattern, '\fpfullpage{$2}'
+
         # files that don't start with zero should be new scenes in a chapter, so unindent their first paragraph
         if ($fileInfo.BaseName -match '^[^0].*')
             {
-            # unless the file starts with a heading, which shouldn't be prefixed
-            $content = $content -replace '^(\s*)([^#\s])', '$1\noindent $2'
+            # unless the file starts with a heading, which shouldn't be prefixed (full-page illustrations before the paragraph are skipped)
+            $content = $content -replace '^(\s*(?:\\fpfullpage\{[^}\r\n]*\}\s*)*)([^#\s])', '$1\noindent $2'
             }
 
         [void] [IO.File]::WriteAllText($file, $content)
@@ -1251,6 +1287,13 @@ If ($buildEpub -ne "false")
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
         $content = Add-EpubDropCap $content
+
+        # full-page illustrations go on a screen of their own
+        # (the description is moved to the alt attribute, so that the image isn't made a figure with the description as its caption)
+        $content = [regex]::Replace($content, $fullPagePattern, {
+            param($m)
+            "`n::: full-page`n![]($($m.Groups[2].Value)){alt=`"$($m.Groups[1].Value -replace '["\\]', '\$0')`"}`n:::`n"
+            })
 
         # CriticMarkup
         $content = $content -replace '({--)([\s\S]*?)(--})', '<del>$2</del>' # deletion
@@ -1341,6 +1384,9 @@ If ($buildPrint -ne "false")
     $engineOptions = @()
     if ($pdfEngine -eq 'xelatex')
         { $engineOptions = @('--pdf-engine-opt=-output-driver=xdvipdfmx -V 3 -z 0') }
+    # maps and full-page illustrations share the template's page image code
+    if (@(Get-ConfigMaps $configLines).Count -or @(Get-FullPageImages "$bookDir/outline").Count)
+        { $engineOptions += @('-V', 'page-images=true') }
     Invoke-Pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.tex" --pdf-engine=$pdfEngine $engineOptions `
            --metadata-file "$buildDir/config-print.yml" $quoteVariables `
            -f markdown+smart $mdFiles -o "$outputDir/$bookName-print.pdf"

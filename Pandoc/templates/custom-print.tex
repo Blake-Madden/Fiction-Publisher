@@ -507,10 +507,11 @@ $else$
 \newcommand{\fp@chapterimage}{}
 $endif$
 
-%% Map pages: a map covers its page out to the bleed edge, and a spread covers a left and right page.
-%% The map keeps its proportions, so any part that doesn't fit is cut off at the page edges.
-$if(maps)$
+%% Map pages and full-page illustrations: an image covers its page out to the bleed edge, and a map spread covers a left and right page.
+%% The image keeps its proportions, so any part that doesn't fit is cut off at the page edges.
+$if(page-images)$
 \usepackage{eso-pic}
+\usepackage{afterpage}
 \newsavebox{\fp@mapbox}
 % scales map #1 to cover an area #2 wide and #3 high
 \newcommand{\fp@setmap}[3]{%
@@ -541,6 +542,8 @@ $if(maps)$
   \fp@setmap{#1}{2\paperwidth}{\paperheight}%
   \fp@mapshipout{\paperwidth}{0.5\paperheight}%
   \fp@mapshipout{0pt}{0.5\paperheight}}
+% a full-page illustration in the text goes on the next page, so that the text fills the current page first
+\newcommand{\fpfullpage}[1]{\afterpage{\fp@mappage{#1}}}
 $endif$
 
 %% Part pages for every chapter heading theme: "Part One" in spaced small caps, a short rule, and the part's title

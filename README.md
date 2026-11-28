@@ -63,6 +63,7 @@ Refer [here](#your-book-structure) for the recommended file structure for your b
 - [X] Praise page template
 - [X] Foreword and preface page templates
 - [X] Map pages, including two-page spreads
+- [X] Full-page illustrations
 - [X] Afterword, acknowledgments, reading group guide, and excerpt page templates
 - [X] Customizable fonts for the main text, author name, and title
 
@@ -548,6 +549,11 @@ A book folder should have the following:
     Each part opens with a "Part I" page showing the folder's title.
 - An optional "images" folder for your artwork, such as the cover and maps.
   It is copied into the build, so refer to its files as `images/...`, for example `cover-image: images/cover.jpg`.
+- Full-page illustrations go in a scene file, on a line by themselves, followed by `{.full-page}`:
+  `![The dragon over the city](images/dragon.jpg){.full-page}`.
+  The text in brackets describes the image for screen readers.
+  In print, the text fills the current page and the illustration covers the next page out to the edge, like a map, so it needs **bleed** to be `true`.
+  In the ePub, it is shown on a page of its own.
 
 ### Fiction-Publisher-Output
 This folder holds your finished book in each format you've built, along with any "Format Warnings" and "Build Errors" logs (refer to [Build Your Book](#build-your-book) for details).
