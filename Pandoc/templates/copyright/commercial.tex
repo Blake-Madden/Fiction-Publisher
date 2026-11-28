@@ -1,24 +1,44 @@
-\vspace*{\fill}
+% Place the notice box 7% of the way down the page, measured from the paper's top edge
+\vspace*{\dimexpr 0.07\paperheight - 1in - \voffset - \topmargin - \headheight - \headsep\relax}
 
 \begin{singlespacing}
 
+{\setlength{\fboxsep}{8pt}%
+\noindent\fbox{\parbox{\dimexpr 0.9\linewidth - 2\fboxsep - 2\fboxrule\relax}{%
+\raggedright
+$if(stripped-book-notice)$
+$stripped-book-notice$
+$else$
+If you purchased this book without a cover, you should be aware that this
+book is stolen property. It was reported as ``unsold and destroyed'' to the
+publisher, and neither the author nor the publisher has received any payment
+for this ``stripped book.''
+$endif$}}\par}
+
+% Push the rest of the page to the bottom
+\vspace*{\fill}
+
 \noindent Copyright © $year$ $for(author)$$author$$endfor$ \par
 
-% Add a vertical space
 \vspace{0.4cm}
 
-\noindent All rights reserved. No part of this book may be reproduced 
-or used in any manner without the prior written permission of the copyright owner, 
+\noindent All rights reserved. No part of this book may be reproduced
+or used in any manner without the prior written permission of the copyright owner,
 except for the use of brief quotations in critical articles and book reviews. \par
 
-\vspace{0.4cm}
-
 $if(email)$
-\noindent To request permissions, contact the author at $email$. \par
 \vspace{0.4cm}
+\noindent To request permissions, contact the author at $email$. \par
 $endif$
 
 % If ISBNs are defined in Yaml front matter then write them here
+$if(paperback-isbn-13)$\vspace{0.4cm}
+$elseif(paperback-isbn-10)$\vspace{0.4cm}
+$elseif(hardcover-isbn-13)$\vspace{0.4cm}
+$elseif(hardcover-isbn-10)$\vspace{0.4cm}
+$elseif(epub-isbn-13)$\vspace{0.4cm}
+$elseif(epub-isbn-10)$\vspace{0.4cm}
+$endif$
   $if(paperback-isbn-13)$\noindent ISBN-13: {$paperback-isbn-13$} (paperback) \par $endif$
   $if(paperback-isbn-10)$\noindent ISBN-10: {$paperback-isbn-10$} (paperback) \par $endif$
   $if(hardcover-isbn-13)$\noindent ISBN-13: {$hardcover-isbn-13$} (hardcover) \par $endif$
@@ -26,27 +46,25 @@ $endif$
   $if(epub-isbn-13)$\noindent ISBN-13: {$epub-isbn-13$} (ePub) \par $endif$
   $if(epub-isbn-10)$\noindent ISBN-10: {$epub-isbn-10$} (ePub) \par $endif$
 
-\vspace{0.4cm}
-
 $if(lcc-info-latex)$
+\vspace{0.4cm}
 \noindent Library of Congress Cataloging-in-Publication Data: \par
 $lcc-info-latex$ \par
-\vspace{0.4cm}
 $endif$
 
 %% The impression number (a.k.a. printer line)
 $if(impression-line-printings)$
-$if(impression-line-years)$\noindent $impression-line-years$\hspace{.5cm}$endif$
-$if(impression-line-printings)$\noindent $impression-line-printings$$endif$
 \vspace{0.4cm}
+\noindent $if(impression-line-years)$$impression-line-years$\hspace{.5cm}$endif$$impression-line-printings$ \par
 $endif$
 
 $if(first-paperback-date)$
-\noindent  First paperback edition $first-paperback-date$. \par
 \vspace{0.4cm}
+\noindent First paperback edition $first-paperback-date$. \par
 $endif$
 
 $if(contributors)$
+\vspace{0.4cm}
  % Attribute the editor
   $for(contributors)$$if(contributors.editor)$\noindent Editor: \editor \par$endif$$endfor$
  % Attribute the cover artist
@@ -55,21 +73,20 @@ $if(contributors)$
   $for(contributors)$$if(contributors.illustrator)$\noindent Illustrator: \illustrator \par$endif$$endfor$
  % Attribute the designer
   $for(contributors)$$if(contributors.designer)$\noindent Design: \designer \par$endif$$endfor$
-\vspace{0.4cm}
 $endif$
 
 $if(publisher)$
-\noindent Printed by $for(publisher)$$publisher$$endfor$. \par
 \vspace{0.4cm}
-$endif$
+\noindent Printed by $for(publisher)$$publisher$$endfor$. \par
 
-$for(publisher)$\noindent $publisher$$endfor$ \par
+\vspace{0.4cm}
+\noindent $for(publisher)$$publisher$$endfor$ \par
+$endif$
 $if(publisher-address-latex)$\noindent $publisher-address-latex$ \par $endif$
 
+$if(website)$
 \vspace{0.4cm}
-
-$for(website)$\noindent $website$$endfor$
+\noindent $for(website)$$website$$endfor$ \par
+$endif$
 
 \end{singlespacing}
-
-\vspace*{\fill}

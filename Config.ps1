@@ -98,6 +98,7 @@ publisher:
 # publisher-address-latex:
 # publisher-address-html:
 # copyright-page: creative-commons
+# stripped-book-notice:
 # rights:
 paperback-isbn-13:
 paperback-isbn-10:

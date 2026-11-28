@@ -226,6 +226,7 @@ The following can be specified in a book project's "config.yml" file (which shou
 - **publisher**: Publisher of your book
 - **publisher-address-latex**: LaTeX-formatted publisher address (used on PDF copyright page)
 - **publisher-address-html**: HTML-formatted publisher address (used on ePub copyright page)
+- **stripped-book-notice**: The boxed "If you purchased this book without a cover..." notice on the `commercial` PDF copyright page (default is the English notice)
 - **rights**: A single sentence regarding the licensing of your book (used as EPUB metadata only)
 
 - **paperback-isbn-13**: Optional 13 digit ISBN of your paperback book

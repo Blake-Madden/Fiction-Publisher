@@ -112,6 +112,7 @@
         "publisher": { "$ref": "#/definitions/text", "description": "Publisher of your book." },
         "publisher-address-latex": { "$ref": "#/definitions/text", "description": "LaTeX-formatted publisher address (PDF copyright page)." },
         "publisher-address-html": { "$ref": "#/definitions/text", "description": "HTML-formatted publisher address (ePub copyright page)." },
+        "stripped-book-notice": { "$ref": "#/definitions/text", "description": "The boxed \"If you purchased this book without a cover...\" notice on the commercial PDF copyright page that can be customized." },
         "rights": { "$ref": "#/definitions/text", "description": "A single sentence regarding the licensing of your book (used as EPUB metadata only)." },
         "paperback-isbn-13": { "$ref": "#/definitions/isbn13", "description": "Optional 13-digit ISBN of your paperback book." },
         "hardcover-isbn-13": { "$ref": "#/definitions/isbn13", "description": "Optional 13-digit ISBN of your hardcover book." },
