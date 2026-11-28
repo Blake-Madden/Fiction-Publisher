@@ -64,6 +64,7 @@ Refer [here](#your-book-structure) for the recommended file structure for your b
 - [X] Foreword and preface page templates
 - [X] Map pages, including two-page spreads
 - [X] Full-page illustrations
+- [X] Chapter subtitles and epigraphs
 - [X] Afterword, acknowledgments, reading group guide, and excerpt page templates
 - [X] Customizable fonts for the main text, author name, and title
 
@@ -554,6 +555,21 @@ A book folder should have the following:
   The text in brackets describes the image for screen readers.
   In print, the text fills the current page and the illustration covers the next page out to the edge, like a map, so it needs **bleed** to be `true`.
   In the ePub, it is shown on a page of its own.
+- A chapter subtitle or epigraph goes at the top of the chapter's first scene, after its heading (if it has one).
+  The subtitle is shown under the chapter's title, and the epigraph between the heading and the text.
+  An epigraph's last paragraph is its source if it starts with a dash.
+
+  ```
+  ::: subtitle
+  Harbor House, 1889
+  :::
+
+  ::: epigraph
+  The sea has never been friendly to man.
+
+  — Joseph Conrad
+  :::
+  ```
 
 ### Fiction-Publisher-Output
 This folder holds your finished book in each format you've built, along with any "Format Warnings" and "Build Errors" logs (refer to [Build Your Book](#build-your-book) for details).

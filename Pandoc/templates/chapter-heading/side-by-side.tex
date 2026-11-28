@@ -8,10 +8,11 @@
 
 %% "Side-by-side": chapter number on the left, title on the right, vertical rule between
 
-%% Only draws the divider when there's a title to divide from
+%% Only draws the divider when there's a title to divide from.
+%% The title is set in a right-aligned column, so that a chapter subtitle lines up under it.
 \newcommand\sidebysidetitle[1]{%
   \if\relax\detokenize{#1}\relax\else
-    \hfill\rule[-0.25em]{0.4pt}{1.8em}\hfill#1%
+    \hfill\rule[-0.25em]{0.4pt}{1.8em}\hfill\begin{tabular}[t]{@{}r@{}}#1\end{tabular}%
   \fi}
 
 %% Numbered chapters: number, then divider and title (if any)

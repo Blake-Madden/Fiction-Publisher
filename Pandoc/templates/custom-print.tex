@@ -485,8 +485,26 @@ $endif$
 % so set it to the chapter's title (rather than leaving the previous chapter's title there)
 \makeatletter
 \let\fp@chapter\chapter
-\renewcommand{\chapter}{\fp@chapterimage\@ifstar{\fp@starchapter}{\fp@chapter}}
-\newcommand{\fp@starchapter}[1]{\fp@chapter*{#1}\markboth{#1}{}}
+\renewcommand{\chapter}{\fp@chapterimage\@ifstar{\fp@starchapter}{\@ifnextchar[{\fp@chapter}{\fp@numberedchapter}}}
+\newcommand{\fp@starchapter}[1]{\fp@chapter*{#1\fp@subtitleline{#1}}\markboth{#1}{}\gdef\fp@subtitle{}}
+
+%% Chapter subtitle, set by \fpsetsubtitle before the chapter's heading.
+%% It is added under the title on the chapter's first page, but not to the running head or table of contents.
+\newcommand{\fp@subtitle}{}
+\newcommand{\fpsetsubtitle}[1]{\gdef\fp@subtitle{#1}}
+% a subtitle under an empty title replaces the title's line, since there is no line to break
+\newcommand{\fp@subtitleline}[1]{\ifx\fp@subtitle\@empty\else\if\relax\detokenize{#1}\relax\else\\[6pt]\fi{\normalfont\large\itshape\fp@subtitle}\fi}
+\newcommand{\fp@numberedchapter}[1]{%
+  \ifx\fp@subtitle\@empty\fp@chapter{#1}\else\fp@chapter[#1]{#1\fp@subtitleline{#1}}\fi
+  \gdef\fp@subtitle{}}
+
+%% Chapter epigraph, between the chapter's heading and its text
+\newenvironment{fp@chapterepigraph}
+  {\par\vspace{6pt}\begin{flushright}\begin{minipage}{0.7\textwidth}\setlength{\parindent}{0pt}\setlength{\parskip}{4pt}\small\itshape}
+  {\par\end{minipage}\end{flushright}\vspace{12pt}}
+\newcommand{\fpepigraphstart}{\begin{fp@chapterepigraph}}
+\newcommand{\fpepigraphsource}{\par\vspace{2pt}\raggedleft\normalfont\textemdash\,\scshape}
+\newcommand{\fpepigraphend}{\end{fp@chapterepigraph}}
 
 %% Artwork above each chapter heading in the main matter.
 %% It is drawn in the space above the heading, so it works with every chapter heading theme (but not fncychap).

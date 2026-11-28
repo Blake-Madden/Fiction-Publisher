@@ -107,8 +107,8 @@ function Invoke-Pandoc
         }
     }
 
-# The default drop cap position: after a top-level heading, and after any full-page illustrations that follow it
-$dropCapPrefix = '(^[\s]*#[^\r\n]+[\r\n]+(?:[ \t]*!\[[^\]\r\n]*\]\([^)\s]+\)\{[ \t]*\.full-page[ \t]*\}[ \t]*[\r\n]+)*)'
+# The default drop cap position: after a top-level heading, and after any chapter subtitle, epigraph, and full-page illustrations that follow it
+$dropCapPrefix = '(^[\s]*#[^\r\n]+[\r\n]+(?:[ \t]*!\[[^\]\r\n]*\]\([^)\s]+\)\{[ \t]*\.full-page[ \t]*\}[ \t]*[\r\n]+|:::+[ \t]*(?:subtitle|epigraph)[ \t]*\r?\n[\s\S]*?\r?\n:::+[ \t]*[\r\n]+)*)'
 
 # Adds a LaTeX drop cap to the first word after '$Prefix' (a regex with one group, by default a top-level heading).
 # Note that a leading quotation mark at start of paragraph will be removed, per Chicago Manual of Style.
@@ -249,6 +249,40 @@ function Get-ConfigMaps
 # (group 1 is the image's description and group 2 is its path)
 $fullPagePattern = '(?m)^[ \t]*!\[([^\]\r\n]*)\]\(([^)\s]+)\)\{[ \t]*\.full-page[ \t]*\}[ \t]*(?=\r?$)'
 
+# A chapter subtitle or epigraph: a "::: subtitle" or "::: epigraph" block, which goes at the top of a chapter's first scene.
+# Group 1 is the block's name and group 2 is its text.
+$chapterBlock = ':::+[ \t]*(subtitle|epigraph)[ \t]*\r?\n([\s\S]*?)\r?\n:::+[ \t]*(?=\r?\n|$)'
+# The top of a scene: its heading and the chapter blocks right after it
+$chapterTopPattern = "\A(\s*#[^\r\n]*)((?:\s*$chapterBlock)+)"
+
+# Splits a chapter's heading, subtitle, and epigraph from the rest of its first scene.
+# Returns $null if the scene doesn't start with a heading followed by a subtitle or epigraph.
+# The epigraph's last paragraph is its source if it starts with a dash.
+function Split-ChapterTop
+    {
+    param([string]$Content)
+    $top = [regex]::Match($Content, $chapterTopPattern)
+    if (-not $top.Success)
+        { return $null }
+    $result = [pscustomobject]@{ Heading = $top.Groups[1].Value; Subtitle = ''; Epigraph = @(); EpigraphSource = ''; Rest = $Content.Substring($top.Length) }
+    foreach ($block in [regex]::Matches($top.Groups[2].Value, $chapterBlock))
+        {
+        $paragraphs = @($block.Groups[2].Value.Trim() -split '(?:\r?\n){2,}' | Where-Object { $_.Trim() } | ForEach-Object { $_.Trim() })
+        if ($block.Groups[1].Value -eq 'subtitle')
+            { $result.Subtitle = $paragraphs -join ' ' }
+        else
+            {
+            if ($paragraphs.Count -gt 1 -and $paragraphs[-1] -match "^(?:$([char] 0x2014)|--)\s*(.+)$")
+                {
+                $result.EpigraphSource = $Matches[1]
+                $paragraphs = $paragraphs[0..($paragraphs.Count - 2)]
+                }
+            $result.Epigraph = $paragraphs
+            }
+        }
+    return $result
+    }
+
 # Returns the full-page illustrations (their file, line number, and image path) in the markdown files under a folder
 function Get-FullPageImages
     {
@@ -365,6 +399,32 @@ function Test-BookProject
     if ($buildPrint -and $fullPageImages.Count -and (Get-ConfigValue $lines 'bleed').Value -ne 'true')
         {
         $issues.Add([pscustomobject]@{ File = $fullPageImages[0].File; Line = $fullPageImages[0].Line; Severity = 'error'; Message = "Full-page illustrations are printed to the edge of the page, so they need 'bleed: true' in config.yml." })
+        }
+
+    # chapter subtitles and epigraphs only work right after the heading at the top of a chapter's first scene
+    if ([IO.Directory]::Exists("$bookDir/outline"))
+        {
+        $sceneFiles = Get-MarkdownFiles "$bookDir/outline"
+        $chapterStarts = @($sceneFiles | Group-Object { [IO.Path]::GetDirectoryName($_) } | ForEach-Object { $_.Group[0] })
+        foreach ($file in $sceneFiles)
+            {
+            $content = [IO.File]::ReadAllText($file)
+            $blocks = [regex]::Matches($content, "(?m)^$chapterBlock")
+            if (-not $blocks.Count)
+                { continue }
+            # the build adds a heading to a chapter's first scene if it has none
+            $body = $content -replace $yamlHeaderPattern, ''
+            if ($chapterStarts -contains $file -and $body -notmatch '^\s*#')
+                { $body = "#`n" + $body }
+            $topBlockCount = [regex]::Matches([regex]::Match($body, $chapterTopPattern).Value, $chapterBlock).Count
+            $displayFile = $file -replace '\\', '/'
+            for ($i = $topBlockCount; $i -lt $blocks.Count; $i++)
+                {
+                $line = $content.Substring(0, $blocks[$i].Index).Split("`n").Count
+                $message = "This $($blocks[$i].Groups[1].Value) isn't right after the heading at the top of a chapter's first scene, so it will be shown as normal text."
+                $issues.Add([pscustomobject]@{ File = $displayFile; Line = $line; Severity = 'warning'; Message = $message })
+                }
+            }
         }
 
     # fonts (only validated if specified as a font file; otherwise, it is a font name installed on the system)
@@ -921,21 +981,26 @@ foreach ($partFolder in [IO.Directory]::GetDirectories("$buildDir/outline"))
     }
 $mdFiles = Get-MarkdownFiles "$buildDir/outline"
 
+# escapes LaTeX special characters in text
+function ConvertTo-LatexText {
+    param([string]$Text)
+    return [regex]::Replace($Text, '[\\{}$&#^_%~]', {
+        param($c)
+        switch ($c.Value) {
+            '\' { '\textbackslash{}' }
+            '^' { '\textasciicircum{}' }
+            '~' { '\textasciitilde{}' }
+            default { '\' + $c.Value }
+        }
+    })
+}
+
 # wraps [[...]] placeholders in red uppercase, escaping LaTeX special characters in the text
 function ConvertTo-LatexPlaceholder {
     param([string]$Text)
     return [regex]::Replace($Text, '\[\[(.*?)\]\]', {
         param($m)
-        $inner = [regex]::Replace($m.Groups[1].Value, '[\\{}$&#^_%~]', {
-            param($c)
-            switch ($c.Value) {
-                '\' { '\textbackslash{}' }
-                '^' { '\textasciicircum{}' }
-                '~' { '\textasciitilde{}' }
-                default { '\' + $c.Value }
-            }
-        })
-        '\textcolor{red}{\MakeUppercase{' + $inner + '}}'
+        '\textcolor{red}{\MakeUppercase{' + (ConvertTo-LatexText $m.Groups[1].Value) + '}}'
     })
 }
 
@@ -1191,6 +1256,25 @@ If ($buildPrint -ne "false")
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
         $content = Add-PrintDropCap $content $dropCapStyle
 
+        # A chapter subtitle is set before the heading, which shows it under the title.
+        # An epigraph goes between the heading and the text, with its source on the same line as the dash.
+        $chapterTop = Split-ChapterTop $content
+        if ($chapterTop)
+            {
+            $parts = @()
+            if ($chapterTop.Subtitle)
+                { $parts += '\fpsetsubtitle{' + (ConvertTo-LatexText $chapterTop.Subtitle) + '}' }
+            $parts += $chapterTop.Heading.Trim()
+            if ($chapterTop.Epigraph.Count)
+                {
+                $parts += @('\fpepigraphstart') + $chapterTop.Epigraph
+                if ($chapterTop.EpigraphSource)
+                    { $parts += '\fpepigraphsource ' + $chapterTop.EpigraphSource }
+                $parts += '\fpepigraphend'
+                }
+            $content = ($parts -join $blankLine) + $chapterTop.Rest
+            }
+
         # CriticMarkup
         # (deleted text can contain dashes, so match up to the first closing "--}")
         $content = $content -replace '({--)([\s\S]*?)(--})', '\st{$2}' # deletion
@@ -1292,6 +1376,23 @@ If ($buildEpub -ne "false")
 
         # Add drop caps (on the first paragraph below the top-level header [i.e., chapter title])
         $content = Add-EpubDropCap $content
+
+        # a chapter subtitle and epigraph follow the heading, styled for the chapter's opening
+        $chapterTop = Split-ChapterTop $content
+        if ($chapterTop)
+            {
+            $parts = @($chapterTop.Heading.Trim())
+            if ($chapterTop.Subtitle)
+                { $parts += "::: chapter-subtitle$blankLine$($chapterTop.Subtitle)$blankLine:::" }
+            if ($chapterTop.Epigraph.Count)
+                {
+                $epigraph = $chapterTop.Epigraph -join $blankLine
+                if ($chapterTop.EpigraphSource)
+                    { $epigraph += "$blankLine::: chapter-epigraph-source$blankLine$([char] 0x2014)$($chapterTop.EpigraphSource)$blankLine:::" }
+                $parts += ":::: chapter-epigraph$blankLine$epigraph$blankLine::::"
+                }
+            $content = ($parts -join $blankLine) + $chapterTop.Rest
+            }
 
         # full-page illustrations go on a screen of their own
         # (the description is moved to the alt attribute, so that the image isn't made a figure with the description as its caption)

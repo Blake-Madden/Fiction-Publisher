@@ -24,6 +24,12 @@ h1.part { margin-top: 30%; }
 /* Chapter heading artwork, shown above the chapter's title */
 h1 img.chapter-image { display: block; max-width: 60%; height: auto; margin: 0 auto 0.75em auto; }
 
+/* Chapter subtitle under the title, and an epigraph between the heading and the text */
+.chapter-subtitle p { text-align: center; text-indent: 0; font-style: italic; margin: 0.5em 0 1.5em 0; }
+.chapter-epigraph { margin: 1em 0 2em 30%; }
+.chapter-epigraph p { font-style: italic; font-size: 0.9em; text-align: left; text-indent: 0; }
+.chapter-epigraph-source p { font-style: normal; font-variant: small-caps; text-align: right; margin-top: 0.5em; }
+
 /* Add a top margin for good spacing */
 .top-margin { padding-top: 3em; }
 
