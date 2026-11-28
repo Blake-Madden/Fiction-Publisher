@@ -649,6 +649,11 @@ foreach ($file in $mdFiles)
     }
 $mdFiles = Get-MarkdownFiles "$buildDir/outline"
 
+# The first file in each chapter folder starts the chapter, and the rest are scenes in it.
+# This is based on order rather than names, since Manuskript pads the numbers to the number of files in the folder, such as 00- to 11-.
+$firstScenes = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+$mdFiles | Group-Object { [IO.Path]::GetDirectoryName($_) } | ForEach-Object { [void] $firstScenes.Add($_.Group[0]) }
+
 # Pre-process files
 ###############################################################
 Write-Output "Preprocessing source files..."
@@ -672,9 +677,9 @@ foreach ($file in $mdFiles)
     # a folder that is only a number (e.g., "01") has no title, so treat it as title-less
     if ($fileInfo.Directory.Name -match '^[0-9]+$')
         { $ChapterName = '' }
-    $isFirstScene = $fileInfo.BaseName -match '^[0].*'
+    $isFirstScene = $firstScenes.Contains($file)
 
-    # if missing top-level header and file is the first scene in the chapter (i.e., filename starts with zero),
+    # if missing top-level header and file is the first scene in the chapter,
     # then add a chapter heading based on the chapter folder name
     if (-not ($content -match '^\s*#(\s|$)') -and $isFirstScene)
         {
@@ -1199,8 +1204,8 @@ If ($buildPrint -ne "false")
         # full-page illustrations go on a page of their own
         $content = $content -replace $fullPagePattern, '\fpfullpage{$2}'
 
-        # files that don't start with zero should be new scenes in a chapter, so unindent their first paragraph
-        if ($fileInfo.BaseName -match '^[^0].*')
+        # files after the first in a chapter are new scenes, so unindent their first paragraph
+        if (-not $firstScenes.Contains($file))
             {
             # unless the file starts with a heading, which shouldn't be prefixed (full-page illustrations before the paragraph are skipped)
             $content = $content -replace '^(\s*(?:\\fpfullpage\{[^}\r\n]*\}\s*)*)([^#\s])', '$1\noindent $2'
