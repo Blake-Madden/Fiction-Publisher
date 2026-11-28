@@ -175,7 +175,7 @@ toc: true
 # line-spacing: 1.3
 # bleed: false
 # page-number-position: header
-# running-head-chapter-number: true
+# running-head-chapter-number: false
 # header-includes:
 
 # ----- Back Matter -----

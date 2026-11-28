@@ -1492,11 +1492,7 @@ If ($buildPrint -ne "false")
         { $engineOptions = @('--pdf-engine-opt=-output-driver=xdvipdfmx -V 3 -z 0') }
     # maps and full-page illustrations share the template's page image code
     if (@(Get-ConfigMaps $configLines).Count -or @(Get-FullPageImages "$bookDir/outline").Count)
-        { $engineOptions += @('-V', 'page-images=true') }
-    # the template can't tell a false setting from a missing one, so the chapter number's default of true is handled here
-    if ((Get-ConfigValue $configLines 'running-head-chapter-number').Value -eq 'false')
-        { $engineOptions += @('-V', 'running-head-no-chapter-number=true') }
-    Invoke-Pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.tex" --pdf-engine=$pdfEngine $engineOptions `
+        { $engineOptions += @('-V', 'page-images=true') }    Invoke-Pandoc --top-level-division=chapter --template="$PSScriptRoot/Pandoc/templates/custom-print.tex" --pdf-engine=$pdfEngine $engineOptions `
            --metadata-file "$buildDir/config-print.yml" $quoteVariables `
            -f markdown+smart $mdFiles -o "$outputDir/$bookName-print.pdf"
 

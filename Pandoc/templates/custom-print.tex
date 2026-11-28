@@ -222,6 +222,11 @@ $endfor$
 %% Prevent headers from appearing on empty pages
 \usepackage{emptypage}
 
+%% Running head style: regular weight, a size smaller than the text, and letterspaced small caps.
+%% The text is lowercased first, so that every letter is a small capital, and numbers use old-style figures to match their height.
+\newcommand{\fprunninghead}[1]{{\primaryfont\small\scshape\addfontfeature{LetterSpace=5,Numbers=OldStyle}\MakeTextLowercase{#1}}}
+\newcommand{\fpheadpagenumber}{{\primaryfont\small\thepage}}
+
 %% Page number placement (header, bottom-center, or bottom-outer)
 \def\pagenumberposition{$if(page-number-position)$$page-number-position$$else$header$endif$}
 \def\bottomcenter{bottom-center}
@@ -245,10 +250,10 @@ $endfor$
 \else\ifx\pagenumberposition\bottomouter
   \fancyfoot[RO,LE]{\primaryfont \thepage}
 \else
-  \fancyhead[RO,LE]{\primaryfont\bfseries \thepage}
+  \fancyhead[RO,LE]{\fpheadpagenumber}
 \fi\fi
-\fancyhead[LO]{\primaryfont\bfseries \textsc \leftmark}
-\fancyhead[RE]{\primaryfont\bfseries \textsc \@title}
+\fancyhead[LO]{\fprunninghead{\leftmark}}
+\fancyhead[RE]{\fprunninghead{\@title}}
 }
 \makeatother
 
@@ -874,9 +879,9 @@ $endif$
 \pagestyle{fancy}
 %\renewcommand{\chaptermark}[1]{\markboth{#1}{}} % This removes the 'Chapter x' from the header
 % Chapter with no title shows only 'Chapter N', without a trailing ' -- '
-% running-head-chapter-number: false shows only the title of a chapter that has one
-\newif\ifrunningheadchapternumber \runningheadchapternumbertrue
-$if(running-head-no-chapter-number)$\runningheadchapternumberfalse$endif$
+% A chapter with a title shows only its title, unless running-head-chapter-number is true
+\newif\ifrunningheadchapternumber
+$if(running-head-chapter-number)$\runningheadchapternumbertrue$endif$
 \renewcommand{\chaptermark}[1]{\markboth{\if\relax\detokenize{#1}\relax\@chapapp\ \chapternumber\else\ifrunningheadchapternumber\@chapapp\ \chapternumber\ --\ \fi{#1}\fi}{}}
 
 \fancyhf{} % clear default header/footer content
@@ -885,10 +890,10 @@ $if(running-head-no-chapter-number)$\runningheadchapternumberfalse$endif$
 \else\ifx\pagenumberposition\bottomouter
   \fancyfoot[RO,LE]{\primaryfont \thepage}
 \else
-  \fancyhead[RO,LE]{\primaryfont\bfseries \thepage} % add page numbers to the header
+  \fancyhead[RO,LE]{\fpheadpagenumber} % add page numbers to the header
 \fi\fi
-\fancyhead[LO]{\primaryfont\bfseries \textsc \leftmark} % add subtitle to header
-\fancyhead[RE]{\primaryfont\bfseries \textsc \@title}
+\fancyhead[LO]{\fprunninghead{\leftmark}} % add subtitle to header
+\fancyhead[RE]{\fprunninghead{\@title}}
 \renewcommand{\headrulewidth}{0.0pt} 
 \makeatother
 
